@@ -1,0 +1,1756 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GarbageCollectionDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GarbageCollectionDB.dbo.BNoFYId' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="BNoFYId">
+          <Property Name="BNo" Type="int" />
+          <Property Name="FYId" Type="int" />
+        </EntityType>-->
+        <EntityType Name="BSADCal">
+          <Key>
+            <PropertyRef Name="NYear" />
+          </Key>
+          <Property Name="NYear" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="CollectionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="CollectionType" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="int" Nullable="false" />
+          <Property Name="CustNo" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerName" Type="varchar" MaxLength="500" />
+          <Property Name="CustomerTypeId" Type="int" />
+          <Property Name="PhoneNo" Type="varchar" MaxLength="50" />
+          <Property Name="MobileNo" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="500" />
+          <Property Name="Email" Type="varchar" MaxLength="100" />
+          <Property Name="PanNo" Type="varchar" MaxLength="100" />
+          <Property Name="Geom" Type="geometry" />
+          <Property Name="Longitude" Type="varchar" MaxLength="50" />
+          <Property Name="Latitude" Type="varchar" MaxLength="50" />
+          <Property Name="PostedBy" Type="int" />
+          <Property Name="PostedOn" Type="smalldatetime" />
+          <Property Name="Status" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="CustomerType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="smallint" Nullable="false" />
+          <Property Name="RFUniDesc" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="status" Type="int" />
+        </EntityType>
+        <EntityType Name="FiscalYear">
+          <Key>
+            <PropertyRef Name="FYID" />
+          </Key>
+          <Property Name="FYID" Type="smallint" Nullable="false" />
+          <Property Name="FyName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartDT" Type="smalldatetime" Nullable="false" />
+          <Property Name="EndDt" Type="smalldatetime" Nullable="false" />
+          <Property Name="FYNameAD" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="LocationMaster">
+          <Key>
+            <PropertyRef Name="Lid" />
+          </Key>
+          <Property Name="Lid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationName" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="NDateD">
+          <Key>
+            <PropertyRef Name="M1" />
+            <PropertyRef Name="M2" />
+            <PropertyRef Name="M3" />
+            <PropertyRef Name="M4" />
+            <PropertyRef Name="M5" />
+            <PropertyRef Name="M6" />
+            <PropertyRef Name="M7" />
+            <PropertyRef Name="M8" />
+            <PropertyRef Name="M9" />
+            <PropertyRef Name="M10" />
+            <PropertyRef Name="M11" />
+            <PropertyRef Name="M12" />
+            <PropertyRef Name="NYear" />
+          </Key>
+          <Property Name="M1" Type="int" Nullable="false" />
+          <Property Name="M2" Type="int" Nullable="false" />
+          <Property Name="M3" Type="int" Nullable="false" />
+          <Property Name="M4" Type="int" Nullable="false" />
+          <Property Name="M5" Type="int" Nullable="false" />
+          <Property Name="M6" Type="int" Nullable="false" />
+          <Property Name="M7" Type="int" Nullable="false" />
+          <Property Name="M8" Type="int" Nullable="false" />
+          <Property Name="M9" Type="int" Nullable="false" />
+          <Property Name="M10" Type="int" Nullable="false" />
+          <Property Name="M11" Type="int" Nullable="false" />
+          <Property Name="M12" Type="int" Nullable="false" />
+          <Property Name="NYear" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="int" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="50" />
+          <Property Name="StatusColor" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="Subsid" />
+          </Key>
+          <Property Name="Subsid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubsNo" Type="int" />
+          <Property Name="CustId" Type="int" Nullable="false" />
+          <Property Name="EffectiveDate" Type="smalldatetime" />
+          <Property Name="LedgerId" Type="int" />
+          <Property Name="MonthlyAmount" Type="money" />
+          <Property Name="LocationID" Type="int" />
+          <Property Name="Status" Type="int" />
+          <Property Name="Remarks" Type="varchar(max)" />
+          <Property Name="PostedBy" Type="int" />
+          <Property Name="PostedOn" Type="smalldatetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="smalldatetime" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="SubscriptionCollection">
+          <Property Name="SubsCollId" Type="int" />
+          <Property Name="CustId" Type="int" />
+          <Property Name="SubsId" Type="int" />
+          <Property Name="CollectiorId" Type="int" />
+          <Property Name="CollectionTypeId" Type="int" />
+          <Property Name="CollectionAmt" Type="money" />
+          <Property Name="PostedBy" Type="int" />
+          <Property Name="PostedOn" Type="smalldatetime" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="smalldatetime" />
+        </EntityType>-->
+        <EntityType Name="SubscriptionDue">
+          <Key>
+            <PropertyRef Name="DueId" />
+          </Key>
+          <Property Name="DueId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubsId" Type="int" />
+          <Property Name="Fyid" Type="int" />
+          <Property Name="BillNo" Type="int" />
+          <Property Name="Year" Type="int" />
+          <Property Name="Month" Type="int" />
+          <Property Name="MonthlyDueAmt" Type="money" />
+          <Property Name="PostedOn" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="LicenseBranch">
+          <Key>
+            <PropertyRef Name="BrnhID" />
+          </Key>
+          <Property Name="BrnhID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BrnhNam" Type="nvarchar(max)" />
+          <Property Name="Addr" Type="nvarchar(max)" />
+          <Property Name="RegID" Type="smallint" />
+          <Property Name="Phone" Type="nvarchar(max)" />
+          <Property Name="Fax" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="IPAdd" Type="nvarchar(max)" />
+          <Property Name="PBrnhID" Type="smallint" />
+          <Property Name="ExtraUsrNo" Type="tinyint" />
+          <Property Name="Prefix" Type="nvarchar(max)" />
+          <Property Name="CalSID" Type="int" Nullable="false" />
+          <Property Name="CalCid" Type="int" Nullable="false" />
+          <Property Name="TDate" Type="datetime" Nullable="false" />
+          <Property Name="UseLimit" Type="bit" Nullable="false" />
+          <Property Name="atclosing" Type="bit" Nullable="false" />
+          <Property Name="MigDate" Type="datetime" />
+          <Property Name="CleCode" Type="nvarchar(max)" />
+          <Property Name="inExpMode" Type="tinyint" />
+          <Property Name="Floint" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="IsCalcIOnI" Type="bit" Nullable="false" />
+          <Property Name="schprovdys" Type="int" Nullable="false" />
+          <Property Name="FYID" Type="int" />
+        </EntityType>
+        <EntityType Name="BloodGroup">
+          <Key>
+            <PropertyRef Name="BGId" />
+          </Key>
+          <Property Name="BGId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BGName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BranchName" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Region" Type="nvarchar" MaxLength="4000" />
+          <Property Name="State" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Address" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="PhoneNo" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Email" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="FaxNo" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Prefix" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="IsBranch" Type="bit" />
+          <Property Name="AdditionalUser" Type="int" Nullable="false" />
+          <Property Name="IPAddress" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="TDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DataType">
+          <Key>
+            <PropertyRef Name="DTId" />
+          </Key>
+          <Property Name="DTId" Type="tinyint" Nullable="false" />
+          <Property Name="DType" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="DepartmentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PDeptId" Type="int" Nullable="false" />
+          <Property Name="PostedBy" Type="int" Nullable="false" />
+          <Property Name="PostedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Designation">
+          <Key>
+            <PropertyRef Name="DesignationId" />
+          </Key>
+          <Property Name="DesignationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PDGId" Type="int" Nullable="false" />
+          <Property Name="DGName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PostedBy" Type="int" Nullable="false" />
+          <Property Name="PostedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeNo" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="EmployeeName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DGId" Type="int" Nullable="false" />
+          <Property Name="DeptId" Type="int" Nullable="false" />
+          <Property Name="Religion" Type="int" Nullable="false" />
+          <Property Name="Nationality" Type="int" Nullable="false" />
+          <Property Name="MaritialStatus" Type="smallint" Nullable="false" />
+          <Property Name="DateOfJoin" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="BranchId" Type="int" Nullable="false" />
+          <Property Name="Gender" Type="smallint" Nullable="false" />
+          <Property Name="BloodGroup" Type="smallint" Nullable="false" />
+          <Property Name="Photo" Type="varbinary(max)" />
+          <Property Name="Initials" Type="int" Nullable="false" />
+          <Property Name="PostedOn" Type="datetime" Nullable="false" />
+          <Property Name="PostedBy" Type="int" Nullable="false" />
+          <Property Name="ModifiedBy" Type="int" />
+          <Property Name="ModifiedOn" Type="datetime" />
+          <Property Name="Status" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FiscalYears">
+          <Key>
+            <PropertyRef Name="FYID" />
+          </Key>
+          <Property Name="FYID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FyName" Type="nvarchar(max)" />
+          <Property Name="StartDt" Type="datetime" Nullable="false" />
+          <Property Name="EndDt" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="GenderId" />
+          </Key>
+          <Property Name="GenderId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GenderName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="LoginLogs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BranchId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="From" Type="datetime" Nullable="false" />
+          <Property Name="To" Type="datetime" />
+          <Property Name="IP" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="MaritialStatus">
+          <Key>
+            <PropertyRef Name="MSId" />
+          </Key>
+          <Property Name="MSId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MSName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MenuMain">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MenuCaption" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PMenuId" Type="int" Nullable="false" />
+          <Property Name="Image" Type="varbinary(max)" />
+          <Property Name="MenuOrder" Type="int" Nullable="false" />
+          <Property Name="IsGroup" Type="bit" Nullable="false" />
+          <Property Name="IsEnable" Type="bit" Nullable="false" />
+          <Property Name="IsContextMenu" Type="bit" Nullable="false" />
+          <Property Name="Controler" Type="varchar" MaxLength="200" />
+          <Property Name="Acton" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="MenuTemplate">
+          <Key>
+            <PropertyRef Name="MenuTemplateId" />
+          </Key>
+          <Property Name="MenuTemplateId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MTName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DesignationId" Type="int" Nullable="false" />
+          <Property Name="PostedBy" Type="int" Nullable="false" />
+          <Property Name="PostedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MenuVsTemplate">
+          <Key>
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="TemplateId" />
+          </Key>
+          <Property Name="MenuId" Type="int" Nullable="false" />
+          <Property Name="TemplateId" Type="int" Nullable="false" />
+          <Property Name="MenuTemplate_MTId" Type="int" />
+        </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="NId" />
+          </Key>
+          <Property Name="NId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Param">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ParentId" Type="int" Nullable="false" />
+          <Property Name="IsGroup" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParamScript">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="int" Nullable="false" />
+          <Property Name="PScript" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ParamValue">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="int" Nullable="false" />
+          <Property Name="DTId" Type="tinyint" Nullable="false" />
+          <Property Name="PDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Religion">
+          <Key>
+            <PropertyRef Name="RId" />
+          </Key>
+          <Property Name="RId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ReligionName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DGId" Type="int" Nullable="false" />
+          <Property Name="MTId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Status1">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StatusName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MTId" Type="int" Nullable="false" />
+          <Property Name="EmployeeId" Type="int" />
+          <Property Name="EffDate" Type="datetime" />
+          <Property Name="TillDate" Type="datetime" />
+          <Property Name="IsUnlimited" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Image" Type="tinyint" />
+          <Property Name="UserDesignationId" Type="int" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UserClaim">
+          <Key>
+            <PropertyRef Name="UserClaimId" />
+          </Key>
+          <Property Name="UserClaimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UserConnection">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ConnectionID" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserVSBranch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="BranchId" Type="int" Nullable="false" />
+          <Property Name="From" Type="datetime" Nullable="false" />
+          <Property Name="To" Type="datetime" />
+          <Property Name="IsEnable" Type="bit" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="PostedBy" Type="int" Nullable="false" />
+          <Property Name="PostedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId">
+          <End Role="MenuTemplate" Type="Self.MenuTemplate" Multiplicity="0..1" />
+          <End Role="MenuVsTemplate" Type="Self.MenuVsTemplate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuTemplate">
+              <PropertyRef Name="MenuTemplateId" />
+            </Principal>
+            <Dependent Role="MenuVsTemplate">
+              <PropertyRef Name="MenuTemplate_MTId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_ParamScript_LG_ParamValue_PId">
+          <End Role="ParamValue" Type="Self.ParamValue" Multiplicity="1" />
+          <End Role="ParamScript" Type="Self.ParamScript" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ParamValue">
+              <PropertyRef Name="PId" />
+            </Principal>
+            <Dependent Role="ParamScript">
+              <PropertyRef Name="PId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_ParamValue_LG_DataType_DTId">
+          <End Role="DataType" Type="Self.DataType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ParamValue" Type="Self.ParamValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataType">
+              <PropertyRef Name="DTId" />
+            </Principal>
+            <Dependent Role="ParamValue">
+              <PropertyRef Name="DTId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_ParamValue_LG_Param_PId">
+          <End Role="Param" Type="Self.Param" Multiplicity="1" />
+          <End Role="ParamValue" Type="Self.ParamValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Param">
+              <PropertyRef Name="PId" />
+            </Principal>
+            <Dependent Role="ParamValue">
+              <PropertyRef Name="PId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_UserClaim_LG_User_UserId">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserClaim" Type="Self.UserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_UserLogin_LG_User_UserId">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserLogin" Type="Self.UserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_UserRole_LG_Role_RoleId">
+          <End Role="Role" Type="Self.Role" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Role">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_UserRole_LG_User_UserId">
+          <End Role="User" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="UserRole" Type="Self.UserRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GarbageCollectionDBModelStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BSADCal" EntityType="Self.BSADCal" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectionType" EntityType="Self.CollectionType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerType" EntityType="Self.CustomerType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FiscalYear" EntityType="Self.FiscalYear" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriptionDue" EntityType="Self.SubscriptionDue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LicenseBranch" EntityType="Self.LicenseBranch" Schema="fin" store:Type="Tables" />
+          <EntitySet Name="BloodGroup" EntityType="Self.BloodGroup" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="DataType" EntityType="Self.DataType" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Designation" EntityType="Self.Designation" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="FiscalYears" EntityType="Self.FiscalYears" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Gender" EntityType="Self.Gender" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="LoginLogs" EntityType="Self.LoginLogs" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="MaritialStatus" EntityType="Self.MaritialStatus" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="MenuMain" EntityType="Self.MenuMain" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="MenuTemplate" EntityType="Self.MenuTemplate" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="MenuVsTemplate" EntityType="Self.MenuVsTemplate" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Nationality" EntityType="Self.Nationality" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Param" EntityType="Self.Param" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="ParamScript" EntityType="Self.ParamScript" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="ParamValue" EntityType="Self.ParamValue" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Religion" EntityType="Self.Religion" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Role" EntityType="Self.Role" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Status1" EntityType="Self.Status1" Schema="LG" Table="Status" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="UserClaim" EntityType="Self.UserClaim" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="UserConnection" EntityType="Self.UserConnection" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="UserLogin" EntityType="Self.UserLogin" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="UserRole" EntityType="Self.UserRole" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="UserVSBranch" EntityType="Self.UserVSBranch" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="NDateD" EntityType="Self.NDateD" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [NDateD].[M1] AS [M1], 
+    [NDateD].[M2] AS [M2], 
+    [NDateD].[M3] AS [M3], 
+    [NDateD].[M4] AS [M4], 
+    [NDateD].[M5] AS [M5], 
+    [NDateD].[M6] AS [M6], 
+    [NDateD].[M7] AS [M7], 
+    [NDateD].[M8] AS [M8], 
+    [NDateD].[M9] AS [M9], 
+    [NDateD].[M10] AS [M10], 
+    [NDateD].[M11] AS [M11], 
+    [NDateD].[M12] AS [M12], 
+    [NDateD].[NYear] AS [NYear]
+    FROM [dbo].[NDateD] AS [NDateD]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId" Association="Self.FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId">
+            <End Role="MenuTemplate" EntitySet="MenuTemplate" />
+            <End Role="MenuVsTemplate" EntitySet="MenuVsTemplate" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_ParamScript_LG_ParamValue_PId" Association="Self.FK_LG_ParamScript_LG_ParamValue_PId">
+            <End Role="ParamValue" EntitySet="ParamValue" />
+            <End Role="ParamScript" EntitySet="ParamScript" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_ParamValue_LG_DataType_DTId" Association="Self.FK_LG_ParamValue_LG_DataType_DTId">
+            <End Role="DataType" EntitySet="DataType" />
+            <End Role="ParamValue" EntitySet="ParamValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_ParamValue_LG_Param_PId" Association="Self.FK_LG_ParamValue_LG_Param_PId">
+            <End Role="Param" EntitySet="Param" />
+            <End Role="ParamValue" EntitySet="ParamValue" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_UserClaim_LG_User_UserId" Association="Self.FK_LG_UserClaim_LG_User_UserId">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserClaim" EntitySet="UserClaim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_UserLogin_LG_User_UserId" Association="Self.FK_LG_UserLogin_LG_User_UserId">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserLogin" EntitySet="UserLogin" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_UserRole_LG_Role_RoleId" Association="Self.FK_LG_UserRole_LG_Role_RoleId">
+            <End Role="Role" EntitySet="Role" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_UserRole_LG_User_UserId" Association="Self.FK_LG_UserRole_LG_User_UserId">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserRole" EntitySet="UserRole" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GarbageCollectionDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="GarbageCollectionDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="GarbageCollectionDBModel.C__MigrationHistory" />
+          <EntitySet Name="BSADCals" EntityType="GarbageCollectionDBModel.BSADCal" />
+          <EntitySet Name="CollectionTypes" EntityType="GarbageCollectionDBModel.CollectionType" />
+          <EntitySet Name="CustomerTypes" EntityType="GarbageCollectionDBModel.CustomerType" />
+          <EntitySet Name="FiscalYears" EntityType="GarbageCollectionDBModel.FiscalYear" />
+          <EntitySet Name="LocationMasters" EntityType="GarbageCollectionDBModel.LocationMaster" />
+          <EntitySet Name="Status" EntityType="GarbageCollectionDBModel.Status" />
+          <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
+          <EntitySet Name="SubscriptionDues" EntityType="GarbageCollectionDBModel.SubscriptionDue" />
+          <EntitySet Name="LicenseBranches" EntityType="GarbageCollectionDBModel.LicenseBranch" />
+          <EntitySet Name="BloodGroups" EntityType="GarbageCollectionDBModel.BloodGroup" />
+          <EntitySet Name="Companies" EntityType="GarbageCollectionDBModel.Company" />
+          <EntitySet Name="DataTypes" EntityType="GarbageCollectionDBModel.DataType" />
+          <EntitySet Name="Departments" EntityType="GarbageCollectionDBModel.Department" />
+          <EntitySet Name="Designations" EntityType="GarbageCollectionDBModel.Designation" />
+          <EntitySet Name="Employees" EntityType="GarbageCollectionDBModel.Employee" />
+          <EntitySet Name="FiscalYears1" EntityType="GarbageCollectionDBModel.FiscalYear1" />
+          <EntitySet Name="Genders" EntityType="GarbageCollectionDBModel.Gender" />
+          <EntitySet Name="LoginLogs" EntityType="GarbageCollectionDBModel.LoginLog" />
+          <EntitySet Name="MaritialStatus" EntityType="GarbageCollectionDBModel.MaritialStatu" />
+          <EntitySet Name="MenuMains" EntityType="GarbageCollectionDBModel.MenuMain" />
+          <EntitySet Name="MenuTemplates" EntityType="GarbageCollectionDBModel.MenuTemplate" />
+          <EntitySet Name="MenuVsTemplates" EntityType="GarbageCollectionDBModel.MenuVsTemplate" />
+          <EntitySet Name="Nationalities" EntityType="GarbageCollectionDBModel.Nationality" />
+          <EntitySet Name="Params" EntityType="GarbageCollectionDBModel.Param" />
+          <EntitySet Name="ParamScripts" EntityType="GarbageCollectionDBModel.ParamScript" />
+          <EntitySet Name="ParamValues" EntityType="GarbageCollectionDBModel.ParamValue" />
+          <EntitySet Name="Religions" EntityType="GarbageCollectionDBModel.Religion" />
+          <EntitySet Name="Roles" EntityType="GarbageCollectionDBModel.Role" />
+          <EntitySet Name="Status1" EntityType="GarbageCollectionDBModel.Status1" />
+          <EntitySet Name="Users" EntityType="GarbageCollectionDBModel.User" />
+          <EntitySet Name="UserClaims" EntityType="GarbageCollectionDBModel.UserClaim" />
+          <EntitySet Name="UserConnections" EntityType="GarbageCollectionDBModel.UserConnection" />
+          <EntitySet Name="UserLogins" EntityType="GarbageCollectionDBModel.UserLogin" />
+          <EntitySet Name="UserVSBranches" EntityType="GarbageCollectionDBModel.UserVSBranch" />
+          <EntitySet Name="NDateDs" EntityType="GarbageCollectionDBModel.NDateD" />
+          <AssociationSet Name="FK_LG_ParamValue_LG_DataType_DTId" Association="GarbageCollectionDBModel.FK_LG_ParamValue_LG_DataType_DTId">
+            <End Role="DataType" EntitySet="DataTypes" />
+            <End Role="ParamValue" EntitySet="ParamValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId" Association="GarbageCollectionDBModel.FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId">
+            <End Role="MenuTemplate" EntitySet="MenuTemplates" />
+            <End Role="MenuVsTemplate" EntitySet="MenuVsTemplates" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_ParamValue_LG_Param_PId" Association="GarbageCollectionDBModel.FK_LG_ParamValue_LG_Param_PId">
+            <End Role="Param" EntitySet="Params" />
+            <End Role="ParamValue" EntitySet="ParamValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_ParamScript_LG_ParamValue_PId" Association="GarbageCollectionDBModel.FK_LG_ParamScript_LG_ParamValue_PId">
+            <End Role="ParamValue" EntitySet="ParamValues" />
+            <End Role="ParamScript" EntitySet="ParamScripts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_UserClaim_LG_User_UserId" Association="GarbageCollectionDBModel.FK_LG_UserClaim_LG_User_UserId">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserClaim" EntitySet="UserClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_UserLogin_LG_User_UserId" Association="GarbageCollectionDBModel.FK_LG_UserLogin_LG_User_UserId">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserLogin" EntitySet="UserLogins" />
+          </AssociationSet>
+          <AssociationSet Name="UserRole" Association="GarbageCollectionDBModel.UserRole">
+            <End Role="Role" EntitySet="Roles" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
+        </EntityContainer>
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
+          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BSADCal">
+          <Key>
+            <PropertyRef Name="NYear" />
+          </Key>
+          <Property Name="NYear" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="CollectionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="CollectionType1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CustomerType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int16" Nullable="false" />
+          <Property Name="RFUniDesc" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="status" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FiscalYear">
+          <Key>
+            <PropertyRef Name="FYID" />
+          </Key>
+          <Property Name="FYID" Type="Int16" Nullable="false" />
+          <Property Name="FyName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StartDT" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDt" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="FYNameAD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="LocationMaster">
+          <Key>
+            <PropertyRef Name="Lid" />
+          </Key>
+          <Property Name="Lid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Int32" Nullable="false" />
+          <Property Name="Status1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="StatusColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="Subsid" />
+          </Key>
+          <Property Name="Subsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubsNo" Type="Int32" />
+          <Property Name="CustId" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="0" />
+          <Property Name="LedgerId" Type="Int32" />
+          <Property Name="MonthlyAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="SubscriptionDue">
+          <Key>
+            <PropertyRef Name="DueId" />
+          </Key>
+          <Property Name="DueId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubsId" Type="Int32" />
+          <Property Name="Fyid" Type="Int32" />
+          <Property Name="BillNo" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="Month" Type="Int32" />
+          <Property Name="MonthlyDueAmt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="LicenseBranch">
+          <Key>
+            <PropertyRef Name="BrnhID" />
+          </Key>
+          <Property Name="BrnhID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BrnhNam" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Addr" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RegID" Type="Int16" />
+          <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Fax" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IPAdd" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PBrnhID" Type="Int16" />
+          <Property Name="ExtraUsrNo" Type="Byte" />
+          <Property Name="Prefix" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CalSID" Type="Int32" Nullable="false" />
+          <Property Name="CalCid" Type="Int32" Nullable="false" />
+          <Property Name="TDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UseLimit" Type="Boolean" Nullable="false" />
+          <Property Name="atclosing" Type="Boolean" Nullable="false" />
+          <Property Name="MigDate" Type="DateTime" Precision="3" />
+          <Property Name="CleCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="inExpMode" Type="Byte" />
+          <Property Name="Floint" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="IsCalcIOnI" Type="Boolean" Nullable="false" />
+          <Property Name="schprovdys" Type="Int32" Nullable="false" />
+          <Property Name="FYID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BloodGroup">
+          <Key>
+            <PropertyRef Name="BGId" />
+          </Key>
+          <Property Name="BGId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BGName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BranchName" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="Region" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Address" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNo" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="FaxNo" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Prefix" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="IsBranch" Type="Boolean" />
+          <Property Name="AdditionalUser" Type="Int32" Nullable="false" />
+          <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="TDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DataType">
+          <Key>
+            <PropertyRef Name="DTId" />
+          </Key>
+          <Property Name="DTId" Type="Byte" Nullable="false" />
+          <Property Name="DType" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ParamValues" Relationship="GarbageCollectionDBModel.FK_LG_ParamValue_LG_DataType_DTId" FromRole="DataType" ToRole="ParamValue" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DepartmentId" />
+          </Key>
+          <Property Name="DepartmentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PDeptId" Type="Int32" Nullable="false" />
+          <Property Name="PostedBy" Type="Int32" Nullable="false" />
+          <Property Name="PostedOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Designation">
+          <Key>
+            <PropertyRef Name="DesignationId" />
+          </Key>
+          <Property Name="DesignationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PDGId" Type="Int32" Nullable="false" />
+          <Property Name="DGName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PostedBy" Type="Int32" Nullable="false" />
+          <Property Name="PostedOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeNo" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DGId" Type="Int32" Nullable="false" />
+          <Property Name="DeptId" Type="Int32" Nullable="false" />
+          <Property Name="Religion" Type="Int32" Nullable="false" />
+          <Property Name="Nationality" Type="Int32" Nullable="false" />
+          <Property Name="MaritialStatus" Type="Int16" Nullable="false" />
+          <Property Name="DateOfJoin" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="BranchId" Type="Int32" Nullable="false" />
+          <Property Name="Gender" Type="Int16" Nullable="false" />
+          <Property Name="BloodGroup" Type="Int16" Nullable="false" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="Initials" Type="Int32" Nullable="false" />
+          <Property Name="PostedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PostedBy" Type="Int32" Nullable="false" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="Status" Type="Int16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FiscalYear1">
+          <Key>
+            <PropertyRef Name="FYID" />
+          </Key>
+          <Property Name="FYID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FyName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StartDt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndDt" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Gender">
+          <Key>
+            <PropertyRef Name="GenderId" />
+          </Key>
+          <Property Name="GenderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GenderName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="LoginLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BranchId" Type="Int32" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="From" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="To" Type="DateTime" Precision="3" />
+          <Property Name="IP" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MaritialStatu">
+          <Key>
+            <PropertyRef Name="MSId" />
+          </Key>
+          <Property Name="MSId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MSName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="MenuMain">
+          <Key>
+            <PropertyRef Name="MenuId" />
+          </Key>
+          <Property Name="MenuId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MenuCaption" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PMenuId" Type="Int32" Nullable="false" />
+          <Property Name="Image" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="MenuOrder" Type="Int32" Nullable="false" />
+          <Property Name="IsGroup" Type="Boolean" Nullable="false" />
+          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
+          <Property Name="IsContextMenu" Type="Boolean" Nullable="false" />
+          <Property Name="Controler" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Acton" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MenuTemplate">
+          <Key>
+            <PropertyRef Name="MenuTemplateId" />
+          </Key>
+          <Property Name="MenuTemplateId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MTName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DesignationId" Type="Int32" Nullable="false" />
+          <Property Name="PostedBy" Type="Int32" Nullable="false" />
+          <Property Name="PostedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="MenuVsTemplates" Relationship="GarbageCollectionDBModel.FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId" FromRole="MenuTemplate" ToRole="MenuVsTemplate" />
+        </EntityType>
+        <EntityType Name="MenuVsTemplate">
+          <Key>
+            <PropertyRef Name="MenuId" />
+            <PropertyRef Name="TemplateId" />
+          </Key>
+          <Property Name="MenuId" Type="Int32" Nullable="false" />
+          <Property Name="TemplateId" Type="Int32" Nullable="false" />
+          <Property Name="MenuTemplate_MTId" Type="Int32" />
+          <NavigationProperty Name="MenuTemplate" Relationship="GarbageCollectionDBModel.FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId" FromRole="MenuVsTemplate" ToRole="MenuTemplate" />
+        </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="NId" />
+          </Key>
+          <Property Name="NId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Param">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ParentId" Type="Int32" Nullable="false" />
+          <Property Name="IsGroup" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ParamValue" Relationship="GarbageCollectionDBModel.FK_LG_ParamValue_LG_Param_PId" FromRole="Param" ToRole="ParamValue" />
+        </EntityType>
+        <EntityType Name="ParamScript">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="Int32" Nullable="false" />
+          <Property Name="PScript" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ParamValue" Relationship="GarbageCollectionDBModel.FK_LG_ParamScript_LG_ParamValue_PId" FromRole="ParamScript" ToRole="ParamValue" />
+        </EntityType>
+        <EntityType Name="ParamValue">
+          <Key>
+            <PropertyRef Name="PId" />
+          </Key>
+          <Property Name="PId" Type="Int32" Nullable="false" />
+          <Property Name="DTId" Type="Byte" Nullable="false" />
+          <Property Name="PDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="DataType" Relationship="GarbageCollectionDBModel.FK_LG_ParamValue_LG_DataType_DTId" FromRole="ParamValue" ToRole="DataType" />
+          <NavigationProperty Name="Param" Relationship="GarbageCollectionDBModel.FK_LG_ParamValue_LG_Param_PId" FromRole="ParamValue" ToRole="Param" />
+          <NavigationProperty Name="ParamScript" Relationship="GarbageCollectionDBModel.FK_LG_ParamScript_LG_ParamValue_PId" FromRole="ParamValue" ToRole="ParamScript" />
+        </EntityType>
+        <EntityType Name="Religion">
+          <Key>
+            <PropertyRef Name="RId" />
+          </Key>
+          <Property Name="RId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ReligionName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DGId" Type="Int32" Nullable="false" />
+          <Property Name="MTId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Users" Relationship="GarbageCollectionDBModel.UserRole" FromRole="Role" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Status1">
+          <Key>
+            <PropertyRef Name="StatusId" />
+          </Key>
+          <Property Name="StatusId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StatusName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MTId" Type="Int32" Nullable="false" />
+          <Property Name="EmployeeId" Type="Int32" />
+          <Property Name="EffDate" Type="DateTime" Precision="3" />
+          <Property Name="TillDate" Type="DateTime" Precision="3" />
+          <Property Name="IsUnlimited" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Image" Type="Byte" />
+          <Property Name="UserDesignationId" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserClaims" Relationship="GarbageCollectionDBModel.FK_LG_UserClaim_LG_User_UserId" FromRole="User" ToRole="UserClaim" />
+          <NavigationProperty Name="UserLogins" Relationship="GarbageCollectionDBModel.FK_LG_UserLogin_LG_User_UserId" FromRole="User" ToRole="UserLogin" />
+          <NavigationProperty Name="Roles" Relationship="GarbageCollectionDBModel.UserRole" FromRole="User" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="UserClaim">
+          <Key>
+            <PropertyRef Name="UserClaimId" />
+          </Key>
+          <Property Name="UserClaimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="GarbageCollectionDBModel.FK_LG_UserClaim_LG_User_UserId" FromRole="UserClaim" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserConnection">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ConnectionID" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="GarbageCollectionDBModel.FK_LG_UserLogin_LG_User_UserId" FromRole="UserLogin" ToRole="User" />
+        </EntityType>
+        <EntityType Name="UserVSBranch">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="BranchId" Type="Int32" Nullable="false" />
+          <Property Name="From" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="To" Type="DateTime" Precision="3" />
+          <Property Name="IsEnable" Type="Boolean" Nullable="false" />
+          <Property Name="RoleId" Type="Int32" Nullable="false" />
+          <Property Name="PostedBy" Type="Int32" Nullable="false" />
+          <Property Name="PostedOn" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="NDateD">
+          <Key>
+            <PropertyRef Name="M1" />
+            <PropertyRef Name="M2" />
+            <PropertyRef Name="M3" />
+            <PropertyRef Name="M4" />
+            <PropertyRef Name="M5" />
+            <PropertyRef Name="M6" />
+            <PropertyRef Name="M7" />
+            <PropertyRef Name="M8" />
+            <PropertyRef Name="M9" />
+            <PropertyRef Name="M10" />
+            <PropertyRef Name="M11" />
+            <PropertyRef Name="M12" />
+            <PropertyRef Name="NYear" />
+          </Key>
+          <Property Name="M1" Type="Int32" Nullable="false" />
+          <Property Name="M2" Type="Int32" Nullable="false" />
+          <Property Name="M3" Type="Int32" Nullable="false" />
+          <Property Name="M4" Type="Int32" Nullable="false" />
+          <Property Name="M5" Type="Int32" Nullable="false" />
+          <Property Name="M6" Type="Int32" Nullable="false" />
+          <Property Name="M7" Type="Int32" Nullable="false" />
+          <Property Name="M8" Type="Int32" Nullable="false" />
+          <Property Name="M9" Type="Int32" Nullable="false" />
+          <Property Name="M10" Type="Int32" Nullable="false" />
+          <Property Name="M11" Type="Int32" Nullable="false" />
+          <Property Name="M12" Type="Int32" Nullable="false" />
+          <Property Name="NYear" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_LG_ParamValue_LG_DataType_DTId">
+          <End Type="GarbageCollectionDBModel.DataType" Role="DataType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="GarbageCollectionDBModel.ParamValue" Role="ParamValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DataType">
+              <PropertyRef Name="DTId" />
+            </Principal>
+            <Dependent Role="ParamValue">
+              <PropertyRef Name="DTId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId">
+          <End Type="GarbageCollectionDBModel.MenuTemplate" Role="MenuTemplate" Multiplicity="0..1" />
+          <End Type="GarbageCollectionDBModel.MenuVsTemplate" Role="MenuVsTemplate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MenuTemplate">
+              <PropertyRef Name="MenuTemplateId" />
+            </Principal>
+            <Dependent Role="MenuVsTemplate">
+              <PropertyRef Name="MenuTemplate_MTId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_ParamValue_LG_Param_PId">
+          <End Type="GarbageCollectionDBModel.Param" Role="Param" Multiplicity="1" />
+          <End Type="GarbageCollectionDBModel.ParamValue" Role="ParamValue" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Param">
+              <PropertyRef Name="PId" />
+            </Principal>
+            <Dependent Role="ParamValue">
+              <PropertyRef Name="PId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_ParamScript_LG_ParamValue_PId">
+          <End Type="GarbageCollectionDBModel.ParamValue" Role="ParamValue" Multiplicity="1" />
+          <End Type="GarbageCollectionDBModel.ParamScript" Role="ParamScript" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="ParamValue">
+              <PropertyRef Name="PId" />
+            </Principal>
+            <Dependent Role="ParamScript">
+              <PropertyRef Name="PId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_UserClaim_LG_User_UserId">
+          <End Type="GarbageCollectionDBModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="GarbageCollectionDBModel.UserClaim" Role="UserClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_UserLogin_LG_User_UserId">
+          <End Type="GarbageCollectionDBModel.User" Role="User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="GarbageCollectionDBModel.UserLogin" Role="UserLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="UserLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="UserRole">
+          <End Type="GarbageCollectionDBModel.Role" Role="Role" Multiplicity="*" />
+          <End Type="GarbageCollectionDBModel.User" Role="User" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="Int32" Nullable="false" />
+          <Property Name="CustNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerTypeId" Type="Int32" />
+          <Property Name="PhoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PanNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Geom" Type="Geometry" />
+          <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Byte" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GarbageCollectionDBModelStoreContainer" CdmEntityContainer="GarbageCollectionDBEntities">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BSADCals">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.BSADCal">
+              <MappingFragment StoreEntitySet="BSADCal">
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="NYear" ColumnName="NYear" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionTypes">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CollectionType">
+              <MappingFragment StoreEntitySet="CollectionType">
+                <ScalarProperty Name="CollectionType1" ColumnName="CollectionType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerTypes">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerType">
+              <MappingFragment StoreEntitySet="CustomerType">
+                <ScalarProperty Name="status" ColumnName="status" />
+                <ScalarProperty Name="RFUniDesc" ColumnName="RFUniDesc" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FiscalYears">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.FiscalYear">
+              <MappingFragment StoreEntitySet="FiscalYear">
+                <ScalarProperty Name="FYNameAD" ColumnName="FYNameAD" />
+                <ScalarProperty Name="EndDt" ColumnName="EndDt" />
+                <ScalarProperty Name="StartDT" ColumnName="StartDT" />
+                <ScalarProperty Name="FyName" ColumnName="FyName" />
+                <ScalarProperty Name="FYID" ColumnName="FYID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LocationMasters">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.LocationMaster">
+              <MappingFragment StoreEntitySet="LocationMaster">
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="Lid" ColumnName="Lid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="StatusColor" ColumnName="StatusColor" />
+                <ScalarProperty Name="Status1" ColumnName="Status" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscription">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="MonthlyAmount" ColumnName="MonthlyAmount" />
+                <ScalarProperty Name="LedgerId" ColumnName="LedgerId" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
+                <ScalarProperty Name="Subsid" ColumnName="Subsid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriptionDues">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.SubscriptionDue">
+              <MappingFragment StoreEntitySet="SubscriptionDue">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="MonthlyDueAmt" ColumnName="MonthlyDueAmt" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="BillNo" ColumnName="BillNo" />
+                <ScalarProperty Name="Fyid" ColumnName="Fyid" />
+                <ScalarProperty Name="SubsId" ColumnName="SubsId" />
+                <ScalarProperty Name="DueId" ColumnName="DueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LicenseBranches">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.LicenseBranch">
+              <MappingFragment StoreEntitySet="LicenseBranch">
+                <ScalarProperty Name="FYID" ColumnName="FYID" />
+                <ScalarProperty Name="schprovdys" ColumnName="schprovdys" />
+                <ScalarProperty Name="IsCalcIOnI" ColumnName="IsCalcIOnI" />
+                <ScalarProperty Name="Floint" ColumnName="Floint" />
+                <ScalarProperty Name="inExpMode" ColumnName="inExpMode" />
+                <ScalarProperty Name="CleCode" ColumnName="CleCode" />
+                <ScalarProperty Name="MigDate" ColumnName="MigDate" />
+                <ScalarProperty Name="atclosing" ColumnName="atclosing" />
+                <ScalarProperty Name="UseLimit" ColumnName="UseLimit" />
+                <ScalarProperty Name="TDate" ColumnName="TDate" />
+                <ScalarProperty Name="CalCid" ColumnName="CalCid" />
+                <ScalarProperty Name="CalSID" ColumnName="CalSID" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="ExtraUsrNo" ColumnName="ExtraUsrNo" />
+                <ScalarProperty Name="PBrnhID" ColumnName="PBrnhID" />
+                <ScalarProperty Name="IPAdd" ColumnName="IPAdd" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Fax" ColumnName="Fax" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="RegID" ColumnName="RegID" />
+                <ScalarProperty Name="Addr" ColumnName="Addr" />
+                <ScalarProperty Name="BrnhNam" ColumnName="BrnhNam" />
+                <ScalarProperty Name="BrnhID" ColumnName="BrnhID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BloodGroups">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.BloodGroup">
+              <MappingFragment StoreEntitySet="BloodGroup">
+                <ScalarProperty Name="BGName" ColumnName="BGName" />
+                <ScalarProperty Name="BGId" ColumnName="BGId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Company">
+              <MappingFragment StoreEntitySet="Company">
+                <ScalarProperty Name="TDate" ColumnName="TDate" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="AdditionalUser" ColumnName="AdditionalUser" />
+                <ScalarProperty Name="IsBranch" ColumnName="IsBranch" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="FaxNo" ColumnName="FaxNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Region" ColumnName="Region" />
+                <ScalarProperty Name="BranchName" ColumnName="BranchName" />
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataTypes">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.DataType">
+              <MappingFragment StoreEntitySet="DataType">
+                <ScalarProperty Name="DType" ColumnName="DType" />
+                <ScalarProperty Name="DTId" ColumnName="DTId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="PDeptId" ColumnName="PDeptId" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Designations">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Designation">
+              <MappingFragment StoreEntitySet="Designation">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="DGName" ColumnName="DGName" />
+                <ScalarProperty Name="PDGId" ColumnName="PDGId" />
+                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="BloodGroup" ColumnName="BloodGroup" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="DateOfJoin" ColumnName="DateOfJoin" />
+                <ScalarProperty Name="MaritialStatus" ColumnName="MaritialStatus" />
+                <ScalarProperty Name="Nationality" ColumnName="Nationality" />
+                <ScalarProperty Name="Religion" ColumnName="Religion" />
+                <ScalarProperty Name="DeptId" ColumnName="DeptId" />
+                <ScalarProperty Name="DGId" ColumnName="DGId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmployeeNo" ColumnName="EmployeeNo" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FiscalYears1">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.FiscalYear1">
+              <MappingFragment StoreEntitySet="FiscalYears">
+                <ScalarProperty Name="EndDt" ColumnName="EndDt" />
+                <ScalarProperty Name="StartDt" ColumnName="StartDt" />
+                <ScalarProperty Name="FyName" ColumnName="FyName" />
+                <ScalarProperty Name="FYID" ColumnName="FYID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genders">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Gender">
+              <MappingFragment StoreEntitySet="Gender">
+                <ScalarProperty Name="GenderName" ColumnName="GenderName" />
+                <ScalarProperty Name="GenderId" ColumnName="GenderId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginLogs">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.LoginLog">
+              <MappingFragment StoreEntitySet="LoginLogs">
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaritialStatus">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.MaritialStatu">
+              <MappingFragment StoreEntitySet="MaritialStatus">
+                <ScalarProperty Name="MSName" ColumnName="MSName" />
+                <ScalarProperty Name="MSId" ColumnName="MSId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuMains">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.MenuMain">
+              <MappingFragment StoreEntitySet="MenuMain">
+                <ScalarProperty Name="Acton" ColumnName="Acton" />
+                <ScalarProperty Name="Controler" ColumnName="Controler" />
+                <ScalarProperty Name="IsContextMenu" ColumnName="IsContextMenu" />
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
+                <ScalarProperty Name="IsGroup" ColumnName="IsGroup" />
+                <ScalarProperty Name="MenuOrder" ColumnName="MenuOrder" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="PMenuId" ColumnName="PMenuId" />
+                <ScalarProperty Name="MenuCaption" ColumnName="MenuCaption" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuTemplates">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.MenuTemplate">
+              <MappingFragment StoreEntitySet="MenuTemplate">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+                <ScalarProperty Name="MTName" ColumnName="MTName" />
+                <ScalarProperty Name="MenuTemplateId" ColumnName="MenuTemplateId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MenuVsTemplates">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.MenuVsTemplate">
+              <MappingFragment StoreEntitySet="MenuVsTemplate">
+                <ScalarProperty Name="MenuTemplate_MTId" ColumnName="MenuTemplate_MTId" />
+                <ScalarProperty Name="TemplateId" ColumnName="TemplateId" />
+                <ScalarProperty Name="MenuId" ColumnName="MenuId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nationalities">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Nationality">
+              <MappingFragment StoreEntitySet="Nationality">
+                <ScalarProperty Name="NName" ColumnName="NName" />
+                <ScalarProperty Name="NId" ColumnName="NId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Params">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Param">
+              <MappingFragment StoreEntitySet="Param">
+                <ScalarProperty Name="IsGroup" ColumnName="IsGroup" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="PName" ColumnName="PName" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParamScripts">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.ParamScript">
+              <MappingFragment StoreEntitySet="ParamScript">
+                <ScalarProperty Name="PScript" ColumnName="PScript" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ParamValues">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.ParamValue">
+              <MappingFragment StoreEntitySet="ParamValue">
+                <ScalarProperty Name="PValue" ColumnName="PValue" />
+                <ScalarProperty Name="PDescription" ColumnName="PDescription" />
+                <ScalarProperty Name="DTId" ColumnName="DTId" />
+                <ScalarProperty Name="PId" ColumnName="PId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Religions">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Religion">
+              <MappingFragment StoreEntitySet="Religion">
+                <ScalarProperty Name="ReligionName" ColumnName="ReligionName" />
+                <ScalarProperty Name="RId" ColumnName="RId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Role">
+              <MappingFragment StoreEntitySet="Role">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="MTId" ColumnName="MTId" />
+                <ScalarProperty Name="DGId" ColumnName="DGId" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status1">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Status1">
+              <MappingFragment StoreEntitySet="Status1">
+                <ScalarProperty Name="StatusName" ColumnName="StatusName" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="UserDesignationId" ColumnName="UserDesignationId" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsUnlimited" ColumnName="IsUnlimited" />
+                <ScalarProperty Name="TillDate" ColumnName="TillDate" />
+                <ScalarProperty Name="EffDate" ColumnName="EffDate" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="MTId" ColumnName="MTId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserClaims">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.UserClaim">
+              <MappingFragment StoreEntitySet="UserClaim">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserClaimId" ColumnName="UserClaimId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserConnections">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.UserConnection">
+              <MappingFragment StoreEntitySet="UserConnection">
+                <ScalarProperty Name="ConnectionID" ColumnName="ConnectionID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserLogins">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.UserLogin">
+              <MappingFragment StoreEntitySet="UserLogin">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserVSBranches">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.UserVSBranch">
+              <MappingFragment StoreEntitySet="UserVSBranch">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="IsEnable" ColumnName="IsEnable" />
+                <ScalarProperty Name="To" ColumnName="To" />
+                <ScalarProperty Name="From" ColumnName="From" />
+                <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NDateDs">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.NDateD">
+              <MappingFragment StoreEntitySet="NDateD">
+                <ScalarProperty Name="NYear" ColumnName="NYear" />
+                <ScalarProperty Name="M12" ColumnName="M12" />
+                <ScalarProperty Name="M11" ColumnName="M11" />
+                <ScalarProperty Name="M10" ColumnName="M10" />
+                <ScalarProperty Name="M9" ColumnName="M9" />
+                <ScalarProperty Name="M8" ColumnName="M8" />
+                <ScalarProperty Name="M7" ColumnName="M7" />
+                <ScalarProperty Name="M6" ColumnName="M6" />
+                <ScalarProperty Name="M5" ColumnName="M5" />
+                <ScalarProperty Name="M4" ColumnName="M4" />
+                <ScalarProperty Name="M3" ColumnName="M3" />
+                <ScalarProperty Name="M2" ColumnName="M2" />
+                <ScalarProperty Name="M1" ColumnName="M1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="UserRole" TypeName="GarbageCollectionDBModel.UserRole" StoreEntitySet="UserRole">
+            <EndProperty Name="User">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="Role">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Geom" ColumnName="Geom" />
+                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="CustomerTypeId" ColumnName="CustomerTypeId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustNo" ColumnName="CustNo" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

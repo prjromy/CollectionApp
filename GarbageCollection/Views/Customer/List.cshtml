@@ -1,0 +1,217 @@
+﻿@model BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+@using BussinessLogic.Service
+
+
+
+<div class="box  customer-list-index">
+    <input type="button" value="New Certificate" id="btn-create" class="btn btn-md btn-success btn-create" style="border:none" />
+    <div class="customer-display">
+
+    </div>
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">Customer List</h3>
+            <hr>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+
+            </div><!-- /.box-tools -->
+
+            <div class="col-md-12">
+                <div class="box-tools col-md-3  form-group" id="customer-no">
+                    @Html.TextBox("CustomerNo", "", htmlAttributes: new { @class = "form-control", @id = "CustomerNo", @placeholder = "Customer No" })
+                </div>
+                <div class="box-tools col-md-3  form-group" id="search-Employee-Name">
+                    @Html.TextBox("CustomerSearch", "", htmlAttributes: new { @class = "form-control", @id = "txtCustomerSearch", @placeholder = "Customer Name" })
+                </div>
+                <div class="box-tools col-md-3  form-group" id="search-Address">
+                    @Html.TextBox("Address", "", htmlAttributes: new { @class = "form-control", @id = "txtAddress", @placeholder = "Address" })
+                </div>
+                <div class="col-md-2  form-group" id="custtype">
+
+                    @Html.DropDownListFor(x => x.CustomerTypeId, CommonUtilityService.CustomerTypeList(), "--Select Event--", new { @class = "form-control", @id = "ctypeid" })
+                </div>
+                <div class="col-md-3  form-group" id="search-contact">
+
+                    @Html.TextBox("Contact", "", htmlAttributes: new { @class = "form-control", @id = "txtContact", @placeholder = "Contact" })
+                </div>
+
+
+
+                <div class="input-group-btn form-group col-md-1 pull-left">
+                    <button type="button" id="searchCustomer" class="btn btn-searchCustomer btn-default"><i class="fa fa-search"></i></button>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="Customer-List">
+
+
+
+            @Html.Partial("_List", Model)
+
+
+
+        </div>
+        </div>
+    </div>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/ChannakyaBaseJs/ChannakyaBasePage.js"></script>
+<script src="~/Scripts/ch-dialog.js"></script>
+<script src="~/Scripts/ch-dpicker.js"></script>
+<script>
+
+    $('.btn-create').on('click', function () {
+        debugger;
+
+        var thisVal = $(this).val();
+        if (thisVal == "Hide Section") {
+            $(this).val("New Certificate")
+            $(".customer-display").hide();
+        }
+        else {
+            $(this).val("Hide Section")
+            $.ajax({
+                type: "GET",
+                url: "/Customer/Create",
+                success: function (data) {
+                    $(".customer-display").show();
+                    $('.customer-display').html(data).find('.focusdiv').focus()
+                }
+            })
+        }
+    });
+    $("div.cust-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.cust-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.cust-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno="+customerno+"&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageSizeChangeData(url, container, me)
+    });
+    $(".customer-list-index").on('click', '.btn-searchCustomer', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Customer/_List",
+            data: { customerno:customerno,name: name, address: address, contact: contact, cType: cType },
+            success: function (data) {
+                $(".customer-list-index").find("div.Customer-List").html("");
+                $(".customer-list-index").find("div.Customer-List").html(data);
+            }
+        })
+    });
+
+    function EditCustomerList(CID) {
+        debugger
+
+        $.ajax({
+            type: "get",
+            url: "/Customer/Create/",
+            contentType: "application/json; charset=utf-8",
+            data: { cId: CID },
+            dataType: "html",
+            success: function (html) {
+                debugger;
+                $('.btn-create').val("Hide Section")
+                $(".customer-display").show();
+                $('.customer-display').html(html).find('.focusdiv').focus()
+
+                window.scrollTo(0, 0);
+                debugger;
+                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+    function CustomerChangeStatus(CID) {
+        debugger
+
+        $.ajax({
+            type: "get",
+            url: "/Customer/UpdateStatus/",
+            contentType: "application/json; charset=utf-8",
+            data: { cId: CID },
+            dataType: "html",
+            success: function (result) {
+                debugger;
+                if (result) {
+                    debugger;
+                    $.ajax({
+                        url: "/Customer/List",
+                        type: 'post',
+                        async: false,
+                        success: function (data) {
+                            debugger
+                            $('section.content').html(data);
+                            SuccessAlert("Changed Status Successfully", 5000);
+                            document.getElementById('alert-success').scrollIntoView();
+                        }
+                    })
+                }
+                else {
+
+                    ErrorAlert(result.Msg, 5000);
+                    document.getElementById('alert-error').scrollIntoView();
+                }
+                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
+
+</script>

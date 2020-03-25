@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="75b8c51a6a2f4b61ad5f03bbeaa4cf66" Name="Diagram1" ZoomLevel="63">
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.C__MigrationHistory" Width="1.5" PointX="5.75" PointY="7.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.BSADCal" Width="1.5" PointX="7.75" PointY="7.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.CollectionType" Width="1.5" PointX="9.75" PointY="4.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.CustomerType" Width="1.5" PointX="2.75" PointY="10.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.FiscalYear" Width="1.5" PointX="4.75" PointY="10.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.LocationMaster" Width="1.5" PointX="6.75" PointY="10.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Status" Width="1.5" PointX="11.75" PointY="4.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Subscription" Width="1.5" PointX="11.75" PointY="7.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.SubscriptionDue" Width="1.5" PointX="8.75" PointY="12.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.LicenseBranch" Width="1.5" PointX="10.75" PointY="12.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.BloodGroup" Width="1.5" PointX="12.75" PointY="12.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Company" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.DataType" Width="1.5" PointX="7.75" PointY="5.375" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Department" Width="1.5" PointX="2.75" PointY="13.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Designation" Width="1.5" PointX="13.75" PointY="3.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Employee" Width="1.5" PointX="4.75" PointY="13.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.FiscalYear1" Width="1.5" PointX="13.75" PointY="6.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Gender" Width="1.5" PointX="13.75" PointY="9.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.LoginLog" Width="1.5" PointX="14.75" PointY="12.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.MaritialStatu" Width="1.5" PointX="14.75" PointY="0.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.MenuMain" Width="1.5" PointX="15.75" PointY="3.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.MenuTemplate" Width="1.5" PointX="0.75" PointY="7.875" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.MenuVsTemplate" Width="1.5" PointX="3" PointY="8.125" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Nationality" Width="1.5" PointX="15.75" PointY="7.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Param" Width="1.5" PointX="7.75" PointY="1.125" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.ParamScript" Width="1.5" PointX="12.25" PointY="1.375" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.ParamValue" Width="1.5" PointX="10" PointY="1" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Religion" Width="1.5" PointX="16.75" PointY="0.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Role" Width="1.5" PointX="0.75" PointY="2.875" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Status1" Width="1.5" PointX="6.75" PointY="16.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.User" Width="1.5" PointX="3" PointY="1.125" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.UserClaim" Width="1.5" PointX="5.25" PointY="1.5" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.UserConnection" Width="1.5" PointX="16.75" PointY="10.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.UserLogin" Width="1.5" PointX="5.25" PointY="4.25" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.UserVSBranch" Width="1.5" PointX="12.75" PointY="16.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.NDateD" Width="1.5" PointX="16.75" PointY="13.75" />
+        <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_ParamValue_LG_DataType_DTId" />
+        <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId" />
+        <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_ParamValue_LG_Param_PId" />
+        <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_ParamScript_LG_ParamValue_PId" />
+        <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_UserClaim_LG_User_UserId" />
+        <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_UserLogin_LG_User_UserId" />
+        <AssociationConnector Association="GarbageCollectionDBModel.UserRole" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Customer" Width="1.5" PointX="0.75" PointY="18.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

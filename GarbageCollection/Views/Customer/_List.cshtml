@@ -1,0 +1,71 @@
+﻿@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@model BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+
+<div class="table-responsive no-padding cust-page-list">
+    <table class="table table-bordered table-striped table-hover">
+
+        <tr>
+            <th>@Html.DisplayNameFor(x => x.CustNo)</th>
+            <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
+            <th>@Html.DisplayNameFor(x => x.CustomerTypeId)</th>
+            <th>@Html.DisplayNameFor(x => x.PhoneNo)</th>
+            <th>@Html.DisplayNameFor(x => x.MobileNo)</th>
+            <th>@Html.DisplayNameFor(x => x.Address)</th>
+            <th>@Html.DisplayNameFor(x => x.Email)</th>
+            <th>Action</th>
+        </tr>
+
+
+        @foreach (var item in Model.customerPagedList)
+        {
+            <tr>
+                <td>
+                    @item.CustNo
+
+                </td>
+                <td>
+                    @item.CustomerName
+
+                </td>
+                <td>
+                    @item.Customertype
+
+                </td>
+                <td>
+                    @item.PhoneNo
+
+                </td>
+                <td>
+                    @item.MobileNo
+
+                </td>
+                <td>
+                    @item.Address
+
+                </td>
+                <td>
+                    @item.Email
+
+                </td>
+                <td>
+                    @*@if (CommonUtilityService.AllowEdit())
+                    {*@
+                        <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Cid" onclick="EditCustomerList(@item.Cid)"></button>
+
+                    @*}
+                    @if (CommonUtilityService.AllowStatusChange())
+                    {*@
+                        <button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>
+
+                    @*}*@
+                </td>
+            </tr>
+        }
+       
+    </table>
+    @Html.Paging("_List", "Customer", Model.customerPagedList.PageCount, Model.customerPagedList.PageNumber, Model.customerPagedList.PageSize)
+</div>
+

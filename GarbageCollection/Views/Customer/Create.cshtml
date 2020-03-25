@@ -1,0 +1,184 @@
+﻿@model  BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+@using BussinessLogic.Service
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+   
+}
+<div class="customer-create-main">
+    <div class="box box-success">
+        <div class="box-header with-border">
+     
+   
+    <div class="box-tools pull-right">
+        <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+    </div><!-- /.box-tools -->
+    @using (Html.BeginForm("Create", "Customer", FormMethod.Post, new { id = "createSubmitForm" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Customer Create</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+            @Html.HiddenFor(model => model.Cid, new { htmlAttributes = new { @class = "form-control" } })
+
+
+            @*<div class="form-group">
+                    @Html.LabelFor(model => model.CustNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+
+                        @Html.EditorFor(model => model.CustNo, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CustNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CustomerTypeId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(model => model.CustomerTypeId, CommonUtilityService.CustomerTypeList(), "Please Select...", htmlAttributes: new { @class = "form-control col-md-7" })
+                    @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
+
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PhoneNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.PanNo, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.PanNo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.PanNo, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            @*<div class="form-group">
+                @Html.LabelFor(model => model.Longitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Longitude, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Latitude, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Latitude, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="button" value="Create" class="btn btn-success btn-save" />
+                </div>
+            </div>
+        </div>
+    }
+</div>
+        </div>
+</div>
+<script src="~/Scripts/jquery-message-box.js"></script>
+<script src="~/Scripts/ch-treeview.js"></script>
+<script src="~/Scripts/ch-dialog.js"></script>
+<script src="~/Scripts/jquery.form.min.js"></script>
+<script>
+    $.validator.unobtrusive.parse('#createSubmitForm');
+$('.customer-create-main').on('click', '.btn-save', function () {
+    debugger;
+    $('#createSubmitForm').removeData("validator").removeData("unobtrusiveValidation");
+    $.validator.unobtrusive.parse($('#createSubmitForm'));
+
+    if ($("#createSubmitForm").valid()) {
+
+        NewCustomerCreate();
+    }
+   
+        
+
+
+});
+
+
+function NewCustomerCreate(e) {
+    $.MessageBox({
+        buttonDone: "Yes",
+        buttonFail: "No",
+        message: " Are you sure?"
+    }).done(function () {
+        //$(".checkboxCert:checked").removeAttr('disabled');
+        $('#createSubmitForm').ajaxSubmit({
+            success: function (result) {
+                //var url;
+
+                debugger;
+                if (result.Success) {
+                    $.ajax({
+                        url: "/Customer/List",
+                        type: 'post',
+                        async: false,
+                        success: function (data) {
+                            debugger
+                            $('section.content').html(data);
+                            SuccessAlert(result.Msg, 5000);
+                            document.getElementById('alert-success').scrollIntoView();
+                        }
+                    })
+
+
+                } else {
+
+                    ErrorAlert(result.Msg, 5000);
+                    document.getElementById('alert-error').scrollIntoView();
+                }
+            },
+            error: function (data) {
+                ErrorAlert(data.responseText, 15000)
+            }
+        });
+    }).fail(function () {
+
+    });
+}
+</script>
