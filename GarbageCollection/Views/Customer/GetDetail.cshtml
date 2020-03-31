@@ -1,0 +1,46 @@
+﻿
+@model  BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+@using BussinessLogic.Service
+<legend style="font-size:14px;font-weight:bold">Client-Details</legend>
+<div class="col-md-12">
+    <div class="col-md-4">
+        Customer No : @Model.CustomerName
+    </div>
+    <div class="col-md-4">
+        Mobile No: @Model.MobileNo
+    </div>
+    <div class="col-md-4">
+        Address : @Model.Address
+    </div>
+</div>
+
+<div class="col-md-12" style="margin-top:10px;">
+    <div class="col-md-4">
+        @{ 
+            var customertype = CommonUtilityService.CustomerType(@Model.CustomerTypeId);
+        }
+        Customer Type : @Html.DisplayFor(x => customertype)
+    </div>
+    <div class="col-md-4">
+       Pan No : @Model.PanNo 
+    </div>
+    @*<div class="col-md-4">
+        @Html.DisplayFor(x => x.CustomerName)
+    </div>*@
+</div>
+
+<style>
+    .fieldset {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    border: 2px groove rgba(37, 208, 210, 0.15);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    position: relative;
+}
+</style>

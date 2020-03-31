@@ -15,12 +15,6 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'GarbageCollectionDB.dbo.BNoFYId' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="BNoFYId">
-          <Property Name="BNo" Type="int" />
-          <Property Name="FYId" Type="int" />
-        </EntityType>-->
         <EntityType Name="BSADCal">
           <Key>
             <PropertyRef Name="NYear" />
@@ -139,20 +133,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="smalldatetime" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="SubscriptionCollection">
-          <Property Name="SubsCollId" Type="int" />
-          <Property Name="CustId" Type="int" />
-          <Property Name="SubsId" Type="int" />
-          <Property Name="CollectiorId" Type="int" />
-          <Property Name="CollectionTypeId" Type="int" />
-          <Property Name="CollectionAmt" Type="money" />
-          <Property Name="PostedBy" Type="int" />
-          <Property Name="PostedOn" Type="smalldatetime" />
-          <Property Name="ModifiedBy" Type="int" />
-          <Property Name="ModifiedOn" Type="smalldatetime" />
-        </EntityType>-->
         <EntityType Name="SubscriptionDue">
           <Key>
             <PropertyRef Name="DueId" />
@@ -674,7 +654,6 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' do
           <EntitySet Name="FiscalYears" EntityType="GarbageCollectionDBModel.FiscalYear" />
           <EntitySet Name="LocationMasters" EntityType="GarbageCollectionDBModel.LocationMaster" />
           <EntitySet Name="Status" EntityType="GarbageCollectionDBModel.Status" />
-          <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
           <EntitySet Name="SubscriptionDues" EntityType="GarbageCollectionDBModel.SubscriptionDue" />
           <EntitySet Name="LicenseBranches" EntityType="GarbageCollectionDBModel.LicenseBranch" />
           <EntitySet Name="BloodGroups" EntityType="GarbageCollectionDBModel.BloodGroup" />
@@ -732,6 +711,7 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' do
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
+          <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -790,24 +770,6 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' do
           <Property Name="StatusId" Type="Int32" Nullable="false" />
           <Property Name="Status1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="StatusColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Subscription">
-          <Key>
-            <PropertyRef Name="Subsid" />
-          </Key>
-          <Property Name="Subsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SubsNo" Type="Int32" />
-          <Property Name="CustId" Type="Int32" Nullable="false" />
-          <Property Name="EffectiveDate" Type="DateTime" Precision="0" />
-          <Property Name="LedgerId" Type="Int32" />
-          <Property Name="MonthlyAmount" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="LocationID" Type="Int32" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="PostedBy" Type="Int32" />
-          <Property Name="PostedOn" Type="DateTime" Precision="0" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="SubscriptionDue">
           <Key>
@@ -1262,6 +1224,24 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' do
           <Property Name="PostedOn" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="Byte" />
         </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="Subsid" />
+          </Key>
+          <Property Name="Subsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubsNo" Type="Int32" />
+          <Property Name="CustId" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="0" />
+          <Property Name="LedgerId" Type="Int32" />
+          <Property Name="MonthlyAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1329,25 +1309,6 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' do
                 <ScalarProperty Name="StatusColor" ColumnName="StatusColor" />
                 <ScalarProperty Name="Status1" ColumnName="Status" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Subscriptions">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
-              <MappingFragment StoreEntitySet="Subscription">
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
-                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="MonthlyAmount" ColumnName="MonthlyAmount" />
-                <ScalarProperty Name="LedgerId" ColumnName="LedgerId" />
-                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
-                <ScalarProperty Name="CustId" ColumnName="CustId" />
-                <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
-                <ScalarProperty Name="Subsid" ColumnName="Subsid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1727,6 +1688,25 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.SubscriptionCollection' do
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="CustNo" ColumnName="CustNo" />
                 <ScalarProperty Name="Cid" ColumnName="Cid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscription">
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="MonthlyAmount" ColumnName="MonthlyAmount" />
+                <ScalarProperty Name="LedgerId" ColumnName="LedgerId" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
+                <ScalarProperty Name="Subsid" ColumnName="Subsid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

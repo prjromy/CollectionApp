@@ -1,0 +1,71 @@
+﻿@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+<div id='account-pop-up-div' class='modal fade verfier-list' role='dialog'>
+</div>
+<div class="box box-warning">
+    <div class="box-header with-border">
+
+
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div><!-- /.box-tools -->
+            
+            <fieldset>
+                <legend style="font-size:14px;font-weight:bold">Suscription Detail</legend>
+                <button class="button new-suscription">New Suscription</button>
+                <div class="customer-search-box">
+                    @Html.Partial("~/Views/Customer/_CustomerAdd.cshtml", Model)
+                </div>
+
+            </fieldset>
+              
+
+
+        <fieldset>
+           
+               
+            <div class="customer-detail">
+            </div>
+
+            <div class="suscription-detail">
+            </div>
+        </fieldset>
+
+        </div>
+    </div>
+<link href="~/Content/Custom/Customer.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<script src="~/Scripts/jquery.form.min.js"></script>
+
+<script>
+    $("button.new-suscription").on('click', function (e) {
+        debugger;
+
+        var customerid = $('.cust-id').val();
+        var custname=$('.CommonSearchDiv').find('#CustomerName').val();
+    $.ajax({
+        type: 'GET',
+        url: "/Suscription/Create",
+        data:{customerid:customerid,custname:custname},
+        success: function (result) {
+            debugger;
+            //$(".modal-body").find('#createSubmitForm').find('#CustomerName').text(custname);
+            //$(".modal-body").find('#createSubmitForm').find('#CustId').val(customerid);
+            $('#account-pop-up-div').html(result).modal({
+                'show': true,
+                'backdrop': 'static'
+            });
+        },
+        error: function () {
+
+        }
+    });
+
+
+
+});
+
+</script>

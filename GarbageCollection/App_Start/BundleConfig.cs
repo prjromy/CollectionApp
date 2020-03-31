@@ -28,9 +28,10 @@ namespace GarbageCollection
                  //"~/Content/font-awesome.css",
 
                 "~/admin-lte/dist/css/adminlte.css",
-                     // "~/Content/bootstrap.css",
-                      "~/Content/LoaderSite.css",
+                      // "~/Content/bootstrap.css",
                       "~/Content/Site.css",
+                      "~/Content/LoaderSite.css",
+                     
                       
                       "~/admin-lte/css/skins/skin-blue.css"
                       ));
@@ -41,7 +42,7 @@ namespace GarbageCollection
                 "~/admin-lte/dist/css/adminlte.min.css",
                 "~/admin-lte/dist/css/LoaderAdminLTE.css",
               //  "~/Content/font-awesome.min.css",
-                "~/admin-lte/dist/css/skins/_all-skins.min.csss",
+                
                 "~/admin-lte/plugins/iCheck/flat/blue.css",
                 "~/Content/bootstrap.css"
               //"~/bootstrap/css/bootstrap-theme.min.css"

@@ -7,12 +7,25 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 
 namespace BussinessLogic.CustomHelper
 {
     public static class CustomHelper
     {
         private static GarbageCollectionDBEntities db = new GarbageCollectionDBEntities();
+       
+            public static MvcHtmlString ChqLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object htmlAttributes)
+            {
+                var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+                string resolvedLabelText = metadata.DisplayName ?? metadata.PropertyName;
+                if (metadata.IsRequired)
+                {
+                    resolvedLabelText += "*";
+                }
+                return LabelExtensions.LabelFor<TModel, TValue>(html, expression, resolvedLabelText, htmlAttributes);
+            }
+        
         public static MvcHtmlString Paging(this HtmlHelper helper, string action, string controller, int pageCount, int pageNo, int pageSize)
         {
             StringBuilder sb = new System.Text.StringBuilder();
@@ -54,73 +67,54 @@ namespace BussinessLogic.CustomHelper
             //sb.Append("</div>");
             return MvcHtmlString.Create(sb.ToString());
         }
+
+        public static MvcHtmlString CustomerSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            return CustomerSearch(html, expression, ECustomerSearchType.Suscription, TypeOfCustomer.Customer.GetDescription());
+        }
+        public static MvcHtmlString CustomerSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, ECustomerSearchType ECustomerSearchTypes)
+        {
+            return CustomerSearch(html, expression, ECustomerSearchTypes, TypeOfCustomer.Customer.GetDescription());
+        }
+        public static MvcHtmlString CustomerSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, ECustomerSearchType ECustomerSearchTypes, string customerType)
+        {
+            MvcHtmlString mvcHtml = default(MvcHtmlString);
+            StringBuilder htmlBuilder = new StringBuilder();
+            string mode = "";
+            if (ECustomerSearchTypes == ECustomerSearchType.Suscription)
+            {
+                mode = ECustomerSearchType.Suscription.GetDescription();
+            }
+
+
+            //var items = expression.Compile()(html.ViewData.Model);
+            var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
+            var cntrlName = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName);
+            var cntrlId = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(cntrlName);
+            var value = ModelMetadata.FromLambdaExpression(expression, html.ViewData).Model;
+            htmlBuilder.AppendFormat(@"<div id='pop-up-div' class='modal fade' role='dialog'></div>");
+            htmlBuilder.AppendFormat(@"<div class='box-tools'>");
+            htmlBuilder.AppendFormat(@"<div class='input-group input-group-sm pull-right CommonSearchDiv'>");
+            htmlBuilder.AppendFormat(@"<input class='form-control col-md-12 ' type='text' id='" + cntrlName + "'  name='" + cntrlName + "' placeholder='Customer:'  style='height: 30px'>");
+            //htmlBuilder.AppendFormat(@"<input style='display:inline;' type='text' id='" + cntrlName + "' class='form-control customerName' name='" + cntrlName + "' placeholder='Search   />");
+            htmlBuilder.AppendFormat(@" <div class='input-group-btn'>");
+            htmlBuilder.AppendFormat(@"<button type='button' name='btncustomersearch' id='btncustomersearch' class='btn btn-default btncustomersearch' style='margin-left: 0px;height: 29px !important;' mode='" + mode + "' customerType='" + customerType + "'><i class='fa fa-search'></i></button>");
+            htmlBuilder.AppendFormat(@"</div>");
+            htmlBuilder.AppendFormat(@"</div>");
+            htmlBuilder.AppendFormat(@"</div>");
+            mvcHtml = MvcHtmlString.Create(htmlBuilder.ToString());
+
+            return mvcHtml;
+        }
+       
+        //    public static MvcHtmlString CustomCheckBoxFor<TModel, TValue>(Expression<Func<TModel, TValue>> expression, object htmlAttributes);
+        //    {
+        //        return CustomCheckBoxFor(expression, htmlAttributes);
+        //}
     }
+
+
 }
-//        public static MvcHtmlString CustomerSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
-//        {
-//            return CustomerSearch(html, expression, ECustomerSearchType.AccountOpen, TypeOfCustomer.Customer.GetDescription());
-//        }
-//        public static MvcHtmlString CustomerSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, ECustomerSearchType ECustomerSearchTypes)
-//        {
-//            return CustomerSearch(html, expression, ECustomerSearchTypes, TypeOfCustomer.Customer.GetDescription());
-//        }
-//        public static MvcHtmlString CustomerSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, ECustomerSearchType ECustomerSearchTypes, string customerType)
-//        {
-//            MvcHtmlString mvcHtml = default(MvcHtmlString);
-//            StringBuilder htmlBuilder = new StringBuilder();
-//            string mode = "";
-//            if (ECustomerSearchTypes == ECustomerSearchType.Limited)
-//            {
-//                mode = ECustomerSearchType.Limited.GetDescription();
-//            }
-//            else if (ECustomerSearchTypes == ECustomerSearchType.Unlimited)
-//            {
-//                mode = ECustomerSearchType.Unlimited.GetDescription();
-//            }
-//            else if (ECustomerSearchTypes == ECustomerSearchType.SingleType)
-//            {
-//                mode = ECustomerSearchType.SingleType.GetDescription();
-//            }
-//            else if (ECustomerSearchTypes == ECustomerSearchType.AccountOpen)
-//            {
-//                mode = ECustomerSearchType.AccountOpen.GetDescription();
-//            }
-//            else if (ECustomerSearchTypes == ECustomerSearchType.CompanyOnly)
-//            {
-//                mode = ECustomerSearchType.CompanyOnly.GetDescription();
-//            }
-//            else if (ECustomerSearchTypes == ECustomerSearchType.CustomerOnly)
-//            {
-//                mode = ECustomerSearchType.CustomerOnly.GetDescription();
-//            }
-//            else if (ECustomerSearchTypes == ECustomerSearchType.VerifiedRegisteredLoanList) {
-//                mode = ECustomerSearchType.VerifiedRegisteredLoanList.GetDescription();
-
-
-//            }
-//            else
-//            {
-//                mode = ECustomerSearchType.All.GetDescription();
-//            }
-
-//            //var items = expression.Compile()(html.ViewData.Model);
-//            var htmlFieldName = ExpressionHelper.GetExpressionText(expression);
-//            var cntrlName = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldName(htmlFieldName);
-//            var cntrlId = html.ViewContext.ViewData.TemplateInfo.GetFullHtmlFieldId(cntrlName);
-//            var value = ModelMetadata.FromLambdaExpression(expression, html.ViewData).Model;
-//            htmlBuilder.AppendFormat(@"<div id='pop-up-div' class='modal fade' role='dialog'></div>");
-//            htmlBuilder.AppendFormat(@"<div class='box-tools'>");
-//            htmlBuilder.AppendFormat(@"<div class='input-group input-group-sm pull-right CommonSearchDiv'>");
-//            htmlBuilder.AppendFormat(@"<select class='chzn-select chosen-select form-control multiselectCustomer' id='" + cntrlName + "' multiple='' name='" + cntrlName + "' placeholder='Customer:'></select>");
-//            htmlBuilder.AppendFormat(@" <div class='input-group-btn'>");
-//            htmlBuilder.AppendFormat(@"<button type='button' name='btncustomersearch' id='btncustomersearch' class='btn btn-default btncustomersearch' style='margin-left: 0px;height: 29px !important;' mode='" + mode + "' customerType='" + customerType + "'><i class='fa fa-search'></i></button>");
-//            htmlBuilder.AppendFormat(@"</div>");
-//            htmlBuilder.AppendFormat(@"</div>");
-//            htmlBuilder.AppendFormat(@"</div>");
-//            mvcHtml = MvcHtmlString.Create(htmlBuilder.ToString());
-
-//            return mvcHtml;
-//        }
 //        public static MvcHtmlString LocationSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
 //        {
 
@@ -299,7 +293,7 @@ namespace BussinessLogic.CustomHelper
 //            htmlBuilder.AppendFormat(@"<div class='input-group input-group-sm pull-right account-number-div'>");
 //            htmlBuilder.AppendFormat(@"<input style='display:inline;' type='text' id='" + cntrlName + "' class='form-control account-aumber' name='accountNumber' placeholder='Account Number' value='" + accountNumber + "' showwith='" + eaccDetails + "' accountFilter='" + accountFilter + "' accountType='" + accountType + "'withDetails='" + withDetails + "' />");
 //            htmlBuilder.AppendFormat(@"<input type='hidden' id='" + cntrlName + "' class='account-id' name='" + cntrlName + "' value='" + value + "' />");
-            
+
 
 //            htmlBuilder.AppendFormat(@" <div class='input-group-btn'>");
 //            htmlBuilder.AppendFormat(@"<button type='button' name='btn-account-open-search' id='btn-account-openSearch' class='btn btn-default btn-account-open-search' style='margin-left: 0px;' ><i class='fa fa-search'></i></button>");
@@ -309,9 +303,9 @@ namespace BussinessLogic.CustomHelper
 
 //            htmlBuilder.AppendFormat(@"</div>");
 //            htmlBuilder.AppendFormat(@"</div>");
-           
+
 //            htmlBuilder.AppendFormat(@"</div>");
-          
+
 //            mvcHtml = MvcHtmlString.Create(htmlBuilder.ToString());
 
 //            return mvcHtml;
@@ -321,7 +315,7 @@ namespace BussinessLogic.CustomHelper
 
 //        //public static MvcHtmlString BankSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string BankName = "", string BankChange = "", string employeeOrShare = "")
 //        //{
-           
+
 //        //    return BankSearch(html, expression, BankName, BankChange, employeeOrShare);
 //        //}
 //        public static MvcHtmlString BankSearch<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string BankName, string BankChange, string employeeOrShare)

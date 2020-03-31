@@ -95,13 +95,13 @@ namespace BussinessLogic.Service
             return customerSingleList;
         }
 
-        public List<MainViewModel.CustomerViewModel> getCustomerList(int? customerno,string Name, string Address, string contact, int? cType, int pageNo, int pageSize)
+        public List<MainViewModel.CustomerViewModel> getCustomerList(string customername,int? customerno,string Name, string Address, string contact, int? cType, int pageNo, int pageSize)
         {
             try
             {
 
                 string query = "";
-                query = "select* from[dbo].[fgetCustomerTB]()  where  CustomerName like'%" + Name.Trim() + "%'";
+                query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetCustomerTB]()  where  CustomerName like'%" + customername.Trim() + "%'";
 
                 //if (Name != "")
                 //{
@@ -138,6 +138,70 @@ namespace BussinessLogic.Service
             }
             
         }
+
+
+        public List<MainViewModel.CustomerViewModel> CustomerInfoList(string searchParameter, string searchOption, string mode, string type, int pageNo, int pageSize)
+        {
+            string query = "";
+            query = "select COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetCustomerTB]() ";
+            if (searchParameter != "")
+            {
+                if (searchOption == "Customer No")
+                {
+                    query += " where CustNo =" + searchParameter;
+                }
+                else if (searchOption == "Mobile No")
+                {
+                    query += " where MobileNo like'%" + searchParameter + "%'";
+                }
+                else if (searchOption == "Address")
+                {
+                    query += " where Address like'%" + searchParameter + "%'";
+                }
+                else if (searchOption == "Customer Type")
+                {
+                    query += " where CustTypeId =" + searchParameter  ;
+                }
+            }
+
+            query += @" ORDER BY  CustNo
+                       OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
+                       FETCH NEXT " + pageSize + " ROWS ONLY";
+            var customerList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(query).ToList();
+
+            return customerList;
+        }
+
+
+
+        public MainViewModel.CustomerViewModel GetSelectedCustomer(int customerID, string custType)
+        {
+            MainViewModel.CustomerViewModel customerInfoList = new MainViewModel.CustomerViewModel();
+           
+                customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT  CustNo ,CustomerName ,CustomerTypeId,MobileNo
+      ,Address,Email ,PanNo,PostedOn FROM Customer where Cid={0} ", customerID).FirstOrDefault();
+           
+
+            return customerInfoList;
+        }
+        public MainViewModel.CustomerViewModel GetSelectedMultipleCustomer(int listBox)
+        {
+            //string customer = "";
+            //foreach (var item in listBox)
+            //{
+            //    if (customer.Length > 0)
+            //    {
+            //        customer += ", ";
+            //    }
+            //    customer += item;
+            //}
+            var customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT 
+           CustNo ,CustomerName ,CustomerTypeId,MobileNo,Address ,Email,PanNo ,PostedOn
+          FROM Customer where Cid ="+ listBox).SingleOrDefault();
+            return customerInfoList;
+        }
+
+       
     }
 }
 

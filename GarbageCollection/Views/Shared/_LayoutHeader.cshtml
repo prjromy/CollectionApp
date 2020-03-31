@@ -136,7 +136,7 @@
             <i class="fas fa-th-large"></i>
         </a>
     </li>
-    <li class="dropdown user user-menu">
+    <li class="nav-item dropdown user user-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
             @*<img src="~/AdminLTE/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">*@
             <span class="hidden-xs">@Loader.Models.Global.UserName</span>
@@ -232,18 +232,14 @@
 
 </script>
 
-@*<style>
-    .navbar-custom-menu > .navbar-nav > li > .dropdown-menu {
+<style>
+    .dropdown-menu {
     position: absolute;
     right: 0;
     left: auto;
+    margin-top: 30px;
 }
 
-    .navbar-nav > .user-menu > .dropdown-menu {
-    border-top-right-radius: 0;
-    border-top-left-radius: 0;
-    padding: 1px 0 0 0;
-    border-top-width: 0;
-    width: 280px;
-}
-</style>*@
+        
+
+</style>

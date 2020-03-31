@@ -32,7 +32,6 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<FiscalYear> FiscalYears { get; set; }
         public virtual DbSet<LocationMaster> LocationMasters { get; set; }
         public virtual DbSet<Status> Status { get; set; }
-        public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<SubscriptionDue> SubscriptionDues { get; set; }
         public virtual DbSet<LicenseBranch> LicenseBranches { get; set; }
         public virtual DbSet<BloodGroup> BloodGroups { get; set; }
@@ -62,5 +61,6 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<UserVSBranch> UserVSBranches { get; set; }
         public virtual DbSet<NDateD> NDateDs { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Subscription> Subscriptions { get; set; }
     }
 }

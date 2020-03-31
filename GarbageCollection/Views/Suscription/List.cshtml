@@ -2,93 +2,91 @@
 @using BussinessLogic.Service
 @using BussinessLogic.CustomHelper
 
-@model BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
 
 <div class="table-responsive no-padding cust-page-list">
     <table class="table table-bordered table-striped table-hover">
 
         <tr>
-            <th> Customer No.</th>
+            <th> Suscription No.</th>
             <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
-            <th>@Html.DisplayNameFor(x => x.CustomerTypeId)</th>
-            <th>@Html.DisplayNameFor(x => x.PhoneNo)</th>
-            <th>@Html.DisplayNameFor(x => x.MobileNo)</th>
-            <th>@Html.DisplayNameFor(x => x.Address)</th>
-            <th >@Html.DisplayNameFor(x => x.Email)</th>
-              @if (CommonUtilityService.AllowEdit())
-              {
+            <th>@Html.DisplayNameFor(x => x.EffectiveDate)</th>
+            <th>@Html.DisplayNameFor(x => x.LedgerId)</th>
+            <th>@Html.DisplayNameFor(x => x.MonthlyAmount)</th>
+            <th>@Html.DisplayNameFor(x => x.LocationID)</th>
+            
+            @if (CommonUtilityService.AllowEdit())
+            {
 
-            <th >Action</th>
-             }
+                <th>Action</th>
+            }
             @if (CommonUtilityService.AllowStatusChange())
-           {
-            <th>Status</th>
-           }
+            {
+                <th>Status</th>
+            }
 
         </tr>
 
 
-        @foreach (var item in Model.customerPagedList)
+        @foreach (var item in Model.suscriberPagedList)
         {
             <tr style="font-size:12px;">
-                <td>
-                  @item.CustNo
-
-                </td>
                 <td>
                     @item.CustomerName
 
                 </td>
                 <td>
-                    @item.Customertype
+                    @item.EffectiveDate
 
                 </td>
                 <td>
-                    @item.PhoneNo
-
-                </td>
-                <td>
-                    @item.MobileNo
-
-                </td>
-                <td>
-                    @item.Address
-
-                </td>
-                <td>
-                    @item.Email
-
-                </td>
-               
-                    @if (CommonUtilityService.AllowEdit())
-                    {
-                        <td>
-                            <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Cid" onclick="EditCustomerList(@item.Cid)" data-toggle="tooltip" title="Edit"></button>
-                        </td>
+                    @{
+                        var ledgerName = CommonUtilityService.LedgerName(@Model.LedgerId);
                     }
-               
-               
-                    @if (CommonUtilityService.AllowStatusChange())
-                    {
-                        <td>
-                            @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
-                            @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected' onchange="CustomerChangeStatus(@item.Cid)" data-toggle="toggle" >*@
-                        
-                                @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected'data-val="@item.Cid"  />*@
-                                <label class="switch">
-                                    <input type="checkbox" name="IsSelected"  data-val="@item.Cid" class="IsSelected"/>
-                                    <div class="slider round">
-                                    </div>
-                                </label>
-                               
-                        </td>
+                    ledgerName
+                </td>
+                <td>
+                   
+                    @item.MonthlyAmount
+
+                </td>
+                <td>
+                    @{
+                        var locationName = CommonUtilityService.LocationName(@Model.LocationID);
                     }
-                       
+                    locationName
+
+                </td>
+                
+                @if (CommonUtilityService.AllowEdit())
+                {
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subsid" onclick="EditCustomerList(@item.Subsid)" data-toggle="tooltip" title="Edit"></button>
+                    </td>
+                }
+
+
+                @if (CommonUtilityService.AllowStatusChange())
+                {
+                    <td>
+                        @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
+                        @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected' onchange="CustomerChangeStatus(@item.Cid)" data-toggle="toggle" >*@
+
+                        @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected'data-val="@item.Cid"  />*@
+                        <label class="switch">
+                            <input type="checkbox" name="IsSelected" data-val="@item.Subsid" class="IsSelected" />
+                            <div class="slider round">
+                            </div>
+                        </label>
+
+                    </td>
+                }
+
             </tr>
         }
-       
+
     </table>
-    @Html.Paging("_List", "Customer", Model.customerPagedList.PageCount, Model.customerPagedList.PageNumber, Model.customerPagedList.PageSize)
+    @Html.Paging("_List", "Customer", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
 </div>
 
 
@@ -186,7 +184,7 @@
             var msg = 'Are you sure?';
             var div = $("<div>" + msg + "</div>");
             div.dialog({
-              
+
                 //title: "Confirm",
                 buttons: [
                             {
@@ -208,7 +206,7 @@
                                                     async: false,
                                                     success: function (data) {
                                                         debugger
-                                                       
+
                                                         $('section.content').html(data);
                                                         SuccessAlert("Changed Status Successfully", 5000);
                                                         document.getElementById('alert-success').scrollIntoView();
@@ -233,21 +231,21 @@
                             {
                                 text: "No",
                                 click: function () {
-                                   
+
                                     $('.slider').css(
                                     'background-color', '#46bd7b'
                                     )
                                     $('.slider').addClass('change').addClass('change');
                                         //css('transform', 'translateX(0px)')
-                                   
+
                                     div.dialog("close");
-                                    
+
                                 }
                             }
                 ]
             });
-                   
-              
+
+
 
         })
     })

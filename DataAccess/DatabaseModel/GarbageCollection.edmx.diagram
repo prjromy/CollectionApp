@@ -12,7 +12,6 @@
         <EntityTypeShape EntityType="GarbageCollectionDBModel.FiscalYear" Width="1.5" PointX="4.75" PointY="10.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.LocationMaster" Width="1.5" PointX="6.75" PointY="10.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Status" Width="1.5" PointX="11.75" PointY="4.75" />
-        <EntityTypeShape EntityType="GarbageCollectionDBModel.Subscription" Width="1.5" PointX="11.75" PointY="7.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.SubscriptionDue" Width="1.5" PointX="8.75" PointY="12.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.LicenseBranch" Width="1.5" PointX="10.75" PointY="12.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.BloodGroup" Width="1.5" PointX="12.75" PointY="12.75" />
@@ -49,6 +48,7 @@
         <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_UserLogin_LG_User_UserId" />
         <AssociationConnector Association="GarbageCollectionDBModel.UserRole" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Customer" Width="1.5" PointX="0.75" PointY="18.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Subscription" Width="1.5" PointX="10.375" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

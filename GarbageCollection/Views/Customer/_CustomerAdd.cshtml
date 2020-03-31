@@ -1,0 +1,35 @@
+﻿@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+@using BussinessLogic.CustomHelper
+
+
+
+<div class="form-group customer-add">
+    @Html.LabelFor(model => model.CustomerName, new { @class = "control-label col-md-2" })
+    <div class="col-md-6">
+        @Html.CustomerSearch(x => x.CustomerName, ECustomerSearchType.Suscription)
+        @Html.HiddenFor(x=>x.CustId,new { @class="cust-id"})
+        @Html.ValidationMessageFor(model => model.CustId, "", new { @class = "text-danger" })
+    </div>
+
+</div>
+<link href="~/Content/Choose/chosen.min.css" rel="stylesheet" />
+<script src="~/Content/Choose/chosen.jquery.multiselect.customer.js"></script>
+<script>
+
+
+    $(".multiselectCustomer").chosen({
+        single_backstroke_delete: true,
+        placeholder_text_multiple: "Customer"
+    });
+</script>
+@*<style>
+    .chosen-drop {
+        display: none;
+    }
+
+    .chosen-container {
+        overflow: auto;
+        max-height: 100px;
+    }
+</style>*@
+

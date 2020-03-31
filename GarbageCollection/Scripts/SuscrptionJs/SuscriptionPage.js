@@ -145,7 +145,7 @@ function getPageNumberBtnAction(url, container, me) {
 
 
 //for CustomerSearch
-function getPageNumberBtnActionCustomerSearch(searchOption, searchParam, listBox, container, me, mode, custType) {
+function getPageNumberBtnActionCustomerSearch(searchOption, searchParam, container, me, mode, custType) {
     debugger;
     var parent = $(me).closest("#paging");
     var id = $(me).attr('id');
@@ -177,7 +177,7 @@ function getPageNumberBtnActionCustomerSearch(searchOption, searchParam, listBox
         data: {
             searchParam: searchParam,
             searchOption: searchOption,
-            listBox: listBox,
+           
             mode: mode,
             custType: custType,
             pageNo: currentPageNo,
@@ -194,7 +194,7 @@ function getPageNumberBtnActionCustomerSearch(searchOption, searchParam, listBox
     }
 }
 
-function getPageSizeChangeDataCustomerSearch(searchOption, searchParam, listBox, container, me, mode,type) {
+function getPageSizeChangeDataCustomerSearch(searchOption, searchParam, container, me, mode,type) {
     debugger;
     var parent = $(me).closest("#paging");
     var pageSize = $(me).val();
@@ -214,7 +214,7 @@ function getPageSizeChangeDataCustomerSearch(searchOption, searchParam, listBox,
         data: {
             searchParam: searchParam,
             searchOption: searchOption,
-            listBox: listBox,
+           
             mode: mode,
             custType: type,
             pageNo: 1,
@@ -242,7 +242,7 @@ function getPageSizeChangeDataCustomerSearch(searchOption, searchParam, listBox,
     }
 }
 
-function getPageNumberChangeDataCustomerSearch(searchOption, searchParam, listBox, container, me, mode,type) {
+function getPageNumberChangeDataCustomerSearch(searchOption, searchParam, container, me, mode,type) {
     debugger;
     var parent = $(me).closest("#paging");
     var erorDivClass = $(parent).find('#erormsg').attr('class');
@@ -268,7 +268,7 @@ function getPageNumberChangeDataCustomerSearch(searchOption, searchParam, listBo
         data: {
             searchParam: searchParam,
             searchOption: searchOption,
-            listBox: listBox,
+            
             mode: mode,
             custType: type,
             pageNo: pageNo,

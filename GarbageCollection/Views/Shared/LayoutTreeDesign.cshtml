@@ -21,7 +21,7 @@
         {
             <a style="padding-bottom:0px;padding-top:5px;margin-top: 9px;font-size:15px;">
                 
-                    <i class="fa fa-dashboard"></i> <span data-toggle="tooltip" title="@Model.Text" style="cursor:pointer">@Model.Text</span>
+                    <i class="fa fa-dashboard"></i> <span data-toggle="tooltip" title="@Model.Text" style="cursor:pointer;font-size:14px;">@Model.Text</span>
                 @Model.Image
 
                 <span class="pull-right-container"id="@Model.Id" pid="@Model.PId" style="cursor:pointer;">
@@ -32,11 +32,11 @@
         else
         {
 
-            <a style="padding-bottom:8px;padding-top:5px;margin-top: 9px;font-weight:500;font-size:15px;">
-                <span class="idtext" style="padding-left: 15px;">
+            <a style="padding-bottom:8px;padding-top:5px;margin-top: 9px;font-weight:500;">
+                <span class="idtext" style="padding-left: 15px">
                     <i class="fa fa-bars"></i>
                     @Model.Image
-                    <span data-toggle="tooltip" title="@Model.Text" style="cursor:pointer">@Model.Text</span>
+                    <span data-toggle="tooltip" title="@Model.Text" style="cursor:pointer;">@Model.Text</span>
                 </span>
                 <span class="pull-right-container"id="@Model.Id" pid="@Model.PId"style="cursor:pointer;">
                     <i class="fa fa-angle-left pull-right"></i>

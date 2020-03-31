@@ -225,6 +225,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\SuscriptionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1120,6 +1121,15 @@
     <Content Include="Content\ch-dialog.css" />
     <Content Include="Content\ch-search.css" />
     <Content Include="Content\ch-treeview.css" />
+    <Content Include="Content\Choose\chosen-sprite%402x.png" />
+    <Content Include="Content\Choose\chosen-sprite.png" />
+    <Content Include="Content\Choose\chosen.css" />
+    <Content Include="Content\Choose\chosen.jquery.customer.js" />
+    <Content Include="Content\Choose\chosen.jquery.min.js" />
+    <Content Include="Content\Choose\chosen.jquery.multiselect.customer.js" />
+    <Content Include="Content\Choose\chosen.min.css" />
+    <Content Include="Content\Custom\custom.css" />
+    <Content Include="Content\Custom\Customer.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\jquery-ui.css" />
@@ -1176,6 +1186,7 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Content\ToggleButton.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1273,7 +1284,8 @@
     <Content Include="Scripts\ch-dialog.js" />
     <Content Include="Scripts\ch-dpicker.js" />
     <Content Include="Scripts\ch-treeview.js" />
-    <Content Include="Scripts\ChannakyaBaseJs\ChannakyaBasePage.js" />
+    <Content Include="Scripts\SuscrptionJs\SuscriptionPage.js" />
+    <Content Include="Scripts\SuscrptionJs\CustomerSearch.js" />
     <Content Include="Scripts\date.format.js" />
     <Content Include="Scripts\DatePicker\font\colabbol-webfont.eot" />
     <Content Include="Scripts\DatePicker\font\colabbol-webfont.ttf" />
@@ -1459,9 +1471,17 @@
     <Content Include="Views\Shared\EditorTemplates\SearchDTO.cshtml" />
     <Content Include="Views\Shared\_TemplateAssignedUsers.cshtml" />
     <Content Include="Views\Shared\_GetLayoutFillterTree.cshtml" />
-    <Content Include="Views\Customer\Create.cshtml" />
     <Content Include="Views\Customer\List.cshtml" />
     <Content Include="Views\Customer\_List.cshtml" />
+    <Content Include="Views\Suscription\Index.cshtml" />
+    <Content Include="Views\Customer\_CustomerAdd.cshtml" />
+    <Content Include="Views\Suscription\Create.cshtml" />
+    <Content Include="Views\Customer\Create.cshtml" />
+    <Content Include="Views\Customer\CustomerInfoList.cshtml" />
+    <Content Include="Views\Customer\_CustomerInfoList.cshtml" />
+    <Content Include="Views\Customer\GetDetail.cshtml" />
+    <Content Include="Views\Suscription\List.cshtml" />
+    <Content Include="Views\Suscription\_List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
