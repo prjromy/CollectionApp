@@ -95,13 +95,13 @@ namespace BussinessLogic.Service
             return customerSingleList;
         }
 
-        public List<MainViewModel.CustomerViewModel> getCustomerList(string customername,int? customerno,string Name, string Address, string contact, int? cType, int pageNo, int pageSize)
+        public List<MainViewModel.CustomerViewModel> getCustomerList(int? customerno,string Name, string Address, string contact, int? cType, int pageNo, int pageSize)
         {
             try
             {
 
                 string query = "";
-                query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetCustomerTB]()  where  CustomerName like'%" + customername.Trim() + "%'";
+                query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetCustomerTB]()  where  CustomerName like'%" + Name.Trim() + "%'";
 
                 //if (Name != "")
                 //{
@@ -140,7 +140,7 @@ namespace BussinessLogic.Service
         }
 
 
-        public List<MainViewModel.CustomerViewModel> CustomerInfoList(string searchParameter, string searchOption, string mode, string type, int pageNo, int pageSize)
+        public List<MainViewModel.CustomerViewModel> CustomerInfoList( string searchParameter, string searchOption, string mode, string type, int pageNo, int pageSize)
         {
             string query = "";
             query = "select COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetCustomerTB]() ";
@@ -149,6 +149,10 @@ namespace BussinessLogic.Service
                 if (searchOption == "Customer No")
                 {
                     query += " where CustNo =" + searchParameter;
+                }
+                else if (searchOption == "Customer Name")
+                {
+                    query += " where CustomerName like'%" + searchParameter + "%'";
                 }
                 else if (searchOption == "Mobile No")
                 {
@@ -179,7 +183,7 @@ namespace BussinessLogic.Service
             MainViewModel.CustomerViewModel customerInfoList = new MainViewModel.CustomerViewModel();
            
                 customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT  CustNo ,CustomerName ,CustomerTypeId,MobileNo
-      ,Address,Email ,PanNo,PostedOn FROM Customer where Cid={0} ", customerID).FirstOrDefault();
+      ,Address,Email ,PanNo,PostedOn FROM Customer where Cid={0} ", customerID).SingleOrDefault();
            
 
             return customerInfoList;

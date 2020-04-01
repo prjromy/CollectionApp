@@ -63,16 +63,22 @@ namespace BuisnessObject.ViewModel
             public int Subsid { get; set; }
             public Nullable<int> SubsNo { get; set; }
             [DisplayName("Customer Name")]
+            [Required(ErrorMessage ="Customer Name is required ")]
             public string CustomerName { get; set; }
-            public int CustId { get; set; }
+            public int? CustId { get; set; }
+            [Required(ErrorMessage = "Effective Date is required ")]
             [DisplayName("Effective Date")]
             public Nullable<System.DateTime> EffectiveDate { get; set; }
+            [Required(ErrorMessage = "Ledger Name is required ")]
             [DisplayName("Ledger  Name")]
             public Nullable<int> LedgerId { get; set; }
+            [Required(ErrorMessage = "Monthly Amount is required ")]
             public Nullable<decimal> MonthlyAmount { get; set; }
             [DisplayName("Location Name")]
+            [Required(ErrorMessage = "Location Name is required ")]
             public Nullable<int> LocationID { get; set; }
             public Nullable<int> Status { get; set; }
+            [Required(ErrorMessage = "Remarks is required ")]
             public string Remarks { get; set; }
             public Nullable<int> PostedBy { get; set; }
             public Nullable<System.DateTime> PostedOn { get; set; }

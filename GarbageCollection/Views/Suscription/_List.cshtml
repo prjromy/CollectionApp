@@ -1,1 +1,226 @@
-﻿
+﻿@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+<table class="table table-bordered table-striped table-hover sus-table-list" style="margin-top: 20px;">
+
+    <tr>
+        <th> Suscription No.</th>
+
+        <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
+        <th>@Html.DisplayNameFor(x => x.EffectiveDate)</th>
+        <th>@Html.DisplayNameFor(x => x.LedgerId)</th>
+        <th>@Html.DisplayNameFor(x => x.MonthlyAmount)</th>
+        <th>@Html.DisplayNameFor(x => x.LocationID)</th>
+
+        @if (CommonUtilityService.AllowEdit(29))
+            {
+
+            <th>Action</th>
+        }
+        @if (CommonUtilityService.AllowStatusChange(31))
+            {
+            <th>Status</th>
+        }
+
+    </tr>
+
+
+    @foreach (var item in Model.suscriberPagedList)
+    {
+        @Html.HiddenFor(x => x.CustId)
+        <tr style="font-size:12px;">
+            <td>
+                @item.SubsNo
+
+            </td>
+            <td>
+                @item.CustomerName
+
+            </td>
+            <td>
+                @item.EffectiveDate
+
+            </td>
+            <td>
+                @{
+                    var ledgerName = CommonUtilityService.LedgerName(@item.LedgerId);
+                }
+                @ledgerName
+            </td>
+            <td>
+
+                @item.MonthlyAmount
+
+            </td>
+            <td>
+                @{
+                    var locationName = CommonUtilityService.LocationName(@item.LocationID);
+                }
+                @locationName
+
+            </td>
+
+            @if (CommonUtilityService.AllowEdit(29))
+            {
+                <td>
+                    <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subsid" onclick="EditSubscriptionList(@item.Subsid)" data-toggle="tooltip" title="Edit"></button>
+                </td>
+            }
+
+
+            @if (CommonUtilityService.AllowStatusChange(31))
+            {
+                <td>
+                    @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
+                    @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected' onchange="CustomerChangeStatus(@item.Cid)" data-toggle="toggle" >*@
+
+                    @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected'data-val="@item.Cid"  />*@
+                    <label class="switch">
+                        <input type="checkbox" name="IsSelected" data-val="@item.Subsid" class="IsSelected" />
+                        <div class="slider round">
+                        </div>
+                    </label>
+
+                </td>
+            }
+
+        </tr>
+                    }
+
+</table>
+@Html.Paging("_List", "Suscription", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
+
+
+<script>
+
+
+
+        
+
+
+            function EditSubscriptionList(Sno) {
+                debugger
+
+                $.ajax({
+                    type: "get",
+                    url: "/Suscription/Create/",
+                    contentType: "application/json; charset=utf-8",
+                    data: { sNo: Sno },
+                    dataType: "html",
+                    success: function (html) {
+                        debugger;
+
+                        $('#account-pop-up-div').html(html).modal({
+                            'show': true,
+                            'backdrop': 'static'
+                        });
+                        window.scrollTo(0, 0);
+                        debugger;
+                        //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $('.IsSelected').each(function () {
+                debugger;
+                var customerId=$('#CustId').val();
+                $(this).on("change", function () {
+                    var CID = $(this).attr("data-val");
+                    // check if checkbox is being checked
+                    // taken from /a/23007488 by Alexandru Chichinete
+                    var msg = 'Are you sure?';
+                    var div = $("<div>" + msg + "</div>");
+                    div.dialog({
+
+                        //title: "Confirm",
+                        buttons: [
+                                    {
+                                        text: "Yes",
+                                        click: function () {
+                                            $.ajax({
+                                                type: "get",
+                                                url: "/Suscription/UpdateStatus/",
+                                                contentType: "application/json; charset=utf-8",
+                                                data: { sId: CID },
+                                                dataType: "html",
+                                                success: function (result) {
+                                                    debugger;
+                                                    if (result) {
+                                                        debugger;
+                                                        $.ajax({
+                                                            url: "/Suscription/List",
+                                                            type: 'post',
+                                                            async: false,
+                                                            data:{customerId:customerId},
+                                                            success: function (data) {
+                                                                debugger
+
+                                                                $('.suscription-detail').html("");
+                                                                $('.suscription-detail').html(data);
+                                                                SuccessAlert("Changed Status Successfully", 5000);
+                                                                document.getElementById('alert-success').scrollIntoView();
+                                                                div.dialog("close");
+                                                            }
+                                                        })
+                                                    }
+                                                    else {
+
+                                                        ErrorAlert(result.Msg, 5000);
+                                                        document.getElementById('alert-error').scrollIntoView();
+                                                    }
+                                                    //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+                                                },
+                                                error: function () {
+                                                    alert("error");
+                                                }
+                                            });
+                                        }
+                                    },
+                                    {
+                                        text: "No",
+                                        click: function () {
+
+                                            $('.slider').css(
+                                            'background-color', '#46bd7b'
+                                            )
+                                            //$('.slider').addClass('change').addClass('change');
+                                            //css('transform', 'translateX(0px)')
+                                            $('.switch input:checkbox').removeClass("slider round:before");
+                                            div.dialog("close");
+
+                                        }
+                                    }
+                        ]
+                    });
+
+
+
+                })
+            })
+</script>
+
+
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/ch-dialog.js"></script>
+<link href="~/Content/ToggleButton.css" rel="stylesheet" />
+

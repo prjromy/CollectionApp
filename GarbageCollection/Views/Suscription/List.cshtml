@@ -3,250 +3,181 @@
 @using BussinessLogic.CustomHelper
 
 @model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
-
-<div class="table-responsive no-padding cust-page-list">
-    <table class="table table-bordered table-striped table-hover">
-
-        <tr>
-            <th> Suscription No.</th>
-            <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
-            <th>@Html.DisplayNameFor(x => x.EffectiveDate)</th>
-            <th>@Html.DisplayNameFor(x => x.LedgerId)</th>
-            <th>@Html.DisplayNameFor(x => x.MonthlyAmount)</th>
-            <th>@Html.DisplayNameFor(x => x.LocationID)</th>
-            
-            @if (CommonUtilityService.AllowEdit())
-            {
-
-                <th>Action</th>
-            }
-            @if (CommonUtilityService.AllowStatusChange())
-            {
-                <th>Status</th>
-            }
-
-        </tr>
-
-
-        @foreach (var item in Model.suscriberPagedList)
-        {
-            <tr style="font-size:12px;">
-                <td>
-                    @item.CustomerName
-
-                </td>
-                <td>
-                    @item.EffectiveDate
-
-                </td>
-                <td>
-                    @{
-                        var ledgerName = CommonUtilityService.LedgerName(@Model.LedgerId);
-                    }
-                    ledgerName
-                </td>
-                <td>
-                   
-                    @item.MonthlyAmount
-
-                </td>
-                <td>
-                    @{
-                        var locationName = CommonUtilityService.LocationName(@Model.LocationID);
-                    }
-                    locationName
-
-                </td>
-                
-                @if (CommonUtilityService.AllowEdit())
-                {
-                    <td>
-                        <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subsid" onclick="EditCustomerList(@item.Subsid)" data-toggle="tooltip" title="Edit"></button>
-                    </td>
-                }
-
-
-                @if (CommonUtilityService.AllowStatusChange())
-                {
-                    <td>
-                        @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
-                        @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected' onchange="CustomerChangeStatus(@item.Cid)" data-toggle="toggle" >*@
-
-                        @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected'data-val="@item.Cid"  />*@
-                        <label class="switch">
-                            <input type="checkbox" name="IsSelected" data-val="@item.Subsid" class="IsSelected" />
-                            <div class="slider round">
-                            </div>
-                        </label>
-
-                    </td>
-                }
-
-            </tr>
-        }
-
-    </table>
-    @Html.Paging("_List", "Customer", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
+<div id='account-pop-up-div' class='modal fade verfier-list' role='dialog'>
 </div>
+<div class="box box-success" style="border-top-color: #8ce8be;border-top:2px solid #8ce8be">
+    <div class="box-header with-border">
+        <legend style="font-size:16px;font-weight:bold">Suscription-Details</legend>
+        <button class="btn pull-right btn-success new-suscription">New Subscription</button>
+        <div class="table-responsive no-padding sus-page-list" style="margin:top">
+            <table class="table table-bordered table-striped table-hover sus-table-list" style="margin-top: 20px;">
+
+                <tr>
+                    <th> Suscription No.</th>
+                  
+                    <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
+                    <th>@Html.DisplayNameFor(x => x.EffectiveDate)</th>
+                    <th>@Html.DisplayNameFor(x => x.LedgerId)</th>
+                    <th>@Html.DisplayNameFor(x => x.MonthlyAmount)</th>
+                    <th>@Html.DisplayNameFor(x => x.LocationID)</th>
+
+                    @if (CommonUtilityService.AllowEdit(29))
+            {
+
+                        <th>Action</th>
+                    }
+                    @if (CommonUtilityService.AllowStatusChange(31))
+            {
+                        <th>Status</th>
+                    }
+
+                </tr>
 
 
+                @foreach (var item in Model.suscriberPagedList)
+                {
+                      @Html.HiddenFor(x => x.CustId)
+                    <tr style="font-size:12px;">
+                        <td>
+                            @item.SubsNo
 
-<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
-<link href="~/Content/PagedList.css" rel="stylesheet" />
-<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
-<script src="~/Scripts/ch-dialog.js"></script>
-<link href="~/Content/ToggleButton.css" rel="stylesheet" />
+                        </td>
+                        <td>
+                            @item.CustomerName
 
-<script>
+                        </td>
+                        <td>
+                            @item.EffectiveDate
 
-
-
-
-
-
-
-    //$('.IsSelected').each(function () {
-    //    debugger;
-    //    $(this).on("change", function(){
-    //        // check if checkbox is being checked
-    //        // taken from /a/23007488 by Alexandru Chichinete
-    //        if ($(".IsSelected").is(":checked")) {
-    //            // enable form submit
-    //            var CID = $(this).attr("data-val");
-    //            debugger
-    //            $.MessageBox({
-    //                buttonDone: "Yes",
-    //                buttonFail: "No",
-    //                message: " Are you sure?"
-    //            }).done(function () {
-    //                $.ajax({
-    //                    type: "get",
-    //                    url: "/Customer/UpdateStatus/",
-    //                    contentType: "application/json; charset=utf-8",
-    //                    data: { cId: CID },
-    //                    dataType: "html",
-    //                    success: function (result) {
-    //                        debugger;
-    //                        if (result) {
-    //                            debugger;
-    //                            $.ajax({
-    //                                url: "/Customer/List",
-    //                                type: 'post',
-    //                                async: false,
-    //                                success: function (data) {
-    //                                    debugger
-    //                                    $('section.content').html(data);
-    //                                    SuccessAlert("Changed Status Successfully", 5000);
-    //                                    document.getElementById('alert-success').scrollIntoView();
-    //                                }
-    //                            })
-    //                        }
-    //                        else {
-
-    //                            ErrorAlert(result.Msg, 5000);
-    //                            document.getElementById('alert-error').scrollIntoView();
-    //                        }
-    //                        //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
-
-    //                    },
-    //                    error: function () {
-    //                        alert("error");
-    //                    }
-    //                });
-    //            })
-    //            //var checkStatus = $(this).find('input:checkbox').is(':checked') ? 'ON' : 'OFF';
-    //            //.buttonFail(function () {
-    //            //    debbuger;
-
-
-    //            //})
-
-    //        }
-
-    //    })
-    //})
-
-
-
-
-
-
-
-
-
-
-    $('.IsSelected').each(function () {
-        debugger;
-        $(this).on("change", function () {
-            var CID = $(this).attr("data-val");
-            // check if checkbox is being checked
-            // taken from /a/23007488 by Alexandru Chichinete
-            var msg = 'Are you sure?';
-            var div = $("<div>" + msg + "</div>");
-            div.dialog({
-
-                //title: "Confirm",
-                buttons: [
-                            {
-                                text: "Yes",
-                                click: function () {
-                                    $.ajax({
-                                        type: "get",
-                                        url: "/Customer/UpdateStatus/",
-                                        contentType: "application/json; charset=utf-8",
-                                        data: { cId: CID },
-                                        dataType: "html",
-                                        success: function (result) {
-                                            debugger;
-                                            if (result) {
-                                                debugger;
-                                                $.ajax({
-                                                    url: "/Customer/List",
-                                                    type: 'post',
-                                                    async: false,
-                                                    success: function (data) {
-                                                        debugger
-
-                                                        $('section.content').html(data);
-                                                        SuccessAlert("Changed Status Successfully", 5000);
-                                                        document.getElementById('alert-success').scrollIntoView();
-                                                        div.dialog("close");
-                                                    }
-                                                })
-                                            }
-                                            else {
-
-                                                ErrorAlert(result.Msg, 5000);
-                                                document.getElementById('alert-error').scrollIntoView();
-                                            }
-                                            //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
-
-                                        },
-                                        error: function () {
-                                            alert("error");
-                                        }
-                                    });
-                                }
-                            },
-                            {
-                                text: "No",
-                                click: function () {
-
-                                    $('.slider').css(
-                                    'background-color', '#46bd7b'
-                                    )
-                                    $('.slider').addClass('change').addClass('change');
-                                        //css('transform', 'translateX(0px)')
-
-                                    div.dialog("close");
-
-                                }
+                        </td>
+                        <td>
+                            @{
+                                var ledgerName = CommonUtilityService.LedgerName(@item.LedgerId);
                             }
-                ]
-            });
+                            @ledgerName
+                        </td>
+                        <td>
+
+                            @item.MonthlyAmount
+
+                        </td>
+                        <td>
+                            @{
+                                var locationName = CommonUtilityService.LocationName(@item.LocationID);
+                            }
+                            @locationName
+
+                        </td>
+
+                        @if (CommonUtilityService.AllowEdit(29))
+                        {
+                            <td>
+                                <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subsid" onclick="EditSubscriptionList(@item.Subsid)" data-toggle="tooltip" title="Edit"></button>
+                            </td>
+                        }
+
+
+                        @if (CommonUtilityService.AllowStatusChange(31))
+                        {
+                            <td>
+                                @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
+                                @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected' onchange="CustomerChangeStatus(@item.Cid)" data-toggle="toggle" >*@
+
+                                @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected'data-val="@item.Cid"  />*@
+                                <label class="switch">
+                                    <input type="checkbox" name="IsSelected" data-val="@item.Subsid" class="IsSelected" />
+                                    <div class="slider round">
+                                    </div>
+                                </label>
+
+                            </td>
+                        }
+
+                    </tr>
+                                }
+
+            </table>
+            @Html.Paging("_List", "Suscription", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
+        </div>
+        </div></div>
+
+
+        <script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+        <link href="~/Content/PagedList.css" rel="stylesheet" />
+        <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+        <script src="~/Scripts/ch-dialog.js"></script>
+        <link href="~/Content/ToggleButton.css" rel="stylesheet" />
+
+   
+<script>
+    $(".new-suscription").on('click', function (e) {
+        debugger;
+
+        var customerid = $('.cust-id').val();
+        var custname = $('.CommonSearchDiv').find('#CustomerName').val();
+        $.ajax({
+            type: 'GET',
+            url: "/Suscription/Create",
+            data: { customerid: customerid, custname: custname },
+            success: function (result) {
+                debugger;
+                //$(".modal-body").find('#createSubmitForm').find('#CustomerName').text(custname);
+                //$(".modal-body").find('#createSubmitForm').find('#CustId').val(customerid);
+                $('#account-pop-up-div').html(result).modal({
+                    'show': true,
+                    'backdrop': 'static'
+                });
+            },
+            error: function () {
+
+            }
+        });
 
 
 
-        })
-    })
+    });
+    $("div.sus-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = $('#CustId').val();
+        var container = parentContainer.find("div.sus-page-list")
+        var url = "?customerId=" + customerno;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.sus-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = $('#CustId').val();
+        var container = parentContainer.find("div.sus-page-list")
+        var url = "?customerId=" + customerno;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.sus-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+       
+        var me = $(this);
+        var customerno = $('#CustId').val();
+        var container = parentContainer.find("div.sus-page-list")
+        var url = "?customerId=" + customerno;
+        getPageSizeChangeData(url, container, me)
+    });
 </script>
+
+
+
+
+
+
+
+
+
+
+
+

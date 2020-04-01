@@ -31,11 +31,22 @@ namespace GarbageCollection.Controllers
             MainViewModel.SubscriptionViewModel suscriptionModel = new MainViewModel.SubscriptionViewModel();
             return PartialView(suscriptionModel);
         }
-        public ActionResult Create(int customerid,string custname)
+        public ActionResult Create(int? sNo,int? customerid,string custname="")
         {
             MainViewModel.SubscriptionViewModel suscriptionModel = new MainViewModel.SubscriptionViewModel();
-            suscriptionModel.CustId = customerid;
-            suscriptionModel.CustomerName = custname;
+            if (sNo == null)
+            {
+               
+                suscriptionModel.CustId = customerid;
+                suscriptionModel.CustomerName = custname;
+               
+            }
+            else
+            {
+                suscriptionModel = suscription.getSingleSuscriptonList(sNo);
+                var customerName = customerService.GetSelectedMultipleCustomer(Convert.ToInt32(suscriptionModel.CustId));
+                suscriptionModel.CustomerName = customerName.CustomerName;
+            }
             return PartialView(suscriptionModel);
         }
         [HttpPost]
@@ -71,7 +82,7 @@ namespace GarbageCollection.Controllers
 
         }
 
-        public ActionResult List(int customerId)
+        public ActionResult List(int? customerId)
         {
             try
             {
@@ -97,14 +108,60 @@ namespace GarbageCollection.Controllers
         }
 
 
-        //public ActionResult _List(int? customerno, string name, string address, string contact, int? cType, int pageNo = 1, int pageSize = 10)
-        //{
-        //    MainViewModel.CustomerViewModel customerViewModel = new MainViewModel.CustomerViewModel();
-        //    var customerList = customerService.getCustomerList(customerno, name, address, contact, cType, pageNo, pageSize);
-        //    customerViewModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(customerList, 1, 10, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
-        //    return PartialView(customerViewModel);
-        //}
+        public ActionResult _List(int? customerId, int pageNo = 1, int pageSize = 10)
+        {
+            try
+            {
+                MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
+                var suscriberList = suscription.getSuscriberList(customerId, "", "", "", null, pageNo, pageSize);
+                customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
+
+                //foreach (var item in customerList)
+                //{
+                //    customerViewModel.customerViewModelList.Add(item);
+                //}
+
+                return PartialView(customerViewModel);
 
 
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        public ActionResult UpdateStatus(int? sId)
+        {
+
+
+            try
+            {
+
+
+                returnMessage = suscription.changeStatus(sId);
+
+                return Json(returnMessage, JsonRequestBehavior.AllowGet);
+            }
+            catch (DbEntityValidationException ex)
+            {
+                //returnMessage.Msg = "Not Saved" + ex.Message;
+                //return returnMessage;
+                foreach (var eve in ex.EntityValidationErrors)
+                {
+                    Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                        eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                    foreach (var ve in eve.ValidationErrors)
+                    {
+                        Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                            ve.PropertyName, ve.ErrorMessage);
+                    }
+                }
+                throw ex;
+
+            }
+
+        }
     }
 }

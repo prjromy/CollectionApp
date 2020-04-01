@@ -15,12 +15,12 @@
             <th>@Html.DisplayNameFor(x => x.MobileNo)</th>
             <th>@Html.DisplayNameFor(x => x.Address)</th>
             <th >@Html.DisplayNameFor(x => x.Email)</th>
-              @if (CommonUtilityService.AllowEdit())
+              @if (CommonUtilityService.AllowEdit(25))
               {
 
             <th >Action</th>
              }
-            @if (CommonUtilityService.AllowStatusChange())
+            @if (CommonUtilityService.AllowStatusChange(26))
            {
             <th>Status</th>
            }

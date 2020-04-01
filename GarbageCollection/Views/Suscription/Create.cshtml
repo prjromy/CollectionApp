@@ -11,8 +11,9 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <span class="close" id="closeTop" data-dismiss="modal" aria-hidden="true">&times;</span>
             <h4 class="modal-title">Add Suscription</h4>
+            <span class="close" id="closeTop" data-dismiss="modal" aria-hidden="true">&times;</span>
+            
         </div>
         <div class="modal-body">
             <div class="suscription-create-main">
@@ -25,132 +26,146 @@
                         </div><!-- /.box-tools -->
                         @using (Html.BeginForm("Create", "Suscription", FormMethod.Post, new { id = "createSubmitFormSuscription" }))
             {
-                    @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
 
-                    <div class="form-horizontal">
-                        <h4>Suscription Create</h4>
-                        <hr />
-                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-                        @Html.HiddenFor(model => model.Subsid, new { htmlAttributes = new { @class = "form-control" } })
+                            <div class="form-horizontal">
+                                <h4>Suscription Create</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
-                       <div class="form-group">
-                            @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control @disabled=disabled" } })
-                                @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model=>model.CustId)
+                                @Html.HiddenFor(model => model.Subsid, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                    
+                                            @Html.EditorFor(model => model.CustomerName,  new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+
+                                        @Html.HiddenFor(model => model.CustId)
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.LedgerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.LedgerId, CommonUtilityService.LedgerList(), htmlAttributes: new { @class = "form-control col-md-7" })
+                                        @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
+
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MonthlyAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.EditorFor(model => model.MonthlyAmount, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.MonthlyAmount, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DropDownListFor(model => model.LocationID, CommonUtilityService.LocationList(), "Please Select...", htmlAttributes: new { @class = "form-control col-md-7" })
+
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.EffectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.DatePicker(model => model.EffectiveDate, true)
+                                        @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+                                        @Html.TextAreaFor(model => model.Remarks, 10, 40, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        @if (Model.Subsid != 0)
+                                        {
+                                            <input type="button" value="Edit" class="btn btn-success btn-save" />
+                                        }
+                                        else
+                                        {
+                                            <input type="button" value="Create" class="btn btn-success btn-save" />
+                                        }
+
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.LedgerId, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(model => model.LedgerId, CommonUtilityService.LedgerList(), "Please Select...", htmlAttributes: new { @class = "form-control col-md-7" })
-                                @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
-
-
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.MonthlyAmount, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.EditorFor(model => model.MonthlyAmount, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.MonthlyAmount, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DropDownListFor(model => model.LocationID, CommonUtilityService.LocationList(), "Please Select...", htmlAttributes: new { @class = "form-control col-md-7" })
-                               
-
-
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.EffectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.DatePicker(model => model.EffectiveDate, true)
-                                @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
-                            <div class="col-md-10">
-                                @Html.TextAreaFor(model => model.Remarks, 10, 40, new { htmlAttributes = new { @class = "form-control" } })
-                                @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <div class="col-md-offset-2 col-md-10">
-                                <input type="button" value="Create" class="btn btn-success btn-save" />
-                            </div>
-                        </div>
-                    </div>
-                    }
+                        }
                     </div>
                 </div>
             </div>
-            </div>
         </div>
     </div>
+</div>
 <script src="~/Scripts/jquery-message-box.js"></script>
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
-        <link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
-        <script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
+<link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
+<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
 
 <script>
     $.validator.unobtrusive.parse('#createSubmitFormSuscription');
     $('.suscription-create-main').on('click', '.btn-save', function () {
-    debugger;
-    $('#createSubmitFormSuscription').removeData("validator").removeData("unobtrusiveValidation");
-    $.validator.unobtrusive.parse($('#createSubmitForm'));
-    if ($("#createSubmitFormSuscription").valid()) {
-        NewCustomerCreate();
-    }
+        debugger;
+        $('#createSubmitFormSuscription').removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('#createSubmitForm'));
+        if ($("#createSubmitFormSuscription").valid()) {
+            NewCustomerCreate();
+        }
 
 
-});
-function NewCustomerCreate(e) {
-    $.MessageBox({
-        buttonDone: "Yes",
-        buttonFail: "No",
-        message: " Are you sure?"
-    }).done(function () {
-        //$(".checkboxCert:checked").removeAttr('disabled');
-        $('#createSubmitFormSuscription').ajaxSubmit({
-            success: function (result) {
-                //var url;
-                debugger;
-                if (result.Success) {
-                    $.ajax({
-                        url: "/Suscription/Create",
-                        type: 'post',
-                        async: false,
-                        success: function (data) {
-                            debugger
-                            $('section.content').html(data);
-                            SuccessAlert(result.Msg, 5000);
-                            document.getElementById('alert-success').scrollIntoView();
-                        }
-                    })
-                } else {
-                    ErrorAlert(result.Msg, 5000);
-                    document.getElementById('alert-error').scrollIntoView();
-                }
-            },
-            error: function (data) {
-                ErrorAlert(data.responseText, 15000)
-            }
-        });
-    }).fail(function () {
     });
-}
+    function NewCustomerCreate(e) {
+        var customerId=$('#CustId').val();
+        $.MessageBox({
+            buttonDone: "Yes",
+            buttonFail: "No",
+            message: " Are you sure?"
+        }).done(function () {
+            //$(".checkboxCert:checked").removeAttr('disabled');
+            $('#createSubmitFormSuscription').ajaxSubmit({
+                success: function (result) {
+                    //var url;
+                    debugger;
+                    if (result.Success) {
+                        $.ajax({
+                            url: "/Suscription/List",
+                            type: 'post',
+                            async: false,
+                            data:{customerId:customerId},
+                            success: function (data) {
+                                debugger
+                                $('#account-pop-up-div').modal('toggle');
+                                $('.suscription-detail').html("");
+                                $('.suscription-detail').html(data);
+                                SuccessAlert(result.Msg, 5000);
+                                document.getElementById('alert-success').scrollIntoView();
+                            }
+                        })
+                    } else {
+                        ErrorAlert(result.Msg, 5000);
+                        document.getElementById('alert-error').scrollIntoView();
+                    }
+                },
+                error: function (data) {
+                    ErrorAlert(data.responseText, 15000)
+                }
+            });
+        }).fail(function () {
+        });
+    }
 </script>

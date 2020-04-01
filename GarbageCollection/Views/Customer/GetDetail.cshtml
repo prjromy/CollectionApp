@@ -1,46 +1,36 @@
 ﻿
 @model  BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
 @using BussinessLogic.Service
-<legend style="font-size:14px;font-weight:bold">Client-Details</legend>
-<div class="col-md-12">
-    <div class="col-md-4">
-        Customer No : @Model.CustomerName
-    </div>
-    <div class="col-md-4">
-        Mobile No: @Model.MobileNo
-    </div>
-    <div class="col-md-4">
-        Address : @Model.Address
-    </div>
-</div>
+<div class="box box-success" style="border-top-color: #8ce8be;border-top:2px solid #8ce8be">
+    <div class="box-header with-border">
+        <legend style="font-size:16px;font-weight:bold">Customer-Details</legend>
+        <div class="col-md-12">
+            <div class="col-md-4" style="font-size: 14px;font-weight: 400;">
+                Customer Name : @Model.CustomerName
+            </div>
+            <div class="col-md-4" style="font-size: 14px; font-weight: 400;">
+                Mobile No : @Model.MobileNo
+            </div>
+            <div class="col-md-4" style="font-size: 14px; font-weight: 400;">
+                Address : @Model.Address
+            </div>
+        </div>
 
-<div class="col-md-12" style="margin-top:10px;">
-    <div class="col-md-4">
-        @{ 
-            var customertype = CommonUtilityService.CustomerType(@Model.CustomerTypeId);
-        }
-        Customer Type : @Html.DisplayFor(x => customertype)
-    </div>
-    <div class="col-md-4">
-       Pan No : @Model.PanNo 
-    </div>
-    @*<div class="col-md-4">
-        @Html.DisplayFor(x => x.CustomerName)
-    </div>*@
-</div>
+        <div class="col-md-12" style="margin-top:20px;">
+            <div class="col-md-4" style="font-size: 14px; font-weight: 400;">
+                Pan No : @Model.PanNo
+            </div>
+            <div class="col-md-8" style="font-size: 14px; font-weight: 400;">
+                @{
+                    var customertype = CommonUtilityService.CustomerType(@Model.CustomerTypeId);
+                }
+                Customer Type : @Html.DisplayFor(x => customertype)
+            </div>
 
-<style>
-    .fieldset {
-    display: block;
-    margin-left: 0px;
-    margin-right: 0px;
-    padding-top: 0.35em;
-    padding-bottom: 0.625em;
-    padding-left: 0.75em;
-    padding-right: 0.75em;
-    border: 2px groove rgba(37, 208, 210, 0.15);
-    border-radius: 5px;
-    margin-bottom: 10px;
-    position: relative;
-}
-</style>
+            @*<div class="col-md-4">
+                    @Html.DisplayFor(x => x.CustomerName)
+                </div>*@
+        </div>
+        </div>
+    </div>
+

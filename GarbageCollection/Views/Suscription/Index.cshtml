@@ -14,8 +14,8 @@
         </div><!-- /.box-tools -->
             
             <fieldset>
-                <legend style="font-size:14px;font-weight:bold">Suscription Detail</legend>
-                <button class="button new-suscription">New Suscription</button>
+                <legend style="font-size:20px;font-weight:bold">Suscription Setup</legend>
+               
                 <div class="customer-search-box">
                     @Html.Partial("~/Views/Customer/_CustomerAdd.cshtml", Model)
                 </div>
@@ -25,14 +25,21 @@
 
 
         <fieldset>
-           
-               
-            <div class="customer-detail">
-            </div>
 
-            <div class="suscription-detail">
-            </div>
+           
+                    <div class="customer-detail" style="margin-top: 30px">
+                    
+                </div>
         </fieldset>
+        <fieldset>
+           
+                    <div class="suscription-detail" style="margin-top: 40px">
+                    
+                </div>
+
+        </fieldset>
+
+           
 
         </div>
     </div>
@@ -41,7 +48,7 @@
 <script src="~/Scripts/jquery.form.min.js"></script>
 
 <script>
-    $("button.new-suscription").on('click', function (e) {
+    $(".new-suscription").on('click', function (e) {
         debugger;
 
         var customerid = $('.cust-id').val();
@@ -69,3 +76,20 @@
 });
 
 </script>
+
+
+<style>
+    .fieldset {
+        display: block !important;
+        margin-left: 0px !important;
+        margin-right: 0px !important;
+        padding-top: 0.35em !important;
+        padding-bottom: 0.625em !important;
+        padding-left: 0.75em !important;
+        padding-right: 0.75em !important;
+        border: 2px groove rgba(37, 208, 210, 0.15) !important;
+        border-radius: 5px !important;
+        margin-bottom: 10px !important;
+        position: relative !important;
+    }
+</style>

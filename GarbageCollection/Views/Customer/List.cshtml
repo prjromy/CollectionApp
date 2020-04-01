@@ -1,7 +1,7 @@
 ﻿@model BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
 @using BussinessLogic.Service
 
-@using PagedList
+
 
 <div class="box  customer-list-index">
     <input type="button" value="New Customer" id="btn-create" class="btn btn-md btn-success btn-create" style="border:none" />
@@ -18,9 +18,6 @@
             </div><!-- /.box-tools -->
 
             <div class="col-md-12">
-                <div class="box-tools col-md-3  form-group" id="customer-name">
-                    @Html.TextBox("CustomerName", "", htmlAttributes: new { @class = "form-control", @id = "CustomerName", @placeholder = "CustomerName" })
-                </div>
                 <div class="box-tools col-md-3  form-group" id="customer-no">
                     @Html.TextBox("CustomerNo", "", htmlAttributes: new { @class = "form-control", @id = "CustomerNo", @placeholder = "Customer No" })
                 </div>
@@ -92,15 +89,13 @@
         e.stopImmediatePropagation();
         var parentContainer = $(this).parents()
         var me = $(this);
-        var customername = parentContainer.find("#customer-name").find("#CustomerNo").val();
         var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
         var contact = parentContainer.find("#search-contact").find("#txtContact").val();
         var cType = parentContainer.find('#custtype').find("#ctypeid").val();
         var container = parentContainer.find("div.cust-page-list")
-        var url = "?customername=" + customername + "&customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
-
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -109,14 +104,13 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-        var customername = parentContainer.find("#customer-name").find("#CustomerNo").val();
         var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
         var contact = parentContainer.find("#search-contact").find("#txtContact").val();
         var cType = parentContainer.find('#custtype').find("#ctypeid").val();
         var container = parentContainer.find("div.cust-page-list")
-        var url = "?customername="+customername+"&customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
         getPageNumberChangeData(url, container, me)
     });
     $("div.cust-page-list").on('change', 'input#pageSize', function (e) {
@@ -124,15 +118,13 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-        var customername = parentContainer.find("#customer-name").find("#CustomerNo").val();
         var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
         var contact = parentContainer.find("#search-contact").find("#txtContact").val();
         var cType = parentContainer.find('#custtype').find("#ctypeid").val();
         var container = parentContainer.find("div.cust-page-list")
-        var url = "?customername=" + customername + "&customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
-
+        var url = "?customerno="+customerno+"&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
         getPageSizeChangeData(url, container, me)
     });
     $(".customer-list-index").on('click', '.btn-searchCustomer', function (e) {
@@ -140,7 +132,6 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-        var customername = parentContainer.find("#customer-name").find("#CustomerNo").val();
         var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
@@ -152,7 +143,7 @@
             contentType: "html",
             type: "Get",
             url: "/Customer/_List",
-            data: {customername:customername, customerno:customerno,name: name, address: address, contact: contact, cType: cType },
+            data: { customerno:customerno,name: name, address: address, contact: contact, cType: cType },
             success: function (data) {
                 $(".customer-list-index").find("div.Customer-List").html("");
                 $(".customer-list-index").find("div.Customer-List").html(data);

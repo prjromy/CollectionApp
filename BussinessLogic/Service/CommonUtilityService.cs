@@ -24,9 +24,9 @@ namespace BussinessLogic.Service
             var customerType = uow.Repository<CustomerType>().FindBy(x=>x.status==1).ToList();
             return new SelectList(customerType, "ID", "RFUniDesc");
         }
-        public static bool AllowEdit()
+        public static bool AllowEdit(int menuId)
         {
-            var AllowDeposit = commonService.GetUserAssignMenu(25 ,Global.UserId);
+            var AllowDeposit = commonService.GetUserAssignMenu(menuId, Global.UserId);
             if (AllowDeposit != null)
             {
                 return true;
@@ -37,9 +37,9 @@ namespace BussinessLogic.Service
             }
         }
 
-        public static bool AllowStatusChange()
+        public static bool AllowStatusChange(int menuId)
         {
-            var AllowDeposit = commonService.GetUserAssignMenu(26, Global.UserId);
+            var AllowDeposit = commonService.GetUserAssignMenu(menuId, Global.UserId);
             if (AllowDeposit != null)
             {
                 return true;
@@ -63,11 +63,11 @@ namespace BussinessLogic.Service
         public static SelectList CustomerSearchOption()
         {
             List<SelectListItem> objCustomerSrchOption = new List<SelectListItem>();
-
+            objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Name", Value = "Customer Name" });
             objCustomerSrchOption.Add(new SelectListItem { Text = "Customer No", Value = "Customer No" });
             objCustomerSrchOption.Add(new SelectListItem { Text = "Mobile Number", Value = "Mobile No" });
             objCustomerSrchOption.Add(new SelectListItem { Text = "Address", Value = "Address" });
-            objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Type", Value = "Customer Type" });
+            //objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Type", Value = "Customer Type" });
             return new SelectList(objCustomerSrchOption, "Value", "Text");
         }
 

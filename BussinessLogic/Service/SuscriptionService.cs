@@ -1,5 +1,6 @@
 ﻿using BuisnessObject.ViewModel;
 using BussinessLogic.Repository;
+using DataAccess.DatabaseModel;
 using Loader.Models;
 using System;
 using System.Collections.Generic;
@@ -16,12 +17,13 @@ namespace BussinessLogic.Service
         ReturnBaseMessageModel returnMessage = null;
 
         private GenericUnitOfWork uow = null;
-
+        private CustomerService customer = null;
+     
         public SuscriptionService()
         {
             returnMessage = new ReturnBaseMessageModel();
             uow = new GenericUnitOfWork();
-
+            customer = new CustomerService();
         }
         public ReturnBaseMessageModel Save(MainViewModel.SubscriptionViewModel suscription)
         {
@@ -64,15 +66,43 @@ namespace BussinessLogic.Service
             }
         }
 
+        public MainViewModel.SubscriptionViewModel getSingleSuscriptonList(int? sno)
+        {
+        
+            var subsList = uow.Repository<Subscription>().FindBy(x => x.Subsid == sno);
+
+            MainViewModel.SubscriptionViewModel subsSingleList = subsList.Select(x => new MainViewModel.SubscriptionViewModel
+            {
+                Subsid=x.Subsid,
+               CustId=x.CustId,
+               LedgerId=x.LedgerId,
+               MonthlyAmount=x.MonthlyAmount,
+               LocationID=x.LocationID,
+               EffectiveDate=x.EffectiveDate,
+               Remarks=x.Remarks
+               
+            }).SingleOrDefault();
+          
+            return subsSingleList;
+        }
+
+
         public List<MainViewModel.SubscriptionViewModel> getSuscriberList(int? customerno, string Name, string Address, string contact, int? cType, int pageNo, int pageSize)
         {
             try
             {
 
                 string query = "";
-                query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where CustId=  "+ customerno;
-                    
-                    //where  CustomerName like'%" + Name.Trim() + "%'";
+                if (customerno == null)
+                {
+                    query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where status=1";
+
+                }
+                else
+                {
+                    query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where CustId=  " + customerno+ " and status=1";
+                }
+                //where  CustomerName like'%" + Name.Trim() + "%'";
 
                 //if (Name != "")
                 //{
@@ -95,6 +125,7 @@ namespace BussinessLogic.Service
                 //{
                 //    query += " and CustTypeId =" + cType;
                 //}
+
                 query += @" ORDER BY  SubsNo
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
@@ -108,6 +139,18 @@ namespace BussinessLogic.Service
                 throw;
             }
 
+        }
+
+        public ReturnBaseMessageModel changeStatus(int? sId)
+        {
+            var subscription = uow.Repository<Subscription>().FindBy(x => x.Subsid == sId).FirstOrDefault();
+            subscription.Status = 0;
+            uow.Repository<Subscription>().Edit(subscription);
+            uow.Commit();
+            returnMessage.Msg = "Status Changed Successfully!";
+            returnMessage.Success = true;
+            returnMessage.BoolValue = true;
+            return returnMessage;
         }
     }
 }

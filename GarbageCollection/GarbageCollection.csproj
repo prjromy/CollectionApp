@@ -224,6 +224,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CollectionController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\SuscriptionController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1482,6 +1483,7 @@
     <Content Include="Views\Customer\GetDetail.cshtml" />
     <Content Include="Views\Suscription\List.cshtml" />
     <Content Include="Views\Suscription\_List.cshtml" />
+    <Content Include="Views\Collection\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

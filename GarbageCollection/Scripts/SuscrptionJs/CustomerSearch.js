@@ -28,6 +28,35 @@ $(document).on("click", "#btn-customer-search", function (e) {
     });
 
 });
+$(document).on("keypress", "#SearchParameter", function (e) {
+    debugger;
+    if (e.which == 13) {
+        e.stopImmediatePropagation();
+        debugger
+        var searchValue = $("#SearchParameter").val();
+        var selectedOption = $("#SearchOption option:selected").val();
+        var listBox = $(this).parents().find(".listBox").find(".multiselect").val();
+        var mode = $("#Mode").val();
+        var custType = $("#CustomerType").val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/Customer/_CustomerInfoList',
+            data: {
+                searchParam: searchValue,
+                searchOption: selectedOption,
+                listBox: listBox,
+                mode: mode,
+                custType: custType
+            },
+            traditional: true,
+            success: function (result) {
+                $("#customerDetails").html("");
+                $("#customerDetails").html(result);
+            },
+        });
+    }
+});
 
 $(document).on('click', '.table-click-customer table tr', function (e) {
     debugger;
@@ -106,7 +135,10 @@ $(document).on('click', '.table-click-customer table tr', function (e) {
                         //    $(listBox).trigger("chosen:updated");
 
                         //}
-           
+                if (":not(objCheck)") {
+                    $(".table-click-customer table tr:not(objCheck)").prop('checked', false);
+                    $(".table-click-customer table tr:not(objCheck)").css('background-color', '#ffffff');
+                } 
                         objCheck.prop('checked', true);
                         $(closestTr).css('background-color', '#c2c4c3');
                         $('.CommonSearchDiv').find('#CustomerName').val("");
@@ -222,7 +254,7 @@ $(' #CustomerName').on('keyup', function () {
         data: {
             customerId: customerId
         },
-        
+       
         success: function (result) {
             debugger;
        
@@ -237,7 +269,7 @@ $(' #CustomerName').on('keyup', function () {
         data: {
             customerId: customerId
         },
-
+        
         success: function (result) {
             debugger;
 
