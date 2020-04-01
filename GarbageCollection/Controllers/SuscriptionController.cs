@@ -29,6 +29,7 @@ namespace GarbageCollection.Controllers
         public ActionResult Index()
         {
             MainViewModel.SubscriptionViewModel suscriptionModel = new MainViewModel.SubscriptionViewModel();
+            suscriptionModel.ModelFrom= "Suscription";
             return PartialView(suscriptionModel);
         }
         public ActionResult Create(int? sNo,int? customerid,string custname="")
@@ -94,9 +95,9 @@ namespace GarbageCollection.Controllers
                 //{
                 //    customerViewModel.customerViewModelList.Add(item);
                 //}
+                
 
                 return PartialView(customerViewModel);
-
 
             }
             catch (Exception ex)

@@ -165,7 +165,7 @@ $(document).on("click", ".addandClose", function (e) {
     //var closestTr = $('.table-click-customer table tr').closest('tr');
     //var objCheck = $('.table-click-customer table tr').find('.Ischeck');
     //var isChecked = $(closestTr).find('.Ischeck').prop("checked");
-    
+   
   
     var AccountName = "";
     var customerId = $('.cust-id').val();
@@ -247,36 +247,66 @@ $(document).on("click", ".addandClose", function (e) {
 });
 
 $(' #CustomerName').on('keyup', function () {
-    var customerId = $('#CustId').val();
-    $.ajax({
-        type: 'GET',
-        url: '/Customer/GetDetail',
-        data: {
-            customerId: customerId
-        },
-       
-        success: function (result) {
-            debugger;
-       
-            $('.customer-detail').html(result);
+    var mode = $("#btncustomersearch").attr("data-mode");
+    
+        var customerId = $('#CustId').val();
+        $.ajax({
+            type: 'GET',
+            url: '/Customer/GetDetail',
+            data: {
+                customerId: customerId
+            },
 
-        },
-    });
+            success: function (result) {
+                debugger;
+               
+                $('.customer-detail').html(result);
 
-    $.ajax({
-        type: 'GET',
-        url: '/Suscription/List',
-        data: {
-            customerId: customerId
-        },
+            },
+        });
+        if (mode == "Suscription") {
+              $.ajax({
+            type: 'GET',
+            url: '/Suscription/List',
+            data: {
+                customerId: customerId,
+               
+            },
+
+            success: function (result) {
+                debugger;
+               
+                    $('.suscription-detail').html(result);
+                
+               
+                 
+                
+            },
+        });
+        }
+        if (mode == "Collection") {
+            $.ajax({
+                type: 'GET',
+                url: '/Collection/CollectionEntry',
+                data: {
+                    customerId: customerId,
+
+                },
+
+                success: function (result) {
+                    debugger;
+
+                   $('.collection-detail').html(result);
+
+
+
+                },
+            });
+        }
+      
+   
+  
         
-        success: function (result) {
-            debugger;
-
-            $('.suscription-detail').html(result);
-
-        },
-    });
 
 
 })

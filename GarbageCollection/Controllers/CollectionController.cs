@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BuisnessObject.ViewModel;
+using BussinessLogic.Service;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +11,48 @@ namespace GarbageCollection.Controllers
 {
     public class CollectionController : Controller
     {
-        // GET: Collection
-        public ActionResult Index()
+        ReturnBaseMessageModel returnMessage = null;
+        private CollectionService collection = null;
+        private CustomerService customerService = null;
+
+
+        public CollectionController()
         {
-            return View();
+            returnMessage = new ReturnBaseMessageModel();
+
+            collection = new CollectionService();
+            customerService = new CustomerService();
+
+        }
+        public ActionResult Index() {
+            MainViewModel.SubscriptionViewModel collection = new MainViewModel.SubscriptionViewModel();
+            collection.ModelFrom = "Collection";
+            return PartialView(collection);
+        }
+
+        public ActionResult CollectionEntry(int? customerId)
+        {
+            try
+            {
+                 MainViewModel.CollectionViewModel CollectionViewModel = new MainViewModel.CollectionViewModel();
+                var suscriberList = collection.getSuscriberListEntry(customerId);
+                CollectionViewModel.collectionList = suscriberList;
+
+                //foreach (var item in customerList)
+                //{
+                //    customerViewModel.customerViewModelList.Add(item);
+                //}
+
+
+                return PartialView(CollectionViewModel);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }

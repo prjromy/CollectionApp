@@ -78,6 +78,7 @@
     <Compile Include="Repository\GenericUnitOfWork.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\IGenericUnitOfWork.cs" />
+    <Compile Include="Service\CollectionService.cs" />
     <Compile Include="Service\CommonService.cs" />
     <Compile Include="Service\CommonUtilityService.cs" />
     <Compile Include="Service\CustomerService.cs" />

@@ -87,8 +87,24 @@ namespace BuisnessObject.ViewModel
             public int TotalCount { get; set; }
             public List<SubscriptionViewModel> suscriberViewModelList { get; set; }
             public IPagedList<SubscriptionViewModel> suscriberPagedList { get; set; }
+            public string ModelFrom { get; set; }
         }
-
+        public class CollectionViewModel
+        {
+            public int DueId { get; set; }
+            public Nullable<int> SubsId { get; set; }
+            public Nullable<int> Fyid { get; set; }
+            public Nullable<int> BillNo { get; set; }
+            public Nullable<int> Year { get; set; }
+            public Nullable<int> Month { get; set; }
+            public Nullable<decimal> MonthlyDueAmt { get; set; }
+          
+            public Nullable<decimal> ReceivedAmount { get; set; }
+            public Nullable<System.DateTime> PostedOn { get; set; }
+            public string ModelFrom { get; set; }
+            public Nullable<System.DateTime> EffectiveDate { get; set; }
+            public List<CollectionViewModel> collectionList { get; set; }
+        }
         public class LedgerViewModel
         {
 

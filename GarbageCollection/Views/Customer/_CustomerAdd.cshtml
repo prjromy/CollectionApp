@@ -1,4 +1,9 @@
-﻿@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+﻿
+
+@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+
+  
+
 @using BussinessLogic.CustomHelper
 
 
@@ -6,7 +11,16 @@
 <div class="form-group customer-add">
     @Html.LabelFor(model => model.CustomerName, new { @class = "control-label col-md-2" })
     <div class="col-md-6">
-        @Html.CustomerSearch(x => x.CustomerName, ECustomerSearchType.Suscription)
+        @if (Model.ModelFrom == "Suscription")
+        {
+            @Html.CustomerSearch(x => x.CustomerName, ECustomerSearchType.Suscription)
+        }
+        @if (Model.ModelFrom == "Collection")
+        {
+
+        
+            @Html.CustomerSearch(x => x.CustomerName, ECustomerSearchType.Collection)
+        }
         @Html.HiddenFor(x=>x.CustId,new { @class="cust-id"})
         @Html.ValidationMessageFor(model => model.CustId, "", new { @class = "text-danger" })
     </div>

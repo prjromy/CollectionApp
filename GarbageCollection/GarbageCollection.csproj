@@ -1484,6 +1484,7 @@
     <Content Include="Views\Suscription\List.cshtml" />
     <Content Include="Views\Suscription\_List.cshtml" />
     <Content Include="Views\Collection\Index.cshtml" />
+    <Content Include="Views\Collection\CollectionEntry.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

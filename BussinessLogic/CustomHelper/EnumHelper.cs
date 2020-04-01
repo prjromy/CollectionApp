@@ -12,7 +12,8 @@ namespace BussinessLogic.CustomHelper
     {
         [Description("Suscription")]
         Suscription = 1,
-      
+        [Description("Collection")]
+        Collection = 2,
 
     }
 

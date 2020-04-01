@@ -1,1 +1,49 @@
-﻿
+﻿@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+@{
+    
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<div id='account-pop-up-div' class='modal fade verfier-list' role='dialog'>
+</div>
+<div class="box box-warning">
+    <div class="box-header with-border">
+
+
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div><!-- /.box-tools -->
+
+        <fieldset>
+            <legend style="font-size:20px;font-weight:bold">Collection Setup</legend>
+
+            <div class="customer-search-box">
+                @Html.Partial("~/Views/Customer/_CustomerAdd.cshtml", Model)
+            </div>
+
+        </fieldset>
+
+
+
+        <fieldset>
+
+
+            <div class="collection-detail" style="margin-top: 30px">
+
+            </div>
+        </fieldset>
+        <fieldset>
+
+           
+
+        </fieldset>
+
+
+
+    </div>
+</div>
+<link href="~/Content/Custom/Customer.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<script src="~/Scripts/jquery.form.min.js"></script>
