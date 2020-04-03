@@ -8,9 +8,11 @@ using BussinessLogic.Service;
 using System.Data.Entity.Validation;
 using PagedList;
 using BussinessLogic.CustomHelper;
+using Loader;
 
 namespace GarbageCollection.Controllers
 {
+    [MyAuthorize]
     public class CustomerController : Controller
     {
         ReturnBaseMessageModel returnMessage = null;

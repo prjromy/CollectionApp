@@ -7,9 +7,11 @@ using System.Web.Mvc;
 using BussinessLogic.Service;
 using System.Data.Entity.Validation;
 using PagedList;
+using Loader;
 
 namespace GarbageCollection.Controllers
 {
+    [MyAuthorize]
     public class SuscriptionController : Controller
     {
         ReturnBaseMessageModel returnMessage = null;

@@ -49,6 +49,7 @@
         <AssociationConnector Association="GarbageCollectionDBModel.UserRole" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Customer" Width="1.5" PointX="0.75" PointY="18.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Subscription" Width="1.5" PointX="10.375" PointY="7.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.SubscriptionCollection" Width="1.5" PointX="18.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

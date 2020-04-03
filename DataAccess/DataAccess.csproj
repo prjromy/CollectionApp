@@ -177,6 +177,9 @@
     <Compile Include="DatabaseModel\Subscription.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModel\SubscriptionCollection.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModel\SubscriptionDue.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>

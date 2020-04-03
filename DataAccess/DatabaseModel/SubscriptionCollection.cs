@@ -12,21 +12,20 @@ namespace DataAccess.DatabaseModel
     using System;
     using System.Collections.Generic;
     
-    public partial class Subscription
+    public partial class SubscriptionCollection
     {
-        public int Subsid { get; set; }
-        public Nullable<int> SubsNo { get; set; }
-        public int CustId { get; set; }
-        public Nullable<System.DateTime> EffectiveDate { get; set; }
-        public Nullable<int> LedgerId { get; set; }
-        public Nullable<decimal> MonthlyAmount { get; set; }
-        public Nullable<int> LocationID { get; set; }
-        public Nullable<int> Status { get; set; }
-        public string Remarks { get; set; }
+        public int SubsCollId { get; set; }
+        public Nullable<int> CustId { get; set; }
+        public int SubsId { get; set; }
+        public Nullable<int> CollectorId { get; set; }
+        public Nullable<int> CollectionTypeId { get; set; }
+        public Nullable<decimal> CollectionAmt { get; set; }
+        public Nullable<decimal> DiscountAmt { get; set; }
+        public Nullable<System.DateTime> CollectionDate { get; set; }
+        public Nullable<int> Fyid { get; set; }
         public Nullable<int> PostedBy { get; set; }
         public Nullable<System.DateTime> PostedOn { get; set; }
-        public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
-        public Nullable<decimal> Balance { get; set; }
+        public Nullable<int> ModifiedBy { get; set; }
     }
 }

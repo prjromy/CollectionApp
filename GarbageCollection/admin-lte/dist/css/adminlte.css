@@ -5917,7 +5917,7 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
 }
 
 .modal-header .close, .modal-header .mailbox-attachment-close {
-  /*padding: 1rem;*/
+  padding: 1rem;
   margin: -1rem -1rem -1rem auto;
 }
 
@@ -5990,7 +5990,7 @@ a.close.disabled, a.disabled.mailbox-attachment-close {
 @media (min-width: 992px) {
   .modal-lg,
   .modal-xl {
-    max-width: 800px;
+    max-width: 870px;
   }
 }
 

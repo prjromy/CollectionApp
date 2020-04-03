@@ -69,15 +69,15 @@ $(document).on('click', '.table-click-customer table tr', function (e) {
     var custType = $(this).parents().find("#CustomerType").val();
     
     var me = $(this);
-    if (isChecked == true) {
-        //  objCheck.prop('checked', false);
-        //  $(closestTr).removeAttr('style');
-        //  var customerName = $(closestTr).find('.Customername').text();
+    if (isChecked == false) {
+    //    objCheck.prop('checked', false);
+    //    //  $(closestTr).removeAttr('style');
+    //    //  var customerName = $(closestTr).find('.Customername').text();
 
-        //  var chosenValueName = $('select.multiselect option:contains("' + customerName + '")').remove()
-        //var a=  listBox.chosen().trigger("chosen:updated");
-        return;
-    } else {
+    //    //  var chosenValueName = $('select.multiselect option:contains("' + customerName + '")').remove()
+    //    //var a=  listBox.chosen().trigger("chosen:updated");
+    //    return;
+    //} else {
 
         var customerId = objCheck.val();
         var listBoxIDs = listBox.val();
@@ -139,7 +139,7 @@ $(document).on('click', '.table-click-customer table tr', function (e) {
                     $(".table-click-customer table tr:not(objCheck)").prop('checked', false);
                     $(".table-click-customer table tr:not(objCheck)").css('background-color', '#ffffff');
                 } 
-                        objCheck.prop('checked', true);
+                        //objCheck.prop('checked', true);
                         $(closestTr).css('background-color', '#c2c4c3');
                         $('.CommonSearchDiv').find('#CustomerName').val("");
                         $('.cust-id').val("");
@@ -259,8 +259,12 @@ $(' #CustomerName').on('keyup', function () {
 
             success: function (result) {
                 debugger;
-               
+                if (mode == "Suscription") {
                 $('.customer-detail').html(result);
+                }
+                if (mode == "Collection") {
+                    $('.customer-collection-detail').html(result);
+                }
 
             },
         });

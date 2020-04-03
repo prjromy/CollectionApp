@@ -1,0 +1,133 @@
+﻿@model BuisnessObject.ViewModel.MainViewModel.CollectionViewModel
+
+<div class="box box-warning">
+    <div class="box-header with-border">
+
+
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div><!-- /.box-tools -->
+        <table class="table table-bordered table-striped table-hover" style="margin-top: 25px;">
+
+            <tr>
+                <th><input type="checkbox" id="Main">Auto</th>
+                <th>Subscription No.</th>
+                @*<th>Subscription Date</th>*@
+                <th>@Html.DisplayNameFor(x=>x.LocationName)</th>
+                <th>@Html.DisplayNameFor(x => x.MonthlyDueAmt)</th>
+                <th>@Html.DisplayNameFor(x => x.ReceivedAmount)</th>
+                <th>@Html.DisplayNameFor(x => x.Discount)</th>
+                <th>Status</th>
+                
+            </tr>
+
+
+            @foreach (var item in Model.collectionList)
+    {
+
+    <tr>
+        <td>@Html.CheckBoxFor(x=>x.IsChecked,new { @class="checkall"})</td>
+        <td>
+            @item.BillNo
+
+        </td>
+        <td>
+            @item.LocationName
+
+        </td>
+        <td>
+            @item.MonthlyDueAmt
+
+        </td>
+        <td>
+            @Html.TextBoxFor(x=>x.ReceivedAmount,new { @class="form-control col-md-5 Amount"})
+
+        </td>
+        <td>
+            @Html.TextBoxFor(x => x.Discount, new { @class = "form-control col-md-5 Discount" })
+
+        </td>
+        @if (@item.Status == "Cleared")
+        {
+            <td><span class="label label-success" style="font-size: 12px;">@item.Status</span></td>
+        }
+        else if (@item.Status == "Pending")
+        {
+            <td><span class="label label-primary" style="font-size: 12px;">@item.Status</span></td>
+
+        }
+        else
+        {
+            <td><span class="label label-info" style="font-size: 12px;">@item.Status</span></td>
+
+        }
+
+
+
+    </tr>
+   
+            }
+            @*<tr><td colspan="3"> <b>Discount</b></td> <td> @Html.TextBoxFor(x => x.Discount, new { @class = "form-control col-md-5 Amount" })</td></tr>*@
+            <tr> <td colspan="4"><b>Total</b></td><td><output id="result"></output></td> <td><output id="discount"></output></td></tr>
+           
+
+           
+
+        </table>
+
+        </div>
+    </div>
+
+<div class="form-group pull-right">
+    <div class="col-md-offset-2 col-md-10 ">
+
+
+
+        <input type="button" value="Save" class="btn btn-success btn-save" />
+
+    </div>
+</div>
+
+<script>
+    $('.Amount').on('input',function () {
+        var totalsum = 0;
+        $('.Amount').each(function () {
+            var totalVal = $(this).val();
+            if ($.isNumeric(totalVal)) {
+
+                totalsum += parseFloat(totalVal);
+            }
+    })
+   
+        $('#result').html(totalsum.toFixed(2));
+
+
+    });
+    $('.Discount').on('input', function () {
+        var totalsum = 0;
+        $('.Discount').each(function () {
+            var totalVal = $(this).val();
+            if ($.isNumeric(totalVal)) {
+
+                totalsum += parseFloat(totalVal);
+            }
+        })
+
+        $('#discount').html(totalsum.toFixed(2));
+
+
+    });
+    
+    $('#Main').on('click', function () {
+        debugger;
+        if( $('#Main').is(":checked")) {
+            $('.checkall').prop("checked", true)
+        } else {
+            $('.checkall').prop("checked", false)
+        }
+
+
+
+
+    })
+</script>

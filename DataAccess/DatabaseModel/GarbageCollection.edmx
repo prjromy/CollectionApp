@@ -132,6 +132,25 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="PostedOn" Type="smalldatetime" />
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="smalldatetime" />
+          <Property Name="Balance" Type="money" />
+        </EntityType>
+        <EntityType Name="SubscriptionCollection">
+          <Key>
+            <PropertyRef Name="SubsCollId" />
+          </Key>
+          <Property Name="SubsCollId" Type="int" Nullable="false" />
+          <Property Name="CustId" Type="int" />
+          <Property Name="SubsId" Type="int" Nullable="false" />
+          <Property Name="CollectorId" Type="int" />
+          <Property Name="CollectionTypeId" Type="int" />
+          <Property Name="CollectionAmt" Type="money" />
+          <Property Name="DiscountAmt" Type="money" />
+          <Property Name="CollectionDate" Type="smalldatetime" />
+          <Property Name="Fyid" Type="int" />
+          <Property Name="PostedBy" Type="int" />
+          <Property Name="PostedOn" Type="smalldatetime" />
+          <Property Name="ModifiedOn" Type="smalldatetime" />
+          <Property Name="ModifiedBy" Type="int" />
         </EntityType>
         <EntityType Name="SubscriptionDue">
           <Key>
@@ -564,6 +583,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriptionCollection" EntityType="Self.SubscriptionCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionDue" EntityType="Self.SubscriptionDue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseBranch" EntityType="Self.LicenseBranch" Schema="fin" store:Type="Tables" />
           <EntitySet Name="BloodGroup" EntityType="Self.BloodGroup" Schema="LG" store:Type="Tables" />
@@ -712,6 +732,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           </AssociationSet>
           <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
           <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
+          <EntitySet Name="SubscriptionCollections" EntityType="GarbageCollectionDBModel.SubscriptionCollection" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1241,6 +1262,25 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="PostedOn" Type="DateTime" Precision="0" />
           <Property Name="ModifiedBy" Type="Int32" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
+          <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="SubscriptionCollection">
+          <Key>
+            <PropertyRef Name="SubsCollId" />
+          </Key>
+          <Property Name="SubsCollId" Type="Int32" Nullable="false" />
+          <Property Name="CustId" Type="Int32" />
+          <Property Name="SubsId" Type="Int32" Nullable="false" />
+          <Property Name="CollectorId" Type="Int32" />
+          <Property Name="CollectionTypeId" Type="Int32" />
+          <Property Name="CollectionAmt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DiscountAmt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CollectionDate" Type="DateTime" Precision="0" />
+          <Property Name="Fyid" Type="Int32" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1694,6 +1734,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySetMapping Name="Subscriptions">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
               <MappingFragment StoreEntitySet="Subscription">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
@@ -1707,6 +1748,25 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="CustId" ColumnName="CustId" />
                 <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
                 <ScalarProperty Name="Subsid" ColumnName="Subsid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriptionCollections">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.SubscriptionCollection">
+              <MappingFragment StoreEntitySet="SubscriptionCollection">
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Fyid" ColumnName="Fyid" />
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
+                <ScalarProperty Name="DiscountAmt" ColumnName="DiscountAmt" />
+                <ScalarProperty Name="CollectionAmt" ColumnName="CollectionAmt" />
+                <ScalarProperty Name="CollectionTypeId" ColumnName="CollectionTypeId" />
+                <ScalarProperty Name="CollectorId" ColumnName="CollectorId" />
+                <ScalarProperty Name="SubsId" ColumnName="SubsId" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="SubsCollId" ColumnName="SubsCollId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

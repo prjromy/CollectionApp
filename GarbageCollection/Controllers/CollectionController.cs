@@ -1,5 +1,6 @@
 ﻿using BuisnessObject.ViewModel;
 using BussinessLogic.Service;
+using Loader;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Web.Mvc;
 
 namespace GarbageCollection.Controllers
 {
+    [MyAuthorize]
     public class CollectionController : Controller
     {
         ReturnBaseMessageModel returnMessage = null;

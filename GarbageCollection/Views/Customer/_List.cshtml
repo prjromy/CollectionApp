@@ -60,7 +60,7 @@
 
                 </td>
                
-                    @if (CommonUtilityService.AllowEdit())
+                    @if (CommonUtilityService.AllowEdit(25))
                     {
                         <td>
                             <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Cid" onclick="EditCustomerList(@item.Cid)" data-toggle="tooltip" title="Edit"></button>
@@ -68,7 +68,7 @@
                     }
                
                
-                    @if (CommonUtilityService.AllowStatusChange())
+                    @if (CommonUtilityService.AllowStatusChange(26))
                     {
                         <td>
                             @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
@@ -237,9 +237,10 @@
                                     $('.slider').css(
                                     'background-color', '#46bd7b'
                                     )
-                                    $('.slider').addClass('change').addClass('change');
-                                        //css('transform', 'translateX(0px)')
-                                   
+                                    //$('.slider').addClass('change').addClass('change');
+                                    //css('transform', 'translateX(0px)')
+                                    debugger;
+                                    $('.IsSelected').prop("checked", $(this).is(":checked"))
                                     div.dialog("close");
                                     
                                 }

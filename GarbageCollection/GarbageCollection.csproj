@@ -1285,6 +1285,8 @@
     <Content Include="Scripts\ch-dialog.js" />
     <Content Include="Scripts\ch-dpicker.js" />
     <Content Include="Scripts\ch-treeview.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\SuscrptionJs\SuscriptionPage.js" />
     <Content Include="Scripts\SuscrptionJs\CustomerSearch.js" />
     <Content Include="Scripts\date.format.js" />
@@ -1356,7 +1358,6 @@
     <Content Include="Scripts\DatePicker\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Scripts\DatePicker\images\ui-bg_flat_10_000000_40x100.png" />
     <Content Include="Scripts\DatePicker\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Scripts\jquery-1.11.1.ui.min.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
@@ -1365,8 +1366,6 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-message-box.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.js" />
-    <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\jquery.form.min.js" />
     <Content Include="Scripts\jquery.validate.js" />

@@ -161,14 +161,140 @@
         e.stopImmediatePropagation();
         debugger;
         var parentContainer = $(this).parents()
-       
+
         var me = $(this);
         var customerno = $('#CustId').val();
         var container = parentContainer.find("div.sus-page-list")
         var url = "?customerId=" + customerno;
         getPageSizeChangeData(url, container, me)
     });
+
+
+
+
+
+
+
+
+
+            function EditSubscriptionList(Sno) {
+                debugger
+
+                $.ajax({
+                    type: "get",
+                    url: "/Suscription/Create/",
+                    contentType: "application/json; charset=utf-8",
+                    data: { sNo: Sno },
+                    dataType: "html",
+                    success: function (html) {
+                        debugger;
+
+                        $('#account-pop-up-div').html(html).modal({
+                            'show': true,
+                            'backdrop': 'static'
+                        });
+                        window.scrollTo(0, 0);
+                        debugger;
+                        //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            $('.IsSelected').each(function () {
+                debugger;
+                var customerId=$('#CustId').val();
+                $(this).on("change", function () {
+                    var CID = $(this).attr("data-val");
+                    // check if checkbox is being checked
+                    // taken from /a/23007488 by Alexandru Chichinete
+                    var msg = 'Are you sure?';
+                    var div = $("<div>" + msg + "</div>");
+                    div.dialog({
+
+                        //title: "Confirm",
+                        buttons: [
+                                    {
+                                        text: "Yes",
+                                        click: function () {
+                                            $.ajax({
+                                                type: "get",
+                                                url: "/Suscription/UpdateStatus/",
+                                                contentType: "application/json; charset=utf-8",
+                                                data: { sId: CID },
+                                                dataType: "html",
+                                                success: function (result) {
+                                                    debugger;
+                                                    if (result) {
+                                                        debugger;
+                                                        $.ajax({
+                                                            url: "/Suscription/List",
+                                                            type: 'post',
+                                                            async: false,
+                                                            data:{customerId:customerId},
+                                                            success: function (data) {
+                                                                debugger
+
+                                                                $('.suscription-detail').html("");
+                                                                $('.suscription-detail').html(data);
+                                                                SuccessAlert("Changed Status Successfully", 5000);
+                                                                document.getElementById('alert-success').scrollIntoView();
+                                                                div.dialog("close");
+                                                            }
+                                                        })
+                                                    }
+                                                    else {
+
+                                                        ErrorAlert(result.Msg, 5000);
+                                                        document.getElementById('alert-error').scrollIntoView();
+                                                    }
+                                                    //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+                                                },
+                                                error: function () {
+                                                    alert("error");
+                                                }
+                                            });
+                                        }
+                                    },
+                                    {
+                                        text: "No",
+                                        click: function () {
+
+                                            $('.slider').css(
+                                            'background-color', '#46bd7b'
+                                            )
+                                            //$('.slider').addClass('change').addClass('change');
+                                            //css('transform', 'translateX(0px)')
+                                            $('.IsSelected').prop("checked", $(this).is(":checked"))
+                                            div.dialog("close");
+
+                                        }
+                                    }
+                        ]
+                    });
+
+
+
+                })
+            })
 </script>
+
 
 
 

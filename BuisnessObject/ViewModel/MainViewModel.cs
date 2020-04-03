@@ -98,11 +98,14 @@ namespace BuisnessObject.ViewModel
             public Nullable<int> Year { get; set; }
             public Nullable<int> Month { get; set; }
             public Nullable<decimal> MonthlyDueAmt { get; set; }
-          
+           public string LocationName { get; set; }
             public Nullable<decimal> ReceivedAmount { get; set; }
+            public Nullable<decimal> Discount { get; set; }
             public Nullable<System.DateTime> PostedOn { get; set; }
             public string ModelFrom { get; set; }
-            public Nullable<System.DateTime> EffectiveDate { get; set; }
+            public bool IsChecked { get; set; }
+            public string Status { get; set; }
+           // public Nullable<System.DateTime> EffectiveDate { get; set; }
             public List<CollectionViewModel> collectionList { get; set; }
         }
         public class LedgerViewModel
@@ -110,6 +113,14 @@ namespace BuisnessObject.ViewModel
 
             public int LedgerId{ get; set; }
             public string LedgerName { get; set; }
+        }
+
+        public class CollectionEntry
+        {
+            public Nullable<int> SubsNo { get; set; }
+            public string LocationName { get; set; }
+            public String Status { get; set; }
+            public decimal MonthlyAmount { get; set; }
         }
         }
 }
