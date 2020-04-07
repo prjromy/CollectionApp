@@ -1,0 +1,238 @@
+﻿@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@model BuisnessObject.ViewModel.MainViewModel.CollectionVerificationEntry
+
+<div class="table-responsive no-padding collection-verify-list">
+    <table class="table table-bordered table-striped table-hover">
+        <thead><tr>
+
+    <th>@Html.DisplayNameFor(x => x.subsno)</th>
+    <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
+                   <th>@Html.DisplayNameFor(x => x.Collectorname)</th>
+    <th>@Html.DisplayNameFor(x => x.LocationName)</th>
+    <th>@Html.DisplayNameFor(x => x.CollectionDate)</th>
+    <th>@Html.DisplayNameFor(x => x.CollectionAmt)</th>
+    <th>@Html.DisplayNameFor(x => x.DiscountAmt)</th>
+
+    <th>Edit</th>
+    <th>Verify</th>
+
+
+</tr></thead>
+     
+
+        <tbody>
+            @foreach (var item in Model.collectionPagedList)
+            {
+
+               
+
+                <tr style="font-size:12px;">
+                    @Html.HiddenFor(x => item.Subscollid,new{@id= "Subscollid" })
+                    <td>
+                        @item.subsno
+
+                    </td>
+                    <td>
+                        @item.CustomerName
+
+                    </td>
+                    <td>
+                        @item.Collectorname
+
+                    </td>
+                    <td>
+                        @item.LocationName
+
+                    </td>
+                    <td>
+                        @item.CollectionDate
+
+                    </td>
+                    <td>
+                        @item.CollectionAmt
+
+                    </td>
+                    <td>
+                        @item.DiscountAmt
+
+                    </td>
+
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subscollid" onclick="EditCollection(@item.Subscollid)" data-toggle="tooltip" title="Edit"></button>
+
+                    </td>
+                    <td>
+
+                        <input type="checkbox" id="squaredOne" class="verify" name="check" />
+
+                    </td>
+
+                </tr>
+            }
+            <tr><td colspan="4"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</bstyle="font-size:></output></td><td></td><td></td><td></td></tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+
+            <input type="button" value="Verify" class="btn btn-success btn-verify pull-right "  onclick="NewCollectionVerify()" />
+
+
+
+        </div>
+    </div>
+    @Html.Paging("_CollectionVerify", "Collection", Model.collectionPagedList.PageCount, Model.collectionPagedList.PageNumber, Model.collectionPagedList.PageSize)
+</div>
+
+
+
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/ch-dialog.js"></script>
+<link href="~/Content/ToggleButton.css" rel="stylesheet" />
+
+
+<script>
+ 
+    $('.verify').on('click', function () {
+        debugger;
+        if($(this).is(':checked')){
+            var totalsum = parseFloat($('#amounttotal').val());
+            //$('.Amount').each(function () {
+            var totalVal = parseFloat($(this).closest("tr").find("td").eq("4").text());
+            if ($.isNumeric(totalVal)) {
+
+                totalsum += parseFloat(totalVal);
+            }
+      
+            $('#amounttotal').html(totalsum.toFixed(2));
+           
+           
+        }
+        else {
+            var totalsum = parseFloat($('#amounttotal').val());
+            //$('.Amount').each(function () {
+            var totalVal = parseFloat($(this).closest("tr").find("td").eq("4").text());
+            if ($.isNumeric(totalVal)) {
+
+                totalsum -= parseFloat(totalVal);
+            }
+
+
+            $('#amounttotal').html(totalsum.toFixed(2));
+           
+        }
+
+
+    });
+    function EditCollection(Subscollid) {
+        debugger
+
+        $.ajax({
+            type: "get",
+            url: "/Collection/collectionEdit/",
+            contentType: "application/json; charset=utf-8",
+            data: { Subscollid: Subscollid },
+            dataType: "html",
+            success: function (html) {
+                debugger;
+                $('#account-pop-up-div').html(html).modal({
+                    'show': true,
+                    'backdrop': 'static'
+                });
+                window.scrollTo(0, 0);
+                debugger;
+                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
+
+
+    function NewCollectionVerify() {
+        debugger;
+        if ($('.verify:checked').length == 0) {
+            ErrorAlert("Please Select CheckBox", 3000);
+            return false;
+
+
+
+        }
+        var collections = new Array();
+        $.MessageBox({
+            buttonDone: "Yes",
+            buttonFail: "No",
+            message: " Are you sure?"
+        }).done(function () {
+            $('.collection-verify-list tbody tr').each(function () {
+                debugger;
+
+                var row = $(this);
+               
+                if ($(this).find('#squaredOne').attr('type') == "checkbox") {
+                    if ($(this).find('#squaredOne').is(":checked")) {
+                        var collection = {};
+
+
+
+                      
+                        collection.Subscollid = row.find("#Subscollid").val();
+                        
+
+                        collections.push(collection);
+                    }
+
+                }
+
+
+
+
+
+
+            })
+            var amounttotal = $('#amounttotal').val();
+            $.ajax({
+                url: "/Collection/collectionVerifySave",
+                type: 'post',
+                async: false,
+                data: { collectonS: collections, amounttotal: amounttotal },
+                success: function (result) {
+                    //var url;
+                    debugger;
+                    if (result.Success) {
+                        $.ajax({
+                            url: "/Collection/CollectionVerify",
+                            type: 'post',
+                            async: false,
+                           
+                            success: function (data) {
+                                debugger
+                                $('#account-pop-up-div').modal('toggle');
+                                $('.verifier-list-index').html("");
+                                $('.verifier-list-index').html(data);
+                                SuccessAlert(result.Msg, 5000);
+                                document.getElementById('alert-success').scrollIntoView();
+                            }
+                        })
+                    } else {
+                        ErrorAlert(result.Msg, 5000);
+                        document.getElementById('alert-error').scrollIntoView();
+                    }
+                },
+                error: function (data) {
+                    ErrorAlert(data.responseText, 15000)
+                }
+            });
+        }).fail(function () {
+        });
+    }
+</script>
+

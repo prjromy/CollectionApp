@@ -30,6 +30,15 @@
           <Property Name="Id" Type="int" Nullable="false" />
           <Property Name="CollectionType" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="CollectionVerifyLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Tdate" Type="smalldatetime" />
+          <Property Name="VerifiedAMount" Type="money" />
+          <Property Name="VerifiedBy" Type="int" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Cid" />
@@ -141,16 +150,18 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="SubsCollId" Type="int" Nullable="false" />
           <Property Name="CustId" Type="int" />
           <Property Name="SubsId" Type="int" Nullable="false" />
-          <Property Name="CollectorId" Type="int" />
+          <Property Name="CollectorId" Type="int" Nullable="false" />
           <Property Name="CollectionTypeId" Type="int" />
           <Property Name="CollectionAmt" Type="money" />
           <Property Name="DiscountAmt" Type="money" />
-          <Property Name="CollectionDate" Type="smalldatetime" />
+          <Property Name="CollectionDate" Type="smalldatetime" Nullable="false" />
           <Property Name="Fyid" Type="int" />
           <Property Name="PostedBy" Type="int" />
           <Property Name="PostedOn" Type="smalldatetime" />
           <Property Name="ModifiedOn" Type="smalldatetime" />
           <Property Name="ModifiedBy" Type="int" />
+          <Property Name="VerifiedBy" Type="int" />
+          <Property Name="VerifiedOn" Type="smalldatetime" />
         </EntityType>
         <EntityType Name="SubscriptionDue">
           <Key>
@@ -577,6 +588,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BSADCal" EntityType="Self.BSADCal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionType" EntityType="Self.CollectionType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CollectionVerifyLog" EntityType="Self.CollectionVerifyLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerType" EntityType="Self.CustomerType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FiscalYear" EntityType="Self.FiscalYear" Schema="dbo" store:Type="Tables" />
@@ -733,6 +745,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
           <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
           <EntitySet Name="SubscriptionCollections" EntityType="GarbageCollectionDBModel.SubscriptionCollection" />
+          <EntitySet Name="CollectionVerifyLogs" EntityType="GarbageCollectionDBModel.CollectionVerifyLog" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1271,16 +1284,27 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="SubsCollId" Type="Int32" Nullable="false" />
           <Property Name="CustId" Type="Int32" />
           <Property Name="SubsId" Type="Int32" Nullable="false" />
-          <Property Name="CollectorId" Type="Int32" />
+          <Property Name="CollectorId" Type="Int32" Nullable="false" />
           <Property Name="CollectionTypeId" Type="Int32" />
           <Property Name="CollectionAmt" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="DiscountAmt" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="CollectionDate" Type="DateTime" Precision="0" />
+          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="Fyid" Type="Int32" />
           <Property Name="PostedBy" Type="Int32" />
           <Property Name="PostedOn" Type="DateTime" Precision="0" />
           <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
           <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="VerifiedBy" Type="Int32" />
+          <Property Name="VerifiedOn" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="CollectionVerifyLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tdate" Type="DateTime" Precision="0" />
+          <Property Name="VerifiedAMount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="VerifiedBy" Type="Int32" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1754,6 +1778,8 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySetMapping Name="SubscriptionCollections">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.SubscriptionCollection">
               <MappingFragment StoreEntitySet="SubscriptionCollection">
+                <ScalarProperty Name="VerifiedOn" ColumnName="VerifiedOn" />
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
                 <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
                 <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
                 <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
@@ -1767,6 +1793,16 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="SubsId" ColumnName="SubsId" />
                 <ScalarProperty Name="CustId" ColumnName="CustId" />
                 <ScalarProperty Name="SubsCollId" ColumnName="SubsCollId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionVerifyLogs">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CollectionVerifyLog">
+              <MappingFragment StoreEntitySet="CollectionVerifyLog">
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
+                <ScalarProperty Name="VerifiedAMount" ColumnName="VerifiedAMount" />
+                <ScalarProperty Name="Tdate" ColumnName="Tdate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

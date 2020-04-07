@@ -1,0 +1,164 @@
+﻿
+
+
+@model  BuisnessObject.ViewModel.MainViewModel.CollectionVerificationEntry
+@using BussinessLogic.Service
+@using ChannakyaCustomeDatePicker.Helper
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Collection Edit</h4>
+            <span class="close" id="closeTop" data-dismiss="modal" aria-hidden="true">&times;</span>
+
+        </div>
+        <div class="modal-body">
+            <div class="collection-create-main">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+
+
+                        <div class="box-tools pull-right">
+                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div><!-- /.box-tools -->
+                        @using (Html.BeginForm("collectionEditSave", "Collection", FormMethod.Post, new { id = "createEditFormCollection" }))
+            {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-horizontal">
+                                <h4>Collection Edit</h4>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                @Html.HiddenFor(model => model.subsid, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.HiddenFor(model => model.Subscollid, new { htmlAttributes = new { @class = "form-control" } })
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+
+                                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" ,@readonly = "readonly" } } )
+                                        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+
+                                       @Html.HiddenFor(model => model.CustId)
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.LocationName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control",@readonly = "readonly" } })
+
+
+                                        @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
+
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CollectionAmt, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.CollectionAmt, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.CollectionAmt, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.DiscountAmt, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.EditorFor(model => model.DiscountAmt, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.DiscountAmt, "", new { @class = "text-danger" })
+
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CollectionDate, htmlAttributes: new { @class = "control-label col-md-3" })
+                                    <div class="col-md-9">
+                                        @Html.DatePicker(model => model.CollectionDate, true)
+                                        @Html.ValidationMessageFor(model => model.CollectionDate, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                              
+
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        
+                                            <input type="button" value="Edit" class="btn btn-success btn-save" />
+                                      
+                                       
+
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-message-box.js"></script>
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
+<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
+
+<script>
+    $.validator.unobtrusive.parse('#createEditFormCollection');
+    $('.collection-create-main').on('click', '.btn-save', function () {
+        debugger;
+        $('#createSubmitFormSuscription').removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('#createEditFormCollection'));
+        if ($("#createEditFormCollection").valid()) {
+            NewCollectionCreate();
+        }
+
+
+    });
+    function NewCollectionCreate(e) {
+       // var customerId=$('#CustId').val();
+        $.MessageBox({
+            buttonDone: "Yes",
+            buttonFail: "No",
+            message: " Are you sure?"
+        }).done(function () {
+            //$(".checkboxCert:checked").removeAttr('disabled');
+            $('#createEditFormCollection').ajaxSubmit({
+                success: function (result) {
+                    //var url;
+                    debugger;
+                    if (result.Success) {
+                        $.ajax({
+                            url: "/Collection/CollectionVerify",
+                            type: 'post',
+                            async: false,
+                           // data:{customerId:customerId},
+                            success: function (data) {
+                                debugger
+                                $('#account-pop-up-div').modal('toggle');
+                                $('.verifier-list-index').html("");
+                                $('.verifier-list-index').html(data);
+                                SuccessAlert(result.Msg, 5000);
+                                document.getElementById('alert-success').scrollIntoView();
+                            }
+                        })
+                    } else {
+                        ErrorAlert(result.Msg, 5000);
+                        document.getElementById('alert-error').scrollIntoView();
+                    }
+                },
+                error: function (data) {
+                    ErrorAlert(data.responseText, 15000)
+                }
+            });
+        }).fail(function () {
+        });
+    }
+</script>

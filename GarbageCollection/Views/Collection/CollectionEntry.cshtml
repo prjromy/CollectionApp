@@ -1,133 +1,306 @@
 ﻿@model BuisnessObject.ViewModel.MainViewModel.CollectionViewModel
+@using ChannakyaCustomeDatePicker.Helper
+@using BussinessLogic.CustomHelper
 
-<div class="box box-warning">
+<link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+@*<script src="~/Scripts/jquery-3.1.1.js"></script>*@
+<script src="~/Scripts/typeahead.min.js"></script>
+<div class="box box-warning entry-list-index">
     <div class="box-header with-border">
 
 
         <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
         </div><!-- /.box-tools -->
-        <table class="table table-bordered table-striped table-hover" style="margin-top: 25px;">
-
-            <tr>
-                <th><input type="checkbox" id="Main">Auto</th>
-                <th>Subscription No.</th>
-                @*<th>Subscription Date</th>*@
-                <th>@Html.DisplayNameFor(x=>x.LocationName)</th>
-                <th>@Html.DisplayNameFor(x => x.MonthlyDueAmt)</th>
-                <th>@Html.DisplayNameFor(x => x.ReceivedAmount)</th>
-                <th>@Html.DisplayNameFor(x => x.Discount)</th>
-                <th>Status</th>
-                
-            </tr>
-
-
-            @foreach (var item in Model.collectionList)
-    {
-
-    <tr>
-        <td>@Html.CheckBoxFor(x=>x.IsChecked,new { @class="checkall"})</td>
-        <td>
-            @item.BillNo
-
-        </td>
-        <td>
-            @item.LocationName
-
-        </td>
-        <td>
-            @item.MonthlyDueAmt
-
-        </td>
-        <td>
-            @Html.TextBoxFor(x=>x.ReceivedAmount,new { @class="form-control col-md-5 Amount"})
-
-        </td>
-        <td>
-            @Html.TextBoxFor(x => x.Discount, new { @class = "form-control col-md-5 Discount" })
-
-        </td>
-        @if (@item.Status == "Cleared")
+        @using (Html.BeginForm("Create", "Collection", FormMethod.Post, new { @id = "collectionEntryForm" }))
         {
-            <td><span class="label label-success" style="font-size: 12px;">@item.Status</span></td>
-        }
-        else if (@item.Status == "Pending")
-        {
-            <td><span class="label label-primary" style="font-size: 12px;">@item.Status</span></td>
+            
+            <div class="form-group">
+                @Html.ChqLabelFor(model => model.CollectorId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-6", @id = "CollectorName" ,@style="margin-bottom :50px;"})
+                    @Html.HiddenFor(x => x.CollectorId)
+                    </div>
+                </div>
 
-        }
-        else
-        {
-            <td><span class="label label-info" style="font-size: 12px;">@item.Status</span></td>
+        <table class="table table-bordered table-striped table-hover table-collection-entry" style="margin-top: 25px;">
+            <thead>
+                <tr>
+                    <th>Auto<input type="checkbox" id="Main"></th>
+                    <th>Subscription No.</th>
+                    @*<th>Subscription Date</th>*@
 
-        }
+                    <th>@Html.DisplayNameFor(x => x.LocationName)</th>
+                    <th>@Html.DisplayNameFor(x => x.PostedOn)</th>
+                    <th>@Html.DisplayNameFor(x => x.MonthlyDueAmt)</th>
+                    <th>@Html.DisplayNameFor(x => x.ReceivedAmount)</th>
+                    <th>@Html.DisplayNameFor(x => x.Discount)</th>
+                    <th>Status</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.collectionList)
+                {
+
+                    <tr>
+                        @Html.HiddenFor(x=>x.DueId)
+
+                        @Html.HiddenFor(x=>item.SubsId,new {@id= "SubsId" })
+                        <td>@Html.CheckBoxFor(x => x.IsChecked, new { @class = "checkall" })</td>
+                        <td>
+                            @item.BillNo
+
+                        </td>
+                        <td>
+                            @item.LocationName
+
+                        </td>
+                        <td>
+                            @Html.DatePicker(x=>x.PostedOn)
+                        </td>
+                        <td>
+                            @*@if (@item.MonthlyDueAmt < 0)
+                            {
+                                @item.MonthlyDueAmt *(-1)
+                            }*@
+                            @item.MonthlyDueAmt
+
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.ReceivedAmount, new { @class = "form-control col-md-6 Amount" })
+
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(x => x.Discount, new { @class = "form-control col-md-6 Discount" })
+
+                        </td>
+                        @if (@item.Status == "Cleared")
+                {
+                <td><span class="label label-success" style="font-size: 12px;">@item.Status</span></td>
+                }
+                else if (@item.Status == "Pending")
+                {
+                <td><span class="label label-primary" style="font-size: 12px;">@item.Status</span></td>
+
+                }
+                else
+                {
+                <td><span class="label label-info" style="font-size: 12px;">@item.Status</span></td>
+
+                }
 
 
 
-    </tr>
-   
-            }
-            @*<tr><td colspan="3"> <b>Discount</b></td> <td> @Html.TextBoxFor(x => x.Discount, new { @class = "form-control col-md-5 Amount" })</td></tr>*@
-            <tr> <td colspan="4"><b>Total</b></td><td><output id="result"></output></td> <td><output id="discount"></output></td></tr>
-           
+                    </tr>
 
-           
+                }
+                @*<tr><td colspan="3"> <b>Discount</b></td> <td> @Html.TextBoxFor(x => x.Discount, new { @class = "form-control col-md-5 Amount" })</td></tr>*@
+                <tr> <td colspan="5"><b>Total</b></td><td><output id="result"></output></td> <td><output id="discount"></output></td></tr>
+
+
+            </tbody>
 
         </table>
 
+
+
+        <div class="form-group pull-right">
+            <div class="col-md-offset-2 col-md-10 ">
+
+
+
+                <input type="button" value="Save" class="btn btn-success btn-save-collection-entry" />
+
+            </div>
         </div>
-    </div>
-
-<div class="form-group pull-right">
-    <div class="col-md-offset-2 col-md-10 ">
-
-
-
-        <input type="button" value="Save" class="btn btn-success btn-save" />
-
+        }
     </div>
 </div>
 
+ <link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
+<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/ch-dialog.js"></script>
+<link href="~/Content/messagebox.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-message-box.js"></script>
+<style>
+.typeahead .dropdown-menu{
+    top: 34px!important;
+    left: 15px !important;
+    display: none !important;
+    height: auto !important;
+    right: 435px !important;
+}
+</style>
 <script>
-    $('.Amount').on('input',function () {
-        var totalsum = 0;
-        $('.Amount').each(function () {
-            var totalVal = $(this).val();
-            if ($.isNumeric(totalVal)) {
+    @*$(document).ready(function () {
+        var data = ["Boston Celtics", "Chicago Bulls", "Miami Heat", "Orlando Magic", "Atlanta Hawks", "Philadelphia Sixers", "New York Knicks", "Indiana Pacers", "Charlotte Bobcats", "Milwaukee Bucks", "Detroit Pistons", "New Jersey Nets", "Toronto Raptors", "Washington Wizards", "Cleveland Cavaliers"];
 
-                totalsum += parseFloat(totalVal);
+    $('#CollectorName').autocomplete(data
+            @*source:'@Url.Action("GetCollector")'*@
+           
+        //);
+    //})
+    $(function () {
+        $("#CollectorName").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Collection/GetCollector/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.CollectorID;
+                            var name = item.CollectorName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#CollectorId').val(map[item].id);
+                return item;
             }
+        });
     })
-   
-        $('#result').html(totalsum.toFixed(2));
+        $('.Amount').on('input', function () {
+            var totalsum = 0;
+            $('.Amount').each(function () {
+                var totalVal = $(this).val();
+                if ($.isNumeric(totalVal)) {
+
+                    totalsum += parseFloat(totalVal);
+                }
+            })
+
+            $('#result').html(totalsum.toFixed(2));
 
 
-    });
-    $('.Discount').on('input', function () {
-        var totalsum = 0;
-        $('.Discount').each(function () {
-            var totalVal = $(this).val();
-            if ($.isNumeric(totalVal)) {
+        });
+        $('.Discount').on('input', function () {
+            var totalsum = 0;
+            $('.Discount').each(function () {
+                var totalVal = $(this).val();
+                if ($.isNumeric(totalVal)) {
 
-                totalsum += parseFloat(totalVal);
+                    totalsum += parseFloat(totalVal);
+                }
+            })
+
+            $('#discount').html(totalsum.toFixed(2));
+
+
+        });
+
+        $('#Main').on('click', function () {
+            debugger;
+            if ($('#Main').is(":checked")) {
+                $('.checkall').prop("checked", true)
+            } else {
+                $('.checkall').prop("checked", false)
             }
+
+
+
+
         })
 
-        $('#discount').html(totalsum.toFixed(2));
+        $('#collectionEntryForm').on('click', '.btn-save-collection-entry', function (e) {
+            e.stopPropagation();
+            var collections = new Array();
+            if ($('.checkall:checked').length ==0) {
+                ErrorAlert("Please Select CheckBox", 3000);
+                return false;
 
 
-    });
+
+            }
+            $.MessageBox({
+                buttonDone: "Yes",
+                buttonFail: "No",
+                message: " Are you sure?"
+            }).done(function () {
+                $('.table-collection-entry tbody tr').each(function ( ) {
+                    debugger;
+
+                    var row = $(this);
+
+                    if ($(this).find('#IsChecked').attr('type') == "checkbox") {
+                        if ($(this).find('#IsChecked').is(":checked")) {
+                            var collection = {};
+
+
+
+                            collection.DueId = $('#DueId').val();
+                            collection.custid = $('#CustId').val();
+                            collection.SubsId =row.find ("#SubsId").val();
+                            collection.ReceivedAmount = row.find('td').eq(5).find("input").val()
+                            collection.CollectorId = $('#CollectorId').val();;
+                            collection.Discount = row.find('td').eq(6).find("input").val()
+                            collection.PostedOn = row.find('td').eq(3).find("input").val()
+
+                            collections.push(collection);
+                        }
+
+                    }
+
+
+
+              
+
+
+                })
+                //Send the JSON array to Controller using AJAX.
+                var customerId = $('#CustId').val();
+                $.ajax({
+                    type: "POST",
+                    url: "/Collection/Create",
+                    data: JSON.stringify(collections),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (collectionResult) {
+                        if (collectionResult.Success) {
+                            $.ajax({
+                                url: "/Collection/CollectionEntry",
+                                type: 'post',
+                                async: false,
+                                data: { customerId: customerId },
+                                success: function (data) {
+                                    $('.entry-list-index').html("");
+                                    $('.entry-list-index').html(data);
+                                    SuccessAlert("Added Successfully", 5000);
+                                    document.getElementById('alert-success').scrollIntoView();
+                                }
+                            })
+                        } else {
+                            ErrorAlert("Error", 5000);
+                            document.getElementById('alert-error').scrollIntoView();
+                        }
+                    },
+                });
+            })
+
+
+        })
     
-    $('#Main').on('click', function () {
-        debugger;
-        if( $('#Main').is(":checked")) {
-            $('.checkall').prop("checked", true)
-        } else {
-            $('.checkall').prop("checked", false)
-        }
-
-
-
-
-    })
 </script>

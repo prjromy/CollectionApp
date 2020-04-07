@@ -78,6 +78,9 @@
     <Compile Include="DatabaseModel\CollectionType.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModel\CollectionVerifyLog.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModel\Company.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>

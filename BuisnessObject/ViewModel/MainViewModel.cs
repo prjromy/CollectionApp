@@ -93,20 +93,32 @@ namespace BuisnessObject.ViewModel
         {
             public int DueId { get; set; }
             public Nullable<int> SubsId { get; set; }
+       
+            public int custid { get; set; }
             public Nullable<int> Fyid { get; set; }
             public Nullable<int> BillNo { get; set; }
             public Nullable<int> Year { get; set; }
             public Nullable<int> Month { get; set; }
+            [DisplayName("Balance")]
             public Nullable<decimal> MonthlyDueAmt { get; set; }
-           public string LocationName { get; set; }
+            [DisplayName("Location Name")]
+            public string LocationName { get; set; }
+            [DisplayName("Received Amount(In Amount)")]
+
             public Nullable<decimal> ReceivedAmount { get; set; }
+            [DisplayName("Discount(In Amount)")]
             public Nullable<decimal> Discount { get; set; }
+            [DisplayName("Collected Date")]
             public Nullable<System.DateTime> PostedOn { get; set; }
             public string ModelFrom { get; set; }
             public bool IsChecked { get; set; }
             public string Status { get; set; }
-           // public Nullable<System.DateTime> EffectiveDate { get; set; }
+            [DisplayName("Collector Name")]
+            public int CollectorId { get; set; }
+           
+            // public Nullable<System.DateTime> EffectiveDate { get; set; }
             public List<CollectionViewModel> collectionList { get; set; }
+            
         }
         public class LedgerViewModel
         {
@@ -117,10 +129,52 @@ namespace BuisnessObject.ViewModel
 
         public class CollectionEntry
         {
+            public int subsid { get; set; }
             public Nullable<int> SubsNo { get; set; }
             public string LocationName { get; set; }
             public String Status { get; set; }
             public decimal MonthlyAmount { get; set; }
+            public decimal Debit { get; set; }
+            public int TotalCount { get; set; }
+            public string CustomerName { get; set; }
+            public IPagedList<CollectionEntry> collectionPagedList { get; set; }
         }
+
+
+        public class CollectionVerificationEntry
+        {
+            public int CustId { get; set; }
+            public int subsid { get; set; }
+            public int Subscollid { get; set; }
+            public string Collectorname { get; set; }
+            public int CollectorId { get; set; }
+            [DisplayName("Subscription No.")]
+
+            public Nullable<int> subsno { get; set; }
+            [DisplayName("Location Name")]
+
+            public string LocationName { get; set; }
+            [DisplayName("Collection Amount")]
+
+            public decimal CollectionAmt { get; set; }
+            [DisplayName("Discount Amount")]
+
+            public decimal DiscountAmt { get; set; }
+            public int TotalCount { get; set; }
+            [DisplayName("Customer Name")]
+            public string CustomerName { get; set; }
+            [DisplayName("Collection Date")]
+
+            public Nullable<System.DateTime> CollectionDate { get; set; }
+            public IPagedList<CollectionVerificationEntry> collectionPagedList { get; set; }
         }
+        public class CollectorDetail
+        {
+            [DisplayName("Collector Name")]
+
+            public int CollectorID { get; set; }
+            public string CollectorName { get; set; }
+            public string Status { get; set; }
+        }
+    }
 }

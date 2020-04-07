@@ -17,15 +17,17 @@ namespace DataAccess.DatabaseModel
         public int SubsCollId { get; set; }
         public Nullable<int> CustId { get; set; }
         public int SubsId { get; set; }
-        public Nullable<int> CollectorId { get; set; }
+        public int CollectorId { get; set; }
         public Nullable<int> CollectionTypeId { get; set; }
         public Nullable<decimal> CollectionAmt { get; set; }
         public Nullable<decimal> DiscountAmt { get; set; }
-        public Nullable<System.DateTime> CollectionDate { get; set; }
+        public System.DateTime CollectionDate { get; set; }
         public Nullable<int> Fyid { get; set; }
         public Nullable<int> PostedBy { get; set; }
         public Nullable<System.DateTime> PostedOn { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public Nullable<int> ModifiedBy { get; set; }
+        public Nullable<int> VerifiedBy { get; set; }
+        public Nullable<System.DateTime> VerifiedOn { get; set; }
     }
 }

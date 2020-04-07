@@ -1107,6 +1107,11 @@
     <Content Include="admin-lte\plugins\timepicker\bootstrap-timepicker.js" />
     <Content Include="admin-lte\plugins\timepicker\bootstrap-timepicker.min.css" />
     <Content Include="admin-lte\plugins\timepicker\bootstrap-timepicker.min.js" />
+    <Content Include="autocomplete\jquery-ui.css" />
+    <Content Include="autocomplete\jquery-ui.js" />
+    <Content Include="autocomplete\jquery-ui.min.js" />
+    <Content Include="autocomplete\jquery-ui.structure.min.css" />
+    <Content Include="autocomplete\jquery-ui.theme.min.css" />
     <Content Include="bootstrap\css\bootstrap-theme.css" />
     <Content Include="bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="bootstrap\css\bootstrap.css" />
@@ -1122,6 +1127,7 @@
     <Content Include="Content\ch-dialog.css" />
     <Content Include="Content\ch-search.css" />
     <Content Include="Content\ch-treeview.css" />
+    <Content Include="Content\checkbox.css" />
     <Content Include="Content\Choose\chosen-sprite%402x.png" />
     <Content Include="Content\Choose\chosen-sprite.png" />
     <Content Include="Content\Choose\chosen.css" />
@@ -1133,6 +1139,7 @@
     <Content Include="Content\Custom\Customer.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\jquery-ui-1.10.4.custom.min.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\LoaderSite.css" />
     <Content Include="Content\messagebox.css" />
@@ -1285,6 +1292,8 @@
     <Content Include="Scripts\ch-dialog.js" />
     <Content Include="Scripts\ch-dpicker.js" />
     <Content Include="Scripts\ch-treeview.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-ui-1.10.4.custom.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
     <Content Include="Scripts\SuscrptionJs\SuscriptionPage.js" />
@@ -1377,6 +1386,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\tether.js" />
     <Content Include="Scripts\tether.min.js" />
+    <Content Include="Scripts\typeahead.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -1484,6 +1494,9 @@
     <Content Include="Views\Suscription\_List.cshtml" />
     <Content Include="Views\Collection\Index.cshtml" />
     <Content Include="Views\Collection\CollectionEntry.cshtml" />
+    <Content Include="Views\Collection\CollectionVerify.cshtml" />
+    <Content Include="Views\Collection\_CollectionVerify.cshtml" />
+    <Content Include="Views\Collection\collectionEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
