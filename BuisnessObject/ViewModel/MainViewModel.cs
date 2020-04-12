@@ -75,8 +75,11 @@ namespace BuisnessObject.ViewModel
             [Required(ErrorMessage = "Monthly Amount is required ")]
             public Nullable<decimal> MonthlyAmount { get; set; }
             [DisplayName("Location Name")]
-            [Required(ErrorMessage = "Location Name is required ")]
+            
             public Nullable<int> LocationID { get; set; }
+            public string LedgerName { get; set; }
+            [Required(ErrorMessage = "Location Name is required ")]
+            public string LocationName { get; set; }
             public Nullable<int> Status { get; set; }
             [Required(ErrorMessage = "Remarks is required ")]
             public string Remarks { get; set; }
@@ -104,7 +107,7 @@ namespace BuisnessObject.ViewModel
             [DisplayName("Location Name")]
             public string LocationName { get; set; }
             [DisplayName("Received Amount(In Amount)")]
-
+           
             public Nullable<decimal> ReceivedAmount { get; set; }
             [DisplayName("Discount(In Amount)")]
             public Nullable<decimal> Discount { get; set; }
@@ -114,8 +117,9 @@ namespace BuisnessObject.ViewModel
             public bool IsChecked { get; set; }
             public string Status { get; set; }
             [DisplayName("Collector Name")]
+            [Required(ErrorMessage ="Collector Required")]
             public int CollectorId { get; set; }
-           
+            public int TotalCount { get; set; }
             // public Nullable<System.DateTime> EffectiveDate { get; set; }
             public List<CollectionViewModel> collectionList { get; set; }
             

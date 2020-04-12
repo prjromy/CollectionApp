@@ -92,17 +92,59 @@
 </div>
 
 
-
-<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+
 <script src="~/Scripts/ch-dialog.js"></script>
 <link href="~/Content/ToggleButton.css" rel="stylesheet" />
 
 <script>
 
 
+    $("div.cust-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageNumberBtnAction(url, container, me)
 
+    });
+    $("div.cust-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.cust-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageSizeChangeData(url, container, me)
+    });
 
 
 

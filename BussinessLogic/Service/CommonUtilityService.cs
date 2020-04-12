@@ -24,6 +24,14 @@ namespace BussinessLogic.Service
             var customerType = uow.Repository<CustomerType>().FindBy(x=>x.status==1).ToList();
             return new SelectList(customerType, "ID", "RFUniDesc");
         }
+        public static SelectList CustomerStatusList()
+        {
+            List<SelectListItem> objAccountType = new List<SelectListItem>();
+            objAccountType.Add(new SelectListItem { Text = "Active", Value = "1" });
+            objAccountType.Add(new SelectListItem { Text = "Disabled", Value = "0" });
+      
+            return new SelectList(objAccountType, "Value", "Text");
+        }
         public static bool AllowEdit(int menuId)
         {
             var AllowDeposit = commonService.GetUserAssignMenu(menuId, Global.UserId);
@@ -55,11 +63,7 @@ namespace BussinessLogic.Service
             var ledgerList = uow.Repository<BuisnessObject.ViewModel.MainViewModel.LedgerViewModel>().SqlQuery("select * from [dbo].[fgetledger]()").ToList();
             return new SelectList(ledgerList, "LedgerId", "LedgerName");
         }
-        public static SelectList LocationList()
-        {
-            var LocationList = uow.Repository<LocationMaster>().GetAll().ToList();
-            return new SelectList(LocationList, "Lid", "LocationName");
-        }
+       
         public static SelectList CustomerSearchOption()
         {
             List<SelectListItem> objCustomerSrchOption = new List<SelectListItem>();

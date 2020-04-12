@@ -1,0 +1,162 @@
+﻿
+@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+@using ChannakyaCustomeDatePicker.Helper
+@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+
+<div class="box box-success" style="border-top-color: #8ce8be;border-top:2px solid #8ce8be">
+    <div class="box-header with-border">
+        <legend style="font-size:16px;font-weight:bold">Subscription Report</legend>
+    
+            <div class=" sus-div-list">
+                <div class="col-md-12">
+                    <div class="box-tools col-md-2  form-group" id="Location">
+                        @Html.TextBox("Location", "", htmlAttributes: new { @class = "form-control", @id = "LocationName", @placeholder = "Location" })
+                    </div>
+                    <div class="col-md-3  form-group" id="custtype">
+
+                        @Html.DropDownList("CustomerTypeId", CommonUtilityService.CustomerTypeList(), "--Select Event--", new { @class = "form-control ", @id = "ctypeid" })
+                    </div>
+                    <div class="col-md-3  form-group" id="effectivedate">
+                        @Html.DatePicker(model => model.EffectiveDate, true)
+
+                    </div>
+                    <div class="col-md-3  form-group" id="status">
+
+                        @Html.DropDownList("Status", CommonUtilityService.CustomerStatusList(), new { @class = "form-control col-md-6 ", @id = "statuslist" })
+                    </div>
+
+                    <div class="input-group-btn form-group col-md-1 pull-left">
+                        <button type="button" id="searchSubscription" class="btn btn-searchSubscription btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+                        @*<button type="button" class="btn btn-outline-success customer-export-to-excel">Success</button>*@
+                    </div>
+                </div>
+             <div class="Subscription-List">
+
+
+                 <button type="button" class="btn btn-outline-success subscription-export-to-excel">Export</button>
+
+     @Html.Partial("_SuscriptionReportList", Model)
+
+
+
+           
+        </div>
+</div>
+        </div></div>
+
+<link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
+<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+
+
+
+<script>
+    $('.subscription-export-to-excel').on('click', function () {
+        debugger;
+        var parentContainer = $(this).parents()
+
+
+        var customerno = $('#CustId').val();
+        var Location = parentContainer.find("#Location").find("#LocationName").val();
+        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
+        var cTypetext = parentContainer.find('#custtype').find("#ctypeid").find("option:selected").text();;
+        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var status = parentContainer.find("#status").find("#statuslist").val();
+        var statustext = parentContainer.find('#status').find("#statuslist").find("option:selected").text();
+        var container = parentContainer.find("div.sus-page-list")
+        window.open("/Report/SubscriptionExportToExcel?customerno=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&cTypetext=" + cTypetext + "&statustext=" + statustext + "&Location=" + Location + "&status=" + status);
+
+    });
+    $("div.sus-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = $('#CustId').val();
+        var Location = parentContainer.find("#Location").find("#LocationName").val();
+        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
+        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var status = parentContainer.find("#status").find("#statuslist").val();
+        var container = parentContainer.find("div.sus-page-list")
+        var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.sus-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = $('#CustId').val();
+        var Location = parentContainer.find("#Location").find("#LocationName").val();
+        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
+        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var status = parentContainer.find("#status").find("#statuslist").val();
+        var container = parentContainer.find("div.sus-page-list")
+        var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.sus-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+
+        var me = $(this);
+        var customerno = $('#CustId').val();
+        var Location = parentContainer.find("#Location").find("#LocationName").val();
+        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
+        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var status = parentContainer.find("#status").find("#statuslist").val();
+        var container = parentContainer.find("div.sus-page-list")
+        var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
+        getPageSizeChangeData(url, container, me)
+    });
+
+    $(".sus-div-list").on('click', '.btn-searchSubscription ', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = $('#CustId').val();
+        var Location = parentContainer.find("#Location").find("#LocationName").val();
+        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
+        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var status = parentContainer.find("#status").find("#statuslist").val();
+        var container = parentContainer.find("div.sus-div-list")
+        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Report/_SuscriptionReportList",
+            data: { customerId: customerno, custtype: custtype, effectivedate: effectivedate, Location: Location,status: status },
+            success: function (data) {
+                $(".Subscription-List").html("");
+                $(".Subscription-List").html(data);
+            }
+        })
+    });
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

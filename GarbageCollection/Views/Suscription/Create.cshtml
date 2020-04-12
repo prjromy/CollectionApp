@@ -7,13 +7,16 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
 
 }
+<link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+@*<script src="~/Scripts/jquery-3.1.1.js"></script>*@
+<script src="~/Scripts/typeahead.min.js"></script>
 <div id='common-pop-up-div' class='modal fade' role='dialog'></div>
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
             <h4 class="modal-title">Add Suscription</h4>
             <span class="close" id="closeTop" data-dismiss="modal" aria-hidden="true">&times;</span>
-            
+
         </div>
         <div class="modal-body">
             <div class="suscription-create-main">
@@ -40,9 +43,9 @@
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
-                                    
-                                            @Html.EditorFor(model => model.CustomerName,  new { htmlAttributes = new { @class = "form-control" } })
-                                            @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+
+                                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
 
                                         @Html.HiddenFor(model => model.CustId)
                                     </div>
@@ -67,9 +70,21 @@
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
-                                        @Html.DropDownListFor(model => model.LocationID, CommonUtilityService.LocationList(), "Please Select...", htmlAttributes: new { @class = "form-control col-md-7" })
+                                        @if (Model.Subsid != 0)
+                                        {
+                                            var locationName = CommonUtilityService.LocationName(Model.LocationID);
+                                            @Html.EditorFor(model => locationName, new { htmlAttributes = new { @class = "form-control" ,@id = "LocationName" } })
+                                            @Html.HiddenFor(x => x.LocationID)
+                                        }
+                                        else
+                                        {
 
+                                            @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control", @id = "LocationName" } })
+                                            @Html.HiddenFor(x => x.LocationID)
 
+                                        }
+
+                                        @Html.ValidationMessageFor(model => model.LocationName, "", new { @class = "text-danger" })
 
                                     </div>
                                 </div>
@@ -130,7 +145,7 @@
 
     });
     function NewCustomerCreate(e) {
-        var customerId=$('#CustId').val();
+        var customerId = $('#CustId').val();
         $.MessageBox({
             buttonDone: "Yes",
             buttonFail: "No",
@@ -138,6 +153,7 @@
         }).done(function () {
             //$(".checkboxCert:checked").removeAttr('disabled');
             $('#createSubmitFormSuscription').ajaxSubmit({
+                
                 success: function (result) {
                     //var url;
                     debugger;
@@ -146,7 +162,7 @@
                             url: "/Suscription/List",
                             type: 'post',
                             async: false,
-                            data:{customerId:customerId},
+                            data: { customerId: customerId },
                             success: function (data) {
                                 debugger
                                 $('#account-pop-up-div').modal('toggle');
@@ -168,4 +184,47 @@
         }).fail(function () {
         });
     }
+
+
+    $(function () {
+        $("#LocationName").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Suscription/LocationList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.Lid;
+                            var name = item.LocationName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#LocationID').val(map[item].id);
+                return item;
+            }
+        });
+    })
 </script>

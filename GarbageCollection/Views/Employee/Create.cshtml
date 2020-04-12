@@ -3,7 +3,8 @@
 @using ChannakyaCustomeDatePicker.Helper
 
 @*<script src="~/Scripts/DatePicker/CHDialog.js"></script>*@
-
+<link href="~/autocomplete/style.css" rel="stylesheet" />
+<script src="~/autocomplete/comboTreePlugin.js"></script>
 
 @{
     Layout = null;
@@ -141,14 +142,23 @@
                 </div>
                 @if (ViewBag.WithDepartment == true)
                 {
-                    <div class="form-group col-md-12">
+                    @*<div class="form-group col-md-12">
                         @Html.LabelFor(model => model.DeptId, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
 
                             @Html.EditorForTree(model => model.DeptId, treeobjDepartment)
                             @Html.ValidationMessageFor(model => model.DeptId, "", new { @class = "text-danger" })
                         </div>
-                    </div>
+                    </div>*@
+                    <div class="form-group col-md-12">
+                            @Html.LabelFor(model => model.DeptId, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-9">
+
+                                @Html.TextBox("Department",null,new{@id="Department",@class="form-control col-md-6" })
+                                @Html.HiddenFor(x=>x.DeptId)
+                                @Html.ValidationMessageFor(model => model.DeptId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
                 }
                 @if (ViewBag.Designation == true)
                 {
@@ -156,7 +166,8 @@
                         @Html.LabelFor(model => model.DGId, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
 
-                            @Html.EditorForTree(model => model.DGId, treeobjDesignation)
+                            @Html.TextBox("DesignationName", null, new { @id = "Designation", @class = "form-control col-md-6" })
+                            @Html.HiddenFor(x => x.DGId)
                             @Html.ValidationMessageFor(model => model.DGId, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -239,8 +250,8 @@
                     {
                         @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-
-                            @Html.EditorForTree(model => model.BranchId, treeobjBranch)
+                            @Html.TextBox("Branch",null, new { @id = "Branch", @class = "form-control col-md-6" })
+                            @Html.HiddenFor(model => model.BranchId)
                             @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
                         </div>
                     }
@@ -272,9 +283,142 @@
     <script src="~/Scripts/jquery-message-box.js"></script>
     <script src="~/Scripts/ch-dialog.js"></script>
     <script src="~/Scripts/ch-dpicker.js"></script>
+    <link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+    <script src="~/Scripts/typeahead.min.js"></script>
 </div><!-- /.box -->
 
 <script type="text/javascript">
+    $(function () {
+        $("#Department").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Employee/_GetComboEmployeeTreePopup/',
+                    data: "{ 'term': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.DeptId;
+                            var name = item.DeptName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#DeptId').val(map[item].id);
+                return item;
+            }
+        });
+    })
+    $(function () {
+        $("#Designation").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Employee/_GetComboDesignationTreePopup/',
+                    data: "{ 'term': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.DGId;
+                            var name = item.DGName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#DGId').val(map[item].id);
+                return item;
+            }
+        });
+    })
+    $(function () {
+        $("#Branch").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Employee/_GetComboBranchTreePopUp/',
+                    data: "{ 'term': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.CompanyId;
+                            var name = item.BranchName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#BranchId').val(map[item].id);
+                return item;
+            }
+        });
+    })
+    
+    
+   
+
+
+
+
     $(document).ready(function () {
         debugger;
         var form1 = new FormData();

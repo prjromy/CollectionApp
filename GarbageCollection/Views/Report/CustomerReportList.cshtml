@@ -1,16 +1,14 @@
-﻿@model BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+﻿
+@model BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
 @using BussinessLogic.Service
 
 
 
 <div class="box  customer-list-index">
-    <input type="button" value="New Customer" id="btn-create" class="btn btn-md btn-success btn-create" style="border:none" />
-    <div class="customer-display">
-
-    </div>
+   
     <div class="box box-success">
         <div class="box-header with-border">
-            <h3 class="box-title">Customer List</h3>
+            <h3 class="box-title">Customer Report</h3>
             <hr>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -35,7 +33,10 @@
 
                     @Html.TextBox("Mobile No", "", htmlAttributes: new { @class = "form-control", @id = "txtContact", @placeholder = "Mobile No" })
                 </div>
+                <div class="col-md-3  form-group" id="status">
 
+                    @Html.DropDownList("Status", CommonUtilityService.CustomerStatusList(), new { @class = "form-control ", @id = "statuslist" })
+                </div>
 
 
                 <div class="input-group-btn form-group col-md-1 pull-left">
@@ -47,44 +48,41 @@
         </div>
         <div class="Customer-List">
 
+            <button type="button" class="btn btn-outline-success customer-export-to-excel">Export</button>
 
 
-            @Html.Partial("_List", Model)
+            @Html.Partial("_CustomerReportList", Model)
 
 
 
-        </div>
         </div>
     </div>
+</div>
+
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
-<script src="~/Scripts/jquery-message-box.js"></script>
-<link href="~/Content/ch-dialog.css" rel="stylesheet" />
-<script src="~/Scripts/ch-dialog.js"></script>
 
 
 <script>
-
-    $('.btn-create').on('click', function () {
+    $('.customer-export-to-excel').on('click', function () {
         debugger;
+        var parentContainer = $(this).parents()
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+      
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+       
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var cTypetext = parentContainer.find('#custtype').find("#ctypeid").find("option:selected").text();;
+        var statustext = parentContainer.find('#status').find("#statuslist").find("option:selected").text();
+        //var cType = parentContainer.find('#custtype').find("#ctypeid").text();
+        var status = parentContainer.find('#status').find("#statuslist").val();
+        window.open("/Report/CustomerExportToExcel?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&cTypetext=" + cTypetext + "&status=" + status + "&statustext=" + statustext);
 
-        var thisVal = $(this).val();
-        if (thisVal == "Hide Section") {
-            $(this).val("New Customer")
-            $(".customer-display").hide();
-        }
-        else {
-            $(this).val("Hide Section")
-            $.ajax({
-                type: "GET",
-                url: "/Customer/Create",
-                success: function (data) {
-                    $(".customer-display").show();
-                    $('.customer-display').html(data).find('.focusdiv').focus()
-                }
-            })
-        }
     });
+   
     $("div.cust-page-list").on('click', 'input.btnPaging', function (e) {
         debugger;
         e.stopImmediatePropagation();
@@ -95,8 +93,10 @@
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
         var contact = parentContainer.find("#search-contact").find("#txtContact").val();
         var cType = parentContainer.find('#custtype').find("#ctypeid").val();
-        var container = parentContainer.find("div.cust-page-list")
-        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        var status = parentContainer.find('#status').find("#statuslist").val();
+        var container = parentContainer.find("div.cust-page-list");
+
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -110,8 +110,9 @@
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
         var contact = parentContainer.find("#search-contact").find("#txtContact").val();
         var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var status = parentContainer.find('#status').find("#statuslist").val();
         var container = parentContainer.find("div.cust-page-list")
-        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
         getPageNumberChangeData(url, container, me)
     });
     $("div.cust-page-list").on('change', 'input#pageSize', function (e) {
@@ -125,7 +126,8 @@
         var contact = parentContainer.find("#search-contact").find("#txtContact").val();
         var cType = parentContainer.find('#custtype').find("#ctypeid").val();
         var container = parentContainer.find("div.cust-page-list")
-        var url = "?customerno="+customerno+"&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        var status = parentContainer.find('#status').find("#statuslist").val();
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
         getPageSizeChangeData(url, container, me)
     });
     $(".customer-list-index").on('click', '.btn-searchCustomer', function (e) {
@@ -138,13 +140,14 @@
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
         var contact = parentContainer.find("#search-contact").find("#txtContact").val();
         var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var status = parentContainer.find('#status').find("#statuslist").val();
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
 
         $.ajax({
             contentType: "html",
             type: "Get",
-            url: "/Customer/_List",
-            data: { customerno:customerno,name: name, address: address, contact: contact, cType: cType },
+            url: "/Report/_CustomerReportList",
+            data: { customerno: customerno, name: name, address: address, contact: contact, cType: cType, status: status },
             success: function (data) {
                 $(".customer-list-index").find("div.Customer-List").html("");
                 $(".customer-list-index").find("div.Customer-List").html(data);
@@ -152,92 +155,7 @@
         })
     });
 
-    function EditCustomerList(CID) {
-        debugger
-
-        $.ajax({
-            type: "get",
-            url: "/Customer/Create/",
-            contentType: "application/json; charset=utf-8",
-            data: { cId: CID },
-            dataType: "html",
-            success: function (html) {
-                debugger;
-                $('.btn-create').val("Hide Section")
-                $(".customer-display").show();
-                $('.customer-display').html(html).find('.focusdiv').focus()
-
-                window.scrollTo(0, 0);
-                debugger;
-                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
-
-            },
-            error: function () {
-                alert("error");
-            }
-        });
-    }
-  
-    //$('.switch.IsSelected"]').change(function () {
-
-    //    // check if checkbox is being checked
-    //    // taken from /a/23007488 by Alexandru Chichinete
-    //    if ($("#IsSelected").is(":checked"))
-    //    {
-    //        // enable form submit
-    //        var CID = $(this).attr("data-val");
-    //    debugger
-    //    $.MessageBox({
-    //        buttonDone: "Yes",
-    //        buttonFail: "No",
-    //        message: " Are you sure?"
-    //    }).done(function () {
-    //        $.ajax({
-    //            type: "get",
-    //            url: "/Customer/UpdateStatus/",
-    //            contentType: "application/json; charset=utf-8",
-    //            data: { cId: CID },
-    //            dataType: "html",
-    //            success: function (result) {
-    //                debugger;
-    //                if (result) {
-    //                    debugger;
-    //                    $.ajax({
-    //                        url: "/Customer/List",
-    //                        type: 'post',
-    //                        async: false,
-    //                        success: function (data) {
-    //                            debugger
-    //                            $('section.content').html(data);
-    //                            SuccessAlert("Changed Status Successfully", 5000);
-    //                            document.getElementById('alert-success').scrollIntoView();
-    //                        }
-    //                    })
-    //                }
-    //                else {
-
-    //                    ErrorAlert(result.Msg, 5000);
-    //                    document.getElementById('alert-error').scrollIntoView();
-    //                }
-    //                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
-
-    //            },
-    //            error: function () {
-    //                alert("error");
-    //            }
-    //        });
-    //    })
-    //    //var checkStatus = $(this).find('input:checkbox').is(':checked') ? 'ON' : 'OFF';
-    //        //.buttonFail(function () {
-    //    //    debbuger;
 
 
-    //    //})
-        
-    //    }
-
-    //})
-
-  
 
 </script>

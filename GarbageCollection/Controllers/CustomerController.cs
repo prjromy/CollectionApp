@@ -117,7 +117,7 @@ namespace GarbageCollection.Controllers
             try
             {
                 MainViewModel.CustomerViewModel customerViewModel = new MainViewModel.CustomerViewModel();
-                var customerList= customerService.getCustomerList(0,"", "", "", null, 1, 10);
+                var customerList= customerService.getCustomerList(0,"", "", "", null,1, 1, 10);
                 customerViewModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(customerList, 1, 10, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -141,7 +141,7 @@ namespace GarbageCollection.Controllers
         public ActionResult _List(int? customerno,string name, string address, string contact, int? cType, int pageNo = 1, int pageSize = 10)
         {
             MainViewModel.CustomerViewModel customerViewModel = new MainViewModel.CustomerViewModel();
-            var customerList = customerService.getCustomerList(customerno,name, address, contact, cType, pageNo, pageSize);
+            var customerList = customerService.getCustomerList(customerno,name, address, contact, cType,1, pageNo, pageSize);
             customerViewModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(customerList, pageNo, pageSize, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
             return PartialView(customerViewModel);
         }

@@ -52,11 +52,11 @@
 
                     </td>
                     <td>
-                        @item.CollectionAmt
+                        @Convert.ToDecimal(item.CollectionAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
                     </td>
                     <td>
-                        @item.DiscountAmt
+                        @Convert.ToDecimal(item.DiscountAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
                     </td>
 
@@ -72,7 +72,7 @@
 
                 </tr>
             }
-            <tr><td colspan="4"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</bstyle="font-size:></output></td><td></td><td></td><td></td></tr>
+            <tr><td colspan="4"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</bstyle="font-size:></output></td><td></td><td></td><td></td><td></td></tr>
         </tbody>
     </table>
     <div class="form-group">
@@ -215,7 +215,7 @@
                            
                             success: function (data) {
                                 debugger
-                                $('#account-pop-up-div').modal('toggle');
+                              
                                 $('.verifier-list-index').html("");
                                 $('.verifier-list-index').html(data);
                                 SuccessAlert(result.Msg, 5000);

@@ -90,7 +90,7 @@ namespace GarbageCollection.Controllers
             try
             {
                 MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
-                var suscriberList = suscription.getSuscriberList(customerId, "", "", "", null, 1, 10);
+                var suscriberList = suscription.getSuscriberList(customerId, null, null, 1, 10, "", 1);
                 customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, 1, 10, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -116,7 +116,7 @@ namespace GarbageCollection.Controllers
             try
             {
                 MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
-                var suscriberList = suscription.getSuscriberList(customerId, "", "", "", null, pageNo, pageSize);
+                var suscriberList = suscription.getSuscriberList(customerId, null, null, 1, 10, "", 1);
                 customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -165,6 +165,11 @@ namespace GarbageCollection.Controllers
 
             }
 
+        }
+        public  JsonResult LocationList()
+        {
+            var LocationList = suscription.getLocation();
+            return Json(LocationList);
         }
     }
 }

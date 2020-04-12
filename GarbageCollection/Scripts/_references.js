@@ -324,6 +324,7 @@
 /// <reference path="../admin-lte/plugins/slimscroll/jquery.slimscroll.js" />
 /// <reference path="../admin-lte/plugins/sparkline/jquery.sparkline.js" />
 /// <reference path="../admin-lte/plugins/timepicker/bootstrap-timepicker.js" />
+/// <reference path="../autocomplete/combotreeplugin.js" />
 /// <reference path="../autocomplete/jquery-ui.js" />
 /// <reference path="../bootstrap/js/bootstrap.js" />
 /// <reference path="../bootstrap/js/npm.js" />

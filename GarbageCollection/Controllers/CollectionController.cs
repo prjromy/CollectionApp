@@ -39,6 +39,12 @@ namespace GarbageCollection.Controllers
             {
                  MainViewModel.CollectionViewModel CollectionViewModel = new MainViewModel.CollectionViewModel();
                 var suscriberList = collection.getSuscriberListEntry(customerId);
+                foreach (var item in suscriberList)
+                {
+                    if (item.TotalCount == 1){
+                        item.IsChecked = true;
+                    }
+                }
                 CollectionViewModel.collectionList = suscriberList;
 
                 //foreach (var item in customerList)

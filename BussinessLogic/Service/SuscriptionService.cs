@@ -78,6 +78,7 @@ namespace BussinessLogic.Service
                LedgerId=x.LedgerId,
                MonthlyAmount=x.MonthlyAmount,
                LocationID=x.LocationID,
+               
                EffectiveDate=x.EffectiveDate,
                Remarks=x.Remarks
                
@@ -87,45 +88,42 @@ namespace BussinessLogic.Service
         }
 
 
-        public List<MainViewModel.SubscriptionViewModel> getSuscriberList(int? customerno, string Name, string Address, string contact, int? cType, int pageNo, int pageSize)
+        public List<MainViewModel.SubscriptionViewModel> getSuscriberList(int? customerId, int? custtype, DateTime? effectivedate, int pageNo, int pageSize, string Location = "",int status = 1)
         {
             try
             {
 
                 string query = "";
-                if (customerno == null)
+                if (customerId == null && status == 0)
+                {
+                    query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where status=0";
+
+                }
+               if (customerId != null && status == 1)
+                {
+                    query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where CustId=  " + customerId + " and status=1";
+                }
+
+                if (customerId == null && status == 1)
                 {
                     query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where status=1";
 
                 }
-                else
-                {
-                    query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where CustId=  " + customerno+ " and status=1";
-                }
                 //where  CustomerName like'%" + Name.Trim() + "%'";
 
-                //if (Name != "")
-                //{
-                //    query += " and Name like'" + Name + "%'";
-                //}
-                //if (customerno != null && customerno != 0)
-                //{
-                //    query += " and CustNo =" + customerno;
-                //}
-                //if (contact != "")
-                //{
-                //    query += " and MobileNo like'%" + contact.Trim() + "%'";
-                //}
-                //if (Address != "")
-                //{
-                //    query += " and Address like'%" + Address.Trim() + "%'";
-                //}
-
-                //if (cType != 0 && cType != null)
-                //{
-                //    query += " and CustTypeId =" + cType;
-                //}
-
+                if (custtype !=0 && custtype!=null)
+                {
+                    query += " and custtypeId =" + custtype;
+                }
+                if (effectivedate != null )
+                {
+                    query += " and EffectiveDate ='"+effectivedate+"'";
+                }
+                if (Location != "")
+                {
+                    query += " and LocationName like'%" + Location.Trim() + "%'";
+                }
+       
                 query += @" ORDER BY  SubsNo
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
@@ -151,6 +149,11 @@ namespace BussinessLogic.Service
             returnMessage.Success = true;
             returnMessage.BoolValue = true;
             return returnMessage;
+        }
+
+        public List<LocationMaster> getLocation()
+        {
+           return uow.Repository<LocationMaster>().GetAll().ToList();
         }
     }
 }

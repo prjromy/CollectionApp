@@ -95,14 +95,22 @@ namespace BussinessLogic.Service
             return customerSingleList;
         }
 
-        public List<MainViewModel.CustomerViewModel> getCustomerList(int? customerno,string Name, string Address, string contact, int? cType, int pageNo, int pageSize)
+        public List<MainViewModel.CustomerViewModel> getCustomerList(int? customerno,string Name, string Address, string contact, int? cType, int status, int pageNo, int pageSize)
         {
             try
             {
 
                 string query = "";
-                query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetCustomerTB]()  where  CustomerName like'%" + Name.Trim() + "%'";
+                if (status == 1)
+                {
+                    query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetCustomerTB]()  where  CustomerName like'%" + Name.Trim() + "%'";
 
+                }
+                else
+                {
+                    query = "select  COUNT(*) OVER () AS TotalCount,* from [dbo].[fgetDisabledCustomerTB]()  where  CustomerName like'%" + Name.Trim() + "%'";
+
+                }
                 //if (Name != "")
                 //{
                 //    query += " and Name like'" + Name + "%'";
