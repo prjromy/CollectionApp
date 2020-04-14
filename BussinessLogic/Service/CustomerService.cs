@@ -212,8 +212,19 @@ namespace BussinessLogic.Service
           FROM Customer where Cid ="+ listBox).SingleOrDefault();
             return customerInfoList;
         }
+        public List<MainViewModel.CustomerViewModel> getCustomer(string prefix)
+        {
+            var customerList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery("select CustomerName from Customer").Where(x => x.CustomerName.ToLower().Contains(prefix.ToLower())).ToList();
+            
+            return customerList;
+        }
+        public List<MainViewModel.CustomerViewModel> getAddress(string prefix)
+        {
+            var addressList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery("select Address from Customer").Where(x => x.Address.ToLower().Contains(prefix.ToLower())).ToList();
 
-       
+            return addressList;
+        }
+
     }
 }
 

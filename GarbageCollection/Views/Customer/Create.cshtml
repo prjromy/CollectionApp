@@ -6,6 +6,7 @@
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
 
 }
+
 <div class="customer-create-main">
     <div class="box box-success">
         <div class="box-header with-border">
@@ -56,7 +57,7 @@
                     <div class="form-group">
                        @Html.ChqLabelFor(model => model.PhoneNo, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control col-md-5" } })
+                            @Html.EditorFor(model => model.PhoneNo, new { htmlAttributes = new { @class = "form-control col-md-5", @type = "number" } })
                             @Html.ValidationMessageFor(model => model.PhoneNo, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -64,7 +65,7 @@
                     <div class="form-group">
                         @Html.ChqLabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control col-md-5" } })
+                            @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control col-md-5", @type = "number" } })
                             @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -88,7 +89,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.PanNo, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.PanNo, new { htmlAttributes = new { @class = "form-control col-md-5" } })
+                            @Html.EditorFor(model => model.PanNo, new { htmlAttributes = new { @class = "form-control col-md-5", @type = "number" } })
                             @Html.ValidationMessageFor(model => model.PanNo, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -130,6 +131,8 @@
 
 
 <script>
+
+  
     $.validator.unobtrusive.parse('#createSubmitForm');
 $('.customer-create-main').on('click', '.btn-save', function () {
     debugger;
@@ -178,14 +181,16 @@ function NewCustomerCreate(e) {
 }
 
 $(document).tooltip({
- 
+    position: { my: "left top", at: "right top" },
     items: ".field-validation-error",
     content: function () {
 
         debugger;
-        return $(this).attr('data-val-required') ||
-               $(this).attr('data-val-date') ||
-               $(this).attr('data-val-number'); // etc etc
+        //    return $(this).attr('data-val-required') ||
+        //           $(this).attr('data-val-date') ||
+        //           $(this).attr('data-val-number'); // etc etc
+        //}
+        return $(this).attr("title");
     }
 });
 </script>

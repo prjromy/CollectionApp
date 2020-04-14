@@ -1,6 +1,8 @@
 ﻿@model Loader.Models.RegisterViewModel
 @using Loader.Helper
 @using ChannakyaCustomeDatePicker.Helper
+<link href="~/Content/ch-treeview.css" rel="stylesheet" />
+<script src="~/Scripts/ch-treeview.js"></script>
 @{
     /**/
     Html.EnableClientValidation(true);
@@ -219,11 +221,17 @@
     </form>
 
 </div><!-- /.box -->
+@*<link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link href="~/UserDialog/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="~/UserDialog/jquery-ui.css" rel="stylesheet" />
+<script src="~/UserDialog/jquery-1.11.1.ui.min.js"></script>*@
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script src="~/Scripts/ch-dialog.js"></script>
 <script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
 <link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
 <script src="~/Scripts/ch-dpicker.js"></script>
+
 @*@section Scripts {
 
     @Scripts.Render("~/bundles/jqueryval")

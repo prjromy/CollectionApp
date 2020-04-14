@@ -151,9 +151,9 @@ namespace BussinessLogic.Service
             return returnMessage;
         }
 
-        public List<LocationMaster> getLocation()
+        public List<LocationMaster> getLocation(string prefix)
         {
-           return uow.Repository<LocationMaster>().GetAll().ToList();
+            return uow.Repository<LocationMaster>().FindBy(x => x.LocationName.ToLower().StartsWith(prefix.ToLower())).ToList();
         }
     }
 }

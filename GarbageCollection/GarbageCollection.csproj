@@ -1331,6 +1331,8 @@
     <Content Include="Scripts\jquery-ui-1.10.4.custom.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <Content Include="Scripts\qtip\jquery.qtip.min.css" />
+    <Content Include="Scripts\qtip\jquery.qtip.min.js" />
     <Content Include="Scripts\SuscrptionJs\SuscriptionPage.js" />
     <Content Include="Scripts\SuscrptionJs\CustomerSearch.js" />
     <Content Include="Scripts\date.format.js" />
@@ -1423,6 +1425,7 @@
     <Content Include="Scripts\tether.min.js" />
     <Content Include="Scripts\typeahead.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="UserDialog\jquery-ui.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -1536,6 +1539,8 @@
     <Content Include="Views\Report\_CustomerReportList.cshtml" />
     <Content Include="Views\Report\SuscriptionReportList.cshtml" />
     <Content Include="Views\Report\_SuscriptionReportList.cshtml" />
+    <Content Include="UserDialog\bootstrap-theme.min.css" />
+    <Content Include="UserDialog\jquery-1.11.1.ui.min.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

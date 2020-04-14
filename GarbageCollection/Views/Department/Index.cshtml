@@ -61,6 +61,7 @@
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
 
 <script src="~/Scripts/jquery-message-box.js"></script>
+<script src="~/Scripts/ch-treeview.js"></script>
 <script type="text/javascript">
 
     $('.Department-explore').on('click', '.listView', function (event) {
@@ -75,7 +76,7 @@
         }
         var nodeId = $(this).closest('.panel-list').find('input#pDepartmentId').val();
 
-        $('.Department-treeview').SelectNode(nodeId);
+        $('.panel-list').trigger('nodeClick', [{ nodeId: nodeId }]);
 
     });
 
@@ -252,7 +253,7 @@
         debugger;
         var query = $('input.txtSearch').val();
         var filter = query.toUpperCase();
-        var total = $('.detailsList').size();
+        var total = $('.detailsList').length;
         var dataBackup = $('.detailsList').html();
         var count = 0;
         //var checkDepartment = $(this).closest('.panel-list').find('.box-body').find('col-lg-3.col-xs-6.details');

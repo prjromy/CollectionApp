@@ -117,7 +117,8 @@
 
             var container = $(this).closest('.panel-create');
             var formData = new FormData($(this)[0]);
-            var nodeId = $(this).closest('.Designation-create').find('input#DGId').val()
+            // var nodeId = $(this).closest('.Designation-create').find('input#DGId').val() for no hierarchy uncomment this if hierarchy is true and comment below
+            var nodeId=0;
             var wrapperClass = $(this).closest("explore-details").find(".panel-list");
             var tempPnode = $(this).closest('.Designation-create').find('input.internal-value').val(); //Dorje
             $.MessageBox({

@@ -166,9 +166,9 @@ namespace GarbageCollection.Controllers
             }
 
         }
-        public  JsonResult LocationList()
+        public  JsonResult LocationList(string prefix)
         {
-            var LocationList = suscription.getLocation();
+            var LocationList = suscription.getLocation(prefix);
             return Json(LocationList);
         }
     }

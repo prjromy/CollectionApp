@@ -26,7 +26,8 @@ namespace BuisnessObject.ViewModel
             [Required(ErrorMessage = "Customer type is required")]
             [DisplayName("Customer Type Name")]
             public string Customertype { get; set; }
-            [Required(ErrorMessage = "Phone Number is required")]
+            //[Required(ErrorMessage = "Phone Number is required")]
+            [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Enter a number")]
             [DisplayName("Phone No")]
             
             
@@ -34,15 +35,16 @@ namespace BuisnessObject.ViewModel
               //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
             public string PhoneNo { get; set; }
             [Required(ErrorMessage = "Mobile No is required")]
-            [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "Invalid Mobile Number.")]
+            [RegularExpression(@"^([0-9]{10})$", ErrorMessage = "10 digit mobile number required.")]
             [DisplayName("Mobile No")]
             public string MobileNo { get; set; }
 
             [Required(ErrorMessage = "Address is required")]
             public string Address { get; set; }
 
-            [Required(ErrorMessage = "Email is required")]
+            //[Required(ErrorMessage = "Email is required")]
             public string Email { get; set; }
+            [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Enter a number")]
             public string PanNo { get; set; }
             public System.Data.Entity.Spatial.DbGeometry Geom { get; set; }
             public string Longitude { get; set; }
@@ -151,6 +153,7 @@ namespace BuisnessObject.ViewModel
             public int subsid { get; set; }
             public int Subscollid { get; set; }
             public string Collectorname { get; set; }
+            [DisplayName("Collector Name")]
             public int CollectorId { get; set; }
             [DisplayName("Subscription No.")]
 
@@ -180,5 +183,8 @@ namespace BuisnessObject.ViewModel
             public string CollectorName { get; set; }
             public string Status { get; set; }
         }
+
+      
+        
     }
 }

@@ -153,8 +153,16 @@
                     <div class="form-group col-md-12">
                             @Html.LabelFor(model => model.DeptId, htmlAttributes: new { @class = "control-label col-md-3" })
                             <div class="col-md-9">
+                                @if (Model.EmployeeId != 0)
+                                {
+                                    @Html.TextBox("Department", (object)ViewBag.DeptText, new { @id = "Department", @class = "form-control col-md-6" })
 
-                                @Html.TextBox("Department",null,new{@id="Department",@class="form-control col-md-6" })
+                                }
+                                else
+                                {
+                                    @Html.TextBox("Department", null, new { @id = "Department", @class = "form-control col-md-6" })
+
+                                }
                                 @Html.HiddenFor(x=>x.DeptId)
                                 @Html.ValidationMessageFor(model => model.DeptId, "", new { @class = "text-danger" })
                             </div>
@@ -165,9 +173,18 @@
                     <div class="form-group col-md-12">
                         @Html.LabelFor(model => model.DGId, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
+                           
+                            @if (Model.EmployeeId != 0)
+                            {
+                                
 
-                            @Html.TextBox("DesignationName", null, new { @id = "Designation", @class = "form-control col-md-6" })
-                            @Html.HiddenFor(x => x.DGId)
+                                        @Html.TextBox("DesignationName", (object)ViewBag.DesgText, new { @id = "Designation", @class = "form-control col-md-6" })
+                            }
+                                    else
+                                    {
+                                @Html.TextBox("DesignationName", null, new { @id = "Designation", @class = "form-control col-md-6" })
+                            }
+                         @Html.HiddenFor(x => x.DGId)
                             @Html.ValidationMessageFor(model => model.DGId, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -183,8 +200,8 @@
                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
 
                         </div>
-                        @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-3">
+                        @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "control-label col-md-3 hidden" })
+                        <div class="col-md-3 hidden">
 
                             @Html.DropDownListFor(model => model.BloodGroup, (IEnumerable<SelectListItem>)ViewBag.GetBloodGroup, "Select Blood Group", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
@@ -193,7 +210,7 @@
                     </div>
 
 
-                    <div class="form-group col-md-12">
+                    <div class="form-group col-md-12 hidden">
 
                         @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-3">
@@ -211,8 +228,8 @@
 
                     <div class="form-group col-md-12">
 
-                        @Html.LabelFor(model => model.MaritialStatus, htmlAttributes: new { @class = "control-label col-md-3" })
-                        <div class="col-md-3">
+                        @Html.LabelFor(model => model.MaritialStatus, htmlAttributes: new { @class = "control-label col-md-3 hidden" })
+                        <div class="col-md-3 hidden">
                             @Html.DropDownListFor(model => model.MaritialStatus, (IEnumerable<SelectListItem>)ViewBag.GetMaritialStatus, "Select Maritial Status", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MaritialStatus, "", new { @class = "text-danger" })
                         </div>
@@ -455,9 +472,9 @@
         });
 
 
-        $("#createEmployee").submit(function () {
+        $("#createEmployee").submit(function (e) {
             debugger;
-
+            e.stopImmediatePropagation();
             var branchval = $("#BranchId").val();
             var deptval = $("#DeptId").val();
             var genderval = $("#Gender").val();
@@ -485,7 +502,7 @@
                 buttonFail: "No",
                 message: "Are you sure?"
             }).done(function () {
-
+                debugger;
                 $.ajax({
                     url: '@Url.Action("Create", "Employee")',
                     type: 'POST',

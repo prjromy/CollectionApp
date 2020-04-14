@@ -241,7 +241,16 @@ namespace GarbageCollection.Controllers
             var multipleCustomer = customerService.GetSelectedMultipleCustomer(customerId);
             return PartialView(multipleCustomer);
         }
-
+        public JsonResult CustomerList(string prefix)
+        {
+            var CustomerList = customerService.getCustomer(prefix);
+            return Json(CustomerList);
+        }
+        public JsonResult AddressList(string prefix)
+        {
+            var AddressList = customerService.getAddress(prefix);
+            return Json(AddressList);
+        }
 
     }
 }
