@@ -4,7 +4,7 @@
 }
 
 
-<div>
+<div class="sidebar-menu">
     <ul class="sidebar-menu">
         @Html.Partial("LayoutTreeDesign", Model)
     </ul>
@@ -12,12 +12,20 @@
 </div>
 
 <style>
+    .sidebar-menu:hover {
+        overflow:hidden;
+    }
     .slimScrollDiv {
         padding-left: -27px;
         left: -50px;
         margin-right: -56px;
     }
-
+    .main-sidebar {
+        overflow: hidden auto;
+    }
+    .sidebar {
+        overflow:hidden;
+    }
     .sidebar > ul {
         margin-left: -3px;
     }

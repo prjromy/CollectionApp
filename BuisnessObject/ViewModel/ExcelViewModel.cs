@@ -47,5 +47,55 @@ namespace BuisnessObject.ViewModel
                 public Nullable<int> Status { get; set; }
        
             }
+        public class SubscriberDueExcelViewModel
+        {
+            [DisplayName("Subscription No")]
+            public int Subsno { get; set; }
+            [DisplayName("Customer Name")]
+
+            public string CustomerName { get; set; }
+            [DisplayName("Customer Type")]
+
+            public string CustomerType { get; set; }
+            [DisplayName("Location Name")]
+
+            public string LocationName { get; set; }
+            public decimal Debit { get; set; }
+            public decimal Credit { get; set; }
+            public decimal DueBalance { get; set; }
+            public string Status { get; set; }
+            [DisplayName("Ledger Name")]
+
+            public string LedgerName { get; set; }
+           
+            //public Nullable<System.DateTime> CollectionDate { get; set; }
+     
+
+        }
+        public class CollectorExcelViewModel
+        {
+
+            [DisplayName("Subscription No")]
+            public int Subsno { get; set; }
+            [DisplayName("Customer Name")]
+
+            public string CustomerName { get; set; }
+            [DisplayName("Customer Type")]
+
+            public string CustomerType { get; set; }
+            [DisplayName("Location Name")]
+
+            public string LocationName { get; set; }
+            [DisplayName("Collector Name")]
+            public string CollectorName { get; set; }
+
+            [DisplayName("Collection Date")]
+            public Nullable<System.DateTime> CollectionDate { get; set; }
+            [DisplayName("Collection Amount")]
+            public Nullable<decimal> CollectionAmt { get; set; }
+            [DisplayName("Discount Amount")]
+            public Nullable<decimal> DiscountAmt { get; set; }
+
+        }
     }
 }

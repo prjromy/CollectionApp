@@ -1240,6 +1240,7 @@
     <Content Include="Images\images.png" />
     <Content Include="Images\J+gXbU6FRUAAAAAElFTkSuQmCC.png" />
     <Content Include="Images\Lock-icon.png" />
+    <Content Include="Images\logo.png" />
     <Content Include="Images\ui-icons_454545_256x240.png" />
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
@@ -1324,6 +1325,7 @@
     <Content Include="admin-lte\dist\js\adminlte.js.map" />
     <Content Include="admin-lte\dist\js\adminlte.min.js.map" />
     <Content Include="admin-lte\plugins\icheck-bootstrap\LICENSE" />
+    <Content Include="Scripts\an-datepicker-with-polyfill.min.js" />
     <Content Include="Scripts\ch-dialog.js" />
     <Content Include="Scripts\ch-dpicker.js" />
     <Content Include="Scripts\ch-treeview.js" />
@@ -1357,6 +1359,8 @@
     <Content Include="Scripts\DatePicker\font\colabthi-webfont.woff" />
     <Content Include="Scripts\DatePicker\font\ColabThi.otf" />
     <Content Include="Scripts\DatePicker\images\Thumbs.db" />
+    <None Include="Properties\PublishProfiles\GarbageCollection.pubxml" />
+    <None Include="Properties\PublishProfiles\WastageManagement.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -1426,7 +1430,9 @@
     <Content Include="Scripts\typeahead.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="UserDialog\jquery-ui.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -1541,6 +1547,12 @@
     <Content Include="Views\Report\_SuscriptionReportList.cshtml" />
     <Content Include="UserDialog\bootstrap-theme.min.css" />
     <Content Include="UserDialog\jquery-1.11.1.ui.min.js" />
+    <Content Include="Views\Report\SubscriptionDueReportList.cshtml" />
+    <Content Include="Views\Report\_SubscriptionDueReportList.cshtml" />
+    <Content Include="Views\Report\collectionReportList.cshtml" />
+    <Content Include="Views\Report\_collectionReportList.cshtml" />
+    <Content Include="Views\Report\SubscriberStatement.cshtml" />
+    <Content Include="Views\Report\_SubscriberStatement.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

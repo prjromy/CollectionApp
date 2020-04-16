@@ -184,7 +184,76 @@ namespace BuisnessObject.ViewModel
             public string Status { get; set; }
         }
 
-      
-        
+        public class SubscriberDueViewModel
+        {
+            [DisplayName("Subscription No")]
+            public int Subsno { get; set; }
+            [DisplayName("Customer Name")]
+
+            public string CustomerName { get; set; }
+            [DisplayName("Customer Type")]
+
+            public string CustomerType { get; set; }
+            [DisplayName("Location Name")]
+
+            public string LocationName { get; set; }
+            public decimal Debit { get; set; }
+            public decimal Credit { get; set; }
+            public decimal DueBalance { get; set; }
+            public string Status { get; set; }
+            [DisplayName("Ledger Name")]
+
+            public string LedgerName { get; set; }
+            public int LocationId { get; set; }
+            public Nullable<System.DateTime> CollectionDate { get; set; }
+            public int TotalCount { get; set; }
+            public IPagedList<SubscriberDueViewModel> suscriberPagedList { get; set; }
+
+        }
+
+        public class CollectionReport
+        {
+    
+            [DisplayName("Subscription No")]
+            public int Subsno { get; set; }
+            [DisplayName("Customer Name")]
+
+            public string CustomerName { get; set; }
+            [DisplayName("Customer Type")]
+
+            public string CustomerType { get; set; }
+            [DisplayName("Location Name")]
+
+            public string LocationName { get; set; }
+            [DisplayName("Collector Name")]
+            public string CollectorName { get; set; }
+
+            [DisplayName("Collection Date")]
+            public Nullable<System.DateTime> CollectionDate { get; set; }
+            [DisplayName("Collection Amount")]
+            public Nullable<decimal> CollectionAmt { get; set; }
+            [DisplayName("Discount Amount")]
+            public Nullable<decimal> DiscountAmt { get; set; }
+            public int TotalCount { get; set; }
+            public IPagedList<CollectionReport> collectorPagedList { get; set; }
+
+        }
+
+     
+              public class SubscriptionReport
+        {
+
+           public int SubsNo { get; set; }
+            public DateTime PostedOnAd { get; set; }
+            public DateTime PostedOnBs { get; set; }
+            public Nullable<decimal> Debit { get; set; }
+            public Nullable<decimal> Credit { get; set; }
+            public Nullable<decimal> Balance { get; set; }
+            public string Sources { get; set; }
+            public string Custname { get; set; }
+            public int TotalCount { get; set; }
+            public IPagedList<SubscriptionReport> subscriptionPagedList { get; set; }
+
+        }
     }
 }

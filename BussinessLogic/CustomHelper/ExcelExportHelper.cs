@@ -93,7 +93,10 @@ namespace BussinessLogic.CustomHelper
                     {
                         columnCells.Style.Numberformat.Format = "mm/dd/yyyy";
                     }
-                    
+                    if (column.ToString() == "CollectionDate")
+                    {
+                        columnCells.Style.Numberformat.Format = "mm/dd/yyyy";
+                    }
 
                     workSheet.Column(columnIndex).AutoFit();
 

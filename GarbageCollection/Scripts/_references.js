@@ -332,6 +332,7 @@
 /// <reference path="../content/choose/chosen.jquery.min.js" />
 /// <reference path="../content/choose/chosen.jquery.multiselect.customer.js" />
 /// <reference path="ai.0.15.0-build58334.min.js" />
+/// <reference path="an-datepicker-with-polyfill.min.js" />
 /// <reference path="bootstrap.min.js" />
 /// <reference path="ch-dialog.js" />
 /// <reference path="ch-dpicker.js" />

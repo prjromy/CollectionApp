@@ -19,7 +19,7 @@
     {
         if (Model.PId == 0)
         {
-            <a style="padding-bottom:0px;padding-top:5px;margin-top: 9px;font-size:15px;">
+            <a style="padding-bottom:0px;padding-top:5px;margin-top: 9px;font-size:15px;" tabindex="0">
                 
                     <i class="fa fa-dashboard"></i> <span data-toggle="tooltip" title="@Model.Text" style="cursor:pointer;font-size:14px;">@Model.Text</span>
                 @Model.Image
@@ -32,7 +32,7 @@
         else
         {
 
-            <a style="padding-bottom:8px;padding-top:5px;margin-top: 9px;font-weight:500;">
+            <a style="padding-bottom:8px;padding-top:5px;margin-top: 9px;font-weight:500;" tabindex="0">
                 <span class="idtext" style="padding-left: 15px">
                     <i class="fa fa-bars"></i>
                     @Model.Image
@@ -50,8 +50,8 @@
     else
     {
 
-        <ul class="treeview-menu" style="list-style-type:none;padding-left:25px;cursor:pointer;">
-            <li><a class="treeview-menu-item" controller="@Model.Controler" acton="@Model.Acton"style="font-size:15px;cursor:pointer;" data-toggle="tooltip" title="@Model.Text"><i class="fa fa-arrow-right"></i> @Model.Text</a></li>
+        <ul class="treeview-menu" style="list-style-type:none;padding-left:25px;cursor:pointer;" >
+            <li><a class="treeview-menu-item" controller="@Model.Controler" acton="@Model.Acton"style="font-size:15px;cursor:pointer;" data-toggle="tooltip" title="@Model.Text" tabindex="0"><i class="fa fa-arrow-right"></i> @Model.Text</a></li>
         </ul>
 
     }

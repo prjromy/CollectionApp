@@ -1,74 +1,75 @@
 ﻿
-@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+
+@model BuisnessObject.ViewModel.MainViewModel.SubscriptionReport
 @using PagedList
 @using BussinessLogic.Service
 @using BussinessLogic.CustomHelper
-<div class="table-responsive no-padding sus-page-list">
-    <table class="table table-bordered table-striped table-hover sus-table-list" style="margin-top: 20px;">
+<div class="table-responsive no-padding sus-report-page-list">
+    <table class="table table-bordered table-striped table-hover sus-report-table-list" style="margin-top: 20px;">
 
         <tr>
             <th> Suscription No.</th>
 
-            <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
-            <th>@Html.DisplayNameFor(x => x.EffectiveDate)</th>
-            <th>@Html.DisplayNameFor(x => x.LedgerId)</th>
-            <th>@Html.DisplayNameFor(x => x.MonthlyAmount)</th>
-            <th>@Html.DisplayNameFor(x => x.LocationID)</th>
+            <th>@Html.DisplayNameFor(x => x.Custname)</th>
+            <th>@Html.DisplayNameFor(x => x.PostedOnAd)</th>
+            <th>@Html.DisplayNameFor(x => x.PostedOnBs)</th>
+            <th>@Html.DisplayNameFor(x => x.Debit)</th>
+            <th>@Html.DisplayNameFor(x => x.Credit)</th>
+            <th>@Html.DisplayNameFor(x => x.Balance)</th>
+            <th>@Html.DisplayNameFor(x => x.Sources)</th>
 
 
 
         </tr>
 
 
-        @foreach (var item in Model.suscriberPagedList)
+        @foreach (var item in Model.subscriptionPagedList)
         {
-            @Html.HiddenFor(x => x.CustId)
+           
             <tr style="font-size:12px;">
                 <td>
                     @item.SubsNo
 
                 </td>
                 <td>
-                    @item.CustomerName
+                    @item.Custname
 
                 </td>
                 <td>
-                    @item.EffectiveDate
+                    @item.PostedOnAd
 
                 </td>
                 <td>
-                    @{
-                        var ledgerName = CommonUtilityService.LedgerName(@item.LedgerId);
-                    }
-                    @ledgerName
+                    @item.PostedOnBs
                 </td>
                 <td>
 
-                    @Convert.ToDecimal(@item.MonthlyAmount).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+                   @item.Debit
 
                 </td>
                 <td>
-                    @{
-                        var locationName = CommonUtilityService.LocationName(@item.LocationID);
-                    }
-                    @locationName
+                    @item.Credit
 
                 </td>
+                <td>
+                    @item.Balance
 
+                </td>
+                <td>@item.Balance</td>
 
             </tr>
                         }
 
     </table>
-    @Html.Paging("_SuscriptionReportList", "Report", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
+    @Html.Paging("_SuscriptionReportList", "Report", Model.subscriptionPagedList.PageCount, Model.subscriptionPagedList.PageNumber, Model.subscriptionPagedList.PageSize)
 
-    </div>
+</div>
 
 
 
-    <script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
-    <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
 
 
 

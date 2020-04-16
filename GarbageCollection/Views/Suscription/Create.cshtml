@@ -3,6 +3,7 @@
 @model  BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
 @using BussinessLogic.Service
 @using ChannakyaCustomeDatePicker.Helper
+@using BussinessLogic.CustomHelper
 @{
     Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
 
@@ -14,7 +15,7 @@
 <div class="modal-dialog modal-lg">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 class="modal-title">Add Suscription</h4>
+            <h4 class="modal-title">Add Subscription</h4>
             <span class="close" id="closeTop" data-dismiss="modal" aria-hidden="true">&times;</span>
 
         </div>
@@ -32,7 +33,7 @@
                             @Html.AntiForgeryToken()
 
                             <div class="form-horizontal">
-                                <h4>Suscription Create</h4>
+                                <h4>Subscription Create</h4>
                                 <hr />
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -41,7 +42,7 @@
 
 
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.ChqLabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
 
                                         @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" } })
@@ -52,7 +53,7 @@
                                 </div>
 
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.LedgerId, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.ChqLabelFor(model => model.LedgerId, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.DropDownListFor(model => model.LedgerId, CommonUtilityService.LedgerList(), htmlAttributes: new { @class = "form-control col-md-7" })
                                         @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
@@ -61,14 +62,14 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.MonthlyAmount, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.ChqLabelFor(model => model.MonthlyAmount, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.EditorFor(model => model.MonthlyAmount, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.MonthlyAmount, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.ChqLabelFor(model => model.LocationID, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @if (Model.Subsid != 0)
                                         {
@@ -90,15 +91,16 @@
                                 </div>
 
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.EffectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.ChqLabelFor(model => model.EffectiveDate, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
-                                        @Html.DatePicker(model => model.EffectiveDate, true)
+                                        @*@Html.DatePicker(model => model.EffectiveDate, true)*@
+                                        <an-date-picker is-input></an-date-picker>
                                         @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
                                 <div class="form-group">
-                                    @Html.LabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    @Html.ChqLabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
                                         @Html.TextAreaFor(model => model.Remarks, 10, 40, new { htmlAttributes = new { @class = "form-control" } })
                                         @Html.ValidationMessageFor(model => model.Remarks, "", new { @class = "text-danger" })
@@ -129,15 +131,17 @@
 </div>
 <script src="~/Scripts/jquery-message-box.js"></script>
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
-<link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
-<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
+@*<link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
+<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>*@
+
+
 
 <script>
     $.validator.unobtrusive.parse('#createSubmitFormSuscription');
     $('.suscription-create-main').on('click', '.btn-save', function () {
         debugger;
         $('#createSubmitFormSuscription').removeData("validator").removeData("unobtrusiveValidation");
-        $.validator.unobtrusive.parse($('#createSubmitForm'));
+        $.validator.unobtrusive.parse($('#createSubmitFormSuscription'));
         if ($("#createSubmitFormSuscription").valid()) {
             NewCustomerCreate();
         }

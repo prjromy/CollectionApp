@@ -92,6 +92,7 @@
     <Compile Include="Service\CommonService.cs" />
     <Compile Include="Service\CommonUtilityService.cs" />
     <Compile Include="Service\CustomerService.cs" />
+    <Compile Include="Service\ReportService.cs" />
     <Compile Include="Service\SuscriptionService.cs" />
   </ItemGroup>
   <ItemGroup>

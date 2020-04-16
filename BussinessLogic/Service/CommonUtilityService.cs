@@ -32,6 +32,15 @@ namespace BussinessLogic.Service
       
             return new SelectList(objAccountType, "Value", "Text");
         }
+
+        public static SelectList VerifiedUnverifiedList()
+        {
+            List<SelectListItem> objAccountType = new List<SelectListItem>();
+            objAccountType.Add(new SelectListItem { Text = "Verified", Value = "1" });
+            objAccountType.Add(new SelectListItem { Text = "Unverified", Value = "2" });
+
+            return new SelectList(objAccountType, "Value", "Text");
+        }
         public static bool AllowEdit(int menuId)
         {
             var AllowDeposit = commonService.GetUserAssignMenu(menuId, Global.UserId);

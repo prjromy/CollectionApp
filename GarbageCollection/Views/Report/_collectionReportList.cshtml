@@ -1,0 +1,125 @@
+﻿
+@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@model BuisnessObject.ViewModel.MainViewModel.CollectionReport
+
+<div class="table-responsive no-padding collector-page-list">
+    <table class="table table-bordered table-striped table-hover">
+
+        <tr>
+            <th> Subscription No.</th>
+            <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
+            <th>@Html.DisplayNameFor(x => x.CustomerType)</th>
+            <th>@Html.DisplayNameFor(x => x.LocationName)</th>
+            <th>@Html.DisplayNameFor(x => x.CollectorName)</th>
+            <th>@Html.DisplayNameFor(x => x.CollectionDate)</th>
+            <th>@Html.DisplayNameFor(x => x.CollectionAmt)</th>
+            <th>@Html.DisplayNameFor(x => x.DiscountAmt)</th>
+
+            @*<th>Status</th>*@
+
+        </tr>
+
+
+        @foreach (var item in Model.collectorPagedList)
+        {
+            <tr style="font-size:12px;">
+                <td>
+                    @item.Subsno
+
+                </td>
+                <td>
+                    @item.CustomerName
+
+                </td>
+                <td>
+                    @item.CustomerType
+
+                </td>
+                <td>
+                    @item.LocationName
+
+                </td>
+                <td>
+                    @item.CollectorName
+
+                </td>
+                <td>
+                    @item.CollectionDate
+
+                </td>
+                <td>
+                    @item.CollectionAmt
+
+                </td>
+
+                <td>
+                    @item.DiscountAmt
+                </td>
+
+
+
+
+            </tr>
+        }
+
+    </table>
+    @Html.Paging("_collectionReportList", "Report", Model.collectorPagedList.PageCount, Model.collectorPagedList.PageNumber, Model.collectorPagedList.PageSize)
+</div>
+
+
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+
+<script>
+    $("div.collector-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var location = parentContainer.find("#search-location").find("#txtLocation").val()
+        var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
+        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var status = parentContainer.find('#status').find("#statuslist").val();
+
+        var container = parentContainer.find("div.collector-page-list");
+
+        var url = "?customerName=" + name + "&Location=" + location + "&collector=" + collector + "&collectionDate=" + collectorDate + "&verified=" + status;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.collector-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var location = parentContainer.find("#search-location").find("#txtLocation").val()
+        var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
+        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var status = parentContainer.find('#status').find("#statuslist").val();
+
+        var container = parentContainer.find("div.collector-page-list")
+        var url = "?customerName=" + name + "&Location=" + location + "&collector=" + collector + "&collectionDate=" + collectorDate + "&verified=" + status;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.collector-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var location = parentContainer.find("#search-location").find("#txtLocation").val()
+        var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
+        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var status = parentContainer.find('#status').find("#statuslist").val();
+        var container = parentContainer.find("div.collector-page-list")
+        var url = "?customerName=" + name + "&Location=" + location + "&collector=" + collector + "&collectionDate=" + collectorDate + "&verified=" + status;
+        getPageNumberBtnAction(url, container, me)
+    });
+</script>

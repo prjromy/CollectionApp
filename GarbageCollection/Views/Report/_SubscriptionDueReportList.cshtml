@@ -1,0 +1,135 @@
+﻿
+
+@model BuisnessObject.ViewModel.MainViewModel.SubscriberDueViewModel
+@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+<div class="table-responsive no-padding sus-due-page-list">
+    <table class="table table-bordered table-striped table-hover sus-due-table-list" style="margin-top: 20px;">
+
+        <tr>
+            <th> Suscription No.</th>
+
+     
+            <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
+            <th>@Html.DisplayNameFor(x => x.CustomerType)</th>
+            <th>@Html.DisplayNameFor(x => x.LedgerName)</th>
+            <th>@Html.DisplayNameFor(x => x.LocationName)</th>
+            <th>@Html.DisplayNameFor(x => x.Debit)</th>
+            <th>@Html.DisplayNameFor(x => x.Credit)</th>
+            <th>@Html.DisplayNameFor(x => x.DueBalance)</th>
+            <th>@Html.DisplayNameFor(x => x.Status)</th>
+
+
+
+        </tr>
+
+
+        @foreach (var item in Model.suscriberPagedList)
+        {
+           
+            <tr style="font-size:12px;">
+                <td>
+                    @item.Subsno
+
+                </td>
+                <td>
+                    @item.CustomerName
+
+                </td>
+                <td>
+                    @item.CustomerType
+
+                </td>
+                <td>
+                    
+                   @item.LedgerName
+                </td>
+                <td>
+
+                    @item.LocationName
+                </td>
+                <td>
+
+                    @item.Debit
+                </td>
+                <td>
+
+                    @item.Credit
+                </td>
+                <td>
+
+                    @item.DueBalance
+                </td>
+                <td>
+
+                    @item.Status
+                </td>
+            
+
+
+            </tr>
+                        }
+
+    </table>
+    @Html.Paging("_SubscriptionDueReportList", "Report", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
+
+</div>
+
+
+
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+
+
+
+
+<script>
+    $('.subscription-due-export-to-excel').on('click', function () {
+    debugger;
+    var parentContainer = $(this).parents()
+
+
+    var me = $(this);
+    var Location = parentContainer.find("#Location").find("#LocationName").val();
+      
+    var tillDate = parentContainer.find("#CollectionDate").find("#CollectionDate").val();
+
+    var container = parentContainer.find("div.sus-due-page-list")
+    window.open("/Report/SubscriptionDueExportToExcel?tillDate=" + tillDate + "&Location=" + Location );
+
+    });
+    $("div.sus-due-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+
+        var me = $(this);
+
+        var Location = parentContainer.find("#Location").find("#LocationName").val();
+
+        var tillDate = parentContainer.find("#CollectionDate").find("#CollectionDate").val();
+
+        var container = parentContainer.find("div.sus-due-page-list")
+        var url = "?tillDate=" + tillDate + "&Location=" + Location ;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.sus-due-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+
+        var Location = parentContainer.find("#Location").find("#LocationName").val();
+
+        var tillDate = parentContainer.find("#CollectionDate").find("#CollectionDate").val();
+
+        var container = parentContainer.find("div.sus-due-page-list")
+        var url = "?tillDate=" + tillDate + "&Location=" + Location;
+        getPageNumberChangeData(url, container, me)
+    });
+
+</script>
