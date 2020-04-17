@@ -196,6 +196,9 @@ namespace BussinessLogic.Service
 
             return customerInfoList;
         }
+
+
+  
         public MainViewModel.CustomerViewModel GetSelectedMultipleCustomer(int listBox)
         {
             //string customer = "";

@@ -89,7 +89,10 @@ namespace BussinessLogic.CustomHelper
             {
                 mode = ECustomerSearchType.Collection.GetDescription();
             }
-
+            else if (ECustomerSearchTypes == ECustomerSearchType.SubscriptionReport)
+            {
+                mode = ECustomerSearchType.SubscriptionReport.GetDescription();
+            }
 
             //var items = expression.Compile()(html.ViewData.Model);
             var htmlFieldName = ExpressionHelper.GetExpressionText(expression);

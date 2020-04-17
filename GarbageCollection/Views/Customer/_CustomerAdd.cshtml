@@ -21,6 +21,12 @@
         
             @Html.CustomerSearch(x => x.CustomerName, ECustomerSearchType.Collection)
         }
+        @if (Model.ModelFrom == "SubscriptionReport")
+        {
+
+
+            @Html.CustomerSearch(x => x.CustomerName, ECustomerSearchType.SubscriptionReport)
+        }
         @Html.HiddenFor(x=>x.CustId,new { @class="cust-id"})
         @Html.ValidationMessageFor(model => model.CustId, "", new { @class = "text-danger" })
     </div>

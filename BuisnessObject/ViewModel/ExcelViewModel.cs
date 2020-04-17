@@ -97,5 +97,21 @@ namespace BuisnessObject.ViewModel
             public Nullable<decimal> DiscountAmt { get; set; }
 
         }
+
+        public class SubscriptionReportExcel
+        {
+
+            public int SubsNo { get; set; }
+            public DateTime PostedOnAd { get; set; }
+            public string PostedOnBs { get; set; }
+            public Nullable<decimal> Debit { get; set; }
+            public Nullable<decimal> Credit { get; set; }
+            public Nullable<decimal> Balance { get; set; }
+            public string Sources { get; set; }
+            public string Custname { get; set; }
+          
+      
+
+        }
     }
 }

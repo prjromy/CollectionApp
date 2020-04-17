@@ -90,6 +90,8 @@ namespace BuisnessObject.ViewModel
             public Nullable<int> ModifiedBy { get; set; }
             public Nullable<System.DateTime> ModifiedOn { get; set; }
             public int TotalCount { get; set; }
+            public string SearchOption { get; set; }
+            public string SearchParameter { get; set; }
             public List<SubscriptionViewModel> suscriberViewModelList { get; set; }
             public IPagedList<SubscriptionViewModel> suscriberPagedList { get; set; }
             public string ModelFrom { get; set; }
@@ -245,13 +247,14 @@ namespace BuisnessObject.ViewModel
 
            public int SubsNo { get; set; }
             public DateTime PostedOnAd { get; set; }
-            public DateTime PostedOnBs { get; set; }
+            public string PostedOnBs { get; set; }
             public Nullable<decimal> Debit { get; set; }
             public Nullable<decimal> Credit { get; set; }
             public Nullable<decimal> Balance { get; set; }
             public string Sources { get; set; }
             public string Custname { get; set; }
             public int TotalCount { get; set; }
+            public string ModelFrom { get; set; }
             public IPagedList<SubscriptionReport> subscriptionPagedList { get; set; }
 
         }

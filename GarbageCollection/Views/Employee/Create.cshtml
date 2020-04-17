@@ -103,12 +103,12 @@
                         <input type="file" id="fileid1" name="file" class="file-picker-input exm" accept="image/x-png,image/gif,image/jpeg" style="display:none;" />
                         <i class="glyphicon glyphicon-upload uploadicon upldimge"></i>
 
-                        @if (Model.EmployeeId != 0 && ViewBag.Image != null)
+                        @if (Model.EmployeeId != 0 && ViewBag.Image != "")
                         {
                             <div id="loadimage"><img id="employeeImage" src="data:image/gif;base64,@ViewBag.Image" style="max-height:100px;max-width:147px;object-fit:contain;margin-left: 4px;" alt=""></div>
 
                         }
-                        @if (Model.EmployeeId != 0 && ViewBag.Image == null)
+                        @if (Model.EmployeeId != 0 && ViewBag.Image == "")
                         {
                             <div id="loadimage"><img id="employeeImage" style="max-height:100px;max-width:147px;object-fit:contain;margin-left: 4px;" src="~/Content/SBNJiAlSsx4AAAAASUVORK5CYII=.png" alt=""></div>
 
@@ -200,17 +200,17 @@
                             @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
 
                         </div>
-                        @Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "control-label col-md-3 hidden" })
+                        @*@Html.LabelFor(model => model.BloodGroup, htmlAttributes: new { @class = "control-label col-md-3 hidden" })
                         <div class="col-md-3 hidden">
 
                             @Html.DropDownListFor(model => model.BloodGroup, (IEnumerable<SelectListItem>)ViewBag.GetBloodGroup, "Select Blood Group", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.BloodGroup, "", new { @class = "text-danger" })
 
-                        </div>
+                        </div>*@
                     </div>
 
 
-                    <div class="form-group col-md-12 hidden">
+                    @*<div class="form-group col-md-12 hidden">
 
                         @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-3">
@@ -223,16 +223,16 @@
                             @Html.ValidationMessageFor(model => model.Religion, "", new { @class = "text-danger" })
                         </div>
 
-                    </div>
+                    </div>*@
 
 
                     <div class="form-group col-md-12">
 
-                        @Html.LabelFor(model => model.MaritialStatus, htmlAttributes: new { @class = "control-label col-md-3 hidden" })
+                        @*@Html.LabelFor(model => model.MaritialStatus, htmlAttributes: new { @class = "control-label col-md-3 hidden" })
                         <div class="col-md-3 hidden">
                             @Html.DropDownListFor(model => model.MaritialStatus, (IEnumerable<SelectListItem>)ViewBag.GetMaritialStatus, "Select Maritial Status", new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.MaritialStatus, "", new { @class = "text-danger" })
-                        </div>
+                        </div>*@
 
                         @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-3">
@@ -278,10 +278,20 @@
                 <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.DateOfJoin, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-3">
-                        @Html.DatePicker(x => x.DateOfJoin)
-                        @*@Html.TextBoxFor(model => model.DateOfJoin, new { @class = "form-control dt", @Value = DateTime.Now.ToShortDateString() })*@
-                        @Html.ValidationMessageFor(model => model.DateOfJoin, "", new { @class = "text-danger" })
-                    </div>
+                       @* @Html.DatePicker(x => x.DateOfJoin)*@
+                        @if (Model.EmployeeId != 0)
+                        {
+                            var update = ViewBag.Data;
+                            <an-date-picker is-input date-ad=@update></an-date-picker>
+                                }
+                                else
+                                {
+                                <an-date-picker is-input></an-date-picker>
+
+                                }
+                                @*@Html.TextBoxFor(model => model.DateOfJoin, new { @class = "form-control dt", @Value = DateTime.Now.ToShortDateString() })*@
+                                @Html.ValidationMessageFor(model => model.DateOfJoin, "", new { @class = "text-danger" })
+</div>
 
                 </div>
             </div>
@@ -296,7 +306,8 @@
 
     }
     
-  
+
+    <script src="~/Scripts/an-datepicker-with-polyfill.min.js"></script>
     <script src="~/Scripts/jquery-message-box.js"></script>
     <script src="~/Scripts/ch-dialog.js"></script>
     <script src="~/Scripts/ch-dpicker.js"></script>
@@ -475,10 +486,18 @@
         $("#createEmployee").submit(function (e) {
             debugger;
             e.stopImmediatePropagation();
-            var branchval = $("#BranchId").val();
-            var deptval = $("#DeptId").val();
-            var genderval = $("#Gender").val();
-            var DGIdval = $("#DGId").val();
+            //var employee=new Object();
+            
+            //employee.branchval = $("#EmployeeId").val();
+            //employee.EmployeeNo = $("#EmployeeNo").val();
+            //employee.DGId = $("#DGId").val();
+            //employee.DeptId = $("#DeptId").val();
+            
+            var DateOfJoin=$('an-date-picker').get()[0].dateADWithTime;
+            
+            //employee.BranchId = $("#BranchId").val();
+            //employee.Gender = $("#Gender").val();
+            var  Photo=$('#loadimage').find('img').attr("src");
             var checkEmpno = $(this).closest('.Employee-create').find('input#EmployeeNo').val();
             if($.isNumeric(checkEmpno)==false)
             {
@@ -486,7 +505,7 @@
                 return false;
             }
 
-            var form = $(this);
+            var form = $(this)
             form.validate();
             if (form.valid() == false) {
                 InfoAlert("The Required Feild is Empty",1500);
@@ -494,7 +513,11 @@
             }
 
             var container = $(this).closest('.panel-create');
+
             var formData = new FormData($(this)[0]);
+            //formData.append("Photo",Photo)
+            formData.append("DateOfJoin",DateOfJoin)
+
             //var nodeId = $(this).find('.section-treeview#PEmployeeId').find('.internal-value').val()
             var nodeId = 1;
             $.MessageBox({

@@ -101,7 +101,7 @@ namespace BussinessLogic.Service
 
                 string query = "";
                
-                    query = "select COUNT(*) OVER () AS TotalCount,select SubsNo,Custname,PostedOnAd,PostedOnBs,Debit,Credit,Balance,Sources from [dbo].[fgetSubscriberStmnt] (" + subsid+",'"+FromDate+"','"+ToDate+"')";
+                    query = "select COUNT(*) OVER () AS TotalCount, SubsNo,Custname,PostedOnAd,PostedOnBs,Debit,Credit,Balance,Sources from [dbo].[fgetSubscriberStmnt] (" + subsid+",'"+FromDate+"','"+ToDate+"')";
 
               
 

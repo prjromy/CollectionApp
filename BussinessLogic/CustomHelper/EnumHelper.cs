@@ -14,6 +14,8 @@ namespace BussinessLogic.CustomHelper
         Suscription = 1,
         [Description("Collection")]
         Collection = 2,
+        [Description("SubscriptionReport")]
+        SubscriptionReport = 3,
 
     }
 
@@ -21,7 +23,9 @@ namespace BussinessLogic.CustomHelper
     {
         [Description("Customer")]
         Customer = 1,
-  
+        [Description("SubscriptionReport")]
+        SubscriptionReport = 1,
+
     }
 
 

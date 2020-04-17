@@ -7,7 +7,7 @@ $(document).on("click", "#btn-customer-search", function (e) {
     var searchValue = $("#SearchParameter").val();
     var selectedOption = $("#SearchOption option:selected").val();
     var listBox = $(this).parents().find(".listBox").find(".multiselect").val();
-    var mode = $("#Mode").val();
+    var mode = $("#btncustomersearch").attr("data-mode");
     var custType = $("#CustomerType").val();
    
     $.ajax({
@@ -36,7 +36,7 @@ $(document).on("keypress", "#SearchParameter", function (e) {
         var searchValue = $("#SearchParameter").val();
         var selectedOption = $("#SearchOption option:selected").val();
         var listBox = $(this).parents().find(".listBox").find(".multiselect").val();
-        var mode = $("#Mode").val();
+        var mode = $("#btncustomersearch").attr("data-mode");
         var custType = $("#CustomerType").val();
 
         $.ajax({
@@ -65,7 +65,7 @@ $(document).on('click', '.table-click-customer table tr', function (e) {
     var objCheck = $(closestTr).find('.Ischeck');
     var isChecked = $(closestTr).find('.Ischeck').prop("checked");
     var listBox = $(this).parents().find(".listBox").find(".multiselect")
-    var mode = $(this).parents().find("#Mode").val();
+    var mode = $("#btncustomersearch").attr("data-mode");
     var custType = $(this).parents().find("#CustomerType").val();
     
     var me = $(this);
@@ -144,7 +144,14 @@ $(document).on('click', '.table-click-customer table tr', function (e) {
                         $('.CommonSearchDiv').find('#CustomerName').val("");
                         $('.cust-id').val("");
                         $('.CommonSearchDiv').find('#CustomerName').val(result.CustomerName);
-                        $('.cust-id').val(result.CustNo);
+                        if (mode == "SubscriptionReport") {
+                            $('.cust-id').val(result.Subsid);
+
+                        }
+                        else { $('.cust-id').val(result.CustNo); }
+
+
+                        
                         //$('.customer-add').find('#CustId').append( result.Name );
                         //$(listBox).trigger("chosen:updated");
 
@@ -166,14 +173,15 @@ $(document).on("click", ".addandClose", function (e) {
     //var objCheck = $('.table-click-customer table tr').find('.Ischeck');
     //var isChecked = $(closestTr).find('.Ischeck').prop("checked");
    
-  
+    var mode = $("#btncustomersearch").attr("data-mode");
     var AccountName = "";
     var customerId = $('.cust-id').val();
     $.ajax({
         type: 'GET',
         url: '/Customer/GetMultipleSelectedCustomer',
         data: {
-            listBox: customerId
+            listBox: customerId,
+            mode: mode,
         },
         traditional: true,
         success: function (result) {
@@ -234,8 +242,16 @@ $(document).on("click", ".addandClose", function (e) {
             $('.CommonSearchDiv').find('#CustomerName').val("");
             $('.cust-id').val("");
             $('.CommonSearchDiv').find('#CustomerName').val(result.CustomerName);
-            $('.cust-id').val(result.CustNo);
-            $('#CustomerName').trigger('keyup');
+            if (mode == "SubscriptionReport") {
+                $('.cust-id').val(result.Subsid);
+
+            }
+            else {
+                $('.cust-id').val(result.CustNo);
+                $('#CustomerName').trigger('keyup');
+            }
+
+            
             //}
         },
     });
@@ -320,7 +336,7 @@ $(".btncustomersearch").on('click', function (e) {
     debugger;
     e.stopImmediatePropagation();
     var Parent = $(this).parents();
-    var mode = $(this).attr("mode");
+    var mode = $("#btncustomersearch").attr("data-mode");
     var CustomerType = $(this).attr("customerType")
     var multiSelectCustomer = $(Parent).find(".multiselectCustomer");
     _globalObject = $(this).closest("div.CommonSearchDiv").find(".multiselectCustomer").attr("id");

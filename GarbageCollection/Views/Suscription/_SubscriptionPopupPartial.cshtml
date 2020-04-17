@@ -1,0 +1,96 @@
+﻿
+
+@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+
+<div class="table-responsive table-click-customer">
+    <table class="table table-bordered table-striped table-hover">
+
+        <tr>
+            <th>@Html.DisplayNameFor(x => x.SubsNo)</th>
+            <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
+            <th>@Html.DisplayNameFor(x => x.LedgerName)</th>
+     
+        
+
+        </tr>
+
+
+        @foreach (var item in Model.suscriberPagedList)
+        {
+            /*tring BackgroundColor = "#c2c4c3";*/
+            <tr @*style="background-color:@BackgroundColor"*@ class="selectedValue" id="@item.Subsid">
+                <td>
+                    @item.SubsNo
+
+                </td>
+                <td>
+                    @item.CustomerName
+
+                </td>
+                <td>
+                    @item.LedgerName
+
+                </td>
+          
+                <td class="hidden"><input type="checkbox" name="vehicle" value="@item.Subsid" class="Ischeck" style="pointer-events:none;"></td>
+            </tr>
+        }
+
+    </table>
+    @Html.Paging("_CustomerInfoList", "Customer", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
+</div>
+
+
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/ch-dialog.js"></script>
+
+<script>
+    $("div.table-click-customer").on('change', 'input#pageSize', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var searchOption = parentContainer.find('#SearchOption').val()
+        var searchParam = parentContainer.find('#SearchParameter').val()
+        var listBox = parentContainer.find('#CIDs').val()
+        var container = parentContainer.find(".table-click-customer")
+        var mode = $("#btncustomersearch").attr("data-mode");
+        var type = parentContainer.find('#CustomerType').val()
+        getPageSizeChangeDataCustomerSearch(searchOption, searchParam, container, me, mode, type)
+    });
+
+    $("div.table-click-customer").on('change', 'input#pageNo', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var searchOption = parentContainer.find('#SearchOption').val()
+        var searchParam = parentContainer.find('#SearchParameter').val()
+
+        var container = parentContainer.find(".table-click-customer")
+        var mode = $("#btncustomersearch").attr("data-mode");
+        var type = parentContainer.find('#CustomerType').val()
+        getPageNumberChangeDataCustomerSearch(searchOption, searchParam, container, me, mode, type)
+    });
+
+    $("div.table-click-customer").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var searchOption = parentContainer.find('#SearchOption').val()
+        var mode = $("#btncustomersearch").attr("data-mode");
+        var searchParam = parentContainer.find('#SearchParameter').val()
+
+        var container = parentContainer.find(".table-click-customer")
+        var type = parentContainer.find('#CustomerType').val()
+        getPageNumberBtnActionCustomerSearch(searchOption, searchParam,  container, me, mode, type)
+    });
+
+</script>

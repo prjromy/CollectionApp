@@ -83,6 +83,15 @@ namespace BussinessLogic.Service
             //objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Type", Value = "Customer Type" });
             return new SelectList(objCustomerSrchOption, "Value", "Text");
         }
+        public static SelectList SubscriptionSearchOption()
+        {
+            List<SelectListItem> objCustomerSrchOption = new List<SelectListItem>();
+            objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Name", Value = "Customer Name" });
+            objCustomerSrchOption.Add(new SelectListItem { Text = "Subscription No", Value = "Subscription No" });
+            
+            //objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Type", Value = "Customer Type" });
+            return new SelectList(objCustomerSrchOption, "Value", "Text");
+        }
 
         public static string CustomerType(int? cid)
         {

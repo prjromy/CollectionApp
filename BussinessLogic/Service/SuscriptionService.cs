@@ -138,6 +138,15 @@ namespace BussinessLogic.Service
             }
 
         }
+        public MainViewModel.SubscriptionViewModel GetSelectedSubscription(int susid, string custType)
+        {
+            MainViewModel.SubscriptionViewModel customerInfoList = new MainViewModel.SubscriptionViewModel();
+
+            customerInfoList = uow.Repository<MainViewModel.SubscriptionViewModel>().SqlQuery(@"select  * from[dbo].[fgetSubscriptionList]() where subsid={0} ", susid).SingleOrDefault();
+
+
+            return customerInfoList;
+        }
 
         public ReturnBaseMessageModel changeStatus(int? sId)
         {

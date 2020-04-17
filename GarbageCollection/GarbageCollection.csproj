@@ -1553,6 +1553,8 @@
     <Content Include="Views\Report\_collectionReportList.cshtml" />
     <Content Include="Views\Report\SubscriberStatement.cshtml" />
     <Content Include="Views\Report\_SubscriberStatement.cshtml" />
+    <Content Include="Views\Suscription\_SubscriptionPopup.cshtml" />
+    <Content Include="Views\Suscription\_SubscriptionPopupPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

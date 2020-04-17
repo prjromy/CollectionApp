@@ -17,13 +17,13 @@ namespace GarbageCollection.Controllers
     {
         ReturnBaseMessageModel returnMessage = null;
         private CustomerService customerService = null;
-        
+        private SuscriptionService suscription = null;
 
 
         public CustomerController()
         {
             returnMessage = new ReturnBaseMessageModel();
-           
+            suscription = new SuscriptionService();
             customerService = new CustomerService();
 
 
@@ -78,7 +78,7 @@ namespace GarbageCollection.Controllers
             }
 
         }
-      
+
         [HttpPost]
         public ActionResult Create(MainViewModel.CustomerViewModel customer)
         {
@@ -86,10 +86,10 @@ namespace GarbageCollection.Controllers
 
             try
             {
-               
-                   
-                 returnMessage = customerService.Save(customer);
-              
+
+
+                returnMessage = customerService.Save(customer);
+
                 return Json(returnMessage, JsonRequestBehavior.AllowGet);
             }
             catch (DbEntityValidationException ex)
@@ -111,13 +111,13 @@ namespace GarbageCollection.Controllers
             }
 
         }
-      
+
         public ActionResult List()
         {
             try
             {
                 MainViewModel.CustomerViewModel customerViewModel = new MainViewModel.CustomerViewModel();
-                var customerList= customerService.getCustomerList(0,"", "", "", null,1, 1, 10);
+                var customerList = customerService.getCustomerList(0, "", "", "", null, 1, 1, 10);
                 customerViewModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(customerList, 1, 10, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -125,7 +125,7 @@ namespace GarbageCollection.Controllers
                 //    customerViewModel.customerViewModelList.Add(item);
                 //}
 
-                return PartialView( customerViewModel);
+                return PartialView(customerViewModel);
 
 
             }
@@ -134,14 +134,14 @@ namespace GarbageCollection.Controllers
 
                 throw ex;
             }
-         
+
         }
 
 
-        public ActionResult _List(int? customerno,string name, string address, string contact, int? cType, int pageNo = 1, int pageSize = 10)
+        public ActionResult _List(int? customerno, string name, string address, string contact, int? cType, int pageNo = 1, int pageSize = 10)
         {
             MainViewModel.CustomerViewModel customerViewModel = new MainViewModel.CustomerViewModel();
-            var customerList = customerService.getCustomerList(customerno,name, address, contact, cType,1, pageNo, pageSize);
+            var customerList = customerService.getCustomerList(customerno, name, address, contact, cType, 1, pageNo, pageSize);
             customerViewModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(customerList, pageNo, pageSize, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
             return PartialView(customerViewModel);
         }
@@ -150,83 +150,120 @@ namespace GarbageCollection.Controllers
         #region CustomerSearch
         public ActionResult CustomerInfoList(int[] listBox, string mode, string custType, int pageNo = 1, int pageSize = 5)
         {
-            MainViewModel.CustomerViewModel custInfoModel = new MainViewModel.CustomerViewModel();
-            var custtomerList = customerService.CustomerInfoList("", "", "", custType, pageNo, pageSize);
-            custInfoModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(custtomerList, pageNo, pageSize, (custtomerList.Count == 0) ? 0 : custtomerList.FirstOrDefault().TotalCount);
-            List<MainViewModel.CustomerViewModel> selectMultipleList = new List<MainViewModel.CustomerViewModel>();
-            //if (mode != ECustomerSearchType.SingleType.GetDescription())
-            //{
-            //    selectMultipleList = customerService.GetSelectedMultipleCustomer(listBox);
-            //    custInfoModel.CIDs = listBox;
-            //}
-            //custInfoModel.Mode = mode;
-            //custInfoModel.cus = custType;
-            //custInfoModel.SelectedCustInfoList = selectMultipleList;
-            return PartialView( custInfoModel);
+            if (mode == "SubscriptionReport")
+            {
+                MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
+                var suscriberList = suscription.getSuscriberList(null, null, null, 1, 10, "", 1);
+                customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, 1, 10, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
+
+                //foreach (var item in customerList)
+                //{
+                //    customerViewModel.customerViewModelList.Add(item);
+                //}
+
+
+                return PartialView("~/Views/Suscription/_SubscriptionPopup.cshtml", customerViewModel);
+
+            }
+            else
+            {
+                MainViewModel.CustomerViewModel custInfoModel = new MainViewModel.CustomerViewModel();
+                var custtomerList = customerService.CustomerInfoList("", "", "", custType, pageNo, pageSize);
+                custInfoModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(custtomerList, pageNo, pageSize, (custtomerList.Count == 0) ? 0 : custtomerList.FirstOrDefault().TotalCount);
+
+                return PartialView(custInfoModel);
+
+            }
+
         }
 
-        public ActionResult _CustomerInfoList(string searchParam, string searchOption,  string mode, string custType, int pageNo = 1, int pageSize = 5)
+        public ActionResult _CustomerInfoList(string searchParam, string searchOption, string mode, string custType, int pageNo = 1, int pageSize = 5)
         {
-            MainViewModel.CustomerViewModel custInfoModel = new MainViewModel.CustomerViewModel();
-            List<MainViewModel.CustomerViewModel> custList = new List<MainViewModel.CustomerViewModel>();
-            var custtomerList = customerService.CustomerInfoList(searchParam, searchOption, mode, custType, pageNo, pageSize);
-            custInfoModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(custtomerList, pageNo, pageSize, (custtomerList.Count == 0) ? 0 : custtomerList.FirstOrDefault().TotalCount);
-            //if (listBox != null)
-            //{
-            //    foreach (var item in listBox)
-            //    {
-            //        MainViewModel.CustomerViewModel selectCustInfoModel = new MainViewModel.CustomerViewModel();
-            //        selectCustInfoModel.CID = item;
-            //        custList.Add(selectCustInfoModel);
-            //    }
-            //}
+            if (mode == "SubscriptionReport")
+            {
+                MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
+                var suscriberList = suscription.getSuscriberList(null, null, null, pageNo, pageSize, "", 1);
+                if (searchOption != null && searchOption == "Customer Name")
+                {
+                    suscriberList = suscriberList.Where(x => x.CustomerName.ToLower().Contains(searchParam.ToLower())).ToList();
+                }
+                if (searchOption != null && searchOption == "Subscription No")
+                {
+                    suscriberList = suscriberList.Where(x => x.SubsNo == Convert.ToInt32(searchParam)).ToList();
 
-            //custInfoModel.SelectedCustInfoList = custList;
-            return PartialView("_CustomerInfoList", custInfoModel);
+                }
+                customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
+
+                //foreach (var item in customerList)
+                //{
+                //    customerViewModel.customerViewModelList.Add(item);
+                //}
+
+                return PartialView("~/Views/Suscription/_SubscriptionPopupPartial.cshtml", customerViewModel);
+            }
+            else
+            {
+                MainViewModel.CustomerViewModel custInfoModel = new MainViewModel.CustomerViewModel();
+                List<MainViewModel.CustomerViewModel> custList = new List<MainViewModel.CustomerViewModel>();
+                var custtomerList = customerService.CustomerInfoList(searchParam, searchOption, mode, custType, pageNo, pageSize);
+                custInfoModel.customerPagedList = new StaticPagedList<MainViewModel.CustomerViewModel>(custtomerList, pageNo, pageSize, (custtomerList.Count == 0) ? 0 : custtomerList.FirstOrDefault().TotalCount);
+                //if (listBox != null)
+                //{
+                //    foreach (var item in listBox)
+                //    {
+                //        MainViewModel.CustomerViewModel selectCustInfoModel = new MainViewModel.CustomerViewModel();
+                //        selectCustInfoModel.CID = item;
+                //        custList.Add(selectCustInfoModel);
+                //    }
+                //}
+
+                //custInfoModel.SelectedCustInfoList = custList;
+                return PartialView("_CustomerInfoList", custInfoModel);
+            }
+
         }
 
         public ActionResult GetSelectedCustomer(int customerId, int[] listBox, string mode, string custType)
         {
-            var singleCustomer = customerService.GetSelectedCustomer(customerId, custType);
 
-            if (mode == ECustomerSearchType.Suscription.GetDescription())
+            if (mode == ECustomerSearchType.Suscription.GetDescription()|| mode == ECustomerSearchType.Collection.GetDescription())
+            {
+                var single = customerService.GetSelectedCustomer(customerId, custType);
+
+                single.Isselect = true;
+               return Json(single, JsonRequestBehavior.AllowGet);
+
+            }
+            else
             {
 
-                //    if (singleCustomer.isind == 0 && listBox.Count() > 0)
-                //    {
-                //        if (listBox.Where(x => x == 0).Count() == 1)
-                //            singleCustomer.Isselect = true;
-                //        else
-                //            singleCustomer.Isselect = false;
-                //    }
-                //    else
-                //    {
-                //        var isCheck = customerService.GetSelectedCustomer(listBox[0], custType);
-                //        if (isCheck != null)
-                //        {
-                //            if (isCheck.isind == 0)
-                //                singleCustomer.Isselect = false;
-                //            else
-                //                singleCustomer.Isselect = true;
-                //        }
-                //        else
-                //        {
-                //            singleCustomer.Isselect = true;
-                //        }
-                //    }
-                //}
-                //else
-                //{
-                singleCustomer.Isselect = true;
-                //}
+                var single = suscription.GetSelectedSubscription(customerId, custType);
+
+                //single.Isselect = true;
+                return Json(single, JsonRequestBehavior.AllowGet);
+
             }
-            return Json(singleCustomer, JsonRequestBehavior.AllowGet);
+               
+                
+
+                
+
+            
         }
 
-        public ActionResult GetMultipleSelectedCustomer(int listBox)
+        public ActionResult GetMultipleSelectedCustomer(int listBox,string mode)
         {
-            var multipleCustomer = customerService.GetSelectedMultipleCustomer(listBox);
-            return Json(multipleCustomer, JsonRequestBehavior.AllowGet);
+            if (mode == ECustomerSearchType.Suscription.GetDescription() || mode == ECustomerSearchType.Collection.GetDescription())
+            {
+                var multipleCustomer = customerService.GetSelectedMultipleCustomer(listBox);
+                return Json(multipleCustomer, JsonRequestBehavior.AllowGet);
+
+            }
+            else
+            {
+                var multipleCustomer = suscription.GetSelectedSubscription(listBox,"");
+                return Json(multipleCustomer, JsonRequestBehavior.AllowGet);
+            }
         }
 
       public ActionResult GetDetail(int customerId)

@@ -1,0 +1,62 @@
+﻿@model  BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+@using BussinessLogic.Service
+@{
+    ViewBag.Title = "Subscription List";
+    Layout = null;
+}
+@*<link href="~/Content/Choose/chosen.min.css" rel="stylesheet" />
+    <script src="~/Content/Choose/chosen.jquery.customer.js"></script>*@
+
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Subscription</h4>
+            <span class="close" id="closeTop" data-dismiss="modal" aria-hidden="true">&times;</span>
+
+        </div>
+        <div class="modal-body">
+            <div class="content-box">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-grop_padding">
+                            @*@Html.HiddenFor(x => x.Mode)
+                                @Html.HiddenFor(x => x.CustomerType)*@
+                            @Html.DropDownListFor(x => x.SearchOption, CommonUtilityService.SubscriptionSearchOption(), new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-grop_padding">
+                            <div class="box-tools">
+                                <div class="input-group input-group-sm pull-right form-grop_padding">
+                                    @Html.TextBoxFor(x => x.SearchParameter, new { @class = "form-control col-md-12", @style = "height: 30px;" })
+                                    <div class="input-group-btn">
+                                        <button type="button" name="btn-customer-search" id="btn-customer-search" class="btn btn-default" style="margin-left: 0px;">
+                                            <i class="fa fa-search"></i>
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div id="customerDetails">
+                    @Html.Partial("~/Views/Suscription/_SubscriptionPopupPartial.cshtml", Model)
+                </div>
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary addandClose pull-right" data-dismiss="modal"><i class="fa fa-plus" aria-hidden="true"></i>Add & Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/ch-dialog.js"></script>
+
+
+

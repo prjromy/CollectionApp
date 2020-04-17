@@ -135,6 +135,23 @@ namespace GarbageCollection.Controllers
             }
         }
 
+
+        ////for subscription popup in report
+        //public ActionResult _SubscriptionPopupPartial(string customername,int?subsno, int pageNo = 1, int pageSize = 10)
+        //{
+        //    try
+        //    {
+                
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw ex;
+        //    }
+        //}
+
         public ActionResult UpdateStatus(int? sId)
         {
 

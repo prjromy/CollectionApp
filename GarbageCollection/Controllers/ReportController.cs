@@ -319,20 +319,20 @@ namespace GarbageCollection.Controllers
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Collector  Report.xlsx");
         }
 
-        public ActionResult SubscriberStatement(int? subsid, DateTime? FromDate, DateTime? ToDate)
+        public ActionResult SubscriberStatement()
         {
             try
             {
-                MainViewModel.SubscriptionReport subscriptionViewModel = new MainViewModel.SubscriptionReport();
-                var suscriberList = reportService.getSubscriberStatementList(subsid, FromDate, ToDate, 1, 10);
-                subscriptionViewModel.subscriptionPagedList = new StaticPagedList<MainViewModel.SubscriptionReport>(suscriberList, 1, 10, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
+                MainViewModel.SubscriptionViewModel subscriptionViewModel = new MainViewModel.SubscriptionViewModel();
+                //var suscriberList = reportService.getSubscriberStatementList(subsid, FromDate, ToDate, 1, 10);
+                //subscriptionViewModel.subscriptionPagedList = new StaticPagedList<MainViewModel.SubscriptionReport>(suscriberList, 1, 10, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
                 //{
                 //    customerViewModel.customerViewModelList.Add(item);
                 //}
 
-
+                subscriptionViewModel.ModelFrom = "SubscriptionReport";
                 return PartialView(subscriptionViewModel);
 
             }
@@ -350,7 +350,7 @@ namespace GarbageCollection.Controllers
             try
             {
                 MainViewModel.SubscriptionReport subscriptionViewModel = new MainViewModel.SubscriptionReport();
-                var suscriberList = reportService.getSubscriberStatementList(null, null, null, pageNo, pageSize);
+                var suscriberList = reportService.getSubscriberStatementList(subsid, FromDate, ToDate, pageNo, pageSize);
                 subscriptionViewModel.subscriptionPagedList = new StaticPagedList<MainViewModel.SubscriptionReport>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -369,6 +369,33 @@ namespace GarbageCollection.Controllers
                 throw ex;
             }
         }
+
+        [HttpGet]
+        public FileContentResult SubscriptionStatementExportToExcel(int? subsid, DateTime? FromDate, DateTime? ToDate, int pageNo = 1, int pageSize = 10,string substext="")
+        {
+            MainViewModel.SubscriptionReport subscriptionViewModel = new MainViewModel.SubscriptionReport();
+            var suscriberList = reportService.getSubscriberStatementList(subsid, FromDate, ToDate, pageNo, pageSize);
+            var subscriptionExcelList = suscriberList.Select(x => new ExcelViewModel.SubscriptionReportExcel()
+            {
+
+               SubsNo=x.SubsNo,
+               Custname=x.Custname,
+               Debit=x.Debit,
+               Credit=x.Credit,
+               Balance=x.Balance,
+               PostedOnAd=x.PostedOnAd,
+               PostedOnBs=x.PostedOnBs,
+                Sources=x.Sources
+               
+
+            }).ToList();
+
+            string[] columns = { "Subscription No.", "Customer Name", "Debit", "Credit", "Balance", "Posted On Ad", "Posted On Bst", "Sources" };
+            string[] parameterSearch = { "From Date.:  " + FromDate, "To Date.:  " + ToDate, "Customer Name:  " + substext };
+            byte[] fileContent = ExcelExportHelper.ExportExcel(subscriptionExcelList, parameterSearch, "Subscription Report", columns);
+            return File(fileContent, ExcelExportHelper.ExcelContentType, "Subscription  Report.xlsx");
+        }
+
 
     }
 }
