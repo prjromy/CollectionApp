@@ -247,29 +247,6 @@
     }
 
 
-    $('.ch-treeview').on('filterTree', function (e, data) {
-        debugger;
-        //string filterString, bool allowSelectGroup, bool withCheckBox, bool withImageIcon
-        e.stopPropagation();
-        var TreeViewParam = {
-            Controller: '',
-            Action: '',
-            WithCheckBox: data.withCheckBox,
-            AllowSelectGroup: data.allowSelectGroupNode,
-            WithImageIcon: data.withImageIcon,
-            WithOutMe: 0,// data.withOutMe,
-            Title: data.Title,
-            SelectedNodeId: 0,
-            Filter: data.param.Filter,
-            SelectedNodeText: ''
-        }
-
-        var url = "/Employee/_GetEmployeeTree"
-        var container = $(this).closest('.Employee-explore').find('.treeview-area');
-
-        $(container).load(url, { param: TreeViewParam });
-
-    });
 
     function delay(callback, ms) {
         var timer = 0;

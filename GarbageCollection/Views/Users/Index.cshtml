@@ -5,6 +5,12 @@
     ViewBag.Title = "Users Setup";
     var test = Model;
 }
+@*<script src="~/DialogLoader/jquery-1.11.1.min.js"></script>*@
+<link href="~/DialogLoader/jquery-ui.css" rel="stylesheet" />
+<link href="~/DialogLoader/bootstrap-theme.min.css" rel="stylesheet" />
+<link href="~/DialogLoader/theme-jquery-ui.css" rel="stylesheet" />
+@*<script src="~/DialogLoader/jquery.js"></script>*@
+<script src="~/DialogLoader/jquery-1.11.1.ui.min.js"></script>
 
 <div class="box box-success">
     <div class="box-header with-border">
@@ -30,10 +36,11 @@
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 </div>
+<script src="~/Scripts/ch-dpicker.js"></script>
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script src="~/Scripts/ch-dialog.js"></script>
 <link href="~/Content/ch-treeview.css" rel="stylesheet" />
-
+<script src="~/Scripts/ch-treeview.js"></script>
 <script type="text/javascript">
 
     $('.Users-explore').on('click', '.listView', function (event) {

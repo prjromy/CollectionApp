@@ -489,56 +489,81 @@ $(document).ready(function () {
 
     });
 
-    $('.ch-treeview').on('change', '.text-filter-tree', function (e) {
-        debugger;
-        var query = $(this).val();
+    //$('.ch-treeview').on('change', '.text-filter-tree', function (e) {
+    //    debugger;
+    //    var query = $(this).val();
         
-        //if (query != "") {
-            //var wrapperClass = $(selectedObject).closest('.section-treeview');
+    //    var mainClass = $(this).parents('.ch-treeview').find('.treeview-area');
+    //    var wrapperClass = $(this).parents('.ch-treeview');
+    //        var treeViewParam = {
+    //            WithCheckBox: $(mainClass).attr("withcheckbox"),
+    //            AllowSelectGroup: $(mainClass).attr("allowselectgroup"),
+    //            WithImageIcon: $(mainClass).attr("withimageicon"),
+    //            WithOutMe: $(mainClass).attr("excludeme"),
+    //            Title: $(mainClass).attr("poptitle"),
+    //            SelectedNodeId: $(mainClass).closest('.section-treeview').find('.internal-value').val(),
+    //            Filter: query
+    //        }
 
-            ////var div = $(wrapperClass).find('.btn-find-tree');
-            //var div = $(wrapperClass).find('.btn-treeview-popup');
-            var wrapperClass = $(this).closest('.section-treeview').find('.ch-treeview');
-
-            var div = $(wrapperClass).find('.treeview-area');
-
-            var treeViewParam = {
-                WithCheckBox: $(div).attr("withcheckbox"),
-                AllowSelectGroup: $(div).attr("allowselectgroup"),
-                WithImageIcon: $(div).attr("withimageicon"),
-                WithOutMe: $(div).attr("excludeme"),
-                Title: $(div).attr("poptitle"),
-                SelectedNodeId: $(div).closest('.section-treeview').find('.internal-value').val(),
-                Filter: query
-            }
-
-            $(wrapperClass).trigger('filterTree', [{ fromPopUp: 'true', param: treeViewParam }]);
-        //}
+    //        $(wrapperClass).trigger('filterTree', [{ fromPopUp: 'true', param: treeViewParam }]);
+    //    //}
         
-    });
+    //});
 
     $('.ch-treeview').on('click', ".filter-btn", function (e) {
         debugger;
         var query = $(this).closest('.input-group').find("#text-filter-tree").val();
 
         //if (query != "") {
-            var wrapperClass = $(this).closest('.section-treeview').find('.ch-treeview');
+            //var wrapperClass = $(this).closest('.section-treeview').find('.ch-treeview');
+        //var wrapperClass = $(this).closest('.section-treeview');
+            //var div = $(wrapperClass).find('.treeview-area');
+        //var div = $(this).find('.ch-treeview').find('.treeview-area');
+        //var mainClass = $(this).closest('.treeview-area');
 
-            var div = $(wrapperClass).find('.treeview-area');
+        //var wrapperClass = $(mainClass).closest('.ch-treeview').parent();
 
+
+        var mainClass = $(this).parents('.ch-treeview').find('.treeview-area');
+        var wrapperClass = $(this).parents('.ch-treeview');
             var treeViewParam = {
-                WithCheckBox: $(div).attr("withcheckbox"),
-                AllowSelectGroup: $(div).attr("allowselectgroup"),
-                WithImageIcon: $(div).attr("withimageicon"),
-                WithOutMe: $(div).attr("excludeme"),
-                Title: $(div).attr("poptitle"),
-                SelectedNodeId: $(div).closest('.section-treeview').find('.internal-value').val(),
+                WithCheckBox: $(mainClass).attr("withcheckbox"),
+                AllowSelectGroup: $(mainClass).attr("allowselectgroup"),
+                WithImageIcon: $(mainClass).attr("withimageicon"),
+                WithOutMe: $(mainClass).attr("excludeme"),
+                Title: $(mainClass).attr("poptitle"),
+                SelectedNodeId: $(mainClass).closest('.section-treeview').find('.internal-value').val(),
                 Filter: query
             }
 
         //}
             $(wrapperClass).trigger('filterTree', [{ fromPopUp: 'true', param: treeViewParam }]);
 
+
+    });
+
+
+    $('.ch-treeview').on('filterTree', function (e, data) {
+        debugger;
+        //string filterString, bool allowSelectGroup, bool withCheckBox, bool withImageIcon
+        e.stopPropagation();
+        var TreeViewParam = {
+            Controller: '',
+            Action: '',
+            WithCheckBox: data.param.WithCheckBox,
+            AllowSelectGroup: data.param.AllowSelectGroup,
+            WithImageIcon: data.param.WithImageIcon,
+            WithOutMe: 0,// data.withOutMe,
+            Title: data.param.Title,
+            SelectedNodeId: 0,
+            Filter: data.param.Filter,
+            SelectedNodeText: ''
+        }
+
+        var url = "/Employee/_GetEmployeeTree"
+        var container = $(this).find('.treeview-area');
+
+        $(container).load(url, { param: TreeViewParam });
 
     });
 });

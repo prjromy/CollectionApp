@@ -1230,6 +1230,12 @@
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\ToggleButton.css" />
+    <Content Include="DialogLoader\bootstrap-theme.min.css" />
+    <Content Include="Scripts\jquery-1.11.1.min.js" />
+    <Content Include="DialogLoader\jquery-1.11.1.ui.min.js" />
+    <Content Include="DialogLoader\jquery-ui.css" />
+    <Content Include="DialogLoader\jquery.js" />
+    <Content Include="DialogLoader\theme-jquery-ui.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1408,8 +1414,6 @@
     <Content Include="Scripts\DatePicker\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
     <Content Include="Scripts\DatePicker\images\ui-bg_flat_10_000000_40x100.png" />
     <Content Include="Scripts\DatePicker\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
@@ -1558,6 +1562,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="DialogLoader\images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
