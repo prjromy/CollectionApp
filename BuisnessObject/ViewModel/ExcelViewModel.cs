@@ -113,5 +113,21 @@ namespace BuisnessObject.ViewModel
       
 
         }
+
+
+        public class MonthlyDueExcelViewModel
+        {
+
+
+            public int Subsno { get; set; }
+            public string CustomerName { get; set; }
+            public string CustomerType { get; set; }
+
+            public string LocationName { get; set; }
+            public Nullable<decimal> MonthlyDue { get; set; }
+            public DateTime PostedOn { get; set; }
+            
+
+        }
     }
 }

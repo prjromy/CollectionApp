@@ -150,6 +150,9 @@
     <Compile Include="DatabaseModel\MenuVsTemplate.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModel\Month.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModel\Nationality.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>

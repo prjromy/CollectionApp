@@ -84,6 +84,13 @@
           <Property Name="Lid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LocationName" Type="varchar" MaxLength="200" />
         </EntityType>
+        <EntityType Name="Month">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="NDateD">
@@ -593,6 +600,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="CustomerType" EntityType="Self.CustomerType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FiscalYear" EntityType="Self.FiscalYear" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Month" EntityType="Self.Month" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionCollection" EntityType="Self.SubscriptionCollection" Schema="dbo" store:Type="Tables" />
@@ -746,6 +754,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
           <EntitySet Name="SubscriptionCollections" EntityType="GarbageCollectionDBModel.SubscriptionCollection" />
           <EntitySet Name="CollectionVerifyLogs" EntityType="GarbageCollectionDBModel.CollectionVerifyLog" />
+          <EntitySet Name="Months" EntityType="GarbageCollectionDBModel.Month" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1306,6 +1315,13 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="VerifiedAMount" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="VerifiedBy" Type="Int32" />
         </EntityType>
+        <EntityType Name="Month">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1802,6 +1818,14 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
                 <ScalarProperty Name="VerifiedAMount" ColumnName="VerifiedAMount" />
                 <ScalarProperty Name="Tdate" ColumnName="Tdate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Months">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Month">
+              <MappingFragment StoreEntitySet="Month">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

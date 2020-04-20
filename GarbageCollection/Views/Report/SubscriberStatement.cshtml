@@ -59,7 +59,7 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
 
-
+<script src="~/Scripts/ch-dialog.js"></script>
 <script>
     $('.subscription-export-to-excel').on('click', function () {
         debugger;
@@ -68,8 +68,8 @@
         var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
         var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
         var subsid = parseInt($('.subscription-list-index').find('.cust-id').val());
-        var substext = $('.subscription-list-index').find('.cust-id').text();
-        window.open("/Report/SubscriptionStatementExportToExcel? subsid=" + subsid + "&FromDate=" + FromDate + "&ToDate=" + ToDate + "&substext=" + substext);
+        var substext = $('.subscription-list-index').find('#CustomerName').val();
+        window.open("/Report/SubscriptionStatementExportToExcel?FromDate=" + FromDate + "&ToDate=" + ToDate + "&subsid=" + subsid + "&substext=" + substext);
 
     });
 
@@ -123,8 +123,11 @@
 
         var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
         var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var subsid = $('.subscription-list-index').find('.cust-id').val();
-        
+        var subsid = parseInt($('.subscription-list-index').find('.cust-id').val());
+        if (!subsid) {
+            ErrorAlert("Please select customer");
+            return false;
+        }
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
 
         $.ajax({

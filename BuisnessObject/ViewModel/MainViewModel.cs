@@ -252,10 +252,33 @@ namespace BuisnessObject.ViewModel
             public Nullable<decimal> Credit { get; set; }
             public Nullable<decimal> Balance { get; set; }
             public string Sources { get; set; }
+            [DisplayName("Customer Name")]
             public string Custname { get; set; }
             public int TotalCount { get; set; }
             public string ModelFrom { get; set; }
             public IPagedList<SubscriptionReport> subscriptionPagedList { get; set; }
+
+        }
+
+        public class MonthlyDueViewModel
+        {
+           
+
+            public int Subsno { get; set; }
+            [DisplayName("Customer Name")]
+            public string CustomerName { get; set; }
+            [DisplayName("Customer Type")]
+            public string CustomerType { get; set; }
+            [DisplayName("Location Name")]
+            public string LocationName { get; set; }
+            [DisplayName("Monthly Due")]
+            public Nullable<decimal> MonthlyDue { get; set; }
+            [DisplayName("Posted On")]
+            public DateTime PostedOn { get; set; }
+            public int TotalCount { get; set; }
+            public string Month { get; set; }
+            public int Year { get; set; }
+            public IPagedList<MonthlyDueViewModel> monthlyDuePagedList { get; set; }
 
         }
     }

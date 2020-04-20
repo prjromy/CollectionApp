@@ -24,6 +24,13 @@ namespace BussinessLogic.Service
             var customerType = uow.Repository<CustomerType>().FindBy(x=>x.status==1).ToList();
             return new SelectList(customerType, "ID", "RFUniDesc");
         }
+
+        public static SelectList MonthList()
+        {
+            var Month= uow.Repository<Month>().GetAll().ToList();
+            return new SelectList(Month, "Id", "Name");
+        }
+       
         public static SelectList CustomerStatusList()
         {
             List<SelectListItem> objAccountType = new List<SelectListItem>();

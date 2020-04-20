@@ -371,8 +371,10 @@ namespace GarbageCollection.Controllers
         }
 
         [HttpGet]
-        public FileContentResult SubscriptionStatementExportToExcel(int? subsid, DateTime? FromDate, DateTime? ToDate, int pageNo = 1, int pageSize = 10,string substext="")
+        public FileContentResult SubscriptionStatementExportToExcel( DateTime? FromDate, DateTime? ToDate, int? subsid,string substext="")
         {
+            int pageNo = 1;
+            int pageSize = 10;
             MainViewModel.SubscriptionReport subscriptionViewModel = new MainViewModel.SubscriptionReport();
             var suscriberList = reportService.getSubscriberStatementList(subsid, FromDate, ToDate, pageNo, pageSize);
             var subscriptionExcelList = suscriberList.Select(x => new ExcelViewModel.SubscriptionReportExcel()
@@ -396,6 +398,67 @@ namespace GarbageCollection.Controllers
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Subscription  Report.xlsx");
         }
 
+        public ActionResult MonthlyDueReport()
+        {
+            try
+            {
+                MainViewModel.MonthlyDueViewModel subscriptionViewModel = new MainViewModel.MonthlyDueViewModel();
+                 ViewBag.Year = reportService.YearList();
+                return PartialView(subscriptionViewModel);
 
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public ActionResult _MonthlyDueReport(int? Month, int? Year,int pageNo=1,int pageSize=10)
+        {
+            try
+            {
+                MainViewModel.MonthlyDueViewModel MonthlyModel = new MainViewModel.MonthlyDueViewModel();
+                var monthlyList = reportService.getMonthlyDueList(Month, Year, pageNo, pageSize);
+                MonthlyModel.monthlyDuePagedList = new StaticPagedList<MainViewModel.MonthlyDueViewModel>(monthlyList, pageNo, pageSize, (monthlyList.Count == 0) ? 0 : monthlyList.FirstOrDefault().TotalCount);
+
+            
+
+
+                return PartialView(MonthlyModel);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        public FileContentResult MonthlyDueReportExportToExcel(int? Month, int? Year, int pageNo = 1, int pageSize = 10,string Monthtext = "")
+        {
+            MainViewModel.MonthlyDueViewModel subscriptionViewModel = new MainViewModel.MonthlyDueViewModel();
+            var monthlyList = reportService.getMonthlyDueList(Month, Year, pageNo, pageSize);
+            var monthlyExcelList = monthlyList.Select(x => new ExcelViewModel.MonthlyDueExcelViewModel()
+            {
+
+              Subsno=x.Subsno,
+              CustomerName=x.CustomerName,
+              CustomerType=x.CustomerType,
+              LocationName=x.LocationName,
+              MonthlyDue=x.MonthlyDue,
+              PostedOn=x.PostedOn
+
+            }).ToList();
+
+            string[] columns = { "Subscription No.", "Customer Name", "Customer Type", "Location Name", "Monthly Due", "PostedOn"};
+            string[] parameterSearch = { "Year.:  " + Year, "MonthText.:  " + Monthtext };
+            byte[] fileContent = ExcelExportHelper.ExportExcel(monthlyExcelList, parameterSearch, "Monthly Due Report", columns);
+            return File(fileContent, ExcelExportHelper.ExcelContentType, "Monthly Due  Report.xlsx");
+        }
     }
 }

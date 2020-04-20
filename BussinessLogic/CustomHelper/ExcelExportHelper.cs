@@ -97,6 +97,10 @@ namespace BussinessLogic.CustomHelper
                     {
                         columnCells.Style.Numberformat.Format = "mm/dd/yyyy";
                     }
+                     if (column.ToString() == "PostedOn")
+                    {
+                        columnCells.Style.Numberformat.Format = "mm/dd/yyyy";
+                    }
 
                     workSheet.Column(columnIndex).AutoFit();
 

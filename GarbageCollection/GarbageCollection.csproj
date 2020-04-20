@@ -1559,6 +1559,8 @@
     <Content Include="Views\Report\_SubscriberStatement.cshtml" />
     <Content Include="Views\Suscription\_SubscriptionPopup.cshtml" />
     <Content Include="Views\Suscription\_SubscriptionPopupPartial.cshtml" />
+    <Content Include="Views\Report\MonthlyDueReport.cshtml" />
+    <Content Include="Views\Report\_MonthlyDueReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

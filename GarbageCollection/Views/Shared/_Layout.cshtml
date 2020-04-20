@@ -26,7 +26,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @Styles.Render("~/AdminLTE/css")
     @Scripts.Render("~/bundles/modernizr")
 
-    
+    <link href="~/DialogLoader/jquery-ui.css" rel="stylesheet" />
+    <link href="~/DialogLoader/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="~/DialogLoader/theme-jquery-ui.css" rel="stylesheet" />
+    @*<script src="~/DialogLoader/jquery.js"></script>*@
+  
     <!-- Font Awesome Icons -->
 
   
@@ -87,6 +91,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @*<script src="~/Scripts/jquery-1.11.1.ui.min.js"></script>*@
     @*@Scripts.Render("~/admin-lte/js")*@
     @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/DialogLoader/jquery-1.11.1.ui.min.js"></script>
     @*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
     <script src="~/Scripts/jquery.form.min.js"></script>

@@ -64,5 +64,6 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<SubscriptionCollection> SubscriptionCollections { get; set; }
         public virtual DbSet<CollectionVerifyLog> CollectionVerifyLogs { get; set; }
+        public virtual DbSet<Month> Months { get; set; }
     }
 }

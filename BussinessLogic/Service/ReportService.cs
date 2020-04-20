@@ -119,5 +119,43 @@ namespace BussinessLogic.Service
             }
 
         }
+        public List<MainViewModel.MonthlyDueViewModel> getMonthlyDueList(int? Month, int? Year, int pageNo, int pageSize)
+        {
+            try
+            {
+
+                string query = "";
+
+                query = " select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerType,LocationName,MonthlyDue,PostedOn from FgetMonthlyDuePosted("+ Year + ","+ Month + ")";
+
+
+
+                query += @" ORDER BY  Subsno asc
+                       OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
+                       FETCH NEXT " + pageSize + " ROWS ONLY";
+                var monthlyreportList = uow.Repository<MainViewModel.MonthlyDueViewModel>().SqlQuery(query).ToList();
+
+                return monthlyreportList;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+
+        public List<int> YearList()
+        {
+            var Year = uow.Repository<string>().SqlQuery("select distinct(CONVERT(varchar(50), year))from [dbo].[SubscriptionDue]").ToList();
+            List<int> intYear = new List<int>();
+            foreach (var item in Year)
+            {
+              
+                intYear.Add(Convert.ToInt32(item));
+            }
+             
+            return intYear.ToList();
+        }
     }
 }

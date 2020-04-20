@@ -1,0 +1,134 @@
+﻿
+
+
+
+@model BuisnessObject.ViewModel.MainViewModel.MonthlyDueViewModel
+@using BussinessLogic.Service
+@using ChannakyaCustomeDatePicker.Helper
+
+
+<div class="box  Monthly-list-index">
+
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">Monthly Due  Report</h3>
+            <hr>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+
+            </div><!-- /.box-tools -->
+         
+            <div class="col-md-12">
+
+
+                @Html.Label("Month", new { @class = "control-label col-md-1"})
+                <div class="col-md-4 form-group" id="Month" >
+
+                    @Html.DropDownList("Month", CommonUtilityService.MonthList(), "--Select Month--", new { @class = "form-control ", @id = "Month" })
+
+                </div>
+                @Html.Label("Year", new { @class = "control-label col-md-1" })
+                <div class="col-md-4 form-group" id="Year">
+
+                    @Html.DropDownList("Year", new SelectList(ViewBag.Year, "Year") , "--Select Year--", new { @class = "form-control ", @id = "Year" })
+                </div>
+
+                <div class="input-group-btn form-group col-md-1 pull-left" >
+                    <button type="button" id="searchMonthDueReport" class="btn btn-month-due-report btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+                </div>
+               
+
+            </div>
+            <button type="button" class="btn btn-success month-export-to-excel pull-right" title="Export to Excel" data-toggle="tooltip" style="margin-top: 20px;">Export to Excel</button>
+        </div>
+
+        <div class="Month-Report-List">
+
+
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+
+<script src="~/Scripts/ch-dialog.js"></script>
+<script>
+    $('.month-export-to-excel').on('click', function () {
+        debugger;
+        var parentContainer = $(this).parents()
+
+        var Month = $('#Month').find('#Month').val();
+        var Year = $('#Year').find('#Year').val();
+        var Monthtext=$('#Month').find('#Month option:selected').text();
+        window.open("/Report/MonthlyDueReportExportToExcel?Month=" + Month + "&Year=" + Year + "&Monthtext=" + Monthtext);
+
+    });
+
+    $("div.monthly-report-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var Month = $('#Month').find('#Month').val();
+        var Year = $('#Year').find('#Year').val();
+        var container = parentContainer.find("div.monthly-report-page-list");
+
+        var url = "?Month=" + Month + "&Year=" + Year;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.monthly-report-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var Month = $('#Month').find('#Month').val();
+        var Year = $('#Year').find('#Year').val();
+        var container = parentContainer.find("div.monthly-report-page-list");
+
+        var url = "?Month=" + Month + "&Year=" + Year;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.monthly-report-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var Month = $('#Month').find('#Month').val();
+        var Year = $('#Year').find('#Year').val();
+        var container = parentContainer.find("div.monthly-report-page-list");
+
+        var url = "?Month=" + Month + "&Year=" + Year;
+        getPageNumberBtnAction(url, container, me)
+    });
+    $(".Monthly-list-index").on('click', '.btn-month-due-report', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var Month = $('#Month').find('#Month').val();
+        var Year = $('#Year').find('#Year').val();
+        
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Report/_MonthlyDueReport",
+            data: { Month: Month, Year: Year},
+            success: function (data) {
+                $(".Month-Report-List").html("");
+                $(".Month-Report-List").html(data).show();
+            }
+        })
+    });
+
+
+
+
+</script>
