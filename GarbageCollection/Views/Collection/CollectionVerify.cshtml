@@ -21,15 +21,27 @@
                @Html.HiddenFor(x => x.CustId)
                 <div class="form-group">
                     @Html.LabelFor(model => model.CollectorId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-6", @id = "CollectorName", @style = "margin-bottom :50px;" })
+                    <div class="col-md-3">
+                        @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-10", @id = "CollectorName", autocomplete = "off" })
                         @Html.HiddenFor(x => x.CollectorId)
-                        <button type="button" id="search-verify" class="btn btn-search-verify btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+
 
                     </div>
+
+                    @Html.LabelFor(model => model.LocationName, htmlAttributes: new { @class = "control-label col-md-2" })
+
+
+                    <div class="col-md-3">
+                        @Html.TextBox("LocationName", null, new { @class = "form-control col-md-10", @id = "LocationName", autocomplete = "off" })
+                        @Html.HiddenFor(x => x.LocationID)
+
+
+                    </div>
+                    <button type="button" id="search-verify" class="btn btn-search-verify btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+
                 </div>
 
-            </div>
+
         </div>
         <div class="Collection-List">
 
@@ -51,7 +63,48 @@
 <script>
 
     
+    $(function () {
+        $("#LocationName").typeahead({
 
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Suscription/LocationList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.Lid;
+                            var name = item.LocationName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-10");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            
+            },
+            updater: function (item) {
+                $('#LocationID').val(map[item].id);
+                return item;
+            }
+        });
+    })
     $(function () {
         $('.button-checkbox').each(function () {
 
@@ -76,9 +129,9 @@
         var parentContainer = $(this).parents()
         var me = $(this);
         var CollectorName = $('#CollectorName').val();
-
+        var LocationName = $('#LocationName').val();
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName;
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -88,9 +141,9 @@
         var parentContainer = $(this).parents()
         var me = $(this);
         var CollectorName = $('#CollectorName').val();
-
+        var LocationName = $('#LocationName').val();
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName;
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
         getPageNumberChangeData(url, container, me)
     });
     $("div.collection-verify-list").on('change', 'input#pageSize', function (e) {
@@ -99,34 +152,12 @@
         var parentContainer = $(this).parents()
         var me = $(this);
         var CollectorName = $('#CollectorName').val();
+        var LocationName = $('#LocationName').val();
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName;
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
         getPageSizeChangeData(url, container, me)
     });
-    $(".customer-list-index").on('click', '.btn-searchCustomer', function (e) {
-        e.stopImmediatePropagation();
-        debugger;
-        var parentContainer = $(this).parents()
-        var me = $(this);
-        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
-        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
-        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
-        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
-        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
-        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
-
-        $.ajax({
-            contentType: "html",
-            type: "Get",
-            url: "/Customer/_List",
-            data: { customerno:customerno,name: name, address: address, contact: contact, cType: cType },
-            success: function (data) {
-                $(".customer-list-index").find("div.Customer-List").html("");
-                $(".customer-list-index").find("div.Customer-List").html(data);
-            }
-        })
-    });
-
+   
   
     $(function () {
         $("#CollectorName").typeahead({
@@ -153,7 +184,7 @@
                         response(items);
                         $(".dropdown-menu").css("height", "auto");
                         //$(".dropdown-menu").css("width", "");
-                        $(".dropdown-menu").addClass("col-md-6");
+                        $(".dropdown-menu").addClass("col-md-10");
                     },
                     error: function (response) {
                         alert(response.responseText);
@@ -173,13 +204,13 @@
     $('#search-verify').click(function (event) {
         debugger;
         var CollectorName = $('#CollectorName').val();
-      
+        var LocationName = $('#LocationName').val();
     
             $.ajax({
                 url: "/Collection/CollectionVerify",
                 type: 'post',
                 async: false,
-                data: { CollectorName: CollectorName },
+                data: { CollectorName: CollectorName, LocationName: LocationName },
                          
                 success: function (data) {
                     debugger

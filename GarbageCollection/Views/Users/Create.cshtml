@@ -1,10 +1,11 @@
 ﻿@model Loader.Models.RegisterViewModel
 @using Loader.Helper
 @using ChannakyaCustomeDatePicker.Helper
-<link href="~/Content/ch-treeview.css" rel="stylesheet" />
-<script src="~/Scripts/ch-treeview.js"></script>
+
 @{
-    /**/
+/**/
+    <link href="~/Content/ch-treeview.css" rel="stylesheet" />
+    <script src="~/Scripts/ch-treeview.js"></script>
     Html.EnableClientValidation(true);
     Layout = null;
     var test = Model;
@@ -60,7 +61,7 @@
                 @if (ViewBag.Id == 0)
                 {
                     <div class="form-group col-md-12">
-                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2", autocomplete = "off" })
                         <div class="col-md-9">
                             @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "Email" })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
@@ -77,7 +78,7 @@
                     <div class="form-group col-md-12">
                         @Html.Label("User Name", null, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @disabled = "disabled" })
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @disabled = "disabled", autocomplete = "off" })
                             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -88,7 +89,7 @@
                     <div class="form-group col-md-12">
                         @Html.Label("User Name", null, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @id = "UserName" })
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @id = "UserName", autocomplete = "off" })
 
                             @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
                         </div>
@@ -99,7 +100,9 @@
                             @Html.Label("Employee Name", null, htmlAttributes: new { @class = "control-label col-md-2" })
                             <div class="col-md-9">
 
-                                @Html.EditorForEmployeeSearch(model => model.EmployeeId, empSearch)
+                                @*@Html.EditorForEmployeeSearch(model => model.EmployeeId, empSearch)*@
+                                @Html.TextBox("Employee", null, new { @id = "Employee", @class = "form-control col-md-6", autocomplete = "off" })
+                                @Html.HiddenFor(x => x.EmployeeId)
                                 @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger employeeError" })
                             </div>
                         </div>
@@ -112,7 +115,18 @@
                         @Html.Label("Designation", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-9 DesignationId">
 
-                            @Html.EditorForTree(model => model.UserDesignationId, treeobjDesignation)
+                           @if (ViewBag.Id != 0)
+                           {
+
+
+                            @Html.TextBox("DesignationName", (object)ViewBag.DesgText, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
+                           }
+                           else
+                           {
+                            @Html.TextBox("DesignationName", null, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
+                           }
+                        @Html.HiddenFor(x => x.UserDesignationId)
+                      
                             @Html.ValidationMessageFor(model => model.UserDesignationId, "", new { @class = "text-danger" })
                         </div>
 
@@ -123,8 +137,17 @@
                     @Html.LabelFor(model => model.MTId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-8">
 
-                        @Html.EditorForTree(model => model.MTId, menuTemplateTree)
-                        @Html.ValidationMessageFor(model => model.MTId, "", new { @class = "text-danger" })
+                        @if (ViewBag.Id != 0)
+                        {
+
+
+                            @Html.TextBox("MenuTemplate", (object)ViewBag.MTText, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
+                        }
+                        else
+                        {
+                            @Html.TextBox("MenuTemplate", null, new { @id = "MenuTemplate", @class = "form-control col-md-6", autocomplete = "off" })
+                        }
+                        @Html.HiddenFor(x => x.MTId)
                     </div>
                     <div class="col-md-1 hide">
                         <label class="bs-switch">
@@ -152,14 +175,14 @@
 
                     </div>
                 </div>
-
+                
                 @if (ViewBag.Id == 0)
                 {
 
                     <div class="form-group col-md-12">
                         @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @type = "password", @autocomplete = "off" })
+                            @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @type = "password", autocomplete = "off" })
                             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
 
                         </div>
@@ -167,7 +190,7 @@
                     <div class="form-group col-md-12">
                         @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.ConfirmPassword, new { @class = "form-control", @type = "password", @autocomplete = "off" })
+                            @Html.TextBoxFor(model => model.ConfirmPassword, new { @class = "form-control", @type = "password", autocomplete = "off" })
                             @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
 
                         </div>
@@ -185,29 +208,56 @@
                 </div>
 
 
-                <div class="from-to-date col-md-12">
+                <div class="from-to-date">
 
                     @if (Model.IsUnlimited != true)
                     {
-                        @*@Html.Label("From Date - To Date", htmlAttributes: new { @class = "control-label col-md-3" })
-                            <div class="col-md-3">
-                                @Html.DateRangePicker(x => x.From, x => x.To)
-                                @Html.ValidationMessageFor(model => model.From, "", new { @class = "text-danger" })
-                                @Html.ValidationMessageFor(model => model.To, "", new { @class = "text-danger" })
-                            </div>*@
+                        if (ViewBag.Id != 0)
+                        {
+                            var From = ViewBag.From;
+                            var To = ViewBag.To;
+                            <div class="col-md-12">
+                                @Html.Label("From Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-3 " id="From">
+                                    <an-date-picker is-input date-ad=@From></an-date-picker>
+                                    
 
-                        @Html.Label("From Date", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-3 From">
-                            @Html.DatePicker(x => x.From)
-                            @Html.ValidationMessageFor(model => model.From, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
 
-                        </div>
 
-                        @Html.Label("To Date", htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-3 To">
-                            @Html.DatePicker(x => x.To)
-                            @Html.ValidationMessageFor(model => model.To, "", new { @class = "text-danger" })
-                        </div>
+                            <div class="col-md-12 " style="margin-top: 20px;">
+                                @Html.Label("To Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-3 " id="To">
+                                    <an-date-picker is-input date-ad=@To></an-date-picker>
+                                   
+                                </div>
+                            </div>
+                            
+                        }
+                    
+                    else {
+
+                            <div class="col-md-12">
+                                @Html.Label("From Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-3 " id="From">
+                                    <an-date-picker is-input></an-date-picker>
+                                  
+
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-12 " style="margin-top: 20px;">
+                                @Html.Label("To Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                                <div class="col-md-3 " id="To">
+                                    <an-date-picker is-input></an-date-picker>
+                                  
+                                </div>
+                            </div>
+                        }
+
+
                     }
 
                 </div>
@@ -227,9 +277,11 @@
 <link href="~/UserDialog/jquery-ui.css" rel="stylesheet" />
 <script src="~/UserDialog/jquery-1.11.1.ui.min.js"></script>*@
 <script src="~/Scripts/jquery-message-box.js"></script>
+
 <script src="~/Scripts/ch-dialog.js"></script>
-<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
-<link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />
+<script src="~/Scripts/typeahead.min.js"></script>
+@*<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
+<link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />*@
 
 
 @*@section Scripts {
@@ -238,6 +290,130 @@
 }*@
 
 <script type="text/javascript">
+
+    $(function () {
+        $("#Designation").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Employee/_GetComboDesignationTreePopup/',
+                    data: "{ 'term': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.DGId;
+                            var name = item.DGName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#UserDesignationId').val(map[item].id);
+                return item;
+            }
+        });
+    })
+
+    
+    $(function () {
+        $("#MenuTemplate").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Users/_GetMenuBranchTreePopUp/',
+                    data: "{ 'term': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            debugger;
+                            var id = item.MTId;
+                            var name = item.MTName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#MTId').val(map[item].id);
+                return item;
+            }
+        });
+    })
+
+    $(document).ready(function(){
+        function updateTextBox(event,ui){
+            $(this).val(ui.item.EmployeeName);
+            $('#EmployeeId').val(ui.item.EmployeeId);
+            return false;
+        }
+        $('#Employee').autocomplete({
+            minLength:1,
+         
+            focus:updateTextBox,
+            select:updateTextBox,
+            source:function(request,response){
+                debugger;
+                $.ajax({
+                    url: '/Users/_GetEmployeeAutoCompleteTreePopUp/',
+                    data:"{ 'term': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success:function(data){
+                        response(data); 
+                    }
+
+                });
+            }
+        
+        })
+    .autocomplete('instance')._renderItem=function(ul,item){
+        return $('<li>').append('<a><b>'+item.EmployeeId+'</b> &nbsp; &nbsp;'+item.EmployeeName+'</a>')
+        //.append('<a>'+item.EmployeeName+'</a>')
+        .appendTo(ul);
+
+    }
+    
+    });
+
+
     $(document).ready(function () {
         debugger
         //$("#Email").blur(function () {
@@ -394,7 +570,11 @@
             return false;
         }
         var container = $(this).closest('.panel-create');
+        var FromDate=$('#From').find('an-date-picker').get()[0].dateADWithTime;
+        var ToDate=$('#To').find('an-date-picker').get()[0].dateADWithTime;
         var formData = new FormData($(this)[0]);
+        formData.append("From",FromDate)
+        formData.append("To",ToDate)
         var nodeId = $(this).find('.section-treeview#PUsersId').find('.internal-value').val()
         $.MessageBox({
             buttonDone: "Yes",
@@ -604,4 +784,5 @@
     .bs-switch__input[type="checkbox"]:checked + .bs-switch__handle:before {
         transform: translateX(18px);
     }
+    .ui-menu-item{padding:10px}
 </style>

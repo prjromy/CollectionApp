@@ -141,9 +141,9 @@ $(document).on('click', '.table-click-customer table tr', function (e) {
                 } 
                         //objCheck.prop('checked', true);
                         $(closestTr).css('background-color', '#c2c4c3');
-                        $('.CommonSearchDiv').find('#CustomerName').val("");
-                        $('.cust-id').val("");
-                        $('.CommonSearchDiv').find('#CustomerName').val(result.CustomerName);
+                        //$('.CommonSearchDiv').find('#CustomerName').val("");
+                        //$('.cust-id').val("");
+                        //$('.CommonSearchDiv').find('#CustomerName').val(result.CustomerName);
                         if (mode == "SubscriptionReport") {
                             $('.cust-id').val(result.Subsid);
 

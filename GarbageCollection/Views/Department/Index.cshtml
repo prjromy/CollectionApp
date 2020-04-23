@@ -64,15 +64,39 @@
 <script src="~/Scripts/ch-treeview.js"></script>
 <script type="text/javascript">
 
+    $(document).ready(function(){
+        debugger;
+        var viewId = $(this).closest('.Department-explore').find('#viewType')
+        if (viewId.val() == 1) {
+            viewId.val(2)
+            $('.listView').find('i').removeClass('fa fa-list-ul');
+            $('.listView').find('#DeplistView').removeAttr("title","List View");
+            $('.listView').find('i').addClass('fas fa-th');
+
+        }
+        else {
+            viewId.val(1)
+            $('.listView').find('i').addClass('fa fa-list-ul');
+            $('.listView').find('#DeplistView').removeAttr("title","Grid View");
+            $('.listView').find('i').removeClass('fas fa-th');
+
+        }
+    })
     $('.Department-explore').on('click', '.listView', function (event) {
         debugger;
 
         var viewId = $(this).closest('.Department-explore').find('#viewType')
         if (viewId.val() == 1) {
             viewId.val(2)
+            //$(this).find('i').removeClass('fa fa-list-ul');
+            //$(this).find('i').addClass('fas fa-th');
+
         }
         else {
             viewId.val(1)
+            //$(this).find('i').addClass('fa fa-list-ul');
+            //$(this).find('i').removeClass('fas fa-th');
+
         }
         var nodeId = $(this).closest('.panel-list').find('input#pDepartmentId').val();
 
@@ -96,7 +120,22 @@
             data: { parentId: data.nodeId, allowSelectGroup: data.allowSelectGroupNode, ViewType: listType },
             dataType: "html",
             success: function (html) {
+                debugger;
+                var html=$(html);
+                if(parseInt(listType)==2){
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fa fa-list-ul');
+                    html.find('#DeplistView').find('i').addClass('fas fa-th');
+                    html.find('#DeplistView').attr("title","Grid View");
+                   
+                }
+                
+                if(parseInt(listType)==1){
+                    html.find('#DeplistView').find('i').addClass('fa fa-list-ul');
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fas fa-th');
+                    html.find('#DeplistView').attr("title","List View");
+                }
                 $(container).html(html);
+              
             },
             error: function () {
                 alert("error");
@@ -116,6 +155,7 @@
             dataType: "html",
             success: function (html) {
                 $(container).html(html);
+             
             },
             error: function () {
                 alert("error");

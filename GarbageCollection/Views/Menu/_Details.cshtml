@@ -16,7 +16,7 @@
 <div class="box box-success">
     <div class="box-header" style="background-color:cornflowerblue; color:white;">
 
-        <div class="col-md-9" style="margin:-5px; padding-left:0px;">
+        <div class="col-md-9" style="margin:-2px; padding-left:0px;">
             @if (ViewBag.ParentMenuId != 0)
             {
                 <button type="button" id="btn-back" class="glyphicon glyphicon-backward" style="background-color:cornflowerblue;border:none;" value="Back"></button>
@@ -43,9 +43,9 @@
           
             <button class="btn btn-box-tool btn-create-menu" style="color:white;"> <i class="fa fa-plus"></i></button>
             
-            <button class="btn btn-box-tool listView" style="color:white;"> <i class="fa fa-list-ul"></i></button>
+            <button class="btn btn-box-tool listView" id="MenuList" data-toggle="tooltip" title="List View" style="color:white;"> <i class="fa fa-list-ul"></i></button>
 
-            <button class="btn btn-box-tool" style="color:white;" data-widget="collapse"> <i class="fa fa-minus"></i></button>
+            @*<button class="btn btn-box-tool" style="color:white;" data-widget="collapse"> <i class="fa fa-minus"></i></button>*@
 
 
         </div>

@@ -9,7 +9,8 @@
 
     <div class="box box-success">
         <div class="box-header with-border">
-            <h3 class="box-title">Collection Report</h3>
+            <legend style="font-size:16px;font-weight:bold">Collection Report</legend>
+            
             <hr>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
@@ -30,7 +31,7 @@
                     @Html.TextBox("CollectorName", "", htmlAttributes: new { @class = "form-control", @id = "txtCollectorName", @placeholder = "Collector Name" })
                 </div>
                 <div class="col-md-3  form-group" id="collectorDate">
-                    @Html.DatePicker(model => model.CollectionDate, true)
+                    <an-date-picker is-input></an-date-picker>
 
                 </div>
                 <div class="col-md-3  form-group" id="status">
@@ -75,7 +76,7 @@
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
 
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find('#status').find("#statuslist").val();
 
         var statustext = parentContainer.find('#status').find("#statuslist").find("option:selected").text();
@@ -93,7 +94,7 @@
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find('#status').find("#statuslist").val();
         
         var container = parentContainer.find("div.collector-page-list");
@@ -110,7 +111,7 @@
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find('#status').find("#statuslist").val();
        
         var container = parentContainer.find("div.collector-page-list")
@@ -125,7 +126,7 @@
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find('#status').find("#statuslist").val();
         var container = parentContainer.find("div.collector-page-list")
         var url = "?customerName=" + name + "&Location=" + location + "&collector=" + collector + "&collectionDate=" + collectorDate + "&verified=" + status;
@@ -143,7 +144,7 @@
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
 
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
 
 
        

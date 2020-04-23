@@ -15,7 +15,7 @@
 
 
 <div class="small-box bg-aqua" style="@menuTypeClass">
-    <span class="deleteNode" id="@Model.MenuId" style="right:0px;position:absolute;cursor:pointer;"> <i class="glyphicon glyphicon-remove"></i></span>
+    @*<span class="deleteNode" id="@Model.MenuId" style="right:0px;position:absolute;cursor:pointer;"> <i class="glyphicon glyphicon-remove"></i></span>*@
     <div class="inner" menu-caption="@Model.MenuCaption">
         <p id="menuCaption" data-toggle="tooltip" data-placement="top" title="@Model.MenuCaption" style="cursor:pointer;height:20px;"> @Model.MenuCaption</p>
         @if (Model.IsGroup == false)

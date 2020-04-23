@@ -72,7 +72,7 @@
 
                 </tr>
             }
-            <tr><td colspan="4"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</bstyle="font-size:></output></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td colspan="5"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</b></output></td><td></td><td></td><td></td></tr>
         </tbody>
     </table>
     <div class="form-group">
@@ -103,7 +103,7 @@
         if($(this).is(':checked')){
             var totalsum = parseFloat($('#amounttotal').val());
             //$('.Amount').each(function () {
-            var totalVal = parseFloat($(this).closest("tr").find("td").eq("4").text());
+            var totalVal = parseFloat($(this).closest("tr").find("td").eq("5").text().replace(/,/g, ''));
             if ($.isNumeric(totalVal)) {
 
                 totalsum += parseFloat(totalVal);
@@ -116,7 +116,7 @@
         else {
             var totalsum = parseFloat($('#amounttotal').val());
             //$('.Amount').each(function () {
-            var totalVal = parseFloat($(this).closest("tr").find("td").eq("4").text());
+            var totalVal = parseFloat($(this).closest("tr").find("td").eq("5").text().replace(/,/g, ''));
             if ($.isNumeric(totalVal)) {
 
                 totalsum -= parseFloat(totalVal);
@@ -131,7 +131,7 @@
     });
     function EditCollection(Subscollid) {
         debugger
-
+      
         $.ajax({
             type: "get",
             url: "/Collection/collectionEdit/",

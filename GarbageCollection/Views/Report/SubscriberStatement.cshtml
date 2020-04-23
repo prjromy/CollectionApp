@@ -1,7 +1,4 @@
-﻿
-
-
-@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+﻿@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
 @using BussinessLogic.Service
 @using ChannakyaCustomeDatePicker.Helper
 
@@ -39,7 +36,7 @@
 
                     </div>
 
-                    <div class="input-group-btn form-group col-md-1 pull-left" style="margin-top: 20px;">
+                    <div class="input-group-btn form-group col-md-1 pull-right" style="margin-top: 20px;">
                         <button type="button" id="searchSubscriptionReport" class="btn btn-subscription-report-report btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
                     </div>
                     <button type="button" class="btn btn-success subscription-export-to-excel pull-right" title="Export to Excel" data-toggle="tooltip" style="margin-top: 20px;">Export to Excel</button>
@@ -68,6 +65,10 @@
         var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
         var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
         var subsid = parseInt($('.subscription-list-index').find('.cust-id').val());
+        if (!subsid) {
+            ErrorAlert("Please select customer",3000);
+            return false;
+        }
         var substext = $('.subscription-list-index').find('#CustomerName').val();
         window.open("/Report/SubscriptionStatementExportToExcel?FromDate=" + FromDate + "&ToDate=" + ToDate + "&subsid=" + subsid + "&substext=" + substext);
 
@@ -82,7 +83,7 @@
         var ToDate=$('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
         var subsid = $('.subscription-list-index').find('.cust-id').val();
         var container = parentContainer.find("div.sus-report-page-list");
-
+       
         var url = "?subsid=" + subsid + "&FromDate=" + FromDate + "&ToDate=" + ToDate ;
         getPageNumberBtnAction(url, container, me)
 
@@ -125,7 +126,7 @@
         var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
         var subsid = parseInt($('.subscription-list-index').find('.cust-id').val());
         if (!subsid) {
-            ErrorAlert("Please select customer");
+            ErrorAlert("Please select customer", 3000);
             return false;
         }
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();

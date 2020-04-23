@@ -51,15 +51,15 @@
                 </td>
                 <td>
 
-                    @item.Debit
+                    @Convert.ToDecimal(@item.Debit).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture) 
                 </td>
                 <td>
 
-                    @item.Credit
+                    @Convert.ToDecimal(@item.Credit).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture) 
                 </td>
                 <td>
 
-                    @item.DueBalance
+                    @Convert.ToDecimal(@item.DueBalance).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture) 
                 </td>
                 <td>
 
@@ -94,7 +94,7 @@
     var me = $(this);
     var Location = parentContainer.find("#Location").find("#LocationName").val();
       
-    var tillDate = parentContainer.find("#CollectionDate").find("#CollectionDate").val();
+    var tillDate = parentContainer.find("#CollectionDate").find('an-date-picker').get()[0].dateADWithTime;
 
     var container = parentContainer.find("div.sus-due-page-list")
     window.open("/Report/SubscriptionDueExportToExcel?tillDate=" + tillDate + "&Location=" + Location );
@@ -109,8 +109,7 @@
 
         var Location = parentContainer.find("#Location").find("#LocationName").val();
 
-        var tillDate = parentContainer.find("#CollectionDate").find("#CollectionDate").val();
-
+        var tillDate = parentContainer.find("#CollectionDate").find('an-date-picker').get()[0].dateADWithTime;
         var container = parentContainer.find("div.sus-due-page-list")
         var url = "?tillDate=" + tillDate + "&Location=" + Location ;
         getPageNumberBtnAction(url, container, me)
@@ -125,7 +124,7 @@
 
         var Location = parentContainer.find("#Location").find("#LocationName").val();
 
-        var tillDate = parentContainer.find("#CollectionDate").find("#CollectionDate").val();
+        var tillDate = parentContainer.find("#CollectionDate").find('an-date-picker').get()[0].dateADWithTime;
 
         var container = parentContainer.find("div.sus-due-page-list")
         var url = "?tillDate=" + tillDate + "&Location=" + Location;

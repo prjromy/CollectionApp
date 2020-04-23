@@ -335,6 +335,7 @@
 /// <reference path="../dialogloader/jquery-1.11.1.ui.min.js" />
 /// <reference path="ai.0.15.0-build58334.min.js" />
 /// <reference path="an-datepicker-with-polyfill.min.js" />
+/// <reference path="app.min.js" />
 /// <reference path="bootstrap.min.js" />
 /// <reference path="ch-dialog.js" />
 /// <reference path="ch-dpicker.js" />

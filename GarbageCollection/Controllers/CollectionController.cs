@@ -44,6 +44,7 @@ namespace GarbageCollection.Controllers
                     if (item.TotalCount == 1){
                         item.IsChecked = true;
                     }
+
                 }
                 CollectionViewModel.collectionList = suscriberList;
 
@@ -72,6 +73,7 @@ namespace GarbageCollection.Controllers
         public ActionResult collectionEdit(int? Subscollid)
         {
             var collectionResult = collection.GetSingleCollection(Subscollid);
+            ViewBag.CollectionDate = collectionResult.CollectionDate.Value.Month.ToString() + "-" + collectionResult.CollectionDate.Value.Day.ToString() + "-" + collectionResult.CollectionDate.Value.Year.ToString();
             return PartialView(collectionResult);
         }
         public ActionResult collectionEditSave(MainViewModel.CollectionVerificationEntry collections)
@@ -79,12 +81,12 @@ namespace GarbageCollection.Controllers
             var collectionResult = collection.EditCollection(collections);
             return Json(collectionResult, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult CollectionVerify(string CollectorName="")
+        public ActionResult CollectionVerify(string CollectorName="",string LocationName="")
         {
             try
             {
                 MainViewModel.CollectionVerificationEntry collectionViewModel = new MainViewModel.CollectionVerificationEntry();
-                var collectionList = collection.getCollectionList(CollectorName, 1, 10);
+                var collectionList = collection.getCollectionList(CollectorName, LocationName, 1, 10);
                 collectionViewModel.collectionPagedList = new StaticPagedList<MainViewModel.CollectionVerificationEntry>(collectionList, 1, 10, (collectionList.Count == 0) ? 0 : collectionList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -103,10 +105,10 @@ namespace GarbageCollection.Controllers
             }
         }
 
-        public ActionResult _CollectionVerify(string CollectorName = "", int pageNo = 1, int pageSize = 10)
+        public ActionResult _CollectionVerify(string CollectorName = "",  string LocationName = "",int pageNo = 1, int pageSize = 10)
         {
             MainViewModel.CollectionVerificationEntry collectionViewModel = new MainViewModel.CollectionVerificationEntry();
-            var collectionList = collection.getCollectionList(CollectorName, pageNo, pageSize);
+            var collectionList = collection.getCollectionList(CollectorName, LocationName, pageNo, pageSize);
             collectionViewModel.collectionPagedList = new StaticPagedList<MainViewModel.CollectionVerificationEntry>(collectionList, pageNo, pageSize, (collectionList.Count == 0) ? 0 : collectionList.FirstOrDefault().TotalCount);
 
             //foreach (var item in customerList)

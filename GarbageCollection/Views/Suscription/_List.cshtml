@@ -50,7 +50,7 @@
             </td>
             <td>
 
-                @item.MonthlyAmount
+               @Convert.ToDecimal(@item.MonthlyAmount).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture) 
 
             </td>
             <td>

@@ -47,6 +47,8 @@ namespace GarbageCollection.Controllers
             else
             {
                 suscriptionModel = suscription.getSingleSuscriptonList(sNo);
+                ViewBag.EffectiveDate = suscriptionModel.EffectiveDate.Value.Month.ToString() + "-" + suscriptionModel.EffectiveDate.Value.Day.ToString() + "-" + suscriptionModel.EffectiveDate.Value.Year.ToString();
+
                 var customerName = customerService.GetSelectedMultipleCustomer(Convert.ToInt32(suscriptionModel.CustId));
                 suscriptionModel.CustomerName = customerName.CustomerName;
             }

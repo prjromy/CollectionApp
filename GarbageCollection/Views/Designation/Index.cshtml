@@ -21,7 +21,8 @@
         <h3 class="box-title"> @ViewBag.Title </h3>
         <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-        </div><!-- /.box-tools -->
+        </div>
+    <!-- /.box-tools -->
     </div><!-- /.box-header -->
 
     <div class="box-body">
@@ -64,16 +65,36 @@
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script src="~/Scripts/ch-treeview.js"></script>
 <script type="text/javascript">
+    
+    $(document).ready(function(){
+        debugger;
+        var viewId = $(this).closest('.Designation-explore').find('#viewType')
+        if (viewId.val() == 1) {
+            viewId.val(2)
+            $('.listView').find('i').removeClass('fa fa-list-ul');
+            $('.listView').find('#DeglistView').removeAttr("title","List View");
+            $('.listView').find('i').addClass('fas fa-th');
 
+        }
+        else {
+            viewId.val(1)
+            $('.listView').find('i').addClass('fa fa-list-ul');
+            $('.listView').find('#DeglistView').removeAttr("title","Grid View");
+            $('.listView').find('i').removeClass('fas fa-th');
+
+        }
+    })
     $('.Designation-explore').on('click', '.listView', function (event) {
         debugger;
 
         var viewId = $(this).closest('.Designation-explore').find('#viewType')
         if (viewId.val() == 1) {
             viewId.val(2)
+           
         }
         else {
             viewId.val(1)
+            
         }
         var nodeId = $(this).closest('.panel-list').find('input#pDesignationId').val();
         if(@ViewBag.Heirarchy==1)
@@ -105,6 +126,19 @@
             data: { parentId: data.nodeId, allowSelectGroup: data.allowSelectGroupNode, ViewType: listType },
             dataType: "html",
             success: function (html) {
+                var html=$(html);
+                if(parseInt(listType)==2){
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fa fa-list-ul');
+                    html.find('#DeglistView').find('i').addClass('fas fa-th');
+                    html.find('#DeglistView').attr("title","Grid View");
+                   
+                }
+                
+                if(parseInt(listType)==1){
+                    html.find('#DeglistView').find('i').addClass('fa fa-list-ul');
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fas fa-th');
+                    html.find('#DeglistView').attr("title","List View");
+                }
                 $(container).html(html);
             },
             error: function () {

@@ -13,7 +13,7 @@
 <div class="box box-success">
     <div class="box-header" style="background-color:cornflowerblue; color:white;">
 
-        <div class="col-md-9" style="margin:-5px; padding-left:0px;">
+        <div class="col-md-6" style="margin:1px; padding-left:0px;">
             @*@if (ViewBag.ParentGetUser() != 0)
                 {
                     <button type="button" id="btn-back" class="glyphicon glyphicon-backward" style="background-color:cornflowerblue;border:none;" value="Back"></button>
@@ -26,7 +26,7 @@
 
         @*<input type="button" class="btn-default" value="Back" id="btnBack" />*@
 
-        <div class="box-tools" style="margin: -6px 0 0 0;">
+        <div class="box-tools col-md-6" style="margin: -6px 0 0 0;">
             @*<div class="listSearch"style="color:black;">
 
 
@@ -51,9 +51,9 @@
 
             @*<button class="btn btn-box-tool"> <div class="btn-create-FinAcc" style="color:white;"></div></button>*@
             <button class="btn btn-box-tool btn-create-Users" title="Add Users" style="color:white;"> <i class="fa fa-plus"></i></button>
-            <button class="btn btn-box-tool listView" title="User Details" style="color:white;"> <i class="fa fa-list-ul"></i></button>
+            <button class="btn btn-box-tool listView" title="List View" id="UserList" style="color:white;"> <i class="fa fa-list-ul"></i></button>
 
-            <button class="btn btn-box-tool" style="color:white;" title="cancel" data-widget="collapse"> <i class="fa fa-minus"></i></button>
+            @*<button class="btn btn-box-tool" style="color:white;" title="cancel" data-widget="collapse"> <i class="fa fa-minus"></i></button>*@
         </div>
     </div><!-- /.box-header -->
     <div class="bodycontent-and-paging">

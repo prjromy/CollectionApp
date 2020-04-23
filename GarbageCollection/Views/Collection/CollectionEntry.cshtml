@@ -18,7 +18,7 @@
             <div class="form-group">
                 @Html.ChqLabelFor(model => model.CollectorId, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-6", @id = "CollectorName" ,@style="margin-bottom :50px;"})
+                    @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-6", @id = "CollectorName" ,@style="margin-bottom :50px;", autocomplete = "off" })
                     @Html.HiddenFor(x => x.CollectorId)
                     @Html.ValidationMessageFor(model => model.CollectorId, "", new { @class = "text-danger" })
                     </div>
@@ -67,8 +67,8 @@
                             @item.LocationName
 
                         </td>
-                        <td>
-                            @Html.DatePicker(x=>x.PostedOn)
+                        <td >
+                            <an-date-picker is-input></an-date-picker>
                         </td>
                         <td>
                            
@@ -270,7 +270,7 @@
                             if ($(this).find('#IsChecked').is(":checked")) {
                                 var collection = {};
 
-
+   
 
                                 collection.DueId = $('#DueId').val();
                                 collection.custid = $('#CustId').val();
@@ -278,7 +278,7 @@
                                 collection.ReceivedAmount = row.find('td').eq(5).find("input").val()
                                 collection.CollectorId = $('#CollectorId').val();;
                                 collection.Discount = row.find('td').eq(6).find("input").val()
-                                collection.PostedOn = row.find('td').eq(3).find("input").val()
+                                collection.CollectionDate = row.find('td').eq(3).find('an-date-picker').get()[0].dateADWithTime;
 
                                 collections.push(collection);
                             }

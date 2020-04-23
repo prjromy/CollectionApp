@@ -8,8 +8,11 @@
 <div class="box box-success" style="border-top-color: #8ce8be;border-top:2px solid #8ce8be">
     <div class="box-header with-border">
         <legend style="font-size:16px;font-weight:bold">Subscription Report</legend>
-    
-            <div class=" sus-div-list">
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+
+        </div><!-- /.box-tools -->
+            <div class="sus-div-list">
                 <div class="col-md-12">
                     <div class="box-tools col-md-2  form-group" id="Location">
                         @Html.TextBox("Location", "", htmlAttributes: new { @class = "form-control", @id = "LocationName", @placeholder = "Location" })
@@ -18,15 +21,16 @@
 
                         @Html.DropDownList("CustomerTypeId", CommonUtilityService.CustomerTypeList(), "--Select Event--", new { @class = "form-control ", @id = "ctypeid" })
                     </div>
-                    <div class="col-md-3  form-group" id="effectivedate">
-                        @Html.DatePicker(model => model.EffectiveDate, true)
-
-                    </div>
                     <div class="col-md-3  form-group" id="status">
 
                         @Html.DropDownList("Status", CommonUtilityService.CustomerStatusList(), new { @class = "form-control col-md-6 ", @id = "statuslist" })
                     </div>
 
+                    <div class="col-md-3  form-group" id="effectivedate">
+                        <an-date-picker is-input></an-date-picker>
+
+                    </div>
+                 
                     <div class="input-group-btn form-group col-md-1 pull-right">
                         <button type="button" id="searchSubscription" class="btn btn-searchSubscription btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
                         @*<button type="button" class="btn btn-outline-success customer-export-to-excel">Success</button>*@
@@ -65,7 +69,7 @@
         var Location = parentContainer.find("#Location").find("#LocationName").val();
         var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
         var cTypetext = parentContainer.find('#custtype').find("#ctypeid").find("option:selected").text();;
-        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var statustext = parentContainer.find('#status').find("#statuslist").find("option:selected").text();
         var container = parentContainer.find("div.sus-page-list")
@@ -80,7 +84,7 @@
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
         var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
-        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-page-list")
         var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
@@ -95,7 +99,7 @@
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
         var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
-        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-page-list")
         var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
@@ -110,7 +114,7 @@
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
         var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
-        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-page-list")
         var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
@@ -125,7 +129,7 @@
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
         var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
-        var effectivedate = parentContainer.find("#effectivedate").find("#EffectiveDate").val();
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-div-list")
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();

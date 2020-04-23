@@ -43,13 +43,30 @@
 
 <div class="modal fade users-list " data-width="400" role="dialog" tabindex="-1">
 
-</div>  
+</div>  <script src="~/Scripts/ch-dpicker.js"></script>
 <script src="~/Scripts/ch-dialog.js"></script>
 <script src="~/Scripts/ch-treeview.js"></script>
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script type="text/javascript">
- 
+    $(document).ready(function () {
+        debugger;
+        var viewId = $(this).closest('.MenuTemplate-explore').find('#viewType')
+        if (viewId.val() == 1) {
+            viewId.val(2)
+            $('.listView').find('i').removeClass('fa fa-list-ul');
+            $('.listView').find('#MenuTemplateList').removeAttr("title", "List View");
+            $('.listView').find('i').addClass('fas fa-th');
+
+        }
+        else {
+            viewId.val(1)
+            $('.listView').find('i').addClass('fa fa-list-ul');
+            $('.listView').find('#MenuTemplateList').removeAttr("title", "Grid View");
+            $('.listView').find('i').removeClass('fas fa-th');
+
+        }
+    })
     $('.MenuTemplate-explore').on('click', '.listView', function (event) {
         debugger;
 
@@ -81,6 +98,19 @@
             data: { allowSelectGroup: data.allowSelectGroupNode, ViewType: listType },
             dataType: "html",
             success: function (html) {
+                var html = $(html);
+                if (parseInt(listType) == 2) {
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fa fa-list-ul');
+                    html.find('#MenuTemplateList').find('i').addClass('fas fa-th');
+                    html.find('#MenuTemplateList').attr("title", "Grid View");
+
+                }
+
+                if (parseInt(listType) == 1) {
+                    html.find('#MenuTemplateList').find('i').addClass('fa fa-list-ul');
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fas fa-th');
+                    html.find('#MenuTemplateList').attr("title", "List View");
+                }
                 $(container).html(html);
             },
             error: function () {

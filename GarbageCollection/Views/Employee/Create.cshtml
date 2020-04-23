@@ -155,12 +155,12 @@
                             <div class="col-md-9">
                                 @if (Model.EmployeeId != 0)
                                 {
-                                    @Html.TextBox("Department", (object)ViewBag.DeptText, new { @id = "Department", @class = "form-control col-md-6" })
+                                    @Html.TextBox("Department", (object)ViewBag.DeptText, new { @id = "Department", @class = "form-control col-md-6",autocomplete = "off" })
 
                                 }
                                 else
                                 {
-                                    @Html.TextBox("Department", null, new { @id = "Department", @class = "form-control col-md-6" })
+                                    @Html.TextBox("Department", null, new { @id = "Department", @class = "form-control col-md-6", autocomplete = "off"  })
 
                                 }
                                 @Html.HiddenFor(x=>x.DeptId)
@@ -178,11 +178,11 @@
                             {
                                 
 
-                                        @Html.TextBox("DesignationName", (object)ViewBag.DesgText, new { @id = "Designation", @class = "form-control col-md-6" })
+                                        @Html.TextBox("DesignationName", (object)ViewBag.DesgText, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
                             }
                                     else
                                     {
-                                @Html.TextBox("DesignationName", null, new { @id = "Designation", @class = "form-control col-md-6" })
+                                @Html.TextBox("DesignationName", null, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
                             }
                          @Html.HiddenFor(x => x.DGId)
                             @Html.ValidationMessageFor(model => model.DGId, "", new { @class = "text-danger" })
@@ -255,7 +255,7 @@
 
                             @*@Html.EditorForTree(model => model.DGId, treeobjBranch)*@
 
-                            @Html.TextBox( "branch",name, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.TextBox( "branch",name, new { @class = "form-control", @readonly = "readonly", autocomplete = "off" })
                             @Html.HiddenFor(model => model.BranchId)    
                                                     
                             @*@Html.TextBoxFor(model => model.BranchId, new { @disabled = "disabled" })*@
@@ -267,7 +267,7 @@
                     {
                         @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
-                            @Html.TextBox("Branch",null, new { @id = "Branch", @class = "form-control col-md-6" })
+                            @Html.TextBox("Branch",null, new { @id = "Branch", @class = "form-control col-md-6", autocomplete = "off" })
                             @Html.HiddenFor(model => model.BranchId)
                             @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
                         </div>
@@ -307,7 +307,7 @@
     }
     
 
-    <script src="~/Scripts/an-datepicker-with-polyfill.min.js"></script>
+    @*<script src="~/Scripts/an-datepicker-with-polyfill.min.js"></script>*@
     <script src="~/Scripts/jquery-message-box.js"></script>
     <script src="~/Scripts/ch-dialog.js"></script>
     <script src="~/Scripts/ch-dpicker.js"></script>

@@ -39,6 +39,21 @@
         debugger;
         var test = $("input.btn.btn-box-tool.txtSearch");
         $("input.btn.btn-box-tool.txtSearch").focus();
+        var viewId = $(this).closest('.Employee-explore').find('#viewType')
+        if (viewId.val() == 1) {
+            viewId.val(2)
+            $('.listView').find('i').removeClass('fa fa-list-ul');
+            $('.listView').find('#EmployeeList').removeAttr("title", "List View");
+            $('.listView').find('i').addClass('fas fa-th');
+
+        }
+        else {
+            viewId.val(1)
+            $('.listView').find('i').addClass('fa fa-list-ul');
+            $('.listView').find('#EmployeeList').removeAttr("title", "Grid View");
+            $('.listView').find('i').removeClass('fas fa-th');
+
+        }
 
     });
 
@@ -116,6 +131,19 @@
             data: { allowSelectGroup: data.allowSelectGroupNode, ViewType: listType, empId: data.nodeId },
             dataType: "html",
             success: function (html) {
+                var html = $(html);
+                if (parseInt(listType) == 2) {
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fa fa-list-ul');
+                    html.find('#EmployeeList').find('i').addClass('fas fa-th');
+                    html.find('#EmployeeList').attr("title", "Grid View");
+
+                }
+
+                if (parseInt(listType) == 1) {
+                    html.find('#EmployeeList').find('i').addClass('fa fa-list-ul');
+                    //$(html).first().find('#DeplistView').find('i').removeClass('fas fa-th');
+                    html.find('#EmployeeList').attr("title", "List View");
+                }
                 $(container).html(html);
             },
             error: function () {

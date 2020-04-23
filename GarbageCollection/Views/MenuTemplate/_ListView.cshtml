@@ -24,11 +24,11 @@
     <td>
         @Model.PostedOn
     </td>
-    <td>
+    @*<td>
     <a class="btn btn-info btn-sm" onclick="TemplateAssignedUsers(@Model.MTId)" title="To Whom">
     <i class="fa fa-eye"></i>
      </a>
-    </td>
+    </td>*@
 
     @*<td><button type="button" class="btn btn-primary" id="myButton" data-toggle="modal" data-target="#exampleModal">ToWhom</button></td>*@
     
@@ -37,5 +37,5 @@
         <input type="button" id="@Model.MenuId" class="btn btn-link deleteNode" value="Delete" />*@
 
     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button class="btn btn-primary btn-xs editList" id="@Model.MTId" data-title="Edit"><span class="glyphicon glyphicon-pencil"></span></button></p></td>
-    <td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs deleteNode" id="@Model.MTId" data-title="Delete"><span class="glyphicon glyphicon-trash"></span></button></p></td>
+    @*<td><p data-placement="top" data-toggle="tooltip" title="Delete"><button class="btn btn-danger btn-xs deleteNode" id="@Model.MTId" data-title="Delete"><span class="glyphicon glyphicon-trash"></span></button></p></td>*@
 </tr>

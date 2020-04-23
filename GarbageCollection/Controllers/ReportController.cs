@@ -94,7 +94,7 @@ namespace GarbageCollection.Controllers
             try
             {
                 MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
-                var suscriberList = suscription.getSuscriberList(customerId, custtype, null,  pageNo, pageSize, Location, status);
+                var suscriberList = suscription.getSuscriberList(customerId, custtype, effectivedate,  pageNo, pageSize, Location, status);
                 customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -147,7 +147,7 @@ namespace GarbageCollection.Controllers
         public FileContentResult SubscriptionExportToExcel(int? customerId, int? custtype, DateTime? effectivedate, string cTypetext = "", string statustext = "", string Location = "", int status = 1, int pageNo = 1, int pageSize = 10)
         {
             MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
-            var suscriberList = suscription.getSuscriberList(customerId, custtype, null, pageNo, pageSize, Location, status);
+            var suscriberList = suscription.getSuscriberList(customerId, custtype, effectivedate, pageNo, pageSize, Location, status);
             var subscriptionExcelList = suscriberList.Select(x => new ExcelViewModel.SubscriptionExcelViewModel()
             {
 
@@ -282,7 +282,7 @@ namespace GarbageCollection.Controllers
             try
             {
                 MainViewModel.CollectionReport collectorViewModel = new MainViewModel.CollectionReport();
-                var collectorList = reportService.getCollectorReportList(null, pageNo, pageSize, customerName,collector, Location, verified);
+                var collectorList = reportService.getCollectorReportList(collectionDate, pageNo, pageSize, customerName,collector, Location, verified);
                 collectorViewModel.collectorPagedList = new StaticPagedList<MainViewModel.CollectionReport>(collectorList, pageNo, pageSize, (collectorList.Count == 0) ? 0 : collectorList.FirstOrDefault().TotalCount);
                 return PartialView(collectorViewModel);
 
@@ -298,7 +298,7 @@ namespace GarbageCollection.Controllers
         public FileContentResult CollectionExportToExcel(DateTime? collectionDate, int pageNo = 1, int pageSize = 10, string customerName = "", string collector = "", string Location = "", int verified = 1 ,string statustext="")
         {
             MainViewModel.CollectionReport collectorViewModel = new MainViewModel.CollectionReport();
-            var collectorList = reportService.getCollectorReportList(null, pageNo, pageSize, customerName, collector, Location, verified);
+            var collectorList = reportService.getCollectorReportList(collectionDate, pageNo, pageSize, customerName, collector, Location, verified);
             var collectorExcelList = collectorList.Select(x => new ExcelViewModel.CollectorExcelViewModel()
             {
 

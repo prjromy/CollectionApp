@@ -61,15 +61,30 @@
                         @Html.Label("Designation", htmlAttributes: new { @class = "control-label col-md-3" })
                         <div class="col-md-9">
 
-                            @Html.EditorForTree(model => model.DesignationId, Destreeobj)
-                            @Html.ValidationMessageFor(model => model.DesignationId, "", new { @class = "text-danger" })
-                        </div>
+                          
+
+                                    @if (Model.MTId != 0)
+                                    {
+
+
+                                        @Html.TextBox("DesignationName", (object)ViewBag.ActiveText, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBox("DesignationName", null, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
+                                    }
+                                    @Html.HiddenFor(x => x.DesignationId)
+                                    @Html.ValidationMessageFor(model => model.DesignationId, "", new { @class = "text-danger" })
+                           
+                            </div>
+
+                        
                     </div>
                 }
                 <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.MTName, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-                        @Html.EditorFor(model => model.MTName, new { htmlAttributes = new { @class = "form-control templateName" } })
+                        @Html.EditorFor(model => model.MTName, new { htmlAttributes = new { @class = "form-control templateName", autocomplete = "off" } })
                         @Html.ValidationMessageFor(model => model.MTName, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -107,8 +122,49 @@
 <script src="~/Scripts/ch-treeview.js"></script>
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script src="~/Scripts/ch-dialog.js"></script>
-<script src="~/Scripts/ch-dpicker.js"></script>
+@*<script src="~/Scripts/ch-dpicker.js"></script>*@
 <script type="text/javascript">
+    $(function () {
+        $("#Designation").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Employee/_GetComboDesignationTreePopup/',
+                    data: "{ 'term': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.DGId;
+                            var name = item.DGName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#DesignationId').val(map[item].id);
+                return item;
+            }
+        });
+    })
     $(document).ready(function () {
         debugger;
         var form1 = new FormData();

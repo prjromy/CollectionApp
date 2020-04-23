@@ -1231,6 +1231,8 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\ToggleButton.css" />
     <Content Include="DialogLoader\bootstrap-theme.min.css" />
+    <Content Include="Scripts\an-datepicker-with-polyfill.min.js" />
+    <Content Include="Scripts\app.min.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="DialogLoader\jquery-1.11.1.ui.min.js" />
     <Content Include="DialogLoader\jquery-ui.css" />
@@ -1331,7 +1333,6 @@
     <Content Include="admin-lte\dist\js\adminlte.js.map" />
     <Content Include="admin-lte\dist\js\adminlte.min.js.map" />
     <Content Include="admin-lte\plugins\icheck-bootstrap\LICENSE" />
-    <Content Include="Scripts\an-datepicker-with-polyfill.min.js" />
     <Content Include="Scripts\ch-dialog.js" />
     <Content Include="Scripts\ch-dpicker.js" />
     <Content Include="Scripts\ch-treeview.js" />

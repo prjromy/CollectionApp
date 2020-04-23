@@ -22,3 +22,10 @@ select,
 textarea {
     max-width: 280px;
 }
+.fa, .fas{
+    font-size:18px;
+}
+
+.fa,.fa-plus{
+    font-size:18px;
+}

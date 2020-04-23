@@ -51,12 +51,14 @@
 
                 </td>
                 <td>
-                    @item.CollectionAmt
+                    @Convert.ToDecimal(@item.CollectionAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+                   
 
                 </td>
 
                 <td>
-                    @item.DiscountAmt
+                    @Convert.ToDecimal(@item.DiscountAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+                   
                 </td>
 
 
@@ -84,7 +86,7 @@
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find('#status').find("#statuslist").val();
 
         var container = parentContainer.find("div.collector-page-list");
@@ -101,7 +103,7 @@
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find('#status').find("#statuslist").val();
 
         var container = parentContainer.find("div.collector-page-list")
@@ -116,7 +118,7 @@
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var location = parentContainer.find("#search-location").find("#txtLocation").val()
         var collector = parentContainer.find("#search-collector").find("#txtCollectorName").val();
-        var collectorDate = parentContainer.find("#collectorDate").find("#CollectionDate").val();
+        var collectorDate = parentContainer.find("#collectorDate").find('an-date-picker').get()[0].dateADWithTime;
         var status = parentContainer.find('#status').find("#statuslist").val();
         var container = parentContainer.find("div.collector-page-list")
         var url = "?customerName=" + name + "&Location=" + location + "&collector=" + collector + "&collectionDate=" + collectorDate + "&verified=" + status;

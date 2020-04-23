@@ -23,36 +23,35 @@
 
 
                         <div class="box-tools pull-right">
-                            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                            @*<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>*@
                         </div><!-- /.box-tools -->
-                        @using (Html.BeginForm("collectionEditSave", "Collection", FormMethod.Post, new { id = "createEditFormCollection" }))
-            {
+                        <form method="post" id="createEditFormCollection">
                             @Html.AntiForgeryToken()
 
                             <div class="form-horizontal">
-                                <h4>Collection Edit</h4>
+
                                 <hr />
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
 
                                 @Html.HiddenFor(model => model.subsid, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.HiddenFor(model => model.Subscollid, new { htmlAttributes = new { @class = "form-control" } })
-
+                                @Html.HiddenFor(model => model.CollectorId, new { htmlAttributes = new { @class = "form-control" } })
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-3" })
                                     <div class="col-md-9">
 
-                                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" ,@readonly = "readonly" } } )
+                                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
 
-                                       @Html.HiddenFor(model => model.CustId)
+                                        @Html.HiddenFor(model => model.CustId)
                                     </div>
                                 </div>
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.LocationName, htmlAttributes: new { @class = "control-label col-md-3" })
                                     <div class="col-md-9">
-                                        @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control",@readonly = "readonly" } })
+                                        @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
 
                                         @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
@@ -79,26 +78,29 @@
 
                                 <div class="form-group">
                                     @Html.LabelFor(model => model.CollectionDate, htmlAttributes: new { @class = "control-label col-md-3" })
-                                    <div class="col-md-9">
-                                        @Html.DatePicker(model => model.CollectionDate, true)
+                                    <div class="col-md-6">
+
+
+                                        <an-date-picker is-input date-ad=@ViewBag.CollectionDate></an-date-picker>
                                         @Html.ValidationMessageFor(model => model.CollectionDate, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
 
-                              
+
 
 
                                 <div class="form-group">
                                     <div class="col-md-offset-2 col-md-10">
-                                        
-                                            <input type="button" value="Edit" class="btn btn-success btn-save" />
-                                      
-                                       
+
+                                        <input type="button" value="Edit" class="btn btn-success btn-save" />
+
+
 
                                     </div>
                                 </div>
+
                             </div>
-                        }
+                        </form>
                     </div>
                 </div>
             </div>
@@ -112,53 +114,64 @@
 
 <script>
     $.validator.unobtrusive.parse('#createEditFormCollection');
-    $('.collection-create-main').on('click', '.btn-save', function () {
+    $('#createEditFormCollection').on('click', '.btn-save', function () {
         debugger;
-        $('#createSubmitFormSuscription').removeData("validator").removeData("unobtrusiveValidation");
+        $('#createEditFormCollection').removeData("validator").removeData("unobtrusiveValidation");
         $.validator.unobtrusive.parse($('#createEditFormCollection'));
+     
+        var formData = new FormData($('#createEditFormCollection')[0]);
+        var CollectionDate = $('#createEditFormCollection').find('an-date-picker').get()[0].dateADWithTime;
+        var CustId = parseInt($('#createEditFormCollection').find('#CollectorId').val());
+        formData.append("CollectionDate", CollectionDate)
+        formData.append("CollectorId", CustId)
         if ($("#createEditFormCollection").valid()) {
-            NewCollectionCreate();
+            $.MessageBox({
+                buttonDone: "Yes",
+                buttonFail: "No",
+                message: " Are you sure?"
+            }).done(function () {
+                //$(".checkboxCert:checked").removeAttr('disabled');
+                $.ajax({
+                    url: '@Url.Action("collectionEditSave", "Collection")',
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+
+                    success: function (result) {
+                        //var url;
+                        debugger;
+                        if (result.Success) {
+                            $.ajax({
+                                url: "/Collection/CollectionVerify",
+                                type: 'post',
+                                async: false,
+                                // data:{customerId:customerId},
+                                success: function (data) {
+                                    debugger
+                                    $('#account-pop-up-div').modal('toggle');
+                                    $('.verifier-list-index').html("");
+                                    $('.verifier-list-index').html(data);
+                                    SuccessAlert(result.Msg, 5000);
+                                    document.getElementById('alert-success').scrollIntoView();
+                                }
+                            })
+                        } else {
+                            ErrorAlert(result.Msg, 5000);
+                            document.getElementById('alert-error').scrollIntoView();
+                        }
+                    },
+                    error: function (data) {
+                        ErrorAlert(data.responseText, 15000)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }).fail(function () {
+            });
         }
 
 
     });
-    function NewCollectionCreate(e) {
-       // var customerId=$('#CustId').val();
-        $.MessageBox({
-            buttonDone: "Yes",
-            buttonFail: "No",
-            message: " Are you sure?"
-        }).done(function () {
-            //$(".checkboxCert:checked").removeAttr('disabled');
-            $('#createEditFormCollection').ajaxSubmit({
-                success: function (result) {
-                    //var url;
-                    debugger;
-                    if (result.Success) {
-                        $.ajax({
-                            url: "/Collection/CollectionVerify",
-                            type: 'post',
-                            async: false,
-                           // data:{customerId:customerId},
-                            success: function (data) {
-                                debugger
-                                $('#account-pop-up-div').modal('toggle');
-                                $('.verifier-list-index').html("");
-                                $('.verifier-list-index').html(data);
-                                SuccessAlert(result.Msg, 5000);
-                                document.getElementById('alert-success').scrollIntoView();
-                            }
-                        })
-                    } else {
-                        ErrorAlert(result.Msg, 5000);
-                        document.getElementById('alert-error').scrollIntoView();
-                    }
-                },
-                error: function (data) {
-                    ErrorAlert(data.responseText, 15000)
-                }
-            });
-        }).fail(function () {
-        });
-    }
+ 
 </script>
