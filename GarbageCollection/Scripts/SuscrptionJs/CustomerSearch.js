@@ -265,7 +265,7 @@ $(document).on("click", ".addandClose", function (e) {
 $(' #CustomerName').on('keyup', function () {
     var mode = $("#btncustomersearch").attr("data-mode");
     
-        var customerId = $('#CustId').val();
+    var customerId = $('.cust-id').val();
         $.ajax({
             type: 'GET',
             url: '/Customer/GetDetail',

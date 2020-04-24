@@ -28,6 +28,9 @@ namespace BussinessLogic.Service
         {
             try
             {
+                if (customer.PanNo == null){
+                    customer.PanNo = "0";
+                }
                 uow.ExecWithStoreProcedure("[dbo].[PCreateCustomer] @Cid,@CustomerName,@CustomerTypeId,@PhoneNo,@MobileNo,@Address,@Email,@PanNo,@PostedBy",
                                                 new SqlParameter("@Cid", customer.Cid),
                                                 new SqlParameter("@CustomerName", customer.CustomerName),
@@ -132,7 +135,7 @@ namespace BussinessLogic.Service
                 {
                     query += " and CustTypeId =" + cType;
                 }
-                query += @" ORDER BY  CustNo
+                query += @" ORDER BY  CustNo desc
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
                 var customerList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(query).ToList();

@@ -258,10 +258,10 @@
         });
     });*@
 
-    $('.panel-list').on('keypress', ".txtSearch", function (e) {
-        var keycode = (e.keyCode ? e.keyCode : e.which);
-        if (keycode == 13)
-        {
+    $('.panel-list').on('keyup', ".txtSearch", function (e) {
+        //var keycode = (e.keyCode ? e.keyCode : e.which);
+        //if (keycode == 13)
+        //{
             debugger;
             var query = $('input.txtSearch').val();
             var status = $('.Users-explore .userStatusList').val();
@@ -289,7 +289,7 @@
                 alert("error");
             }
         });
-        }
+        //}
     });
     $(document).on('click', '.btn-search-popup', function (e) {
         e.stopPropagation();

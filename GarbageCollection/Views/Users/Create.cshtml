@@ -63,7 +63,7 @@
                     <div class="form-group col-md-12">
                         @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2", autocomplete = "off" })
                         <div class="col-md-9">
-                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "Email" })
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "Email", autocomplete = "off" })
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -141,7 +141,7 @@
                         {
 
 
-                            @Html.TextBox("MenuTemplate", (object)ViewBag.MTText, new { @id = "Designation", @class = "form-control col-md-6", autocomplete = "off" })
+                            @Html.TextBox("MenuTemplate", (object)ViewBag.MTText, new { @id = "MenuTemplate", @class = "form-control col-md-6", autocomplete = "off" })
                         }
                         else
                         {
@@ -570,11 +570,19 @@
             return false;
         }
         var container = $(this).closest('.panel-create');
-        var FromDate=$('#From').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate=$('#To').find('an-date-picker').get()[0].dateADWithTime;
-        var formData = new FormData($(this)[0]);
-        formData.append("From",FromDate)
-        formData.append("To",ToDate)
+       // var unlimited=$(this).find("#IsUnlimited").is(':checked'); ;
+        if(!($(this).find("#IsUnlimited").is(':checked'))){
+            var FromDate=$('#From').find('an-date-picker').get()[0].dateADWithTime;
+            var ToDate=$('#To').find('an-date-picker').get()[0].dateADWithTime;
+            var formData = new FormData($(this)[0]);
+            formData.append("From",FromDate)
+            formData.append("To",ToDate)
+        }
+        else{
+            var formData = new FormData($(this)[0]);
+        }
+       
+     
         var nodeId = $(this).find('.section-treeview#PUsersId').find('.internal-value').val()
         $.MessageBox({
             buttonDone: "Yes",

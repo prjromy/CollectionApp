@@ -15,6 +15,7 @@ namespace BuisnessObject.ViewModel
         {
             public int Cid { get; set; }
             [DisplayName("Customer Number")]
+            [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Enter a number")]
             public string CustNo { get; set; }
             [Required(ErrorMessage = "Customer Name is required")]
             [DisplayName("Customer Name")]
@@ -44,7 +45,7 @@ namespace BuisnessObject.ViewModel
 
             //[Required(ErrorMessage = "Email is required")]
             public string Email { get; set; }
-            [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Enter a number")]
+            //[RegularExpression("([1-9][0-9]*)", ErrorMessage = "Enter a number")]
             public string PanNo { get; set; }
             public System.Data.Entity.Spatial.DbGeometry Geom { get; set; }
             public string Longitude { get; set; }
@@ -75,6 +76,7 @@ namespace BuisnessObject.ViewModel
             [DisplayName("Ledger  Name")]
             public Nullable<int> LedgerId { get; set; }
             [Required(ErrorMessage = "Monthly Amount is required ")]
+            //[RegularExpression("([1-9][0-9]*)", ErrorMessage = "Enter a number")]
             public Nullable<decimal> MonthlyAmount { get; set; }
             [DisplayName("Location Name")]
             

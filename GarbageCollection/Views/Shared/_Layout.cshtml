@@ -26,9 +26,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @Styles.Render("~/AdminLTE/css")
     @Scripts.Render("~/bundles/modernizr")
 
-    <link href="~/DialogLoader/jquery-ui.css" rel="stylesheet" />
+    <link href="~/UserDialog/jquery-ui.css" rel="stylesheet" />
+    <link href="~/UserDialog/bootstrap-theme.min.css" rel="stylesheet" />
+    @*<link href="~/DialogLoader/jquery-ui.css" rel="stylesheet" />
     <link href="~/DialogLoader/bootstrap-theme.min.css" rel="stylesheet" />
-    <link href="~/DialogLoader/theme-jquery-ui.css" rel="stylesheet" />
+    <link href="~/DialogLoader/theme-jquery-ui.css" rel="stylesheet" />*@
     @*<script src="~/DialogLoader/jquery.js"></script>*@
   
     <!-- Font Awesome Icons -->
@@ -91,7 +93,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @*<script src="~/Scripts/jquery-1.11.1.ui.min.js"></script>*@
     @*@Scripts.Render("~/admin-lte/js")*@
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/DialogLoader/jquery-1.11.1.ui.min.js"></script>
+    <script src="~/UserDialog/jquery-1.11.1.ui.min.js"></script>
+    @*<script src="~/DialogLoader/jquery-1.11.1.ui.min.js"></script>*@
     @*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
     <script src="~/Scripts/jquery.form.min.js"></script>
@@ -120,5 +123,64 @@ scratch. This page gets rid of all links and provides the needed markup only.
         animation: spin 2s linear infinite;
     }
 
-   
+
+  
+    .dropdown-menu {
+    position: absolute!important;
+    right: 0!important;
+    left: auto!important;
+    margin-top: 30px!important;
+}
+
+        
+
 </style>
+<script type="text/javascript">
+   
+        $('.li-dropdown-notifications-logout').click(function () {
+            debugger;
+            document.getElementById('logoutForm').submit();
+
+        });
+        $('li.list-group-item.fyear').click(function(){
+            debugger;
+            var id=$(this).attr('id');
+            $('ul.list-group').find('li.active').removeClass('active');
+            $(this).addClass('active')
+            if(id!=""&& !isNaN(id))
+            {
+                var data={FYId:id};
+                $.get("/Employee/SetFiscalYear",data,function(fyName){
+                    $("#cFYear").html(fyName);
+                });
+                $.get("/Employee/SetTranscationDate",data,function(fyName){
+                    debugger;
+                    $("#cTDate").html(fyName);
+
+                });
+            }
+            $(".content").empty();
+        });
+
+        $('.li-dropdown-notifications-changepassword').click(function () {
+            debugger;
+            $.ajax({
+                type: "get",
+                url: "/Manage/ChangePassword",
+                contentType: "application/json; charset=utf-8",
+                data:{userId:@Loader.Models.Global.UserId},
+                dataType: "html",
+                success: function (html) {
+                    debugger;
+                    $('section.content').html(html);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+
+        });
+   
+
+
+</script>

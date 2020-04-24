@@ -21,7 +21,8 @@
 
             <div class="col-md-12">
                 <div class="box-tools col-md-3  form-group" id="customer-no">
-                    @Html.TextBox("CustomerNo", "", htmlAttributes: new { @class = "form-control", @id = "CustomerNo", @placeholder = "Customer No" })
+                    @Html.TextBox("CustomerNo", "", htmlAttributes: new { @class = "form-control",@type="number", @id = "CustomerNo", @placeholder = "Customer No" })
+                    @*@Html.ValidationMessageFor(model => model.CustNo, "", new { @class = "text-danger" })*@
                 </div>
                 <div class="box-tools col-md-3  form-group" id="search-Employee-Name">
                     @Html.TextBox("CustomerSearch", "", htmlAttributes: new { @class = "form-control", @id = "txtCustomerSearch", @placeholder = "Customer Name" })
