@@ -1177,6 +1177,7 @@
     <Content Include="Content\jquery-ui-1.10.4.custom.min.css" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\LoaderSite.css" />
+    <Content Include="Content\Login.css" />
     <Content Include="Content\messagebox.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\SBNJiAlSsx4AAAAASUVORK5CYII=.png" />
@@ -1231,6 +1232,7 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="Content\ToggleButton.css" />
     <Content Include="DialogLoader\bootstrap-theme.min.css" />
+    <Content Include="Images\logowaste.png" />
     <Content Include="Scripts\an-datepicker-with-polyfill.min.js" />
     <Content Include="Scripts\app.min.js" />
     <Content Include="Scripts\jquery-1.11.1.min.js" />

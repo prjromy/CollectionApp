@@ -18,99 +18,62 @@
 @*/plugins/icheck-bootstrap/icheck-bootstrap.min.css*@
 <!-- Theme style -->
 <link rel="stylesheet" href="~/admin-lte/dist/css/adminlte.min.css">
+<link rel="icon" type="image/png" href="~/Images/logo.png" />
+<div class="main">
 
-<div class="hold-transition login-page">
-    <div class="login-box">
-        <div class="login-logo">
-            <a href="#"><b>Waste</b> Management</a>
-        </div>
-        <!-- /.login-logo -->
-        <div class="card">
-            <div class="card-body login-card-body">
-                @if (!ViewData.ModelState.IsValid)
+
+<div class="container">
+    <center>
+        @if (!ViewData.ModelState.IsValid)
             {
                 var message = Html.ValidationMessage("Error");
                 if (message.Equals(""))
                 {
-                        <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
-                    }
-                    else
-                    {
-                        <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
-                    }
-                }
-                <p class="login-box-msg">Sign in to start your session</p>
+                <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
+            }
+            else
+            {
+                <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
+            }
+        }
+        <div class="middle">
+            <div id="login">
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @id = "login-form" }))
+    {
+        <fieldset class="clearfix">
+            <p><span class="fa fa-user"></span>@Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Username or Email", @autocomplete = "off" })</p> <!-- JS because of IE support; better: placeholder="Username" -->
+            <p><span class="fa fa-lock"></span>@Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "Password", @type = "password", @autocomplete = "off" })   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="tooltip" title="Show/Hide Password"></span></p> <!-- JS because of IE support; better: placeholder="Password" -->
 
-                <!-- Begin # Login Form -->
-                @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @id = "login-form" }))
-                {
-                    @Html.AntiForgeryToken();
-
-                        @*<div id="div-login-msg">
-                            <div id="icon-login-msg" class="glyphicon glyphicon-chevron-right"></div>
-                            <span id="text-login-msg">Type your Email and password.</span>
-                        </div>*@
-                        <div class="input-group mb-3">
-                            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Username or Email", @autocomplete = "off" })
-                            <div class="input-group-append">
-                                <div class="input-group-text">
-                                    
-                                    <span class="fas fa-envelope"></span>
-                                </div>
-                            </div>
-                        </div>
-                            <div class="input-group mb-3">
-
-                                @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "Password", @type = "password", @autocomplete = "off" })
-                                <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="tooltip" title="Show/Hide Password"></span>
-                                <div class="input-group-append">
-                                    <div class="input-group-text">
-                                        <span class="fas fa-lock"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                @*<div class="col-8">
-                                    <div class="icheck-primary">
-                                        <input type="checkbox" id="remember">
-                                        <label for="remember">
-                                            @Html.CheckBoxFor(x => x.RememberMe) 
-                                        </label>
-                                    </div>
-                                </div>*@
-
-                                <!-- /.col -->
-                                <div class="col-4 " style="margin-left: 105px;">
-                                    <button type="submit" class="btn btn-primary btn-block pull-right">Sign In</button>
-                                </div>
-                                <!-- /.col -->
-                            </div>
-
-                              
-                                }
-                @*<div class="social-auth-links text-center mb-3">
-                    <p>- OR -</p>
-                    <a href="#" class="btn btn-block btn-primary">
-                        <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
-                    </a>
-                    <a href="#" class="btn btn-block btn-danger">
-                        <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+            <div>
+                <span style="width:48%; text-align:left;  display: inline-block;">
+                    @*<a class="small-text" href="#">
+                        Forgot
+                        password?
                     </a>*@
-                </div>
-                <!-- /.social-auth-links -->
-                @*<p class="mb-1">
-                    <a href="forgot-password.html">I forgot my password</a>
-                </p>
-                <p class="mb-0">
-                    <a href="register.html" class="text-center">Register a new membership</a>
-                </p>*@
+                </span>
+                <span style="width:50%; text-align:right;  display: inline-block;"><input type="submit" value="Sign In"></span>
+            </div>
+        </fieldset>
+        <div class="clearfix"></div>
+    }
 
-                <!-- /.login-card-body -->
-                            </div>
-        </div>
-               
-        </div>
- 
+        <div class="clearfix"></div>
+
+        </div> <!-- end login -->
+            <div class="logo">
+                <img src="~/Images/logowaste.png" alt="LOGO" style="float:left;height: 67px;" /> <p>Waste Management</p>
+
+                @*<div class="clearfix"></div>*@
+            </div>
+   
+            </div>
+
+       
+    </center>
+</div>
+</div>
+<link href="~/Content/Login.css" rel="stylesheet" />
+
 <style>
     .login > span.field-validation-error {
         margin-left: 100px;
@@ -125,13 +88,14 @@
         min-height: 100px;
         min-width: 300px;
     }
+
     .field-icon {
-  float: right;
-  margin-left: 256px;
-  margin-top: 9px;
-  position: fixed;
-  z-index: 2;
-}
+        float: right;
+        margin-left: 196px;
+        margin-top: -66px;
+        position: fixed;
+        z-index: 2;
+    }
 </style>
 
 @Scripts.Render("~/bundles/jquery")
@@ -140,30 +104,30 @@
 @Scripts.Render("~/bundles/scripts")
 
 <script type="text/javascript">
-    $(document).ready(function () {
-        $('#login-modal').modal('show');
-    })
-    $(".toggle-password").click(function () {
+                    $(document).ready(function () {
+                        $('#login-modal').modal('show');
+                    })
+                    $(".toggle-password").click(function () {
 
-        $(this).toggleClass("fa-eye fa-eye-slash");
-        var input = $($(this).attr("toggle"));
-        if ($('#Password').attr("type") == "password") {
-            $('#Password').attr("type", "text");
-        } else {
-            $('#Password').attr("type", "password");
-        }
-    });
-    $("#login-form").submit(function (e) {
-        debugger;
-        e.stopImmediatePropagation();
-        var form = $(this);
-        form.validate();
-        if (form.valid() == false) {
-            InfoAlert("The Required Feild is Empty");
-            return false;
-        }
+                        $(this).toggleClass("fa-eye fa-eye-slash");
+                        var input = $($(this).attr("toggle"));
+                        if ($('#Password').attr("type") == "password") {
+                            $('#Password').attr("type", "text");
+                        } else {
+                            $('#Password').attr("type", "password");
+                        }
+                    });
+                    $("#login-form").submit(function (e) {
+                        debugger;
+                        e.stopImmediatePropagation();
+                        var form = $(this);
+                        form.validate();
+                        if (form.valid() == false) {
+                            InfoAlert("The Required Feild is Empty");
+                            return false;
+                        }
 
-        @*//var container = $(this).closest('.panel-create');
+                        @*//var container = $(this).closest('.panel-create');
         var formData = new FormData($(this)[0]);
         //var nodeId = $(this).find('.section-treeview#PMenuId').find('.internal-value').val()
 
@@ -180,57 +144,57 @@
             contentType: false,
             processData: false
         });*@
-    });
+                    });
 
 
 
-    $(".submit-fwpwd").click(function () {
-        debugger;
-        var elementId = document.getElementById('forgotpw');
-        document.getElementById('forgotpw').submit();
-    });
+                    $(".submit-fwpwd").click(function () {
+                        debugger;
+                        var elementId = document.getElementById('forgotpw');
+                        document.getElementById('forgotpw').submit();
+                    });
 
 
-    $(function () {
+                    $(function () {
 
-        var $formLogin = $('form#login-form');
-        var $formLost = $('form#lost-form');
-        var $forgtpw = $('form#forgotpw')
-        var $formRegister = $('#register-form');
-        var $divForms = $('#div-forms');
-        var $modalAnimateTime = 300;
-        var $msgAnimateTime = 150;
-        var $msgShowTime = 2000;
+                        var $formLogin = $('form#login-form');
+                        var $formLost = $('form#lost-form');
+                        var $forgtpw = $('form#forgotpw')
+                        var $formRegister = $('#register-form');
+                        var $divForms = $('#div-forms');
+                        var $modalAnimateTime = 300;
+                        var $msgAnimateTime = 150;
+                        var $msgShowTime = 2000;
 
 
 
-        $('#login_register_btn').click(function () {
-            modalAnimate($formLogin, $forgtpw)
-        });
-        $('#register_login_btn').click(function () { modalAnimate($formRegister, $formLogin); });
-        $('#login_lost_btn').click(function () {
-            //$('form#login-form').hide();
-            //$('form#forgotpw').show();
-            modalAnimate($formLogin, $forgtpw);
-        });
-        $('#lost_login_btn').click(function () {
+                        $('#login_register_btn').click(function () {
+                            modalAnimate($formLogin, $forgtpw)
+                        });
+                        $('#register_login_btn').click(function () { modalAnimate($formRegister, $formLogin); });
+                        $('#login_lost_btn').click(function () {
+                            //$('form#login-form').hide();
+                            //$('form#forgotpw').show();
+                            modalAnimate($formLogin, $forgtpw);
+                        });
+                        $('#lost_login_btn').click(function () {
 
-            modalAnimate($forgtpw, $formLogin);
-        });
-        $('#lost_register_btn').click(function () { modalAnimate($formLost, $formRegister); });
-        $('#register_lost_btn').click(function () { modalAnimate($formRegister, $formLost); });
+                            modalAnimate($forgtpw, $formLogin);
+                        });
+                        $('#lost_register_btn').click(function () { modalAnimate($formLost, $formRegister); });
+                        $('#register_lost_btn').click(function () { modalAnimate($formRegister, $formLost); });
 
-        function modalAnimate($oldForm, $newForm) {
-            var $oldH = $oldForm.height();
-            var $newH = $newForm.height();
-            $divForms.css("height", $oldH);
-            $oldForm.fadeToggle($modalAnimateTime, function () {
-                $divForms.animate({ height: $newH }, $modalAnimateTime, function () {
-                    $newForm.fadeToggle($modalAnimateTime);
-                });
-            });
-        }
-    });
+                        function modalAnimate($oldForm, $newForm) {
+                            var $oldH = $oldForm.height();
+                            var $newH = $newForm.height();
+                            $divForms.css("height", $oldH);
+                            $oldForm.fadeToggle($modalAnimateTime, function () {
+                                $divForms.animate({ height: $newH }, $modalAnimateTime, function () {
+                                    $newForm.fadeToggle($modalAnimateTime);
+                                });
+                            });
+                        }
+                    });
 
 
 
