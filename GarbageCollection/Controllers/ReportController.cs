@@ -331,7 +331,7 @@ namespace GarbageCollection.Controllers
                 //{
                 //    customerViewModel.customerViewModelList.Add(item);
                 //}
-
+                
                 subscriptionViewModel.ModelFrom = "SubscriptionReport";
                 return PartialView(subscriptionViewModel);
 

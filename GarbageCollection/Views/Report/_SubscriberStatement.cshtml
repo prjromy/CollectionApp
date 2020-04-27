@@ -80,8 +80,8 @@
         e.stopImmediatePropagation();
         var parentContainer = $(this).parents()
         var me = $(this);
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = $('.subscription-list-index').find('.cust-id').val();
         var container = parentContainer.find("div.sus-report-page-list");
 
@@ -94,8 +94,8 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = $('.subscription-list-index').find('.cust-id').val();
         var container = parentContainer.find("div.sus-report-page-list");
 
@@ -108,8 +108,8 @@
         var parentContainer = $(this).parents()
         var me = $(this);
 
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = $('.subscription-list-index').find('.cust-id').val();
         var container = parentContainer.find("div.sus-report-page-list");
 

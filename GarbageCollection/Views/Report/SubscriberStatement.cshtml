@@ -58,12 +58,17 @@
 
 <script src="~/Scripts/ch-dialog.js"></script>
 <script>
+    $(document).ready(function () {
+
+        $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD = new Date().getMonth() + '-' + new Date().getDate() + '-' + new Date().getFullYear();
+
+    })
     $('.subscription-export-to-excel').on('click', function () {
         debugger;
         var parentContainer = $(this).parents()
 
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = parseInt($('.subscription-list-index').find('.cust-id').val());
         if (!subsid) {
             ErrorAlert("Please select customer",3000);
@@ -79,8 +84,8 @@
         e.stopImmediatePropagation();
         var parentContainer = $(this).parents()
         var me = $(this);
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate=$('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = $('.subscription-list-index').find('.cust-id').val();
         var container = parentContainer.find("div.sus-report-page-list");
        
@@ -93,8 +98,8 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = $('.subscription-list-index').find('.cust-id').val();
         var container = parentContainer.find("div.sus-report-page-list");
 
@@ -108,8 +113,8 @@
         var me = $(this);
       
       
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = $('.subscription-list-index').find('.cust-id').val();
         var container = parentContainer.find("div.sus-report-page-list");
 
@@ -122,8 +127,8 @@
         var parentContainer = $(this).parents()
         var me = $(this);
 
-        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].dateADWithTime;
-        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].dateADWithTime;
+        var FromDate = $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD;
+        var ToDate = $('#ToDateAD').find('an-date-picker').get()[0].selectedDateAD;
         var subsid = parseInt($('.subscription-list-index').find('.cust-id').val());
         if (!subsid) {
             ErrorAlert("Please select customer", 3000);

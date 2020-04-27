@@ -108,9 +108,9 @@
 
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
-        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
+        var custtype = parentContainer.find("#custtype").find("#ctypeid option:selected").val()
         var cTypetext = parentContainer.find('#custtype').find("#ctypeid").find("option:selected").text();;
-        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].selectedDateAD;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var statustext = parentContainer.find('#status').find("#statuslist").find("option:selected").text();
         var container = parentContainer.find("div.sus-page-list")
@@ -124,8 +124,8 @@
         var me = $(this);
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
-        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
-        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
+        var custtype = parentContainer.find("#custtype").find("#ctypeid option:selected").val()
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].selectedDateAD;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-page-list")
         var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
@@ -139,8 +139,8 @@
         var me = $(this);
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
-        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
-        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
+        var custtype = parentContainer.find("#custtype").find("#ctypeid option:selected").val()
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].selectedDateAD;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-page-list")
         var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
@@ -154,8 +154,8 @@
         var me = $(this);
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
-        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
-        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
+        var custtype = parentContainer.find("#custtype").find("#ctypeid option:selected").val()
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].selectedDateAD;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-page-list")
         var url = "?customerId=" + customerno + "&custtype=" + custtype + "&effectivedate=" + effectivedate + "&Location=" + Location + "&status=" + status;
@@ -169,9 +169,9 @@
         var me = $(this);
         var customerno = $('#CustId').val();
         var Location = parentContainer.find("#Location").find("#LocationName").val();
-        var custtype = parentContainer.find("#custtype").find("#ctypeid").val()
+        var custtype = parentContainer.find("#custtype").find("#ctypeid option:selected").val()
         //var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateADWithTime;
-        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].dateAD;
+        var effectivedate = parentContainer.find("#effectivedate").find('an-date-picker').get()[0].selectedDateAD;
         var status = parentContainer.find("#status").find("#statuslist").val();
         var container = parentContainer.find("div.sus-div-list")
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();

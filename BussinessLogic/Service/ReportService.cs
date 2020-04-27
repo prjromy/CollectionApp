@@ -77,7 +77,7 @@ namespace BussinessLogic.Service
       
                 if (collectionDate != null)
                 {
-                    query += "  and CollectionDate = '"+ collectionDate+"'";
+                    query += "  and CollectionDate <= '"+ collectionDate+"'";
                 }
                 query += @" ORDER BY  Subsno
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS

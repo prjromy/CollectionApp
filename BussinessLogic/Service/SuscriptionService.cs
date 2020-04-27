@@ -117,7 +117,7 @@ namespace BussinessLogic.Service
                 }
                 if (effectivedate != null )
                 {
-                    query += " and EffectiveDate ='"+effectivedate+"'";
+                    query += " and EffectiveDate <='"+effectivedate+"'";
                 }
                 if (Location != "")
                 {
