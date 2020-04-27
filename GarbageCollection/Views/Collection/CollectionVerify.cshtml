@@ -47,7 +47,7 @@
 
 
 
-            @Html.Partial("_CollectionVerify", Model)
+            @*@Html.Partial("_CollectionVerify", Model)*@
 
 
 
@@ -207,7 +207,7 @@
         var LocationName = $('#LocationName').val();
     
             $.ajax({
-                url: "/Collection/CollectionVerify",
+                url: "/Collection/_CollectionVerify",
                 type: 'post',
                 async: false,
                 data: { CollectorName: CollectorName, LocationName: LocationName },
@@ -215,8 +215,8 @@
                 success: function (data) {
                     debugger
                    
-                    $('.verifier-list-index').html("");
-                    $('.verifier-list-index').html(data);
+                    $('.Collection-List').html("");
+                    $('.Collection-List').html(data);
                  
                   
                 }

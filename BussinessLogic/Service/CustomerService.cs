@@ -135,7 +135,7 @@ namespace BussinessLogic.Service
                 {
                     query += " and CustTypeId =" + cType;
                 }
-                query += @" ORDER BY  CustNo desc
+                query += @" ORDER BY  CustNo 
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
                 var customerList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(query).ToList();

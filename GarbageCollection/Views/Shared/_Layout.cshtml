@@ -70,7 +70,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="loaderContainer" style="display:none;background:rgba(86, 80, 80, 0.18);position: fixed;top:0;left:0;width: 100vw;height: 100vh;z-index: 99999;">
             <div class="loader"></div>
         </div>
-     
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- To the right -->
+            <div class="float-right d-none d-sm-inline">
+               
+            </div>
+            <!-- Default to the left -->
+            <strong>Copyright &copy; 2020 <a href="https://adminlte.io">Channakya Software</a>.</strong> All rights reserved.
+        </footer>
     </div>
     <script>
     $(document).ready(function () {
@@ -93,12 +101,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
     @*<script src="~/Scripts/jquery-1.11.1.ui.min.js"></script>*@
     @*@Scripts.Render("~/admin-lte/js")*@
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/UserDialog/jquery-1.11.1.ui.min.js"></script>
+    @*<script src="~/UserDialog/jquery-1.11.1.ui.min.js"></script>*@
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     @*<script src="~/DialogLoader/jquery-1.11.1.ui.min.js"></script>*@
     @*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
     <script src="~/Scripts/jquery.form.min.js"></script>
-
+   
     <script src="~/Scripts/an-datepicker-with-polyfill.min.js"></script>
     <script src="~/Scripts/app.min.js"></script>
 
@@ -108,7 +118,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 </html>
 
 <style>
-  
+  .ui-dialog-titlebar-close {
+    visibility: hidden;
+}
+
 
     .loader {
         position: fixed;
@@ -125,12 +138,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
   
-    .dropdown-menu {
-    position: absolute!important;
-    right: 0!important;
-    left: auto!important;
-    margin-top: 30px!important;
-}
 
         
 

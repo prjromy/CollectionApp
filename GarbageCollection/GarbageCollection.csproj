@@ -1235,7 +1235,6 @@
     <Content Include="Images\logowaste.png" />
     <Content Include="Scripts\an-datepicker-with-polyfill.min.js" />
     <Content Include="Scripts\app.min.js" />
-    <Content Include="Scripts\jquery-1.11.1.min.js" />
     <Content Include="DialogLoader\jquery-1.11.1.ui.min.js" />
     <Content Include="DialogLoader\jquery-ui.css" />
     <Content Include="DialogLoader\jquery.js" />
@@ -1339,6 +1338,7 @@
     <Content Include="Scripts\ch-dpicker.js" />
     <Content Include="Scripts\ch-treeview.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.custom.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />

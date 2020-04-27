@@ -28,7 +28,7 @@
 
                 <div class="col-md-3  form-group" id="search-collector">
 
-                    @Html.TextBox("CollectorName", "", htmlAttributes: new { @class = "form-control", @id = "txtCollectorName", @placeholder = "Collector Name" })
+                    @Html.TextBox("CollectorName", "", htmlAttributes: new { @class = "form-control", @id = "txtCollectorName", @placeholder = "Collector Name", autocomplete = "off" })
                 </div>
                 <div class="col-md-3  form-group" id="collectorDate">
                     <an-date-picker is-input></an-date-picker>
@@ -64,9 +64,93 @@
 
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
-
+<script src="~/Scripts/typeahead.min.js"></script>
 
 <script>
+    $(function () {
+        $("#txtLocation").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Suscription/LocationList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.Lid;
+                            var name = item.LocationName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-8");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#LocationID').val(map[item].id);
+                return item;
+            }
+        });
+    })
+
+
+    $(function () {
+        $("#txtCollectorName").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Collection/GetCollector/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.CollectorID;
+                            var name = item.CollectorName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-10");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#CollectorId').val(map[item].id);
+                return item;
+            }
+        });
+    })
     $('.collector-export-to-excel').on('click', function () {
         debugger;
         var parentContainer = $(this).parents()
