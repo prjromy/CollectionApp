@@ -86,7 +86,7 @@
                     @if (ViewBag.messageToDisableEditBranchName == 1)
                     {
                         <div class="col-md-6">
-                            @Html.TextBoxFor(model => model.EmployeeNo, new { @class = "form-control", @readonly = "readonly" })
+                            @Html.TextBoxFor(model => model.EmployeeNo, new { @class = "form-control", @readonly = "readonly", autocomplete = "off" })
                             @Html.ValidationMessageFor(model => model.EmployeeNo, "", new { @class = "text-danger" })
                         </div>
                     }

@@ -97,7 +97,40 @@
 
 
 <script>
- 
+    $("div.collection-verify-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var CollectorName = $('#CollectorName').val();
+        var LocationName = $('#LocationName').val();
+        var container = parentContainer.find("div.collection-verify-list")
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.collection-verify-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var CollectorName = $('#CollectorName').val();
+        var LocationName = $('#LocationName').val();
+        var container = parentContainer.find("div.collection-verify-list")
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.collection-verify-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var CollectorName = $('#CollectorName').val();
+        var LocationName = $('#LocationName').val();
+        var container = parentContainer.find("div.collection-verify-list")
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        getPageSizeChangeData(url, container, me)
+    });
     $('.verify').on('click', function () {
         debugger;
         if($(this).is(':checked')){
