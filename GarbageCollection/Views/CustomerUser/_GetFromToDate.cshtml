@@ -1,0 +1,62 @@
+﻿@model Loader.Models.RegisterViewModel
+@using ChannakyaCustomeDatePicker.Helper
+
+
+@*<script src="~/Scripts/DatePicker/Channakya-DatePicker.js"></script>
+    <script src="~/Scripts/DatePicker/Channakya-DatePickerRange.js"></script>
+    <link href="~/Scripts/DatePicker/DatePicker.css" rel="stylesheet" />*@
+
+
+@if (Model.IsUnlimited != true)
+{
+    if (ViewBag.Id != 0)
+    {
+        var From = ViewBag.From;
+        var To = ViewBag.To;
+        <div class="col-md-12">
+            @Html.Label("From Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3 " id="From">
+                <an-date-picker is-input date-ad=@From></an-date-picker>
+
+
+            </div>
+        </div>
+
+
+        <div class="col-md-12 " style="margin-top: 20px;">
+            @Html.Label("To Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3 " id="To">
+                <an-date-picker is-input date-ad=@To></an-date-picker>
+
+            </div>
+        </div>
+
+    }
+
+    else {
+
+        <div class="col-md-12">
+            @Html.Label("From Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3 " id="From">
+                <an-date-picker is-input></an-date-picker>
+
+
+            </div>
+        </div>
+
+
+        <div class="col-md-12 " style="margin-top: 20px;">
+            @Html.Label("To Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3 " id="To">
+                <an-date-picker is-input></an-date-picker>
+
+            </div>
+        </div>
+    }
+
+
+}
+
+
+
+

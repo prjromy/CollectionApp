@@ -1,0 +1,337 @@
+﻿@model  BuisnessObject.ViewModel.CustomerUserViewModel
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="customer-create-main">
+    <div class="box box-success">
+        <div class="box-header with-border">
+
+
+            @*<div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>*@<!-- /.box-tools -->
+            <form id="createUserSubmitForm">
+
+                @Html.AntiForgeryToken()
+
+
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    @Html.HiddenFor(x=>x.CustomerUserId)
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2", autocomplete = "off" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @id = "Email", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="form-group col-md-12">
+                        @Html.Label("User Name", null, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(model => model.UserName, new { @class = "form-control",  autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group col-md-12">
+                        @Html.Label("Customer Name", null, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-9">
+                            @if (ViewBag.Id != 0)
+                            {
+                            @Html.TextBox("Customer", (object)ViewBag.Customer, new { @id = "Customer", @class = "form-control col-md-6", autocomplete = "off" })
+                            }
+                            else
+                            {
+                            @Html.TextBox("Customer", null, new { @id = "Customer", @class = "form-control col-md-6", autocomplete = "off" })
+
+                            }
+                            @*@Html.EditorForEmployeeSearch(model => model.EmployeeId, empSearch)*@
+                            @Html.HiddenFor(x => x.CustomerId)
+                            @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger employeeError" })
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+                    <div class="form-group col-md-12">
+                        @*@Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-3" })*@
+                        <label class="control-label col-md-2">Status</label>
+
+                        <div class="col-md-3">
+                            @Html.CheckBoxFor(model => model.IsActive, new { htmlAttributes = new { @class = "form-control" } })
+
+                            @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+                    @if (ViewBag.Id == 0)
+                    {
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.PasswordHash, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.PasswordHash, new { @class = "form-control", @type = "password", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.PasswordHash, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.ReEnterPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-9">
+                            @Html.TextBoxFor(model => model.ReEnterPassword, new { @class = "form-control", @type = "password", autocomplete = "off" })
+                            @Html.ValidationMessageFor(model => model.ReEnterPassword, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                    }
+
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(model => model.IsUnlimited, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.CheckBoxFor(model => model.IsUnlimited, new { htmlAttributes = new { @class = "form-control" } })
+
+                            @Html.ValidationMessageFor(model => model.IsUnlimited, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+
+
+                    <div class="from-to-date">
+
+                        @if (Model.IsUnlimited != true)
+                        {
+                        if (@ViewBag.Id != 0)
+                        {
+                        var From = ViewBag.From;
+                        var To = ViewBag.To;
+                        <div class="col-md-12">
+                            @Html.Label("From Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-3 " id="From">
+                                <an-date-picker is-input date-ad=@From></an-date-picker>
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12 " style="margin-top: 20px;">
+                            @Html.Label("To Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-3 " id="To">
+                                <an-date-picker is-input date-ad=@To></an-date-picker>
+
+                            </div>
+                        </div>
+
+                        }
+
+                        else {
+
+                        <div class="col-md-12">
+                            @Html.Label("From Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-3 " id="From">
+                                <an-date-picker is-input></an-date-picker>
+
+
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-12 " style="margin-top: 20px;">
+                            @Html.Label("To Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-3 " id="To">
+                                <an-date-picker is-input></an-date-picker>
+
+                            </div>
+                        </div>
+
+
+
+                        }
+
+
+                        }
+
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10" style="margin-top: 20px;">
+
+                            @*<input type="button" value="Edit" class="btn btn-success btn-save" />*@
+
+                            <input type="button" value="Create" class="btn btn-success btn-save" />
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-message-box.js"></script>
+<script src="~/Scripts/ch-treeview.js"></script>
+<script src="~/Scripts/ch-dialog.js"></script>
+<script src="~/Scripts/jquery.form.min.js"></script>
+
+
+<script>
+
+    $('#createUserSubmitForm').on('change', 'input#IsUnlimited', function (e) {
+        debugger;
+        e.stopPropagation();
+        var container = $(this).closest("#createUserSubmitForm").find(".from-to-date")
+        if (!this.checked) {
+            $.ajax({
+                type: "get",
+                url: '@Url.Action("GetFromToDate", "Users")',
+                contentType: "application/json; charset=utf-8",
+                // data: { parentId: data.nodeId, allowSelectGroup: data.allowSelectGroupNode },
+                dataType: "html",
+                success: function (html) {
+                    debugger;
+                    $(container).html(html);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+        else {
+            $(container).html("");
+        }
+    });
+    $(document).ready(function () {
+        function updateTextBox(event, ui) {
+            $(this).val(ui.item.CustomerName);
+            $('#CustomerId').val(ui.item.Cid);
+            return false;
+        }
+        $('#Customer').autocomplete({
+            minLength: 1,
+
+            focus: updateTextBox,
+            select: updateTextBox,
+            source: function (request, response) {
+                debugger;
+                $.ajax({
+                    url: '/CustomerUser/_GetCustomerAutoCompleteTreePopUp/',
+                    data: "{ 'term': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response(data);
+                    }
+
+                });
+            }
+
+        })
+    .autocomplete('instance')._renderItem = function (ul, item) {
+        return $('<li>').append('<a><b>' + item.Cid + '</b> &nbsp; &nbsp;' + item.CustomerName + '</a>')
+        //.append('<a>'+item.EmployeeName+'</a>')
+        .appendTo(ul);
+
+    }
+
+    });
+
+    $.validator.unobtrusive.parse('#createUserSubmitForm');
+    $('#createUserSubmitForm').on('click', ".btn-save", function () {
+        debugger;
+        $('#createUserSubmitForm').removeData("validator").removeData("unobtrusiveValidation");
+        $.validator.unobtrusive.parse($('#createUserSubmitForm'));
+        if (!$("#Customer").val()) {
+            ErrorAlert("Customer is required", 5000);
+            return false;
+        }
+        if ($("#createUserSubmitForm").valid()) {
+
+            if (!($("#createUserSubmitForm").find("#IsUnlimited").is(':checked'))) {
+                var FromDate = $('#From').find('an-date-picker').get()[0].dateADWithTime;
+                var ToDate = $('#To').find('an-date-picker').get()[0].dateADWithTime;
+                var formData = new FormData($('#createUserSubmitForm')[0]);
+                formData.append("EffDate", FromDate)
+                formData.append("TillDate", ToDate)
+            }
+            else {
+                var formData = new FormData($('#createUserSubmitForm')[0]);
+            }
+
+
+            $.MessageBox({
+                buttonDone: "Yes",
+                buttonFail: "No",
+                message: " Are you sure?"
+            }).done(function () {
+                //$(".checkboxCert:checked").removeAttr('disabled');
+                //$('#createSubmitFormSuscription').ajaxSubmit({
+                debugger;
+                $.ajax({
+
+                    url: '@Url.Action("CustomerUserSave", "CustomerUser")',
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+
+                    success: function (result) {
+                        //var url;
+                        debugger;
+                        if (result.Success) {
+                            $.ajax({
+                                url: "/CustomerUser/List",
+                                type: 'post',
+                                async: false,
+
+                                success: function (data) {
+                                    debugger
+
+                                    $('section.content').html(data);
+                                    SuccessAlert(result.Msg, 5000);
+                                    document.getElementById('alert-success').scrollIntoView();
+                                }
+                            })
+                        } else {
+                            ErrorAlert(result.Msg, 5000);
+                            document.getElementById('alert-error').scrollIntoView();
+                        }
+                    },
+                    error: function (data) {
+                        ErrorAlert(data.responseText, 15000)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+            }).fail(function () {
+            });
+        }
+
+
+    });
+
+
+
+
+
+</script>
+

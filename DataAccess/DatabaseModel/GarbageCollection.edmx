@@ -237,6 +237,21 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="IPAddress" Type="nvarchar" MaxLength="300" Nullable="false" />
           <Property Name="TDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="CustomerUser">
+          <Key>
+            <PropertyRef Name="CustomerUserId" />
+          </Key>
+          <Property Name="CustomerUserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MTId" Type="int" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="EffDate" Type="datetime" />
+          <Property Name="TillDate" Type="datetime" />
+          <Property Name="IsUnlimited" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="DataType">
           <Key>
             <PropertyRef Name="DTId" />
@@ -608,6 +623,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="LicenseBranch" EntityType="Self.LicenseBranch" Schema="fin" store:Type="Tables" />
           <EntitySet Name="BloodGroup" EntityType="Self.BloodGroup" Schema="LG" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="CustomerUser" EntityType="Self.CustomerUser" Schema="LG" store:Type="Tables" />
           <EntitySet Name="DataType" EntityType="Self.DataType" Schema="LG" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="LG" store:Type="Tables" />
           <EntitySet Name="Designation" EntityType="Self.Designation" Schema="LG" store:Type="Tables" />
@@ -755,6 +771,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="SubscriptionCollections" EntityType="GarbageCollectionDBModel.SubscriptionCollection" />
           <EntitySet Name="CollectionVerifyLogs" EntityType="GarbageCollectionDBModel.CollectionVerifyLog" />
           <EntitySet Name="Months" EntityType="GarbageCollectionDBModel.Month" />
+          <EntitySet Name="CustomerUsers" EntityType="GarbageCollectionDBModel.CustomerUser" />
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
           <Key>
@@ -1322,6 +1339,21 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="CustomerUser">
+          <Key>
+            <PropertyRef Name="CustomerUserId" />
+          </Key>
+          <Property Name="CustomerUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MTId" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="EffDate" Type="DateTime" Precision="3" />
+          <Property Name="TillDate" Type="DateTime" Precision="3" />
+          <Property Name="IsUnlimited" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1827,6 +1859,22 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
               <MappingFragment StoreEntitySet="Month">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerUsers">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerUser">
+              <MappingFragment StoreEntitySet="CustomerUser">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsUnlimited" ColumnName="IsUnlimited" />
+                <ScalarProperty Name="TillDate" ColumnName="TillDate" />
+                <ScalarProperty Name="EffDate" ColumnName="EffDate" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="MTId" ColumnName="MTId" />
+                <ScalarProperty Name="CustomerUserId" ColumnName="CustomerUserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

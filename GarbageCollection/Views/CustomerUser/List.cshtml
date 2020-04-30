@@ -1,0 +1,169 @@
+﻿@model BuisnessObject.ViewModel.CustomerUserViewModel
+@using BussinessLogic.Service
+
+<link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+<script src="~/Scripts/typeahead.min.js"></script>
+
+<div class="box  customer-user-list-index">
+    <input type="button" value="New User" id="btn-create" class="btn btn-md btn-success btn-create" style="border:none;margin-bottom:5px;" />
+    <div class="customer-display">
+
+    </div>
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">User List</h3>
+            <hr>
+            @*<div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+
+            </div>*@<!-- /.box-tools -->
+
+            <div class="col-md-12">
+                <div class="box-tools col-md-3  form-group" id="UserName">
+                    @Html.TextBox("UserName", "", htmlAttributes: new { @class = "form-control", @id = "UserName", @placeholder = "User Name", autocomplete = "off" })
+                    @*@Html.ValidationMessageFor(model => model.CustNo, "", new { @class = "text-danger" })*@
+                </div>
+                
+
+
+
+                <div class="input-group-btn form-group col-md-1 pull-left">
+                    <button type="button" id="searchCustomer" class="btn btn-searchUserCustomer btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="User-List">
+
+
+
+            @Html.Partial("_List", Model)
+
+
+
+        </div>
+        </div>
+    </div>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/jquery-message-box.js"></script>
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/ch-dialog.js"></script>
+
+
+<script>
+
+    $('.btn-create').on('click', function () {
+        debugger;
+                    
+        var userid = $('#createUserSubmitForm').find('#CustomerUserId').val();
+        var thisVal = $(this).val();
+        if (thisVal == "Hide Section") {
+            $(this).val("New User")
+            $(".customer-display").hide();
+        }
+        else {
+            $(this).val("Hide Section")
+            $.ajax({
+                type: "GET",
+                url: "/CustomerUser/Create",
+                data:{userid:userid},
+                success: function (data) {
+                    $(".customer-display").show();
+                    $('.customer-display').html(data).find('.focusdiv').focus()
+                }
+            })
+        }
+    });
+
+    $("div.cust-user-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var name = parentContainer.find("#UserName").find("#UserName").val();
+        var container = parentContainer.find("div.cust-user-page-list")
+        var url = "?name=" + name;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.cust-user-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var name = parentContainer.find("#UserName").find("#UserName").val();
+
+        var container = parentContainer.find("div.cust-user-page-list")
+        var url = "name=" + name;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.cust-user-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var name = parentContainer.find("#UserName").find("#UserName").val();
+
+        var container = parentContainer.find("div.cust-user-page-list")
+        var url = "name=" + name;
+        getPageSizeChangeData(url, container, me)
+    });
+
+
+    function EditUserCustomerList(CID) {
+        debugger
+
+        $.ajax({
+            type: "get",
+            url: "/CustomerUser/Create/",
+            contentType: "application/json; charset=utf-8",
+            data: { userid: CID },
+            dataType: "html",
+            success: function (html) {
+                debugger;
+                $('.btn-create').val("Hide Section")
+                $(".customer-display").show();
+                $('.customer-display').html(html).find('.focusdiv').focus()
+
+                window.scrollTo(0, 0);
+                debugger;
+                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
+
+
+    $(".customer-user-list-index").on('click', '.btn-searchUserCustomer', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#UserName").find("#UserName").val();
+
+        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/CustomerUser/_List",
+            data: {name: name},
+            success: function (data) {
+                $(".customer-user-list-index").find("div.User-List").html("");
+                $(".customer-user-list-index").find("div.User-List").html(data);
+            }
+        })
+    });
+
+
+</script>

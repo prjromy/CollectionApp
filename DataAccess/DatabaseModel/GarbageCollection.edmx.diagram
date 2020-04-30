@@ -52,6 +52,7 @@
         <EntityTypeShape EntityType="GarbageCollectionDBModel.SubscriptionCollection" Width="1.5" PointX="18.375" PointY="3.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.CollectionVerifyLog" Width="1.5" PointX="15.375" PointY="18.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Month" Width="1.5" PointX="17.375" PointY="18.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.CustomerUser" Width="1.5" PointX="3.375" PointY="19.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

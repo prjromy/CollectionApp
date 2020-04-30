@@ -60,7 +60,8 @@
 <script>
     $(document).ready(function () {
 
-        $('#FromDateAD').find('an-date-picker').get()[0].selectedDateAD = new Date().getMonth() + '-' + new Date().getDate() + '-' + new Date().getFullYear();
+        $('#FromDateAD').find('an-date-picker').get()[0].selectedMonthAD = new Date().getMonth();
+        $('#FromDateAD').find('an-date-picker').get()[0].currentMonthAD = new Date().getMonth();
 
     })
     $('.subscription-export-to-excel').on('click', function () {

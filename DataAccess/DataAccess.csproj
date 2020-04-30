@@ -90,6 +90,9 @@
     <Compile Include="DatabaseModel\CustomerType.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModel\CustomerUser.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModel\C__MigrationHistory.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>

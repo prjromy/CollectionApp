@@ -132,6 +132,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Encoding, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -258,6 +262,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CollectionController.cs" />
     <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="Controllers\CustomerUserController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SuscriptionController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1564,6 +1569,10 @@
     <Content Include="Views\Suscription\_SubscriptionPopupPartial.cshtml" />
     <Content Include="Views\Report\MonthlyDueReport.cshtml" />
     <Content Include="Views\Report\_MonthlyDueReport.cshtml" />
+    <Content Include="Views\CustomerUser\Create.cshtml" />
+    <Content Include="Views\CustomerUser\_List.cshtml" />
+    <Content Include="Views\CustomerUser\List.cshtml" />
+    <Content Include="Views\CustomerUser\_GetFromToDate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

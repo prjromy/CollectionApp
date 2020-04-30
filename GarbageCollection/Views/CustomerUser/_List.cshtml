@@ -1,0 +1,128 @@
+﻿@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@model BuisnessObject.ViewModel.CustomerUserViewModel
+
+<div class="table-responsive no-padding cust-user-page-list">
+    <table class="table table-bordered table-striped table-hover">
+
+        <tr>
+            
+            <th>@Html.DisplayNameFor(x => x.CustomerId)</th>
+            <th>@Html.DisplayNameFor(x => x.UserName)</th>        
+            <th>@Html.DisplayNameFor(x => x.Email)</th>
+            <th>@Html.DisplayNameFor(x => x.IsActive)</th>
+            <th >@Html.DisplayNameFor(x => x.IsUnlimited)</th>
+            <th>Action</th>
+           
+           
+
+        </tr>
+
+
+        @foreach (var item in Model.customeruserPagedList)
+        {
+            <tr style="font-size:12px;">
+                <td>
+                    @{ 
+                       var customerName= @CommonUtilityService.getCustomerName(@item.CustomerId);
+                    }
+                 @customerName
+
+                </td>
+                <td>
+                    @item.UserName
+
+                </td>
+                <td>
+                    @item.Email
+
+                </td>
+                <td>
+                    @item.IsActive
+
+                </td>
+                <td>
+                    @item.IsUnlimited
+
+                </td>
+              
+              
+                <td>
+                    <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.CustomerUserId" onclick="EditUserCustomerList(@item.CustomerUserId)" data-toggle="tooltip" title="Edit"></button>
+                </td>
+                
+               
+               
+                  
+            </tr>
+        }
+       
+    </table>
+    @Html.Paging("_List", "CustomerUser", Model.customeruserPagedList.PageCount, Model.customeruserPagedList.PageNumber, Model.customeruserPagedList.PageSize)
+</div>
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+
+<script src="~/Scripts/ch-dialog.js"></script>
+<link href="~/Content/ToggleButton.css" rel="stylesheet" />
+
+<script>
+
+
+    $("div.cust-user-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        
+        var name = parentContainer.find("#UserName").find("#UserName").val();
+        var container = parentContainer.find("div.cust-user-page-list")
+        var url = "?name=" + name;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.cust-user-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+       
+        var name = parentContainer.find("#UserName").find("#UserName").val();
+     
+        var container = parentContainer.find("div.cust-user-page-list")
+        var url = "name=" + name ;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.cust-user-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        
+        var name = parentContainer.find("#UserName").find("#UserName").val();
+     
+        var container = parentContainer.find("div.cust-user-page-list")
+        var url = "name=" + name ;
+        getPageSizeChangeData(url, container, me)
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
+</script>

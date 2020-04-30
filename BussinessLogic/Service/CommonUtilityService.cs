@@ -122,5 +122,10 @@ namespace BussinessLogic.Service
 
             return LocationList;
         }
+        public static string getCustomerName(int? customerId)
+        {
+            var userName = uow.Repository<Customer>().FindBy(x => x.Cid == customerId).Select(x => x.CustomerName).SingleOrDefault();
+            return userName;
+        }
     }
 }
