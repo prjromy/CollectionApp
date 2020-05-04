@@ -99,7 +99,7 @@ namespace GarbageCollection.Controllers
         public ActionResult _List(string name="", int pageNo = 1, int pageSize = 10)
         {
             CustomerUserViewModel customerViewModel = new CustomerUserViewModel();
-            var customerList = customerUserService.getUserCustomerList(name, 1, 10);
+            var customerList = customerUserService.getUserCustomerList(name, pageNo, pageSize);
             customerViewModel.customeruserPagedList = new StaticPagedList<CustomerUserViewModel>(customerList, pageNo, pageSize, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
             return PartialView(customerViewModel);
         }
