@@ -33,7 +33,12 @@ namespace GarbageCollection.Controllers
         {
             return View();
         }
-
+        public ActionResult DisplayQRCode(int? cId)
+        {
+            MainViewModel.CustomerViewModel customer = new MainViewModel.CustomerViewModel();
+            customer = customerService.getSingleCustomerList(cId);
+            return PartialView(customer);
+        }
 
 
         public ActionResult Create(int? cId)
@@ -289,5 +294,20 @@ namespace GarbageCollection.Controllers
             return Json(AddressList);
         }
 
+        public ActionResult BarcodeIndex()
+        {
+            QRCodeModel barcode = new QRCodeModel();
+
+            return View(barcode);
+        }
+
+        public JsonResult CheckCustomerExist(int txt)
+        {
+            var result = customerService.CheckCustomer(txt);
+         
+                return Json(result, JsonRequestBehavior.AllowGet);
+           
+
+        }
     }
 }

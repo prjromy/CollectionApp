@@ -126,6 +126,7 @@ namespace BuisnessObject.ViewModel
             [Required(ErrorMessage ="Collector Required")]
             public int CollectorId { get; set; }
             public DateTime CollectionDate { get; set; }
+            public int mobilecollectorid { get; set; }
             public int TotalCount { get; set; }
             // public Nullable<System.DateTime> EffectiveDate { get; set; }
             public List<CollectionViewModel> collectionList { get; set; }
@@ -179,6 +180,8 @@ namespace BuisnessObject.ViewModel
 
             public int LocationID { get; set; }
             public Nullable<System.DateTime> CollectionDate { get; set; }
+            public string CollectionType { get; set; }
+            public string PostedBy { get; set; }
             public IPagedList<CollectionVerificationEntry> collectionPagedList { get; set; }
         }
         public class CollectorDetail

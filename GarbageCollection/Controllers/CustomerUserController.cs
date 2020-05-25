@@ -1,10 +1,14 @@
 ﻿using BuisnessObject.ViewModel;
 using BussinessLogic.Service;
 using DataAccess.DatabaseModel;
+using Loader.App_Start;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -13,12 +17,50 @@ namespace GarbageCollection.Controllers
     public class CustomerUserController : Controller
     {
         private CustomerUserService customerUserService = null;
+        private ApplicationCustomerManager _userManager;
+        private ApplicationCustomerSignInManager _signInManager;
+       
+       
         public CustomerUserController()
         {
             customerUserService = new CustomerUserService();
+           
+
+        }
+
+        //public CustomerUserController(ApplicationCustomerManager userManager, ApplicationCustomerSignInManager signInManager)
+        //{
+           
+
+        //    UserManager = userManager;
+        //    SignInManager = signInManager;
+            
+        //}
+        
+        public ApplicationCustomerManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationCustomerManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+        public ApplicationCustomerSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationCustomerSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
         }
         // GET: CustomerUser
-     
+
         public JsonResult CheckPassword(string ReEnterPassword, string PasswordHash)
         {
             if (ReEnterPassword == PasswordHash)
@@ -47,17 +89,77 @@ namespace GarbageCollection.Controllers
           
             return PartialView(user);
         }
+
+
         public ActionResult CustomerUserSave(CustomerUserViewModel customerUserViewModel)
         {
             try
             {
-                
-                var returnmessage = customerUserService.SaveCustomerUser(customerUserViewModel);
-                return Json(returnmessage, JsonRequestBehavior.AllowGet);
+                if (customerUserViewModel.UserId == 0)
+                {
+                    PasswordHasher pass = new PasswordHasher();
+                    customerUserViewModel.PasswordHash = pass.HashPassword(customerUserViewModel.PasswordHash);
+                }
+              
+                var message = customerUserService.SaveCustomerUser(customerUserViewModel);
+                return Json(message, JsonRequestBehavior.AllowGet);
             }
-            catch  (Exception ex)
+           catch(Exception ex)
             {
-                return Json(ex, JsonRequestBehavior.AllowGet);
+                throw ex;
+            }
+
+        }
+        //public async Task<ActionResult> CustomerUserSave(CustomerUserViewModel customerUserViewModel)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+
+
+        //            var user = new Loader.Models.CustomerUser { UserName = customerUserViewModel.Email, Email = customerUserViewModel.Email };
+        //            var result = await UserManager.CreateAsync(user, customerUserViewModel.PasswordHash);
+        //            if (result.Succeeded)
+        //            {
+        //                await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+        //                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+        //                // Send an email with this link
+        //                // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+        //                // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+        //                // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
+        //                return RedirectToAction("Create", "CustomerUser");
+        //            }
+
+
+        //            else
+        //            {
+
+        //                return JavaScript(result.Errors.First().ToString());
+
+        //            }
+
+        //            //return Json(returnmessage, JsonRequestBehavior.AllowGet);
+        //        }
+        //        else
+        //        {
+        //            var err = ModelState.Values.SelectMany(v => v.Errors);
+        //            return JavaScript(err.ToString());
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return JavaScript(ex.Message);
+        //    }
+        //}
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error);
             }
         }
         [HttpPost]
@@ -94,7 +196,11 @@ namespace GarbageCollection.Controllers
             }
 
         }
-
+        public JsonResult CheckUsernameAvailable(string UserName, int UserId = 0)
+        {
+            bool isExists = customerUserService.CheckUsername(UserName, UserId);
+            return Json(isExists, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult _List(string name="", int pageNo = 1, int pageSize = 10)
         {

@@ -5,6 +5,62 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="GarbageCollectionDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AppCustomerClaim">
+          <Key>
+            <PropertyRef Name="UserClaimId" />
+          </Key>
+          <Property Name="UserClaimId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ClaimType" Type="nvarchar(max)" />
+          <Property Name="ClaimValue" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="AppCustomerRole">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CustomerUserTable">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MTId" Type="int" Nullable="false" />
+          <Property Name="CustomerId" Type="int" />
+          <Property Name="EffDate" Type="datetime" />
+          <Property Name="TillDate" Type="datetime" />
+          <Property Name="IsUnlimited" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -15,6 +71,12 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GarbageCollectionDB.dbo.BNoFYId' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="BNoFYId">
+          <Property Name="BNo" Type="int" />
+          <Property Name="FYId" Type="int" />
+        </EntityType>-->
         <EntityType Name="BSADCal">
           <Key>
             <PropertyRef Name="NYear" />
@@ -59,6 +121,13 @@
           <Property Name="PostedOn" Type="smalldatetime" />
           <Property Name="Status" Type="tinyint" />
         </EntityType>
+        <EntityType Name="CustomerRole1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+        </EntityType>
         <EntityType Name="CustomerType">
           <Key>
             <PropertyRef Name="Id" />
@@ -83,6 +152,16 @@
           </Key>
           <Property Name="Lid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LocationName" Type="varchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="LocationVsCollector">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CollectorId" Type="int" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="Postedby" Type="int" />
+          <Property Name="PostedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="Month">
           <Key>
@@ -122,6 +201,34 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="M11" Type="int" Nullable="false" />
           <Property Name="M12" Type="int" Nullable="false" />
           <Property Name="NYear" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="NotificationQueue">
+          <Key>
+            <PropertyRef Name="NId" />
+          </Key>
+          <Property Name="NId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cid" Type="int" />
+          <Property Name="Custno" Type="int" />
+          <Property Name="locationId" Type="int" />
+          <Property Name="CollectorId" Type="int" />
+          <Property Name="NotificationDate" Type="datetime" />
+          <Property Name="Message" Type="varchar" MaxLength="500" />
+          <Property Name="PostedBy" Type="int" />
+          <Property Name="PostedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="NotificationSuccess">
+          <Key>
+            <PropertyRef Name="NId" />
+          </Key>
+          <Property Name="NId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Cid" Type="int" />
+          <Property Name="Custno" Type="int" />
+          <Property Name="locationId" Type="int" />
+          <Property Name="CollectorId" Type="int" />
+          <Property Name="NotificationDate" Type="datetime" />
+          <Property Name="Message" Type="varchar" MaxLength="500" />
+          <Property Name="PostedBy" Type="int" />
+          <Property Name="PostedOn" Type="datetime" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -500,6 +607,62 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="PostedBy" Type="int" Nullable="false" />
           <Property Name="PostedOn" Type="datetime" Nullable="false" />
         </EntityType>
+        <Association Name="FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId">
+          <End Role="CustomerUserTable" Type="Self.CustomerUserTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AppCustomerClaim" Type="Self.AppCustomerClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerUserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AppCustomerClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_AppCustomerRole_LG_CustomerRole_RoleId">
+          <End Role="CustomerRole" Type="Self.CustomerRole" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AppCustomerRole" Type="Self.AppCustomerRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerRole">
+              <PropertyRef Name="RoleId" />
+            </Principal>
+            <Dependent Role="AppCustomerRole">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_AppCustomerRole_LG_CustomerUserTable_UserId">
+          <End Role="CustomerUserTable" Type="Self.CustomerUserTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AppCustomerRole" Type="Self.AppCustomerRole" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerUserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AppCustomerRole">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_CustomerLogin_LG_CustomerUserTable_UserId">
+          <End Role="CustomerUserTable" Type="Self.CustomerUserTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="CustomerLogin" Type="Self.CustomerLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerUserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="CustomerLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId">
           <End Role="MenuTemplate" Type="Self.MenuTemplate" Multiplicity="0..1" />
           <End Role="MenuVsTemplate" Type="Self.MenuVsTemplate" Multiplicity="*" />
@@ -607,15 +770,24 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="GarbageCollectionDBModelStoreContainer">
+          <EntitySet Name="AppCustomerClaim" EntityType="Self.AppCustomerClaim" Schema="cust" store:Type="Tables" />
+          <EntitySet Name="AppCustomerRole" EntityType="Self.AppCustomerRole" Schema="cust" store:Type="Tables" />
+          <EntitySet Name="CustomerLogin" EntityType="Self.CustomerLogin" Schema="cust" store:Type="Tables" />
+          <EntitySet Name="CustomerRole" EntityType="Self.CustomerRole" Schema="cust" store:Type="Tables" />
+          <EntitySet Name="CustomerUserTable" EntityType="Self.CustomerUserTable" Schema="cust" store:Type="Tables" />
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BSADCal" EntityType="Self.BSADCal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionType" EntityType="Self.CollectionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionVerifyLog" EntityType="Self.CollectionVerifyLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerRole1" EntityType="Self.CustomerRole1" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerType" EntityType="Self.CustomerType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FiscalYear" EntityType="Self.FiscalYear" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LocationVsCollector" EntityType="Self.LocationVsCollector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Month" EntityType="Self.Month" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationQueue" EntityType="Self.NotificationQueue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationSuccess" EntityType="Self.NotificationSuccess" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionCollection" EntityType="Self.SubscriptionCollection" Schema="dbo" store:Type="Tables" />
@@ -665,6 +837,22 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
     [NDateD].[NYear] AS [NYear]
     FROM [dbo].[NDateD] AS [NDateD]</DefiningQuery>
           </EntitySet>
+          <AssociationSet Name="FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId" Association="Self.FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId">
+            <End Role="CustomerUserTable" EntitySet="CustomerUserTable" />
+            <End Role="AppCustomerClaim" EntitySet="AppCustomerClaim" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_AppCustomerRole_LG_CustomerRole_RoleId" Association="Self.FK_LG_AppCustomerRole_LG_CustomerRole_RoleId">
+            <End Role="CustomerRole" EntitySet="CustomerRole" />
+            <End Role="AppCustomerRole" EntitySet="AppCustomerRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_AppCustomerRole_LG_CustomerUserTable_UserId" Association="Self.FK_LG_AppCustomerRole_LG_CustomerUserTable_UserId">
+            <End Role="CustomerUserTable" EntitySet="CustomerUserTable" />
+            <End Role="AppCustomerRole" EntitySet="AppCustomerRole" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_CustomerLogin_LG_CustomerUserTable_UserId" Association="Self.FK_LG_CustomerLogin_LG_CustomerUserTable_UserId">
+            <End Role="CustomerUserTable" EntitySet="CustomerUserTable" />
+            <End Role="CustomerLogin" EntitySet="CustomerLogin" />
+          </AssociationSet>
           <AssociationSet Name="FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId" Association="Self.FK_LG_MenuVsTemplate_LG_MenuTemplate_MenuTemplate_MTId">
             <End Role="MenuTemplate" EntitySet="MenuTemplate" />
             <End Role="MenuVsTemplate" EntitySet="MenuVsTemplate" />
@@ -703,17 +891,31 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
     <edmx:ConceptualModels>
       <Schema Namespace="GarbageCollectionDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="GarbageCollectionDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AppCustomerClaims" EntityType="GarbageCollectionDBModel.AppCustomerClaim" />
+          <EntitySet Name="CustomerLogins" EntityType="GarbageCollectionDBModel.CustomerLogin" />
+          <EntitySet Name="CustomerRoles" EntityType="GarbageCollectionDBModel.CustomerRole" />
+          <EntitySet Name="CustomerUserTables" EntityType="GarbageCollectionDBModel.CustomerUserTable" />
           <EntitySet Name="C__MigrationHistory" EntityType="GarbageCollectionDBModel.C__MigrationHistory" />
           <EntitySet Name="BSADCals" EntityType="GarbageCollectionDBModel.BSADCal" />
           <EntitySet Name="CollectionTypes" EntityType="GarbageCollectionDBModel.CollectionType" />
+          <EntitySet Name="CollectionVerifyLogs" EntityType="GarbageCollectionDBModel.CollectionVerifyLog" />
+          <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
+          <EntitySet Name="CustomerRole1" EntityType="GarbageCollectionDBModel.CustomerRole1" />
           <EntitySet Name="CustomerTypes" EntityType="GarbageCollectionDBModel.CustomerType" />
           <EntitySet Name="FiscalYears" EntityType="GarbageCollectionDBModel.FiscalYear" />
           <EntitySet Name="LocationMasters" EntityType="GarbageCollectionDBModel.LocationMaster" />
+          <EntitySet Name="LocationVsCollectors" EntityType="GarbageCollectionDBModel.LocationVsCollector" />
+          <EntitySet Name="Months" EntityType="GarbageCollectionDBModel.Month" />
+          <EntitySet Name="NotificationQueues" EntityType="GarbageCollectionDBModel.NotificationQueue" />
+          <EntitySet Name="NotificationSuccesses" EntityType="GarbageCollectionDBModel.NotificationSuccess" />
           <EntitySet Name="Status" EntityType="GarbageCollectionDBModel.Status" />
+          <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
+          <EntitySet Name="SubscriptionCollections" EntityType="GarbageCollectionDBModel.SubscriptionCollection" />
           <EntitySet Name="SubscriptionDues" EntityType="GarbageCollectionDBModel.SubscriptionDue" />
           <EntitySet Name="LicenseBranches" EntityType="GarbageCollectionDBModel.LicenseBranch" />
           <EntitySet Name="BloodGroups" EntityType="GarbageCollectionDBModel.BloodGroup" />
           <EntitySet Name="Companies" EntityType="GarbageCollectionDBModel.Company" />
+          <EntitySet Name="CustomerUsers" EntityType="GarbageCollectionDBModel.CustomerUser" />
           <EntitySet Name="DataTypes" EntityType="GarbageCollectionDBModel.DataType" />
           <EntitySet Name="Departments" EntityType="GarbageCollectionDBModel.Department" />
           <EntitySet Name="Designations" EntityType="GarbageCollectionDBModel.Designation" />
@@ -738,6 +940,14 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="UserLogins" EntityType="GarbageCollectionDBModel.UserLogin" />
           <EntitySet Name="UserVSBranches" EntityType="GarbageCollectionDBModel.UserVSBranch" />
           <EntitySet Name="NDateDs" EntityType="GarbageCollectionDBModel.NDateD" />
+          <AssociationSet Name="FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId" Association="GarbageCollectionDBModel.FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId">
+            <End Role="CustomerUserTable" EntitySet="CustomerUserTables" />
+            <End Role="AppCustomerClaim" EntitySet="AppCustomerClaims" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LG_CustomerLogin_LG_CustomerUserTable_UserId" Association="GarbageCollectionDBModel.FK_LG_CustomerLogin_LG_CustomerUserTable_UserId">
+            <End Role="CustomerUserTable" EntitySet="CustomerUserTables" />
+            <End Role="CustomerLogin" EntitySet="CustomerLogins" />
+          </AssociationSet>
           <AssociationSet Name="FK_LG_ParamValue_LG_DataType_DTId" Association="GarbageCollectionDBModel.FK_LG_ParamValue_LG_DataType_DTId">
             <End Role="DataType" EntitySet="DataTypes" />
             <End Role="ParamValue" EntitySet="ParamValues" />
@@ -762,17 +972,69 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
             <End Role="User" EntitySet="Users" />
             <End Role="UserLogin" EntitySet="UserLogins" />
           </AssociationSet>
+          <AssociationSet Name="AppCustomerRole" Association="GarbageCollectionDBModel.AppCustomerRole">
+            <End Role="CustomerRole" EntitySet="CustomerRoles" />
+            <End Role="CustomerUserTable" EntitySet="CustomerUserTables" />
+          </AssociationSet>
           <AssociationSet Name="UserRole" Association="GarbageCollectionDBModel.UserRole">
             <End Role="Role" EntitySet="Roles" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
-          <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
-          <EntitySet Name="SubscriptionCollections" EntityType="GarbageCollectionDBModel.SubscriptionCollection" />
-          <EntitySet Name="CollectionVerifyLogs" EntityType="GarbageCollectionDBModel.CollectionVerifyLog" />
-          <EntitySet Name="Months" EntityType="GarbageCollectionDBModel.Month" />
-          <EntitySet Name="CustomerUsers" EntityType="GarbageCollectionDBModel.CustomerUser" />
         </EntityContainer>
+        <EntityType Name="AppCustomerClaim">
+          <Key>
+            <PropertyRef Name="UserClaimId" />
+          </Key>
+          <Property Name="UserClaimId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CustomerUserTable" Relationship="GarbageCollectionDBModel.FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId" FromRole="AppCustomerClaim" ToRole="CustomerUserTable" />
+        </EntityType>
+        <EntityType Name="CustomerLogin">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="CustomerUserTable" Relationship="GarbageCollectionDBModel.FK_LG_CustomerLogin_LG_CustomerUserTable_UserId" FromRole="CustomerLogin" ToRole="CustomerUserTable" />
+        </EntityType>
+        <EntityType Name="CustomerRole">
+          <Key>
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="RoleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="CustomerUserTables" Relationship="GarbageCollectionDBModel.AppCustomerRole" FromRole="CustomerRole" ToRole="CustomerUserTable" />
+        </EntityType>
+        <EntityType Name="CustomerUserTable">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MTId" Type="Int32" Nullable="false" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="EffDate" Type="DateTime" Precision="3" />
+          <Property Name="TillDate" Type="DateTime" Precision="3" />
+          <Property Name="IsUnlimited" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AppCustomerClaims" Relationship="GarbageCollectionDBModel.FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId" FromRole="CustomerUserTable" ToRole="AppCustomerClaim" />
+          <NavigationProperty Name="CustomerLogins" Relationship="GarbageCollectionDBModel.FK_LG_CustomerLogin_LG_CustomerUserTable_UserId" FromRole="CustomerUserTable" ToRole="CustomerLogin" />
+          <NavigationProperty Name="CustomerRoles" Relationship="GarbageCollectionDBModel.AppCustomerRole" FromRole="CustomerUserTable" ToRole="CustomerRole" />
+        </EntityType>
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -797,6 +1059,42 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" />
           <Property Name="CollectionType1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="CollectionVerifyLog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Tdate" Type="DateTime" Precision="0" />
+          <Property Name="VerifiedAMount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="VerifiedBy" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="Int32" Nullable="false" />
+          <Property Name="CustNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerTypeId" Type="Int32" />
+          <Property Name="PhoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PanNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Geom" Type="Geometry" />
+          <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Byte" />
+        </EntityType>
+        <EntityType Name="CustomerRole1">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomerType">
           <Key>
@@ -823,6 +1121,51 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="Lid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LocationName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
         </EntityType>
+        <EntityType Name="LocationVsCollector">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CollectorId" Type="Int32" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="Postedby" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Month">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="NotificationQueue">
+          <Key>
+            <PropertyRef Name="NId" />
+          </Key>
+          <Property Name="NId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cid" Type="Int32" />
+          <Property Name="Custno" Type="Int32" />
+          <Property Name="locationId" Type="Int32" />
+          <Property Name="CollectorId" Type="Int32" />
+          <Property Name="NotificationDate" Type="DateTime" Precision="3" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="NotificationSuccess">
+          <Key>
+            <PropertyRef Name="NId" />
+          </Key>
+          <Property Name="NId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Cid" Type="Int32" />
+          <Property Name="Custno" Type="Int32" />
+          <Property Name="locationId" Type="Int32" />
+          <Property Name="CollectorId" Type="Int32" />
+          <Property Name="NotificationDate" Type="DateTime" Precision="3" />
+          <Property Name="Message" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="3" />
+        </EntityType>
         <EntityType Name="Status">
           <Key>
             <PropertyRef Name="StatusId" />
@@ -830,6 +1173,45 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="StatusId" Type="Int32" Nullable="false" />
           <Property Name="Status1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="StatusColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="Subsid" />
+          </Key>
+          <Property Name="Subsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubsNo" Type="Int32" />
+          <Property Name="CustId" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="0" />
+          <Property Name="LedgerId" Type="Int32" />
+          <Property Name="MonthlyAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
+          <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="SubscriptionCollection">
+          <Key>
+            <PropertyRef Name="SubsCollId" />
+          </Key>
+          <Property Name="SubsCollId" Type="Int32" Nullable="false" />
+          <Property Name="CustId" Type="Int32" />
+          <Property Name="SubsId" Type="Int32" Nullable="false" />
+          <Property Name="CollectorId" Type="Int32" Nullable="false" />
+          <Property Name="CollectionTypeId" Type="Int32" />
+          <Property Name="CollectionAmt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DiscountAmt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Fyid" Type="Int32" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="VerifiedBy" Type="Int32" />
+          <Property Name="VerifiedOn" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="SubscriptionDue">
           <Key>
@@ -897,6 +1279,21 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="AdditionalUser" Type="Int32" Nullable="false" />
           <Property Name="IPAddress" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
           <Property Name="TDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="CustomerUser">
+          <Key>
+            <PropertyRef Name="CustomerUserId" />
+          </Key>
+          <Property Name="CustomerUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MTId" Type="Int32" />
+          <Property Name="CustomerId" Type="Int32" />
+          <Property Name="EffDate" Type="DateTime" Precision="3" />
+          <Property Name="TillDate" Type="DateTime" Precision="3" />
+          <Property Name="IsUnlimited" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DataType">
           <Key>
@@ -1182,6 +1579,34 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="M12" Type="Int32" Nullable="false" />
           <Property Name="NYear" Type="Int32" Nullable="false" />
         </EntityType>
+        <Association Name="FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId">
+          <End Type="GarbageCollectionDBModel.CustomerUserTable" Role="CustomerUserTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="GarbageCollectionDBModel.AppCustomerClaim" Role="AppCustomerClaim" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerUserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="AppCustomerClaim">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LG_CustomerLogin_LG_CustomerUserTable_UserId">
+          <End Type="GarbageCollectionDBModel.CustomerUserTable" Role="CustomerUserTable" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="GarbageCollectionDBModel.CustomerLogin" Role="CustomerLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerUserTable">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="CustomerLogin">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_LG_ParamValue_LG_DataType_DTId">
           <End Type="GarbageCollectionDBModel.DataType" Role="DataType" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1260,106 +1685,70 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="AppCustomerRole">
+          <End Type="GarbageCollectionDBModel.CustomerRole" Role="CustomerRole" Multiplicity="*" />
+          <End Type="GarbageCollectionDBModel.CustomerUserTable" Role="CustomerUserTable" Multiplicity="*" />
+        </Association>
         <Association Name="UserRole">
           <End Type="GarbageCollectionDBModel.Role" Role="Role" Multiplicity="*" />
           <End Type="GarbageCollectionDBModel.User" Role="User" Multiplicity="*" />
         </Association>
-        <EntityType Name="Customer">
-          <Key>
-            <PropertyRef Name="Cid" />
-          </Key>
-          <Property Name="Cid" Type="Int32" Nullable="false" />
-          <Property Name="CustNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CustomerTypeId" Type="Int32" />
-          <Property Name="PhoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PanNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Geom" Type="Geometry" />
-          <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PostedBy" Type="Int32" />
-          <Property Name="PostedOn" Type="DateTime" Precision="0" />
-          <Property Name="Status" Type="Byte" />
-        </EntityType>
-        <EntityType Name="Subscription">
-          <Key>
-            <PropertyRef Name="Subsid" />
-          </Key>
-          <Property Name="Subsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SubsNo" Type="Int32" />
-          <Property Name="CustId" Type="Int32" Nullable="false" />
-          <Property Name="EffectiveDate" Type="DateTime" Precision="0" />
-          <Property Name="LedgerId" Type="Int32" />
-          <Property Name="MonthlyAmount" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="LocationID" Type="Int32" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="PostedBy" Type="Int32" />
-          <Property Name="PostedOn" Type="DateTime" Precision="0" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
-          <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
-        </EntityType>
-        <EntityType Name="SubscriptionCollection">
-          <Key>
-            <PropertyRef Name="SubsCollId" />
-          </Key>
-          <Property Name="SubsCollId" Type="Int32" Nullable="false" />
-          <Property Name="CustId" Type="Int32" />
-          <Property Name="SubsId" Type="Int32" Nullable="false" />
-          <Property Name="CollectorId" Type="Int32" Nullable="false" />
-          <Property Name="CollectionTypeId" Type="Int32" />
-          <Property Name="CollectionAmt" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="DiscountAmt" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="CollectionDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Fyid" Type="Int32" />
-          <Property Name="PostedBy" Type="Int32" />
-          <Property Name="PostedOn" Type="DateTime" Precision="0" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="VerifiedBy" Type="Int32" />
-          <Property Name="VerifiedOn" Type="DateTime" Precision="0" />
-        </EntityType>
-        <EntityType Name="CollectionVerifyLog">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Tdate" Type="DateTime" Precision="0" />
-          <Property Name="VerifiedAMount" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="VerifiedBy" Type="Int32" />
-        </EntityType>
-        <EntityType Name="Month">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="CustomerUser">
-          <Key>
-            <PropertyRef Name="CustomerUserId" />
-          </Key>
-          <Property Name="CustomerUserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="MTId" Type="Int32" />
-          <Property Name="CustomerId" Type="Int32" />
-          <Property Name="EffDate" Type="DateTime" Precision="3" />
-          <Property Name="TillDate" Type="DateTime" Precision="3" />
-          <Property Name="IsUnlimited" Type="Boolean" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="UserName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="GarbageCollectionDBModelStoreContainer" CdmEntityContainer="GarbageCollectionDBEntities">
+          <EntitySetMapping Name="AppCustomerClaims">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.AppCustomerClaim">
+              <MappingFragment StoreEntitySet="AppCustomerClaim">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="UserClaimId" ColumnName="UserClaimId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerLogins">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerLogin">
+              <MappingFragment StoreEntitySet="CustomerLogin">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerRoles">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerRole">
+              <MappingFragment StoreEntitySet="CustomerRole">
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerUserTables">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerUserTable">
+              <MappingFragment StoreEntitySet="CustomerUserTable">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsUnlimited" ColumnName="IsUnlimited" />
+                <ScalarProperty Name="TillDate" ColumnName="TillDate" />
+                <ScalarProperty Name="EffDate" ColumnName="EffDate" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="MTId" ColumnName="MTId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="C__MigrationHistory">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
@@ -1383,6 +1772,45 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.CollectionType">
               <MappingFragment StoreEntitySet="CollectionType">
                 <ScalarProperty Name="CollectionType1" ColumnName="CollectionType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CollectionVerifyLogs">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CollectionVerifyLog">
+              <MappingFragment StoreEntitySet="CollectionVerifyLog">
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
+                <ScalarProperty Name="VerifiedAMount" ColumnName="VerifiedAMount" />
+                <ScalarProperty Name="Tdate" ColumnName="Tdate" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Geom" ColumnName="Geom" />
+                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="CustomerTypeId" ColumnName="CustomerTypeId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustNo" ColumnName="CustNo" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerRole1">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerRole1">
+              <MappingFragment StoreEntitySet="CustomerRole1">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1415,12 +1843,102 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="LocationVsCollectors">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.LocationVsCollector">
+              <MappingFragment StoreEntitySet="LocationVsCollector">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="Postedby" ColumnName="Postedby" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="CollectorId" ColumnName="CollectorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Months">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Month">
+              <MappingFragment StoreEntitySet="Month">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificationQueues">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.NotificationQueue">
+              <MappingFragment StoreEntitySet="NotificationQueue">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="NotificationDate" ColumnName="NotificationDate" />
+                <ScalarProperty Name="CollectorId" ColumnName="CollectorId" />
+                <ScalarProperty Name="locationId" ColumnName="locationId" />
+                <ScalarProperty Name="Custno" ColumnName="Custno" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+                <ScalarProperty Name="NId" ColumnName="NId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NotificationSuccesses">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.NotificationSuccess">
+              <MappingFragment StoreEntitySet="NotificationSuccess">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="NotificationDate" ColumnName="NotificationDate" />
+                <ScalarProperty Name="CollectorId" ColumnName="CollectorId" />
+                <ScalarProperty Name="locationId" ColumnName="locationId" />
+                <ScalarProperty Name="Custno" ColumnName="Custno" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
+                <ScalarProperty Name="NId" ColumnName="NId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Status">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.Status">
               <MappingFragment StoreEntitySet="Status">
                 <ScalarProperty Name="StatusColor" ColumnName="StatusColor" />
                 <ScalarProperty Name="Status1" ColumnName="Status" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscription">
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="MonthlyAmount" ColumnName="MonthlyAmount" />
+                <ScalarProperty Name="LedgerId" ColumnName="LedgerId" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
+                <ScalarProperty Name="Subsid" ColumnName="Subsid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriptionCollections">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.SubscriptionCollection">
+              <MappingFragment StoreEntitySet="SubscriptionCollection">
+                <ScalarProperty Name="VerifiedOn" ColumnName="VerifiedOn" />
+                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Fyid" ColumnName="Fyid" />
+                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
+                <ScalarProperty Name="DiscountAmt" ColumnName="DiscountAmt" />
+                <ScalarProperty Name="CollectionAmt" ColumnName="CollectionAmt" />
+                <ScalarProperty Name="CollectionTypeId" ColumnName="CollectionTypeId" />
+                <ScalarProperty Name="CollectorId" ColumnName="CollectorId" />
+                <ScalarProperty Name="SubsId" ColumnName="SubsId" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="SubsCollId" ColumnName="SubsCollId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1492,6 +2010,22 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="Region" ColumnName="Region" />
                 <ScalarProperty Name="BranchName" ColumnName="BranchName" />
                 <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerUsers">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerUser">
+              <MappingFragment StoreEntitySet="CustomerUser">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="IsUnlimited" ColumnName="IsUnlimited" />
+                <ScalarProperty Name="TillDate" ColumnName="TillDate" />
+                <ScalarProperty Name="EffDate" ColumnName="EffDate" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="MTId" ColumnName="MTId" />
+                <ScalarProperty Name="CustomerUserId" ColumnName="CustomerUserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1774,6 +2308,14 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AppCustomerRole" TypeName="GarbageCollectionDBModel.AppCustomerRole" StoreEntitySet="AppCustomerRole">
+            <EndProperty Name="CustomerUserTable">
+              <ScalarProperty Name="UserId" ColumnName="UserId" />
+            </EndProperty>
+            <EndProperty Name="CustomerRole">
+              <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="UserRole" TypeName="GarbageCollectionDBModel.UserRole" StoreEntitySet="UserRole">
             <EndProperty Name="User">
               <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -1782,102 +2324,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
               <ScalarProperty Name="RoleId" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="Customers">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Customer">
-              <MappingFragment StoreEntitySet="Customer">
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
-                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Geom" ColumnName="Geom" />
-                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
-                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
-                <ScalarProperty Name="CustomerTypeId" ColumnName="CustomerTypeId" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="CustNo" ColumnName="CustNo" />
-                <ScalarProperty Name="Cid" ColumnName="Cid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Subscriptions">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
-              <MappingFragment StoreEntitySet="Subscription">
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
-                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="MonthlyAmount" ColumnName="MonthlyAmount" />
-                <ScalarProperty Name="LedgerId" ColumnName="LedgerId" />
-                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
-                <ScalarProperty Name="CustId" ColumnName="CustId" />
-                <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
-                <ScalarProperty Name="Subsid" ColumnName="Subsid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="SubscriptionCollections">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.SubscriptionCollection">
-              <MappingFragment StoreEntitySet="SubscriptionCollection">
-                <ScalarProperty Name="VerifiedOn" ColumnName="VerifiedOn" />
-                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
-                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
-                <ScalarProperty Name="Fyid" ColumnName="Fyid" />
-                <ScalarProperty Name="CollectionDate" ColumnName="CollectionDate" />
-                <ScalarProperty Name="DiscountAmt" ColumnName="DiscountAmt" />
-                <ScalarProperty Name="CollectionAmt" ColumnName="CollectionAmt" />
-                <ScalarProperty Name="CollectionTypeId" ColumnName="CollectionTypeId" />
-                <ScalarProperty Name="CollectorId" ColumnName="CollectorId" />
-                <ScalarProperty Name="SubsId" ColumnName="SubsId" />
-                <ScalarProperty Name="CustId" ColumnName="CustId" />
-                <ScalarProperty Name="SubsCollId" ColumnName="SubsCollId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CollectionVerifyLogs">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CollectionVerifyLog">
-              <MappingFragment StoreEntitySet="CollectionVerifyLog">
-                <ScalarProperty Name="VerifiedBy" ColumnName="VerifiedBy" />
-                <ScalarProperty Name="VerifiedAMount" ColumnName="VerifiedAMount" />
-                <ScalarProperty Name="Tdate" ColumnName="Tdate" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Months">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Month">
-              <MappingFragment StoreEntitySet="Month">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CustomerUsers">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerUser">
-              <MappingFragment StoreEntitySet="CustomerUser">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsUnlimited" ColumnName="IsUnlimited" />
-                <ScalarProperty Name="TillDate" ColumnName="TillDate" />
-                <ScalarProperty Name="EffDate" ColumnName="EffDate" />
-                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
-                <ScalarProperty Name="MTId" ColumnName="MTId" />
-                <ScalarProperty Name="CustomerUserId" ColumnName="CustomerUserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

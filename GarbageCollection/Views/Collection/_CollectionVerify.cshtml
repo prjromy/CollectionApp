@@ -14,8 +14,10 @@
     <th>@Html.DisplayNameFor(x => x.LocationName)</th>
     <th>@Html.DisplayNameFor(x => x.CollectionDate)</th>
     <th>@Html.DisplayNameFor(x => x.CollectionAmt)</th>
-    <th>@Html.DisplayNameFor(x => x.DiscountAmt)</th>
 
+    <th>@Html.DisplayNameFor(x => x.DiscountAmt)</th>
+                   <th>@Html.DisplayNameFor(x => x.PostedBy)</th>
+                   <th>@Html.DisplayNameFor(x => x.CollectionType)</th>
     <th>Edit</th>
     <th>Verify</th>
 
@@ -59,7 +61,12 @@
                         @Convert.ToDecimal(item.DiscountAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
                     </td>
+                    <td>
+                        @item.PostedBy
 
+                    </td>
+                    <td>@item.CollectionType  </td>
+                    <th>Edit</th>
                     <td>
                         <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subscollid" onclick="EditCollection(@item.Subscollid)" data-toggle="tooltip" title="Edit"></button>
 
@@ -72,7 +79,7 @@
 
                 </tr>
             }
-            <tr><td colspan="5"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</b></output></td><td></td><td></td><td></td></tr>
+            <tr><td colspan="5"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</b></output></td><td></td><td></td><td></td><td></td></tr>
         </tbody>
     </table>
     <div class="form-group">
@@ -104,8 +111,10 @@
         var me = $(this);
         var CollectorName = $('#CollectorName').val();
         var LocationName = $('#LocationName').val();
+        var EntryTypeList = $('#EntryTypeList option:selected').text()
+       
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName + "&EntryTypeList" + EntryTypeList;
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -116,8 +125,9 @@
         var me = $(this);
         var CollectorName = $('#CollectorName').val();
         var LocationName = $('#LocationName').val();
+        var EntryTypeList = $('#EntryTypeList option:selected').text()
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName + "&EntryTypeList" + EntryTypeList;
         getPageNumberChangeData(url, container, me)
     });
     $("div.collection-verify-list").on('change', 'input#pageSize', function (e) {
@@ -127,8 +137,9 @@
         var me = $(this);
         var CollectorName = $('#CollectorName').val();
         var LocationName = $('#LocationName').val();
+        var EntryTypeList = $('#EntryTypeList option:selected').text()
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName + "&EntryTypeList" + EntryTypeList;
         getPageSizeChangeData(url, container, me)
     });
     $('.verify').on('click', function () {

@@ -14,12 +14,12 @@ namespace GarbageCollection.WebApi.ApiViewModel
             //public int EmployeeId { get; set; }
             //public int UserId { get; set; }
             //public int IsCustomer { get; set; }
-            //public string PasswordHash { get; set; }
-            //public string UserName { get; set; }
+            public string Password { get; set; }
+            public string UserName { get; set; }
             //public int CustomerId { get; set; }
-            public CustomerUser Album { get; set; }
-            public User User { get; set; }
-            //public bool IsCustomer { get; set; }
+            //public CustomerUser Album { get; set; }
+            //public User User { get; set; }
+            public string ClientId { get; set; }
         }
         public class PostResponse
         {

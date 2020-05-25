@@ -19,10 +19,10 @@
 
             <div class="col-md-12">
                @Html.HiddenFor(x => x.CustId)
-                <div class="form-group">
+                @*<div class="form-group">*@
                     @Html.LabelFor(model => model.CollectorId, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-3">
-                        @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-10", @id = "CollectorName", autocomplete = "off" })
+                    <div class="col-md-3 form-group">
+                        @Html.TextBox("CollectorName", null, new { @class = "form-control", @id = "CollectorName", autocomplete = "off" })
                         @Html.HiddenFor(x => x.CollectorId)
 
 
@@ -31,15 +31,21 @@
                     @Html.LabelFor(model => model.LocationName, htmlAttributes: new { @class = "control-label col-md-2" })
 
 
-                    <div class="col-md-3">
-                        @Html.TextBox("LocationName", null, new { @class = "form-control col-md-10", @id = "LocationName", autocomplete = "off" })
+                    <div class="col-md-3 form-group">
+                        @Html.TextBox("LocationName", null, new { @class = "form-control", @id = "LocationName", autocomplete = "off" })
                         @Html.HiddenFor(x => x.LocationID)
 
 
                     </div>
-                    <button type="button" id="search-verify" class="btn btn-search-verify btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+               
+                    <div class="col-md-3 form-group" id="custtype" style="margin-left: 173px;">
 
-                </div>
+                        @Html.DropDownList("EntryTypeList", CommonUtilityService.EntryTypeList(), "--Select Event--", new { @class = "form-control " })
+                    </div>
+                    <div class="input-group-btn form-group col-md-1 pull-left">
+                        <button type="button" id="search-verify" class="btn btn-search-verify btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+</div>
+                    @*</div>*@
 
 
         </div>
@@ -130,8 +136,9 @@
         var me = $(this);
         var CollectorName = $('#CollectorName').val();
         var LocationName = $('#LocationName').val();
+        var EntryTypeList=$('#EntryTypeList option:selected').text()
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName + "&EntryTypeList" + EntryTypeList;
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -143,7 +150,8 @@
         var CollectorName = $('#CollectorName').val();
         var LocationName = $('#LocationName').val();
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        var EntryTypeList = $('#EntryTypeList option:selected').text()
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName + "&EntryTypeList" + EntryTypeList;
         getPageNumberChangeData(url, container, me)
     });
     $("div.collection-verify-list").on('change', 'input#pageSize', function (e) {
@@ -154,7 +162,8 @@
         var CollectorName = $('#CollectorName').val();
         var LocationName = $('#LocationName').val();
         var container = parentContainer.find("div.collection-verify-list")
-        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName;
+        var EntryTypeList = $('#EntryTypeList option:selected').text()
+        var url = "?CollectorName=" + CollectorName + "&LocationName=" + LocationName + "&EntryTypeList" + EntryTypeList;
         getPageSizeChangeData(url, container, me)
     });
    
@@ -205,12 +214,12 @@
         debugger;
         var CollectorName = $('#CollectorName').val();
         var LocationName = $('#LocationName').val();
-    
+        var EntryTypeList = $('#EntryTypeList option:selected').text();
             $.ajax({
                 url: "/Collection/_CollectionVerify",
                 type: 'post',
                 async: false,
-                data: { CollectorName: CollectorName, LocationName: LocationName },
+                data: { CollectorName: CollectorName, LocationName: LocationName, EntryTypeList: EntryTypeList },
                          
                 success: function (data) {
                     debugger

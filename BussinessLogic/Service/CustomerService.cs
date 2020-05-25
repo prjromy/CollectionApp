@@ -93,7 +93,8 @@ namespace BussinessLogic.Service
                 MobileNo=x.MobileNo,
                 Address=x.Address,
                 Email=x.Email,
-                PanNo=x.PanNo
+                PanNo=x.PanNo,
+                CustNo=x.CustNo
             }).SingleOrDefault();
             return customerSingleList;
         }
@@ -231,6 +232,27 @@ namespace BussinessLogic.Service
             return addressList;
         }
 
+        public ReturnBaseMessageModel CheckCustomer(int txt)
+        {
+            var checkCustomer = uow.Repository<Customer>().FindBy(x => x.Cid == txt).FirstOrDefault();
+            if (checkCustomer!=null){
+                returnMessage.Value = checkCustomer.CustomerName;
+                returnMessage.Success = true;
+                return returnMessage;
+                     
+            }
+            else
+            {
+                returnMessage.Value = "";
+                returnMessage.Success = false;
+                return returnMessage;
+            }
+        }
+
+        public string getCustomerName(int txt)
+        {
+            return uow.Repository<Customer>().FindBy(x => x.Cid == txt).Select(x => x.CustomerName).SingleOrDefault();
+        }
     }
 }
 

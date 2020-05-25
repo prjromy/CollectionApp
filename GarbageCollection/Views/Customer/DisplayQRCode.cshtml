@@ -1,0 +1,137 @@
+﻿@model  BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+
+<div id='common-pop-up-div' class='modal fade' role='dialog'></div>
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">QRCode</h4>
+            <span class="close" id="closeTop" data-dismiss="modal" aria-hidden="true">&times;</span>
+
+        </div>
+        <div class="modal-body">
+            <div class="qr-customer-main">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+
+
+                        <div class="box-tools pull-right">
+                            @*<button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>*@
+                        </div><!-- /.box-tools -->
+                        @*@using (Html.BeginForm("Create", "Suscription", FormMethod.Post, new { id = "createSubmitFormSuscription" }))
+                {*@
+                        <form id="qrcodes"  enctype = "multipart/form-data">
+                            <div id="imgdivs">
+
+
+
+                            </div>
+                            <div class="col-md-12" style="margin-top:10px">
+                                <center ><b>Customer No:</b> @Model.CustNo&nbsp; <b>Customer Name</b> :@Model.CustomerName &nbsp; @Model.Customertype &nbsp;<b>Address</b> @Model.Address</center>
+                            </div>
+                            @*<div>
+                                <center><button type="submit" class="btn btn-success" id="print"><i class="fa fa-print"></i>Print</button></center>
+                               
+                            </div>*@
+                            <div style="margin-top:10px">
+                                <center><button type="button" class="btn btn-success" id="pdf" target="_blank" data-attr="@Model.CustNo" data-name="@Model.CustomerName"><i class="fa fa-file-pdf"></i>PDF</button></center>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+   
+    @*$('#qrcodes').on("submit", function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var formData = new FormData($(this)[0]);
+        var files = $('#imgdivs img').attr('src');
+        formData.append('file', files);
+         formData.append('id', 2);
+
+     
+                debugger;
+                $.ajax({
+                    url: '@Url.Action("PrintQRCode", "Print")',
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    success: function () {
+                        SuccessAlert("Printed Succesfully", 3000);
+                        return true;
+                     
+
+                    },
+                    error: function (data) {
+                        debugger;
+                        ErrorAlert(data.responseText, 15000)
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+          
+
+            return false;
+    })*@
+    function startLoader(){
+        $("#pdf").text('Loading...');
+        $("#pdf").attr('disabled', true);
+
+}
+    function stopLoader() {
+        $("#pdf").text('PDF');
+        $("#pdf").attr('enabled', true);
+
+    }
+
+    $('#pdf').on("click", function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        //var formData = new FormData($(this)[0]);
+        var files = $('#imgdivs img').attr('src');
+       
+        var custNo = $(this).attr("data-attr");
+        var custName = $(this).attr("data-name");
+        //var custNo = 2;
+
+        debugger;
+        $.ajax({
+            url: '@Url.Action("PDF", "Print")',
+            //beforeSend:function(){
+            //    startLoader();
+            //},
+            type: 'POST',
+            data: { files: files, custNo: custNo, custName: custName},
+            //async: false,
+            //contentType: 'application/json; charset=utf-8',
+
+            dataType: 'json',
+            success: function (resultData)
+            {
+                if (resultData.success) {
+                    window.location = "/Print/DownloadInvoice" + "?fName=" + resultData.fName;
+                }
+                },
+            //complete: function () {
+            //    stopLoader();
+            //},
+            error: function (data) {
+                debugger;
+                ErrorAlert(data.responseText, 15000)
+            },
+         
+        });
+        //window.open("/Print/PDF?files=" + files + "&custNo=" + custNo, "MyTarg);
+
+
+
+
+
+      
+    })
+</script>

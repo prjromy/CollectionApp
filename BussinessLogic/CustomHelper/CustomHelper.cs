@@ -14,8 +14,8 @@ namespace BussinessLogic.CustomHelper
     public static class CustomHelper
     {
         private static GarbageCollectionDBEntities db = new GarbageCollectionDBEntities();
-       
-            public static MvcHtmlString ChqLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object htmlAttributes)
+        
+        public static MvcHtmlString ChqLabelFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object htmlAttributes)
             {
                 var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
                 string resolvedLabelText = metadata.DisplayName ?? metadata.PropertyName;
@@ -24,6 +24,7 @@ namespace BussinessLogic.CustomHelper
                     resolvedLabelText += "*";
                 }
                 return LabelExtensions.LabelFor<TModel, TValue>(html, expression, resolvedLabelText, htmlAttributes);
+            
             }
         
         public static MvcHtmlString Paging(this HtmlHelper helper, string action, string controller, int pageCount, int pageNo, int pageSize)

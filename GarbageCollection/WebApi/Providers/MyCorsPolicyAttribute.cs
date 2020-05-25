@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Cors;
 using System.Web.Http.Cors;
 
-namespace GarbageCollection.WebApi.Providers
+namespace WasteManagementApi.Providers
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = false)]
     public class MyCorsPolicyAttribute : Attribute, ICorsPolicyProvider
@@ -26,8 +26,8 @@ namespace GarbageCollection.WebApi.Providers
             };
 
             // Add allowed origins.
-            //_policy.Origins.Add("*");
-            //_policy.Origins.Add(Properties.Settings.Default.AngularServe);
+            _policy.Origins.Add("*");
+            //_policy.Origins.Add(Properties.Settings.Default.);
             _policy.Origins.Add("http://182.93.88.246");
             
             _policy.Origins.Add("http://localhost:61267/");

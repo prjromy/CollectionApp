@@ -4,7 +4,8 @@
 <link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
 
 <script src="~/Scripts/typeahead.min.js"></script>
-
+<div id='account-pop-up-div' class='modal fade verfier-list' role='dialog'>
+</div>
 <div class="box  customer-list-index">
     <input type="button" value="New Customer" id="btn-create" class="btn btn-md btn-success btn-create" style="border:none;margin-bottom:5px;" />
     <div class="customer-display">
@@ -64,9 +65,68 @@
 <script src="~/Scripts/jquery-message-box.js"></script>
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
 <script src="~/Scripts/ch-dialog.js"></script>
-
+<style>
+    .image{
+        display: block;
+        margin-left: auto;
+       margin-right: auto;
+    }
+    
+</style>
 
 <script>
+    $('.qr-button').click(function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        debugger;
+        var txt = $(this).data("id");
+      
+       
+        var content = txt.toString();
+        $.ajax({
+            type: 'GET',
+            url: '/Customer/DisplayQRCode',
+            data: { cId: txt },
+
+            success: function (result) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/qrcode',
+                    data: { content: content },
+                    dataType: 'json',
+                    success: function (data) {
+                        var img = document.createElement("img");
+                        img.width = "250";
+                        img.height = "250";
+                        img.className = "image";
+                        img.name = "file";
+                        img.src = "data:image/png;base64," + data;
+                        //var divs = document.createElement("div");
+                        //divs.append(img);
+                        //document.getElementById("imgdivs").appendChild(divs);
+                        var results = $(result);
+                        results.find('#imgdivs').append(img);
+                        debugger;
+                        $('#account-pop-up-div').html(results).modal({
+                            'show': true,
+                            'backdrop': 'static'
+                        });
+                        //$(".modal-body").find('#createSubmitForm').find('#CustomerName').text(custname);
+                        //$(".modal-body").find('#createSubmitForm').find('#CustId').val(customerid);
+
+                    },
+                    error: function () {
+
+                    }
+                });
+            
+            }
+        })
+       
+
+
+        })
+   
     $(function () {
         $("#txtCustomerSearch").typeahead({
 

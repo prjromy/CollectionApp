@@ -39,7 +39,15 @@ namespace BussinessLogic.Service
       
             return new SelectList(objAccountType, "Value", "Text");
         }
+        public static SelectList EntryTypeList()
+        {
+            List<SelectListItem> objAccountType = new List<SelectListItem>();
+            objAccountType.Add(new SelectListItem { Text = "Mobile" });
+            objAccountType.Add(new SelectListItem { Text = "Web" });
 
+            return new SelectList(objAccountType, "Value", "Text");
+        }
+        
         public static SelectList VerifiedUnverifiedList()
         {
             List<SelectListItem> objAccountType = new List<SelectListItem>();
@@ -125,6 +133,11 @@ namespace BussinessLogic.Service
         public static string getCustomerName(int? customerId)
         {
             var userName = uow.Repository<Customer>().FindBy(x => x.Cid == customerId).Select(x => x.CustomerName).SingleOrDefault();
+            return userName;
+        }
+        public static string getCollectorName(int? collectorid)
+        {
+            var userName = uow.Repository<DataAccess.DatabaseModel.Employee>().FindBy(x => x.EmployeeId == collectorid).Select(x => x.EmployeeName).SingleOrDefault();
             return userName;
         }
     }

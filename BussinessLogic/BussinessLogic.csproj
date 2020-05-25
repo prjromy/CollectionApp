@@ -30,9 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BuisnessObject">
+      <HintPath>..\BuisnessObject\bin\Debug\BuisnessObject.dll</HintPath>
+    </Reference>
     <Reference Include="ChannakyaCustomeDatePicker, Version=7.7.17.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Workspace202091\ChannakyaBase\Channakya Base\Channakya Base\bin\ChannakyaCustomeDatePicker.dll</HintPath>
+    </Reference>
+    <Reference Include="DataAccess">
+      <HintPath>..\DataAccess\bin\Debug\DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -93,22 +99,13 @@
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\IGenericUnitOfWork.cs" />
     <Compile Include="Service\CollectionService.cs" />
+    <Compile Include="Service\CollectorVsLocationService.cs" />
     <Compile Include="Service\CommonService.cs" />
     <Compile Include="Service\CommonUtilityService.cs" />
     <Compile Include="Service\CustomerService.cs" />
     <Compile Include="Service\CustomerUserService.cs" />
     <Compile Include="Service\ReportService.cs" />
     <Compile Include="Service\SuscriptionService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BuisnessObject\BuisnessObject.csproj">
-      <Project>{b2b593e9-8eb2-43f0-a8ba-b8085ecf651f}</Project>
-      <Name>BuisnessObject</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
-      <Project>{5e446888-583b-40a4-acfa-6fb566a57ea9}</Project>
-      <Name>DataAccess</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -1,0 +1,247 @@
+﻿@model  BuisnessObject.ViewModel.QRCodeModel
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+    var customerName = @ViewBag.customerName;
+
+}
+
+<div class="barcode-create-main">
+    <div class="box box-success">
+        <div class="box-header with-border">
+
+
+         
+                <div class="form-horizontal">
+                    <h4>Generate QRCode </h4>
+                    <hr />
+
+                    <form id="qrcodeform">
+                    
+
+                        <div class="form-horizontal">
+
+                            <!--<span style="color:red; ">@ViewBag.Message </span>-->
+                            <!--@Html.ValidationSummary(true, "", new { @class = "text-danger" })-->
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.QRCodeText, new { @class = "control-label col-md-2" })
+                                @*<input type="text" id="qrcoder" />*@
+                                <div class="col-md-10">
+                                    @Html.EditorFor(model => model.QRCodeText, new { @class = "form-control col-md-5", @id = "qrcoder" })
+                                @Html.ValidationMessageFor(model => model.QRCodeText, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="button" value="Generate QR" class="btn btn-default qr-button" />
+                                </div>
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="button" value="Generate PDF" class="btn btn-default qr-pdf-button pull-right" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="form-group ">
+                        <div class="A4">
+                            @*@Html.LabelFor(model => model.QRCodeImagePath, new { @class = "control-label col-md-2" })*@
+                            <div id="imgdiv" size="A4">
+                               
+
+
+                            </div>
+                            <div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                  
+                </div>
+          
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-message-box.js"></script>
+<link href="~/Content/messagebox.css" rel="stylesheet" />
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/ch-dialog.js"></script>
+<style>
+     .A4 {
+        background: rgb(204,204,204);
+    }
+
+    #imgdiv {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+
+    div[size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+    }
+
+</style>
+<script>
+    $('.qr-button').click(function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        debugger;
+        var txt = $('#QRCodeText').val();
+        if (isNaN(txt)) {
+            ErrorAlert("Please Enter Valid Id", 3000);
+            return false;
+        }
+        $.ajax({
+            type: 'GET',
+            url: '/Customer/CheckCustomerExist',
+            data: { txt: txt },
+            dataType: 'json',
+            success: function (result) {
+                if (result.Success == true) {
+                    var content = txt.toString();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/api/qrcode',
+                        data: { content: content },
+                        dataType: 'json',
+                        success: function (data) {
+                            debugger;
+                            var numImgs = $('div#imgdiv img').length;
+                            //alert(numImgs);
+                            //var imagesizeina4 = document.images.length;
+                            if (numImgs > 8) {
+
+                                ErrorAlert("Page Size Exceeds", 3000);
+                                return false;
+                            }
+                            var img = document.createElement("img");
+                            var parentdiv = document.createElement("div");
+                            var divs = document.createElement("div");
+                            parentdiv.style.float = "left";
+                            parentdiv.style.marginTop = "6px";
+                            parentdiv.style.margin = "4px";
+                            divs.setAttribute('id', 'divId')
+                            img.width = "250";
+                            img.height = "250";
+                            img.style.padding = "6px";
+                            img.style.border = '1px solid black';
+                            //img.style.float = 'left';
+                            img.className = "image";
+                            img.setAttribute('id', 'imageId')
+                            //img.style.position = 'relative';
+                            //img.style.marginBottom='12px';
+                            img.src = "data:image/png;base64," + data;
+                            parentdiv.append(divs)
+                            divs.append(img);
+                            document.getElementById("imgdiv").appendChild(parentdiv);
+                            //var t = document.createElement("p");
+                            ////t.style.position=' fixed';
+                            //t.style.bottom= '0';
+                            ////t.style.width:100%;
+                            //t.style.textAlign = 'center';
+                            //var node = document.createTextNode(txt);
+                            //t.appendChild(node);
+                            //document.getElementById("imgdiv").appendChild(t);
+                            //$(".Description").text(txt);
+                            //var imgdiv = document.getElementById("imgdiv");
+                            //imgdiv.appendChild(img);
+
+                            var x = document.createElement("FIGCAPTION");
+                            var t = document.createTextNode(txt);
+                            //x.setAttribute('id', 'custid')
+
+                            //x.style.float = 'none';
+                            x.style.textAlign = "center";
+                            x.appendChild(t);
+                            //parentdiv.insertBefore(x, divs);
+                            var custp = document.createElement("p");
+                            var custname = document.createTextNode(result.Value);
+                            //custp.setAttribute('id', 'custname')
+
+                            //x.style.float = 'none';
+                            custp.style.textAlign = "center";
+                            custp.appendChild(custname);
+                            //parentdiv.insertBefore(x, divs);
+                            parentdiv.appendChild(x);
+                            parentdiv.appendChild(custp);
+                        }
+
+
+                    })
+                }
+                else {
+                    ErrorAlert("No Customer With This Id Found &nbsp;" + txt, 3000);
+                    return false;
+                }
+
+
+
+
+
+            }
+
+        })
+    })
+
+
+    $('.qr-pdf-button').on("click", function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        //var formData = new FormData($(this)[0]);
+        //var files = $('#imgdivs img').attr('src');
+
+        //var custNo = $(this).attr("data-attr");
+        //var custName = $(this).attr("data-name");
+       
+        var form_data = new FormData();
+        var files = new Array();
+        $('div#imgdiv img').each(function () {
+            //form_data.append("files", $(this).attr('src'));
+            files.push($(this).attr('src'));
+        })
+        var custNo = new Array();
+        $('div#imgdiv figcaption').each(function () {
+           // form_data.append("custNo", $(this).val());
+            // form_data.append("custNo", $(this).val());
+            custNo.push($(this).text());
+        })
+        var custName = new Array();
+        $('div#imgdiv p').each(function () {
+            //form_data.append("custName", $(this).val());
+            custName.push($(this).text());
+        })
+        //form_data.append("custNo", custNo);
+        //form_data.append("custName", custName);
+        debugger;
+        $.ajax({
+            url: '@Url.Action("MultiplePDF", "Print")',
+          
+            type: 'POST',
+            data: { files: files, custNo: custNo, custName: custName },
+
+   
+            dataType: 'json',
+            success: function (resultData) {
+                if (resultData.success) {
+                    window.location = "/Print/DownloadInvoice" + "?fName=" + resultData.fName;
+                }
+            },
+          
+            error: function (data) {
+                debugger;
+                ErrorAlert(data.responseText, 15000)
+            },
+
+        });
+
+    })
+</script>

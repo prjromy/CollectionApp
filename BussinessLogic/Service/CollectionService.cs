@@ -27,7 +27,7 @@ namespace BussinessLogic.Service
         {
             try
             {
-                string skjns= "select  COUNT(*) OVER () AS TotalCount,Subsno as SubsNo,LocationName,DueBalance as MonthyAmount,Status from  fgetSubscriptionDueReport('" + DateTime.Now + "') where custid=" + customerno;
+                //string skjns= "select  COUNT(*) OVER () AS TotalCount,Subsno as SubsNo,LocationName,DueBalance as MonthyAmount,Status from  fgetSubscriptionDueReport('"DateTime.Now()"') as ainner join[dbo].[LocationVsCollector] as b on a.LocationId=b.LocationId" + customerno;
                 string query = "";
                
                     var suscriptionList=uow.Repository<MainViewModel.CollectionEntry>().SqlQuery("select COUNT(*) OVER () AS TotalCount,subsid,Subsno as SubsNo,CustomerName,LocationName,DueBalance as MonthlyAmount,Debit,Status from fgetSubscriptionDueReport('" + DateTime.Now + "') where custid = " + customerno).ToList();
@@ -189,13 +189,13 @@ namespace BussinessLogic.Service
             return collectionList;
         }
 
-        public List<MainViewModel.CollectionVerificationEntry> getCollectionList(string CollectorName="",string LocationName="", int pageNo=1, int pageSize=10)
+        public List<MainViewModel.CollectionVerificationEntry> getCollectionList(string CollectorName="",string LocationName="", string EntryTypeList="", int pageNo=1, int pageSize=10)
         {
             try
             {
 
                 string query = "";
-                query = "select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt  from fgetCollectionlist()  where verifiedby is null";
+                query = "select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null";
 
                 if (CollectorName != "" )
                 {
@@ -204,6 +204,10 @@ namespace BussinessLogic.Service
                 if (LocationName != "")
                 {
                     query += "  and LocationName like'%" + LocationName.Trim() + "%'";
+                }
+                if (EntryTypeList != "")
+                {
+                    query += "  and CollectionType like'%" + EntryTypeList.Trim() + "%'";
                 }
                 query += @" ORDER BY  Subscollid
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS

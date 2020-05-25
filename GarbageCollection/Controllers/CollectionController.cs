@@ -17,7 +17,6 @@ namespace GarbageCollection.Controllers
         private CollectionService collection = null;
         private CustomerService customerService = null;
 
-
         public CollectionController()
         {
             returnMessage = new ReturnBaseMessageModel();
@@ -36,8 +35,10 @@ namespace GarbageCollection.Controllers
 
         {
             try
+
             {
-                 MainViewModel.CollectionViewModel CollectionViewModel = new MainViewModel.CollectionViewModel();
+                
+                MainViewModel.CollectionViewModel CollectionViewModel = new MainViewModel.CollectionViewModel();
                 var suscriberList = collection.getSuscriberListEntry(customerId);
                 foreach (var item in suscriberList)
                 {
@@ -81,12 +82,12 @@ namespace GarbageCollection.Controllers
             var collectionResult = collection.EditCollection(collections);
             return Json(collectionResult, JsonRequestBehavior.AllowGet);
         }
-        public ActionResult CollectionVerify(string CollectorName="",string LocationName="")
+        public ActionResult CollectionVerify(string CollectorName="",string LocationName="",string EntryTypeList="")
         {
             try
             {
                 MainViewModel.CollectionVerificationEntry collectionViewModel = new MainViewModel.CollectionVerificationEntry();
-                var collectionList = collection.getCollectionList(CollectorName, LocationName, 1, 10);
+                var collectionList = collection.getCollectionList(CollectorName, LocationName, EntryTypeList,1, 10);
                 collectionViewModel.collectionPagedList = new StaticPagedList<MainViewModel.CollectionVerificationEntry>(collectionList, 1, 10, (collectionList.Count == 0) ? 0 : collectionList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -105,10 +106,14 @@ namespace GarbageCollection.Controllers
             }
         }
 
-        public ActionResult _CollectionVerify(string CollectorName = "",  string LocationName = "",int pageNo = 1, int pageSize = 10)
+        public ActionResult _CollectionVerify(string CollectorName = "",  string LocationName = "", string EntryTypeList = "",int pageNo = 1, int pageSize = 10)
         {
+            if(EntryTypeList== "--Select Event--")
+            {
+                EntryTypeList = "";
+            }
             MainViewModel.CollectionVerificationEntry collectionViewModel = new MainViewModel.CollectionVerificationEntry();
-            var collectionList = collection.getCollectionList(CollectorName, LocationName, pageNo, pageSize);
+            var collectionList = collection.getCollectionList(CollectorName, LocationName, EntryTypeList, pageNo, pageSize);
             collectionViewModel.collectionPagedList = new StaticPagedList<MainViewModel.CollectionVerificationEntry>(collectionList, pageNo, pageSize, (collectionList.Count == 0) ? 0 : collectionList.FirstOrDefault().TotalCount);
 
             //foreach (var item in customerList)

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(GarbageCollection.Startup))]
+//[assembly: OwinStartupAttribute(typeof(GarbageCollection.Startup))]
 namespace GarbageCollection
 {
     public partial class Startup

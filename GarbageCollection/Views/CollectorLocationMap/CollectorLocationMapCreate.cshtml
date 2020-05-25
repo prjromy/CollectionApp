@@ -1,0 +1,385 @@
+﻿@model  BuisnessObject.ViewModel.CollectorLocationViewModel
+@using BussinessLogic.Service
+
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
+<div class="customer-create-main">
+    <div class="box box-success">
+        <div class="box-header with-border">
+
+
+            <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+            @using (Html.BeginForm("CollectorLocationMapCreateSave", "CollectorLocationMap", FormMethod.Post, new { id = "createSubmitFormLoc" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    <h4>Location Collection Map</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                    @Html.HiddenFor(model => model.Id, new { htmlAttributes = new { @class = "form-control" } })
+
+
+                 
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            @Html.Label("Collector Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-4">
+                                @if (Model.Id != 0)
+
+                                {
+                                    var collectorname = CommonUtilityService.getCollectorName(Model.CollectorId);
+                                    @Html.EditorFor(model => collectorname, new { htmlAttributes = new { @class = "form-control", @id = "CollectorName", autocomplete = "off" } })
+
+
+                                    @Html.HiddenFor(x => x.CollectorId)
+                                }
+                                else
+                                {
+                                    @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-8", @id = "CollectorName", autocomplete = "off" })
+                                    @Html.HiddenFor(x => x.CollectorId)
+                                }
+                                @Html.ValidationMessageFor(model => model.CollectorId, "", new { @class = "text-danger" })
+
+                            </div>
+                            <div>
+                                @Html.Label("Location Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                                @if (Model.Id != 0)
+                                {
+                                    var locationname = CommonUtilityService.LocationName(Model.LocationId);
+
+                                    @Html.EditorFor(model => locationname, new { htmlAttributes = new { @class = "form-control", @id = "LocationName", autocomplete = "off" } })
+                                    @Html.HiddenFor(x => x.LocationId)
+                                }
+                                else
+                                {
+                                    @*@Html.TextArea("MultipleLocationName", new { @class = "form-control", @id = "MultipleLocationName", autocomplete = "off",
+                           cols = "50",
+                            rows = "10",
+                        } )
+                         @Html.HiddenFor(x => x.LocationId)*@
+                                    <div class="col-sm-4">
+
+                                        @Html.DisplayNameFor(m => m.locationNames)
+                                        <input type="hidden" class="select2-offscreen" id="make-hdn" style="width:100%" value="@Model.locationNames" />
+                                        <input type="text" class="hidden" id="make" name="locationNames" value="@Model.locationNames" />
+                                    </div>
+
+
+
+                                }
+                            </div>
+
+
+                            
+                               
+
+                                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+                                
+
+
+                       
+                        </div>
+                    </div>
+
+
+                   
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+
+                           
+
+                            <input type="button" value="Create" class="btn btn-success btn-save-loc" />
+
+                        </div>
+                    </div>
+                </div>
+            
+            }
+        </div>
+    </div>
+</div>
+<link href="~/Content/select2.css" rel="stylesheet" />
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-message-box.js"></script>
+<script src="~/Scripts/typeahead.min.js"></script>
+<script src="~/Scripts/select2.js"></script>
+
+
+<script src="~/Scripts/ch-dialog.js"></script>
+  <script>
+  
+      $(function () {
+
+          $("#LocationName").typeahead({
+
+              hint: true,
+              highlight: true,
+              minLength: 1,
+              source: function (request, response) {
+                  $.ajax({
+                      url: '/Suscription/LocationList/',
+                      data: "{ 'prefix': '" + request + "'}",
+                      dataType: "json",
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      success: function (data) {
+                          items = [];
+                          map = {};
+                          $.each(data, function (i, item) {
+                              var id = item.Lid;
+                              var name = item.LocationName;
+                              map[name] = { id: id, name: name };
+                              items.push(name);
+                          });
+                          response(items);
+                          $(".dropdown-menu").css("height", "auto");
+                          //$(".dropdown-menu").css("width", "");
+                          $(".dropdown-menu").addClass("col-md-10");
+                      },
+                      error: function (response) {
+                          alert(response.responseText);
+                      },
+                      failure: function (response) {
+                          alert(response.responseText);
+                      }
+                  });
+
+              },
+              updater: function (item) {
+                  $('#LocationId').val(map[item].id);
+                  return item;
+              }
+          });
+
+      })
+  
+
+
+      $.validator.unobtrusive.parse('#createSubmitFormLoc');
+      $('.customer-create-main').on('click', '.btn-save-loc', function () {
+          debugger;
+          $('#createSubmitFormLoc').removeData("validator").removeData("unobtrusiveValidation");
+          $.validator.unobtrusive.parse($('#createSubmitFormLoc'));
+          if ($("#createSubmitFormLoc").valid()) {
+              NewCustomerCreate();
+          }
+
+
+      });
+      function NewCustomerCreate(e) {
+          $.MessageBox({
+              buttonDone: "Yes",
+              buttonFail: "No",
+              message: " Are you sure?"
+          }).done(function () {
+              //$(".checkboxCert:checked").removeAttr('disabled');
+              $('#createSubmitFormLoc').ajaxSubmit({
+                  success: function (result) {
+                      //var url;
+                      debugger;
+                      if (result.Success) {
+                          $.ajax({
+                              url: "/CollectorLocationMap/CollectorVsLocationList",
+                              type: 'post',
+                              async: false,
+                              success: function (data) {
+                                  debugger
+                                  $('section.content').html(data);
+                                  SuccessAlert(result.Msg, 5000);
+                                  document.getElementById('alert-success').scrollIntoView();
+                              }
+                          })
+                      } else {
+                          ErrorAlert(result.Msg, 5000);
+                          document.getElementById('alert-error').scrollIntoView();
+                      }
+                  },
+                  error: function (data) {
+                      ErrorAlert(data.responseText, 15000)
+                  }
+              });
+          }).fail(function () {
+          });
+      }
+
+      //        //hint: true,
+      //        //highlight: true,
+      //        multiselect: true,
+      //        focus: updateTextBox,
+      //        select: updateTextBox,
+
+      //        source: function (request, response) {
+      //            $.ajax({
+      //                url: '/Suscription/LocationList/',
+      //                data: "{ 'prefix': '" + request.term + "'}",
+      //                dataType: "json",
+      //                type: "POST",
+      //                contentType: "application/json; charset=utf-8",
+      //                success: function (data) {
+      //                    debugger;
+      //                    //debugger;
+      //                    //items = [];
+      //                    //map = {};
+      //                    //$.each(data, function (i, item) {
+      //                    //    var id = item.Lid;
+      //                    //    var name = item.LocationName;
+      //                    //    map[name] = { id: id, name: name };
+      //                    //    items.push(name);
+      //                    //});
+      //                    //response(items);
+      //                    //$(".dropdown-menu").css("height", "auto");
+      //                    ////$(".dropdown-menu").css("width", "");
+      //                    //$(".dropdown-menu").addClass("col-md-8");
+      //                    response(data);
+      //                },
+                    
+      //            });
+      //        }
+      //    })
+      //         .autocomplete('instance')._renderItem = function (ul, item) {
+      //             return $('<li>').append('<a><b>' + item.LocationId + '</b> &nbsp; &nbsp;' + item.LocationName + '</a>')
+      //             //.append('<a>'+item.EmployeeName+'</a>')
+      //             .appendTo(ul);
+
+      //         }
+      //})
+
+      $(document).ready(function () {
+          debugger
+          select2Dropdown('make-hdn', 'make', 'Search for make(s)', 'SearchMake', 'GetMake', true);
+      });
+
+      function select2Dropdown(hiddenID, valueID, ph, listAction, getAction, isMultiple) 
+      {
+
+          var sid = '#' + hiddenID;
+          $(sid).select2({
+              placeholder: ph,
+              minimumInputLength: 2,
+              allowClear: true,
+              multiple: isMultiple,
+              ajax: {
+                  
+                  url: "/api/MultiSelectLocation/" + listAction,
+                  dataType: 'json',
+                  //data: function (term, page) {
+                  data: function (term) {
+                      for (var key in term) {
+                          debugger;
+                          return {
+                              id: term[key] // search term
+                          };
+                      }
+                     
+                  },
+                  processResults: function (data) {
+
+                      return {
+                          results: $.map(data, function (obj) {
+                              return {
+                                  id: obj.id,
+                                  text: obj.text
+                              };
+                          })
+                      };
+                  }
+              },
+              initSelection: function (element, callback) {
+                  // the input tag has a value attribute preloaded that points to a preselected make's id
+                  // this function resolves that id attribute to an object that select2 can render
+                  // using its formatResult renderer - that way the make text is shown preselected
+                  var id = $('#' + valueID).val();
+                  if (id !== null && id.length > 0) {
+                      $.ajax("/api/MultiSelectLocation/" + getAction + "/" + id, {
+                          dataType: "json"
+                      }).done(function (data) { callback(data); });
+                  }
+              },
+              formatResult: s2FormatResult,
+              formatSelection: s2FormatSelection
+          });
+
+          $(document.body).on("change", sid, function (ev) {
+              var choice;
+              var values = ev.val;
+              // This is assuming the value will be an array of strings.
+              // Convert to a comma-delimited string to set the value.
+              if (values !== null && values.length > 0) {
+                  for (var i = 0; i < values.length; i++) {
+                      if (typeof choice !== 'undefined') {
+                          choice += ",";
+                          choice += values[i];
+                      }
+                      else {
+                          choice = values[i];
+                      }
+                  }
+              }
+
+              // Set the value so that MVC will load the form values in the postback.
+              $('#' + valueID).val(choice);
+          });
+      }
+
+      function s2FormatResult(item) {
+          return item.text;
+      }
+
+      function s2FormatSelection(item) {
+          return item.text;
+      }
+      $(function () {
+          $("#CollectorName").typeahead({
+
+              hint: true,
+              highlight: true,
+              minLength: 1,
+              source: function (request, response) {
+                  $.ajax({
+                      url: '/Collection/GetCollector/',
+                      data: "{ 'prefix': '" + request + "'}",
+                      dataType: "json",
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      success: function (data) {
+                          debugger;
+                          if (data === null) {
+                              ErrorAlert("No data Match", 3000);
+                              return false;
+                          }
+                          items = [];
+                          map = {};
+                          $.each(data, function (i, item) {
+                              var id = item.CollectorID;
+                              var name = item.CollectorName;
+                              map[name] = { id: id, name: name };
+                              items.push(name);
+                          });
+                          response(items);
+                          $(".dropdown-menu").css("height", "auto");
+                          //$(".dropdown-menu").css("width", "");
+                          $(".dropdown-menu").addClass("col-md-8");
+                      },
+                      error: function (response) {
+                          debugger;
+                          alert(response.responseText);
+                      },
+                      failure: function (response) {
+                          debugger;
+                          alert(response.responseText);
+                      }
+                  });
+              },
+              updater: function (item) {
+                  $('#CollectorId').val(map[item].id);
+                  return item;
+              }
+          });
+      })
+  </script>

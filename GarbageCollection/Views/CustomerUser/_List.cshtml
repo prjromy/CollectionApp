@@ -50,7 +50,7 @@
               
               
                 <td>
-                    <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.CustomerUserId" onclick="EditUserCustomerList(@item.CustomerUserId)" data-toggle="tooltip" title="Edit"></button>
+                    <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.UserId" onclick="EditUserCustomerList(@item.UserId)" data-toggle="tooltip" title="Edit"></button>
                 </td>
                 
                
@@ -60,7 +60,7 @@
         }
        
     </table>
-    @Html.Paging("_List", "CustomerUser", Model.customeruserPagedList.PageCount, Model.customeruserPagedList.PageNumber, Model.customeruserPagedList.PageSize)
+   @Html.Paging("_List", "CustomerUser", Model.customeruserPagedList.PageCount, Model.customeruserPagedList.PageNumber, Model.customeruserPagedList.PageSize)
 </div>
 
 
@@ -73,7 +73,7 @@
 
 <script>
 
-
+   
     $("div.cust-user-page-list").on('click', 'input.btnPaging', function (e) {
         debugger;
         e.stopImmediatePropagation();

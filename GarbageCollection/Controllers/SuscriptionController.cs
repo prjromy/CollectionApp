@@ -187,8 +187,20 @@ namespace GarbageCollection.Controllers
         }
         public  JsonResult LocationList(string prefix)
         {
-            var LocationList = suscription.getLocation(prefix);
-            return Json(LocationList);
+            try
+            {
+                var LocationList = suscription.getLocation(prefix);
+              
+                    return Json(LocationList);
+               
+    
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+           
         }
     }
 }

@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Web;
+
 using System.Threading.Tasks;
 using DataAccess.DatabaseModel;
 using BussinessLogic.Repository;
 using BuisnessObject.ViewModel;
 using System.Security.Cryptography;
+using Loader.App_Start;
+
+
 
 namespace BussinessLogic.Service
 {
@@ -14,12 +19,17 @@ namespace BussinessLogic.Service
     {
         private GenericUnitOfWork uow = null;
         private ReturnBaseMessageModel returnBaseMessageModel = null;
+        private ApplicationCustomerManager _userManager;
+
         public CustomerUserService()
         {
             uow = new GenericUnitOfWork();
+           
             returnBaseMessageModel = new ReturnBaseMessageModel();
 
         }
+
+       
         public List<Customer> GetCustomerAutoCompleteBranchGroupTree(string term)
         {
 
@@ -36,61 +46,78 @@ namespace BussinessLogic.Service
             }
 
         }
-
+        public bool CheckUsername(string username, int Id = 0)
+        {
+            int count = uow.Repository<CustomerUserTable>().FindBy(x => x.UserName.Trim().ToLower() == username.Trim().ToLower() && x.CustomerId != Id).Count();
+            if (count == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public ReturnBaseMessageModel SaveCustomerUser(CustomerUserViewModel user)
         {
             try
             {
-                var singleUser = uow.Repository<CustomerUser>().FindBy(x => x.CustomerId == user.CustomerId).SingleOrDefault();
+                var singleUser = uow.Repository<CustomerUserTable>().FindBy(x => x.UserId == user.UserId).SingleOrDefault();
                 if (singleUser == null)
                 {
-                    singleUser = new CustomerUser();
-                    singleUser.PasswordHash = HashPassword(user.PasswordHash);
+                    singleUser = new CustomerUserTable();
+                    singleUser.PasswordHash = user.PasswordHash;
                     singleUser.CustomerId = user.CustomerId;
                     singleUser.EffDate = user.EffDate;
                     singleUser.TillDate = user.TillDate;
                     singleUser.UserName = user.UserName;
-                    singleUser.MTId = user.MTId;
+                    singleUser.MTId = Convert.ToInt32(user.MTId);
                     singleUser.Email = user.Email;
                     singleUser.IsActive = user.IsActive;
                     singleUser.IsUnlimited = user.IsUnlimited;
-                    uow.Repository<CustomerUser>().Add(singleUser);
-                 
+                    uow.Repository<CustomerUserTable>().Add(singleUser);
+                    uow.Commit();
+                    returnBaseMessageModel.Msg = "Customer User Added Sucessfully";
+                    returnBaseMessageModel.Success = true;
 
                 }
+
+
 
                 else
                 {
-                   
+
                     singleUser.CustomerId = user.CustomerId;
                     singleUser.EffDate = user.EffDate;
                     singleUser.TillDate = user.TillDate;
                     singleUser.UserName = user.UserName;
-                    singleUser.MTId = user.MTId;
+                    singleUser.MTId = Convert.ToInt32(user.MTId);
                     singleUser.Email = user.Email;
                     singleUser.IsActive = user.IsActive;
                     singleUser.IsUnlimited = user.IsUnlimited;
-                  
-                    uow.Repository<CustomerUser>().Edit(singleUser);
-                   
-                   
+
+                    uow.Repository<CustomerUserTable>().Edit(singleUser);
+                    uow.Commit();
+                    returnBaseMessageModel.Msg = "Customer User Edited Sucessfully";
+                    returnBaseMessageModel.Success = true;
+
 
 
                 }
-                uow.Commit();
-                returnBaseMessageModel.Success = true;
-                returnBaseMessageModel.Msg = "Customer  Created Successfully !";
-                return returnBaseMessageModel;
 
+                return returnBaseMessageModel;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                returnBaseMessageModel.Success = false;
-                returnBaseMessageModel.Msg = "Error";
-                return returnBaseMessageModel;
+                throw ex;
             }
 
-        }
+            
+            }
+
+
+
+
 
         public string getCustomerName(int? customerId)
         {
@@ -167,11 +194,11 @@ public static bool VerifyHashedPassword(string hashedPassword, string password)
 
                 string query = "";
                
-                    query = "select  COUNT(*) OVER () AS TotalCount,* from [LG].[CustomerUser]  where  UserName like'%" + Name.Trim() + "%'";
+                    query = "select  COUNT(*) OVER () AS TotalCount,* from [cust].[CustomerUserTable]  where  UserName like'%" + Name.Trim() + "%'";
 
                
             
-                query += @" ORDER BY  CustomerUserId 
+                query += @" ORDER BY  UserId
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
                 var customerList = uow.Repository<CustomerUserViewModel>().SqlQuery(query).ToList();
@@ -189,7 +216,7 @@ public static bool VerifyHashedPassword(string hashedPassword, string password)
 
         public CustomerUserViewModel getSingleCustomerList(int? userID)
         {
-            var customerList = uow.Repository<CustomerUser>().FindBy(x => x.CustomerUserId == userID);
+            var customerList = uow.Repository<CustomerUserTable>().FindBy(x => x.UserId == userID);
             var customerSingleList = customerList.Select(x => new CustomerUserViewModel
             {
                 CustomerId = x.CustomerId,
