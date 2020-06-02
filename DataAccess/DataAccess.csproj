@@ -202,6 +202,9 @@
     <Compile Include="DatabaseModel\NotificationSuccess.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModel\NotificationToken.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModel\Param.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>

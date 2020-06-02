@@ -87,6 +87,7 @@ namespace GarbageCollection.WebApi.WebApiController
             }
 
         }
+
         [Route("{id}")]
         public IEnumerable<MainViewModel.CollectionEntry> Get(int id)
         {
@@ -138,7 +139,7 @@ namespace GarbageCollection.WebApi.WebApiController
         }
 
         [HttpGet]
-        [Route("collectionverify")]
+        [Route("collectionentrylist")]
         public IEnumerable<MainViewModel.CollectionVerificationEntry> GetCollectionVerify([FromUri]  PagingParameterModel pagingparametermodel,int? collectorid)
         {
             ResponseMessage resMsg = new ResponseMessage();
@@ -147,9 +148,23 @@ namespace GarbageCollection.WebApi.WebApiController
                // var collectorid=HttpContext.Current.Session["CustomerUserId"];
 
 
-                string query = String.Format("select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null and CollectorId="+collectorid);
+                string query = String.Format("select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID,verifiedBy as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null and CollectorId=" + collectorid/*+ "and CollectionType="+"'Mobile'"*/);
 
                 List<MainViewModel.CollectionVerificationEntry> returnData = db.Database.SqlQuery<MainViewModel.CollectionVerificationEntry>(query).ToList();
+               
+                foreach (var item in returnData)
+                {
+                    if (item.verifiedBy == null)
+                    {
+                        item.Status = "Pending";
+
+                    }
+                    else
+                    {
+                        item.Status = "Verified";
+                    }
+                    returnData.Add(item);
+                }
                 //get's no of rows
                 int count = returnData.Count();
 
@@ -192,8 +207,8 @@ namespace GarbageCollection.WebApi.WebApiController
 
         }
         [HttpGet]
-        [Route("defaultlocationdue")]
-        public IEnumerable<MainViewModel.CollectionViewModel> DefaultMonthlyDueForCollector([FromUri]  PagingParameterModel pagingparametermodel,int? locationid)
+        [Route("defaultlocationsubscriptiondue")]
+        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollector([FromUri]  PagingParameterModel pagingparametermodel,int? locationid,int? collectorid)
         {
             ResponseMessage resMsg = new ResponseMessage();
             try
@@ -201,9 +216,9 @@ namespace GarbageCollection.WebApi.WebApiController
                 //var collectorid = HttpContext.Current.Session["CustomerUserId"];
 
 
-                string query = String.Format("select  COUNT(*) OVER () AS FgetNotificationlocationwise('"+ locationid + "')");
+                string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from  FgetNotificationlocationwise('" + locationid + "','" +collectorid+ "')");
 
-                List<MainViewModel.CollectionViewModel> returnData = db.Database.SqlQuery<MainViewModel.CollectionViewModel>(query).ToList();
+                List<SubscriptionDueModel> returnData = db.Database.SqlQuery<SubscriptionDueModel>(query).ToList();
                 //get's no of rows
                 int count = returnData.Count();
 
@@ -245,27 +260,30 @@ namespace GarbageCollection.WebApi.WebApiController
             }
 
         }
+
+        [HttpPost]
         [Route("collectionentry")]
-        private async Task<ReturnValue> ExecuteDataSync(MainViewModel.CollectionViewModel collListObj)
+       
+        public async Task<ReturnValue> ExecuteDataSync([FromBody] List<CollectorViewModel> collListObj)
         {
             using (TransactionScope scope = TransactionScopeUtils.CreateTransactionScope())
             {
                 ReturnValue retVal = new ReturnValue();
                 try
                 {
-                    //collListObj.ToList().ForEach(collObj =>
+                   collListObj.ToList().ForEach(collObj =>
 
-                    //{
-                        if (collListObj.Discount == null)
+                    {
+                        if (collObj.Discount == null)
                         {
-                        collListObj.Discount = 0;
+                            collObj.Discount = 0;
                         }
-                        db.Database.ExecuteSqlCommand(String.Format(@"exec[dbo].[PsetCollectionDueMobile]  @SubsCollId={0},@custId={1},@Subsid={2},@CollectorId={3}, @CollectionAmt={4},@CollDiscount={5},@CollectionDate='{6}',@PostedBy={7}",
-                         collListObj.DueId, collListObj.custid, collListObj.SubsId , collListObj.CollectorId, collListObj.ReceivedAmount, collListObj.Discount, collListObj.CollectionDate, collListObj.mobilecollectorid));
+                    db.Database.ExecuteSqlCommand(String.Format(@"exec[dbo].[PsetCollectionDueMobile]  @custId={0},@Subsid={1},@CollectorId={2}, @CollectionAmt={3},@CollDiscount={4},@CollectionDate='{5}',@PostedBy={6}",
+                      collObj.custid, collObj.SubsId, collObj.CollectorId, collObj.ReceivedAmount, collObj.Discount, collObj.CollectionDate, collObj.UserId));
                       
                     
                     
-                    //});
+                    });
                     //var data = String.Format("select COUNT(*) OVER() AS TotalCount, subsid, Subsno as SubsNo, CustomerName, LocationName, DueBalance as MonthlyAmount, Debit, Status from fgetSubscriptionDueReport('" + DateTime.Now + "') where custid = " + collListObj.SingleOrDefault().custid);
                     //List<MainViewModel.CollectionEntry> returnData = db.Database.SqlQuery<MainViewModel.CollectionEntry>(data).ToList();
                     scope.Complete();
@@ -277,7 +295,6 @@ namespace GarbageCollection.WebApi.WebApiController
                 {
                     scope.Dispose();
                     retVal.Status = false;
-                    retVal.Data = new List<MainViewModel.CollectionEntry>();
                     throw;
                 }
                 return retVal;
@@ -321,6 +338,7 @@ namespace GarbageCollection.WebApi.WebApiController
             }
 
         }
+        
 
         public class TransactionScopeUtils
         {

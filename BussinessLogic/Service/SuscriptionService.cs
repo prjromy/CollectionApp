@@ -138,6 +138,44 @@ namespace BussinessLogic.Service
             }
 
         }
+
+        public List<MainViewModel.SubscriptionViewModel> getSuscriberListForQRCode(string name,string address,int pageNo, int pageSize)
+
+        {
+            try
+            {
+
+                string query = "";
+             
+                query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where status=1";
+
+                
+                //where  CustomerName like'%" + Name.Trim() + "%'";
+
+             
+                if (address != "")
+                {
+                    query += " and LocationName like '%" + address.Trim() + "%'";
+                }
+                if (name != "")
+                {
+                    query += " and CustomerName like '" + name.Trim() + "%'";
+                }
+
+                query += @" ORDER BY  CustId 
+                       OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
+                       FETCH NEXT " + pageSize + " ROWS ONLY";
+                var suscriptionList = uow.Repository<MainViewModel.SubscriptionViewModel>().SqlQuery(query).ToList();
+
+                return suscriptionList;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
         public MainViewModel.SubscriptionViewModel GetSelectedSubscription(int susid, string custType)
         {
             MainViewModel.SubscriptionViewModel customerInfoList = new MainViewModel.SubscriptionViewModel();

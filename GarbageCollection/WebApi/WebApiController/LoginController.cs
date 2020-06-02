@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using System.Web;
 using System.Web.Helpers;
 using System.Web.Http;
@@ -99,29 +100,62 @@ namespace GarbageCollection.WebApi.WebApiController
                 //Loader.Models.ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
                 if (user != null && user.IsActive == true && pass.VerifyHashedPassword(user.PasswordHash, context.Password) != PasswordVerificationResult.Failed)
                 {
-
-
-                    var sul = new User
+                    if (user.UserDesignationId == 11)
                     {
-                        EmployeeId = user.EmployeeId,
-                        Email=user.Email,
-                        UserId = user.UserId,
-                        UserName = user.UserName,
-                        EffDate = user.EffDate,
-                        TillDate = user.TillDate,
-                        MTId = user.MTId,
-                        IsUnlimited = user.IsUnlimited,
-                        UserDesignationId = user.UserDesignationId
-                    };
+                        var locations = String.Format("select  locationid from  fgetlocationlistbycollector('" + user.UserId + "')");
 
-                    //Logger.writeLog(Request, Logger.JsonDataResult(sul), Logger.JsonDataResult(context));
-                    return Ok(new { results = sul });
+
+                        List<int> returnData = db.Database.SqlQuery<int>(locations).ToList();
+                        int[] myintlist = returnData.ToArray();
+
+
+
+
+                        var sul = new LocationUser
+                        {
+                            EmployeeId = user.EmployeeId,
+                            Email = user.Email,
+                            UserId = user.UserId,
+                            UserName = user.UserName,
+                            EffDate = user.EffDate,
+                            TillDate = user.TillDate,
+                            MTId = user.MTId,
+                            IsUnlimited = user.IsUnlimited,
+                            UserDesignationId = user.UserDesignationId,
+                            Location = myintlist
+                        };
+                        return Ok(new { results = sul });
+
+                    }
+                    else
+                    {
+                        var sul = new User
+                        {
+                            EmployeeId = user.EmployeeId,
+                            Email = user.Email,
+                            UserId = user.UserId,
+                            UserName = user.UserName,
+                            EffDate = user.EffDate,
+                            TillDate = user.TillDate,
+                            MTId = user.MTId,
+                            IsUnlimited = user.IsUnlimited,
+                            UserDesignationId = user.UserDesignationId,
+
+                        };
+                        return Ok(new { results = sul });
+
+                    }
 
                 }
+
+                //Logger.writeLog(Request, Logger.JsonDataResult(sul), Logger.JsonDataResult(context));
+
+
+
                 else if (user != null && user.IsActive == false)
                 {
 
-                    return NotFound();
+                    return BadRequest("User Not Active");
                 }
                 else
                 {
@@ -129,9 +163,9 @@ namespace GarbageCollection.WebApi.WebApiController
                 }
 
 
+
+
             }
-
-
 
             else if (context.ClientId == "Customer")
             {
@@ -155,7 +189,7 @@ namespace GarbageCollection.WebApi.WebApiController
                         TillDate = user.TillDate,
                         MTId = user.MTId,
                         IsUnlimited = user.IsUnlimited,
-                        
+
                     };
                     //Logger.writeLog(Request, Logger.JsonDataResult(sul), Logger.JsonDataResult(context));
                     return Ok(new { results = sul });
@@ -166,7 +200,7 @@ namespace GarbageCollection.WebApi.WebApiController
                 else if (user != null && user.IsActive == false)
                 {
 
-                    return NotFound();
+                    return BadRequest("Customer Not Active");
                 }
                 else
                 {
@@ -183,28 +217,46 @@ namespace GarbageCollection.WebApi.WebApiController
 
         }
 
-        //public static string HashPassword(string password)
-        //{
-        //    byte[] salt;
-        //    byte[] buffer2;
-        //    if (password == null)
-        //    {
-        //        throw new ArgumentNullException("password");
-        //    }
-        //    using (Rfc2898DeriveBytes bytes = new Rfc2898DeriveBytes(password, 0x10, 0x3e8))
-        //    {
-        //        salt = bytes.Salt;
-        //        buffer2 = bytes.GetBytes(0x20);
-        //    }
-        //    byte[] dst = new byte[0x31];
-        //    Buffer.BlockCopy(salt, 0, dst, 1, 0x10);
-        //    Buffer.BlockCopy(buffer2, 0, dst, 0x11, 0x20);
-        //    return Convert.ToBase64String(dst);
-        //}
-        //        Verifying:
+
+        [HttpPost]
+        [Route("api/savecustomertoken")]
+        public async Task<ReturnValue> SaveToken([FromBody]NotificationToken context)
+        {
+            ReturnValue retVal = new ReturnValue();
+            using (TransactionScope scope = CollectorController.TransactionScopeUtils.CreateTransactionScope())
+            {
+                try
+                {
+                   
 
 
+                    db.NotificationTokens.Add(new NotificationToken()
+                    {
+
+                        CustomerId = context.CustomerId,
+                        RegistrationToken = context.RegistrationToken
+                    });
+
+                    db.SaveChanges();
+
+                    scope.Complete();
+                    retVal.Status = true;
 
 
+                }
+
+
+                catch (Exception ex)
+                {
+                    scope.Dispose();
+                    retVal.Status = false;
+                    throw;
+                }
+                return retVal;
+            }
+            
+
+
+        }
     }
 }

@@ -50,7 +50,7 @@ namespace GarbageCollection.Controllers
             }
             return PartialView(customer);
         }
-
+     
 
         public ActionResult UpdateStatus(int? cId)
         {
@@ -296,9 +296,23 @@ namespace GarbageCollection.Controllers
 
         public ActionResult BarcodeIndex()
         {
-            QRCodeModel barcode = new QRCodeModel();
+            MainQRCodeModel.QRCodeModel barcode = new MainQRCodeModel.QRCodeModel();
 
             return View(barcode);
+        }
+        public ActionResult MultipleQRCodeIndex()
+        {
+            MainViewModel.SubscriptionViewModel barcode = new MainViewModel.SubscriptionViewModel();
+
+            return View(barcode);
+        }
+        public ActionResult _MultipleBarcodeList( string name, string address, int pageNo = 1, int pageSize = 10)
+        {
+          
+            MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
+            var suscriberList = suscription.getSuscriberListForQRCode(name, address, pageNo, pageSize);
+            customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
+            return PartialView(customerViewModel);
         }
 
         public JsonResult CheckCustomerExist(int txt)

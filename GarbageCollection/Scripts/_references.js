@@ -364,4 +364,5 @@
 /// <reference path="suscrptionjs/suscriptionpage.js" />
 /// <reference path="tether.min.js" />
 /// <reference path="typeahead.min.js" />
+/// <reference path="../select2 js/select2.min.js" />
 /// <reference path="../userdialog/jquery-1.11.1.ui.min.js" />

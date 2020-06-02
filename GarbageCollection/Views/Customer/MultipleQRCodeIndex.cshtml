@@ -1,0 +1,482 @@
+﻿
+@model  BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
+    var customerName = @ViewBag.customerName;
+
+}
+
+<div class="barcode-create-main">
+    <div class="box box-success">
+        <div class="box-header with-border">
+
+
+
+            <div class="form-horizontal">
+                <h4>Generate QRCode </h4>
+                <hr />
+
+                <form id="multipleqrcodeform">
+
+
+                    <div class="form-horizontal">
+
+                        <!--<span style="color:red; ">@ViewBag.Message </span>-->
+                        <!--@Html.ValidationSummary(true, "", new { @class = "text-danger" })-->
+                        @*<div class="col-md-12">*@
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <div class="box-tools col-md-3  form-group" id="search-Employee-Name">
+                                    @Html.TextBox("CustomerSearch", "", htmlAttributes: new { @class = "form-control", @id = "txtCustomerSearch", @placeholder = "Customer Name" ,autocomplete="off"})
+                                </div>
+                                @*</div>
+            <div class="form-group">*@
+                                <div class="box-tools col-md-3  form-group" id="search-Address" style="margin-left:16px;">
+                                    @Html.TextBox("Address", "", htmlAttributes: new { @class = "form-control", @id = "txtAddress", @placeholder = "Location", autocomplete = "off" })
+                                    @Html.HiddenFor(x=>x.LocationID)
+                                </div>
+                           
+                          
+
+                       
+                            <div class="col-md-offset-2 col-md-10 ">
+
+
+
+                                <input type="button" value="Generate QR Code" class="btn btn-success btn-generate-qr " />
+
+                            </div>
+                                 </div>
+                        </div>
+                        </div>
+                </form>
+                <div class="subscription-qr-list">
+
+
+
+                    @*@Html.Partial("_List", Model)*@
+
+
+
+                </div>
+                <div class="form-group demo" id="paginationdemo">
+                    <div class="A4" id="pagesContainer" >
+                        @*@Html.LabelFor(model => model.QRCodeImagePath, new { @class = "control-label col-md-2" })*@
+                        <div id="imgdiv" class="pagedemo" size="A4">
+
+
+
+                        </div>
+                        <div>
+
+                        </div>
+                        @*<div id="demo5"></div>*@
+
+                    </div>
+                </div>
+
+            </div>
+       
+           
+
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-message-box.js"></script>
+<link href="~/Content/messagebox.css" rel="stylesheet" />
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/ch-dialog.js"></script>
+<style>
+    .A4 {
+        background: rgb(204,204,204);
+    }
+
+    .pagedemo {
+        background: white;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0.5cm;
+        box-shadow: 0 0 0.5cm rgba(0,0,0,0.5);
+    }
+
+    div[size="A4"] {
+        width: 21cm;
+        height: 29.7cm;
+    }
+</style>
+<link href="~/Content/select2.css" rel="stylesheet" />
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-message-box.js"></script>
+<script src="~/Scripts/typeahead.min.js"></script>
+
+
+
+<script src="~/Scripts/ch-dialog.js"></script>
+<script>
+    $("div.qrcode-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var container = parentContainer.find("div.qrcode-page-list")
+        var url = "?name=" + name + "&address=" + address;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.qrcode-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var container = parentContainer.find("div.qrcode-page-list")
+        var url = "?name=" + name + "&address=" + address;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.qrcode-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var container = parentContainer.find("div.qrcode-page-list")
+        var url = "?name=" + name + "&address=" + address;
+        getPageSizeChangeData(url, container, me)
+    });
+ 
+    //$(function () {
+ 
+    //    $("#txtAddress").typeahead({
+
+    //        hint: true,
+    //        highlight: true,
+    //        minLength: 1,
+    //        source: function (request, response) {
+    //            $.ajax({
+    //                url: '/Suscription/LocationList/',
+    //                data: "{ 'prefix': '" + request + "'}",
+    //                dataType: "json",
+    //                type: "POST",
+    //                contentType: "application/json; charset=utf-8",
+    //                success: function (data) {
+    //                    items = [];
+    //                    map = {};
+    //                    $.each(data, function (i, item) {
+    //                        var id = item.Lid;
+    //                        var name = item.LocationName;
+    //                        map[name] = { id: id, name: name };
+    //                        items.push(name);
+    //                    });
+    //                    response(items);
+    //                    $(".dropdown-menu").css("height", "auto");
+    //                    //$(".dropdown-menu").css("width", "");
+    //                    $(".dropdown-menu").addClass("col-md-11");
+    //                },
+    //                error: function (response) {
+    //                    alert(response.responseText);
+    //                },
+    //                failure: function (response) {
+    //                    alert(response.responseText);
+    //                }
+    //            });
+
+    //        },
+    //        updater: function (item) {
+    //            $('#LocationID').val(map[item].id);
+    //            return item;
+    //        }
+    //    });
+
+    //})
+
+    $(".barcode-create-main").on('keyup', '#txtCustomerSearch', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+
+        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Customer/_MultipleBarcodeList",
+            data: { name: name, address: address },
+            success: function (data) {
+                $(".barcode-create-main").find("div.subscription-qr-list").html("");
+                $(".barcode-create-main").find("div.subscription-qr-list").html(data);
+            }
+        })
+    });
+
+
+    $(".barcode-create-main").on('keyup', '#txtAddress', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+
+        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Customer/_MultipleBarcodeList",
+            data: { name: name, address: address },
+            success: function (data) {
+                $(".barcode-create-main").find("div.subscription-qr-list").html("");
+                $(".barcode-create-main").find("div.subscription-qr-list").html(data);
+            }
+        })
+    });
+    $('.btn-generate-qr ').click(function (e) {
+        
+
+        //for page break
+        var imagesPerPage = 9;
+        var pagesContainer = $('#pagesContainer'),
+       imagesInPage = 0,
+       divPage = $("#imgdiv");
+
+        ///
+        e.stopImmediatePropagation();
+        
+        var txt = $('#txtCustomerSearch').val();
+        var location = $('#txtAddress').val();
+
+        if (!txt.trim() && !location.trim()) {
+            ErrorAlert("Please enter either location or customer name", 3000);
+            return false;
+        }
+        if ($('.checkall:checked').length == 0) {
+            ErrorAlert("Please Select CheckBox", 3000);
+            return false;
+
+
+
+        }
+        var collections = new Array();
+        $('.qrcode-page-list tbody tr').each(function () {
+            
+
+            var row = $(this);
+
+            if ($(this).find('#IsChecked').attr('type') == "checkbox") {
+                if ($(this).find('#IsChecked').is(":checked")) {
+                    var collection = {};
+
+   
+
+                  
+                    //collection.custid = $('#custid').val();
+                    collection.custid =row.find('td').eq(1).text()
+                    collection.custname = row.find('td').eq(3).text();
+
+                    collections.push(collection);
+                }
+
+            }
+
+
+
+
+
+
+        })
+             
+                    $.ajax({
+                        type: 'POST',
+                        url: '/api/multipleqrcode',
+                        data: JSON.stringify(collections),
+                        dataType: 'json',
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            
+                            if (data.success) {
+                                //    ErrorAlert("Page Size Exceeds", 3000);
+                                //    return false;
+                                //}
+                                
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/api/getmultipleqrcode',
+                                    data: { fName: data.value },
+                                    dataType: 'json',
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (data) {
+                                        $.each(data, function (index, value) {
+                                            debugger;
+                                            var curPage = 0;
+                                            for (i = 0; i < 1000; i++) {
+                                                if(( i/9 + 1 ) > curPage ) {
+                                                    //var numImgs = $('div#imgdiv img').length;//number of images in pdf
+                                                    //var i=numImgs
+                                                    //numImgs = numImgs + data.length;
+                                                    //var remaining=9-numImgs;
+                                                    //if (remaining >= 0 && i  <= remaining) {
+                                                    //    var i=numImgs;
+                                                    //    divPage=divPage;
+                                                    //}
+                                                    if(curPage!==0)
+                                                    {
+                                                       // var pageNumber = 1;
+                                                           // var innercounter = 9;
+                                                            divPage = $('<div/>', { id: "p" + curPage }).addClass('pagedemo').attr('size', "A4").appendTo(pagesContainer);
+
+                                                    }
+                                                }
+
+
+                                                //if (counter == 0) {
+                                                //    debugger;
+                                                //    var pageNumber = 1;
+                                                //    var innercounter = 9;
+                                                //    divPage = $('<div/>', { id: "p" + pageNumber }).addClass('pagedemo').attr('size', "A4").appendTo(pagesContainer);
+                                                //    innercounter = innercounter - data.length;
+                                                //    //var images= $("#p" + pageNumber + "img").length;
+                                                //    if (innercounter == 0) {
+                                                //        pageNumber += 1;
+                                                //    }
+                                                //}
+                                                //$("#demo5").paginate({
+                                                //    count: pageNumber,
+                                                //    start: 1,
+                                                //    display: Math.min(7, pageNumber),
+                                                //    border: true,
+                                                //    border_color: '#fff',
+                                                //    text_color: '#fff',
+                                                //    background_color: 'black',
+                                                //    border_hover_color: '#ccc',
+                                                //    text_hover_color: '#000',
+                                                //    background_hover_color: '#fff',
+                                                //    images: false,
+                                                //    mouse: 'press',
+                                                //    onChange: function (page) {
+                                                //        $('#paginationdemo ._current').removeClass('_current').hide();
+                                                //        $('#p' + page).addClass('_current').show();
+                                                //    }
+                                                //});
+                                                var img = document.createElement("img");
+                                                var parentdiv = document.createElement("div");
+                                                var divs = document.createElement("div");
+                                                parentdiv.style.float = "left";
+                                                parentdiv.style.marginTop = "6px";
+                                                parentdiv.style.margin = "4px";
+                                                divs.setAttribute('id', 'divId')
+                                                img.width = "250";
+                                                img.height = "250";
+                                                img.style.padding = "6px";
+                                                img.style.border = '1px solid black';
+                                                img.className = "image";
+                                                img.setAttribute('id', 'imageId')
+
+                                                img.src = "data:image/png;base64," + value.generatedQRCode;
+                                                parentdiv.append(divs)
+                                                divs.append(img);
+                                                // document.getElementById("imgdiv").appendChild(parentdiv);
+                                                $(parentdiv).appendTo(divPage)
+
+                                                var x = document.createElement("FIGCAPTION");
+                                                var t = document.createTextNode(value.custid);
+                                                x.style.textAlign = "center";
+                                                x.appendChild(t);
+                                                var custp = document.createElement("p");
+                                                var custname = document.createTextNode(value.custname);
+                                                custp.style.textAlign = "center";
+                                                custp.appendChild(custname);
+                                                parentdiv.appendChild(x);
+                                                parentdiv.appendChild(custp);
+                                            }
+
+                                           
+                                        });
+                                        
+                                    }
+                                    })
+                                }
+                            //var numImgs = $('div#imgdiv img').length;
+                           
+                            //if (numImgs > 8) {
+
+                           
+                          
+                        }
+                    })
+                
+              
+
+
+
+
+
+          
+
+        })
+    
+
+
+    $('.qr-pdf-button').on("click", function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        //var formData = new FormData($(this)[0]);
+        //var files = $('#imgdivs img').attr('src');
+
+        //var custNo = $(this).attr("data-attr");
+        //var custName = $(this).attr("data-name");
+
+        var form_data = new FormData();
+        var files = new Array();
+        $('div#imgdiv img').each(function () {
+            //form_data.append("files", $(this).attr('src'));
+            files.push($(this).attr('src'));
+        })
+        var custNo = new Array();
+        $('div#imgdiv figcaption').each(function () {
+           // form_data.append("custNo", $(this).val());
+            // form_data.append("custNo", $(this).val());
+            custNo.push($(this).text());
+        })
+        var custName = new Array();
+        $('div#imgdiv p').each(function () {
+            //form_data.append("custName", $(this).val());
+            custName.push($(this).text());
+        })
+        //form_data.append("custNo", custNo);
+        //form_data.append("custName", custName);
+        debugger;
+        $.ajax({
+            url: '@Url.Action("MultiplePDF", "Print")',
+
+            type: 'POST',
+            data: { files: files, custNo: custNo, custName: custName },
+
+
+            dataType: 'json',
+            success: function (resultData) {
+                if (resultData.success) {
+                    window.location = "/Print/DownloadInvoice" + "?fName=" + resultData.fName;
+                }
+            },
+
+            error: function (data) {
+                debugger;
+                ErrorAlert(data.responseText, 15000)
+            },
+
+        });
+
+    })
+</script>

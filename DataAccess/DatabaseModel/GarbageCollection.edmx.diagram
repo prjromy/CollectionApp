@@ -64,6 +64,7 @@
         <AssociationConnector Association="GarbageCollectionDBModel.FK_LG_UserLogin_LG_User_UserId" />
         <AssociationConnector Association="GarbageCollectionDBModel.AppCustomerRole" />
         <AssociationConnector Association="GarbageCollectionDBModel.UserRole" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.NotificationToken" Width="1.5" PointX="17.375" PointY="19.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

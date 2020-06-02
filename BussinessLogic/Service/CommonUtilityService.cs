@@ -130,6 +130,13 @@ namespace BussinessLogic.Service
 
             return LocationList;
         }
+        public static string UserName(int? userid)
+        {
+
+            var LocationList = uow.Repository<User>().FindBy(x => x.UserId == userid).Select(x => x.UserName).SingleOrDefault();
+
+            return LocationList;
+        }
         public static string getCustomerName(int? customerId)
         {
             var userName = uow.Repository<Customer>().FindBy(x => x.Cid == customerId).Select(x => x.CustomerName).SingleOrDefault();

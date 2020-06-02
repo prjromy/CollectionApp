@@ -92,7 +92,10 @@
     <Compile Include="CustomHelper\CustomHelper.cs" />
     <Compile Include="CustomHelper\EnumHelper.cs" />
     <Compile Include="CustomHelper\ExcelExportHelper.cs" />
+    <Compile Include="CustomHelper\JsonpResult.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AttendeeRepository.cs" />
     <Compile Include="Repository\EntityDatabaseTransaction.cs" />
     <Compile Include="Repository\GenericRepository.cs" />
     <Compile Include="Repository\GenericUnitOfWork.cs" />
@@ -104,6 +107,7 @@
     <Compile Include="Service\CommonUtilityService.cs" />
     <Compile Include="Service\CustomerService.cs" />
     <Compile Include="Service\CustomerUserService.cs" />
+    <Compile Include="Service\NotificationService.cs" />
     <Compile Include="Service\ReportService.cs" />
     <Compile Include="Service\SuscriptionService.cs" />
   </ItemGroup>

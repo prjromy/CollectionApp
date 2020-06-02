@@ -150,7 +150,7 @@
 
         var thisVal = $(this).val();
         if (thisVal == "Hide Section") {
-            $(this).val("New ")
+            $(this).val("Collector Location Map")
             $(".collector-location-display").hide();
         }
         else {
@@ -207,8 +207,8 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-        var collectionno = parseInt(parentContainer.find("#collector-no").find("#CollectorId").val());
-        var locationno = parseInt(parentContainer.find("#location-no").find("#LocationId").val());
+        var collectionno = parentContainer.find("#collector-no").find("#CollectorNo").val();
+        var locationno = parentContainer.find("#location-no").find("#LocationNo").val();
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
 
         $.ajax({

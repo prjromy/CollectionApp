@@ -58,11 +58,13 @@ namespace BuisnessObject.ViewModel
             public string SearchOption { get; set; }
             public IEnumerable<int> CIDs { get; set; }
             public string SearchParameter { get; set; }
+            public string Printed { get; set; }
             public List<CustomerViewModel> customerViewModelList { get; set; }
             public IPagedList<CustomerViewModel> customerPagedList { get; set; }
         }
         public class SubscriptionViewModel
         {
+            public string CustNo { get; set; }
             public int Subsid { get; set; }
             public Nullable<int> SubsNo { get; set; }
             [DisplayName("Customer Name")]
@@ -94,6 +96,8 @@ namespace BuisnessObject.ViewModel
             public int TotalCount { get; set; }
             public string SearchOption { get; set; }
             public string SearchParameter { get; set; }
+            public string QRStatus { get; set; }
+            public bool IsChecked { get; set; }
             public List<SubscriptionViewModel> suscriberViewModelList { get; set; }
             public IPagedList<SubscriptionViewModel> suscriberPagedList { get; set; }
             public string ModelFrom { get; set; }
@@ -126,7 +130,7 @@ namespace BuisnessObject.ViewModel
             [Required(ErrorMessage ="Collector Required")]
             public int CollectorId { get; set; }
             public DateTime CollectionDate { get; set; }
-            public int mobilecollectorid { get; set; }
+            public int UserId { get; set; }
             public int TotalCount { get; set; }
             // public Nullable<System.DateTime> EffectiveDate { get; set; }
             public List<CollectionViewModel> collectionList { get; set; }
@@ -182,6 +186,8 @@ namespace BuisnessObject.ViewModel
             public Nullable<System.DateTime> CollectionDate { get; set; }
             public string CollectionType { get; set; }
             public string PostedBy { get; set; }
+            public string verifiedBy { get; set; }
+            public string Status { get; set; }
             public IPagedList<CollectionVerificationEntry> collectionPagedList { get; set; }
         }
         public class CollectorDetail

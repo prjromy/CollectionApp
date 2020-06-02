@@ -20,5 +20,7 @@ namespace BuisnessObject.ViewModel
         public string TransactionType { get; set; }
         public string Value { get; set; }
         public bool BoolValue { get; set; }
+          
+        public string[] qrResult { get; set; }
     }
 }

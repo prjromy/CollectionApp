@@ -1,0 +1,195 @@
+﻿
+@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
+
+<div class="table-responsive no-padding qrcode-page-list">
+    <table class="table table-bordered table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Auto&nbsp;<input type="checkbox" id="Main"></th>
+
+                <th> Customer No.</th>
+                <th>Subscription No</th>
+                <th>@Html.DisplayNameFor(x => x.CustomerName)</th>            
+                <th>@Html.DisplayNameFor(x => x.LedgerName)</th>
+               
+                <th>@Html.DisplayNameFor(x => x.LocationName)</th>
+                <th>Status</th>
+
+
+
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.suscriberPagedList)
+            {
+                @Html.HiddenFor(x => item.CustId, new { @id = "custid" })
+                <tr style="font-size:12px;">
+                    <td>@Html.CheckBoxFor(x => item.IsChecked, new { @class = "checkall", @id = "IsChecked" })</td>
+
+                    <td>
+                        @item.CustNo
+
+                    </td>
+                    <td>
+                        @item.SubsNo
+
+                    </td>
+                    <td>
+                        @item.CustomerName
+
+                    </td>
+                    <td>
+                        @item.LedgerName
+
+                    </td>
+                    <td>
+                        @item.LocationName
+
+                    </td>
+
+
+                    @if (@item.QRStatus == "Printed")
+                {
+                <td><span class="label label-success" style="font-size: 12px;">@item.QRStatus</span></td>
+                }
+                else
+                {
+                <td><span class="label label-primary" style="font-size: 12px;">New</span></td>
+
+                }
+
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.Paging("_MultipleBarcodeList", "Customer", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
+</div>
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+
+<script src="~/Scripts/ch-dialog.js"></script>
+<link href="~/Content/ToggleButton.css" rel="stylesheet" />
+
+<script>
+    $('#Main').on('click', function () {
+        debugger;
+        if ($('#Main').is(":checked")) {
+            $('.checkall').prop("checked", true)
+        } else {
+            $('.checkall').prop("checked", false)
+        }
+
+
+
+
+    })
+        $('.qr-button').click(function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        debugger;
+        var txt = $(this).data("id");
+
+
+        var content = txt.toString();
+        $.ajax({
+            type: 'GET',
+            url: '/Customer/DisplayQRCode',
+            data: { cId: txt },
+
+            success: function (result) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/qrcode',
+                    data: { content: content },
+                    dataType: 'json',
+                    success: function (data) {
+                        var img = document.createElement("img");
+                        img.width = "250";
+                        img.height = "250";
+                        img.className = "image";
+                        img.name = "file";
+                        img.src = "data:image/png;base64," + data;
+                        //var divs = document.createElement("div");
+                        //divs.append(img);
+                        //document.getElementById("imgdivs").appendChild(divs);
+                        var results = $(result);
+                        results.find('#imgdivs').append(img);
+                        debugger;
+                        $('#account-pop-up-div').html(results).modal({
+                            'show': true,
+                            'backdrop': 'static'
+                        });
+                        //$(".modal-body").find('#createSubmitForm').find('#CustomerName').text(custname);
+                        //$(".modal-body").find('#createSubmitForm').find('#CustId').val(customerid);
+
+                    },
+                    error: function () {
+
+                    }
+                });
+
+            }
+        })
+
+
+
+    })
+        $("div.qrcode-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var container = parentContainer.find("div.qrcode-page-list")
+        var url = "?name=" + name + "&address=" + address;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+        $("div.qrcode-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var container = parentContainer.find("div.qrcode-page-list")
+        var url = "?name=" + name + "&address=" + address;
+        getPageNumberChangeData(url, container, me)
+    });
+        $("div.qrcode-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var container = parentContainer.find("div.qrcode-page-list")
+        var url = "?name=" + name + "&address=" + address;
+        getPageSizeChangeData(url, container, me)
+    });
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+</script>

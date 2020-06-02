@@ -29,5 +29,6 @@ namespace DataAccess.DatabaseModel
         public Nullable<int> PostedBy { get; set; }
         public Nullable<System.DateTime> PostedOn { get; set; }
         public Nullable<byte> Status { get; set; }
+        public Nullable<byte> QRCode { get; set; }
     }
 }

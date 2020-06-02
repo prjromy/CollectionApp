@@ -71,12 +71,6 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'GarbageCollectionDB.dbo.BNoFYId' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="BNoFYId">
-          <Property Name="BNo" Type="int" />
-          <Property Name="FYId" Type="int" />
-        </EntityType>-->
         <EntityType Name="BSADCal">
           <Key>
             <PropertyRef Name="NYear" />
@@ -120,6 +114,7 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.BNoFYId' does not have a p
           <Property Name="PostedBy" Type="int" />
           <Property Name="PostedOn" Type="smalldatetime" />
           <Property Name="Status" Type="tinyint" />
+          <Property Name="QRCode" Type="tinyint" />
         </EntityType>
         <EntityType Name="CustomerRole1">
           <Key>
@@ -229,6 +224,14 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="Message" Type="varchar" MaxLength="500" />
           <Property Name="PostedBy" Type="int" />
           <Property Name="PostedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="NotificationToken">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="RegistrationToken" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CustomerId" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Status">
           <Key>
@@ -788,6 +791,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="Month" EntityType="Self.Month" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationQueue" EntityType="Self.NotificationQueue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationSuccess" EntityType="Self.NotificationSuccess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NotificationToken" EntityType="Self.NotificationToken" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionCollection" EntityType="Self.SubscriptionCollection" Schema="dbo" store:Type="Tables" />
@@ -980,6 +984,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
             <End Role="Role" EntitySet="Roles" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
+          <EntitySet Name="NotificationTokens" EntityType="GarbageCollectionDBModel.NotificationToken" />
         </EntityContainer>
         <EntityType Name="AppCustomerClaim">
           <Key>
@@ -1088,6 +1093,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="PostedBy" Type="Int32" />
           <Property Name="PostedOn" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="Byte" />
+          <Property Name="QRCode" Type="Byte" />
         </EntityType>
         <EntityType Name="CustomerRole1">
           <Key>
@@ -1693,6 +1699,14 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <End Type="GarbageCollectionDBModel.Role" Role="Role" Multiplicity="*" />
           <End Type="GarbageCollectionDBModel.User" Role="User" Multiplicity="*" />
         </Association>
+        <EntityType Name="NotificationToken">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="RegistrationToken" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerId" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1789,6 +1803,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
                 <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
@@ -2324,6 +2339,15 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
               <ScalarProperty Name="RoleId" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="NotificationTokens">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.NotificationToken">
+              <MappingFragment StoreEntitySet="NotificationToken">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
+                <ScalarProperty Name="RegistrationToken" ColumnName="RegistrationToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

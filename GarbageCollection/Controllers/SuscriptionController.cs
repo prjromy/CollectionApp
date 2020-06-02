@@ -191,7 +191,7 @@ namespace GarbageCollection.Controllers
             {
                 var LocationList = suscription.getLocation(prefix);
               
-                    return Json(LocationList);
+                    return Json(LocationList,JsonRequestBehavior.AllowGet);
                
     
             }

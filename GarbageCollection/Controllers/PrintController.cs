@@ -1,8 +1,10 @@
 ﻿
+using DataAccess.DatabaseModel;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -19,7 +21,7 @@ namespace GarbageCollection.Controllers
         //{
         //    try
         //    {
-             
+
 
         //        var allowedExtensions = new[] {
         //    ".Jpg", ".png", ".jpg", "jpeg"
@@ -33,7 +35,7 @@ namespace GarbageCollection.Controllers
         //        string myfile = name + "_" + id + ext; //appending the name with id  
         //                                                   // store the file inside ~/project folder(Img)  
         //        var path = Path.Combine(Server.MapPath("~/BarCodeImage"), myfile);
-               
+
         //        file.SaveAs(path);
         //        PrintDocument pd = new PrintDocument();
         //        pd.DefaultPageSettings.PrinterSettings.PrinterName = "EPSON LQ-310 ESC/P2";
@@ -65,8 +67,10 @@ namespace GarbageCollection.Controllers
         //        throw e;
         //    }
         //}
+        GarbageCollectionDBEntities db = new GarbageCollectionDBEntities();
 
-            [HttpPost]
+
+        [HttpPost]
         public ActionResult  PDF(string files,int? custNo,string custName)
         {
             try
@@ -101,6 +105,17 @@ namespace GarbageCollection.Controllers
                         Session[fName] = bytes1;
 
                 }
+             
+                    var singlecustomer = db.Customers.Where(x => x.Cid == custNo).SingleOrDefault();
+                    if (singlecustomer != null)
+                    {
+                        singlecustomer.QRCode = 1;
+                        db.Entry(singlecustomer).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+
+                
+
                 return Json(new { success = true, fName }, JsonRequestBehavior.AllowGet);
             }
 
@@ -176,11 +191,25 @@ namespace GarbageCollection.Controllers
 
 
                     }
+
                     var bytes1 = stream.ToArray();
                     Session[fName] = bytes1;
 
+                    foreach (var item in custNo)
+                    {
+                        var singlecustomer = db.Customers.Where(x => x.Cid == item).SingleOrDefault();
+                        if (singlecustomer != null)
+                        {
+                            singlecustomer.QRCode = 1;
+                                db.Entry(singlecustomer).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                       
+                    }
                 }
-                return Json(new { success = true, fName }, JsonRequestBehavior.AllowGet);
+
+                return Json(new { success = true,pdf=true, fName }, JsonRequestBehavior.AllowGet);
+                
             }
 
             catch (Exception e)
@@ -196,6 +225,7 @@ namespace GarbageCollection.Controllers
                 return new EmptyResult();
             Session[fName] = null;
             return File(ms, "application/octet-stream", fName);
+
         }
     }
 }

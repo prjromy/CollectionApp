@@ -74,5 +74,6 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<UserLogin> UserLogins { get; set; }
         public virtual DbSet<UserVSBranch> UserVSBranches { get; set; }
         public virtual DbSet<NDateD> NDateDs { get; set; }
+        public virtual DbSet<NotificationToken> NotificationTokens { get; set; }
     }
 }

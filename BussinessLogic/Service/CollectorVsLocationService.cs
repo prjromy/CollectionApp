@@ -22,25 +22,25 @@ namespace BussinessLogic.Service
             uow = new GenericUnitOfWork();
 
         }
-        public List<CollectorLocationViewModel> getCollectorLocationList(int? collector, int? location, int pageNo, int pageSize)
+        public List<CollectorLocationViewModel> getCollectorLocationList(string collector, string location, int pageNo, int pageSize)
         {
-            try
-            {
-                if (collector == 0)
-                {
-                    collector = null;
-                }
+            try { 
+            //{
+            //    if (collector == 0)
+            //    {
+            //        collector = null;
+            //    }
 
                 string query = "";
-                query = "select COUNT(*) OVER () AS TotalCount,Id,CollectorId,LocationId,Postedby,PostedOn from LocationVsCollector where Postedby is not null";
+                query = "select COUNT(*) OVER () AS TotalCount,Id,CollectorId,LocationId,Postedby,PostedOn,CollectorName,LocationName from [dbo].[FgetCollectorVsLocationList]() where Postedby is not null ";
 
-                if (collector != 0 && collector != null)
+                if (collector !="" && collector != null)
                 {
-                    query += "  and CollectorId =" + collector;
+                    query += "  and CollectorName like'%" + collector.Trim()+"%'";
                 }
-                if (location!=0&&location!=null)
+                if (location!=""&&location!=null)
                 {
-                    query += "and LocationId =" + location;
+                    query += " and LocationName like '%" + location.Trim()+ "%'";
                 }
             
                 query += @" ORDER BY  Id
@@ -57,28 +57,30 @@ namespace BussinessLogic.Service
             }
         }
 
-        public ReturnBaseMessageModel saveCollectionLocation(CollectorLocationViewModel collectorLocationViewModel, string[] locationIdList)
+        public ReturnBaseMessageModel saveCollectionLocation(List<CollectorLocationViewModel> collectorLocationViewModel, int collectorId)
         {
-            foreach (string locationId in locationIdList)
+           
+           
+            foreach (var item in collectorLocationViewModel)
             {
-                int locationid = Convert.ToInt32(locationId);
-                var singlecollectorLocations = uow.Repository<LocationVsCollector>().FindBy(x => x.Id == locationid).SingleOrDefault();
+                
+                var singlecollectorLocations = uow.Repository<LocationVsCollector>().FindBy(x => x.Id == item.Id).SingleOrDefault();
                 if (singlecollectorLocations == null)
                 {
                     LocationVsCollector loc = new LocationVsCollector();
-                    singlecollectorLocations.LocationId = locationid;
-                    singlecollectorLocations.CollectorId = collectorLocationViewModel.CollectorId;
-                    singlecollectorLocations.Postedby = Global.UserId;
-                    singlecollectorLocations.PostedOn = DateTime.Now;
-                    uow.Repository<LocationVsCollector>().Add(singlecollectorLocations);
+                    loc.LocationId = item.LocationId;
+                    loc.CollectorId = collectorId;
+                    loc.Postedby = Global.UserId;
+                    loc.PostedOn = DateTime.Now;
+                    uow.Repository<LocationVsCollector>().Add(loc);
                     returnMessage.Msg = "Added Successfully";
                     returnMessage.Success = true;
 
                 }
                 else
                 {
-                    singlecollectorLocations.LocationId = collectorLocationViewModel.LocationId;
-                    singlecollectorLocations.CollectorId = collectorLocationViewModel.CollectorId;
+                    singlecollectorLocations.LocationId = collectorLocationViewModel.SingleOrDefault().LocationId;
+                    singlecollectorLocations.CollectorId = collectorId;
                     singlecollectorLocations.Postedby = Global.UserId;
                     singlecollectorLocations.PostedOn = DateTime.Now;
                     uow.Repository<LocationVsCollector>().Edit(singlecollectorLocations);

@@ -11,7 +11,7 @@
             <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
                 </div>
-            @using (Html.BeginForm("CollectorLocationMapCreateSave", "CollectorLocationMap", FormMethod.Post, new { id = "createSubmitFormLoc" }))
+            @using (Html.BeginForm("Index", "CollectorLocationMap", FormMethod.Post, new { id = "createSubmitFormLoc" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -65,9 +65,11 @@
                          @Html.HiddenFor(x => x.LocationId)*@
                                     <div class="col-sm-4">
 
-                                        @Html.DisplayNameFor(m => m.locationNames)
-                                        <input type="hidden" class="select2-offscreen" id="make-hdn" style="width:100%" value="@Model.locationNames" />
-                                        <input type="text" class="hidden" id="make" name="locationNames" value="@Model.locationNames" />
+                                        @*@Html.DisplayNameFor(m => m.locationNames)*@
+                                        @*<input type="hidden" class="select2-offscreen" id="make-hdn" style="width:100%" value="@Model.locationNames" />
+                                        <input type="text" class="hidden" id="make" name="locationNames" value="@Model.locationNames" />*@
+                                        @Html.TextAreaFor(x=>x.locationNames, 10, 40, new { id="locationnames"})
+                                        @Html.HiddenFor(x=>x.LocationId)
                                     </div>
 
 
@@ -104,16 +106,61 @@
         </div>
     </div>
 </div>
-<link href="~/Content/select2.css" rel="stylesheet" />
+<style>
+    .select2-container {
+        width: 200px;
+    }
+</style>
+<link href="~/Select2 Css/select2.css" rel="stylesheet" />
+<script src="~/Select2 js/select2.js"></script>
+
+
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script src="~/Scripts/typeahead.min.js"></script>
-<script src="~/Scripts/select2.js"></script>
+
 
 
 <script src="~/Scripts/ch-dialog.js"></script>
   <script>
-  
+      $(document).ready(function () {
+
+          //The url we will send our get request to
+          var attendeeUrl = '@Url.Action("GetAttendees", "CollectorLocationMap")';
+          var pageSize = 20;
+
+          $('#locationnames').select2(
+          {
+              placeholder: 'Enter name',
+              //Does the user have to enter any data before sending the ajax request
+              minimumInputLength: 0,
+              allowClear: true,
+              multiple: true,
+              ajax: {
+                  //How long the user has to pause their typing before sending the next request
+                  quietMillis: 150,
+                  //The url of the json service
+                  url: attendeeUrl,
+                  dataType: 'jsonp',
+                  //Our search term and what page we are on
+                  data: function (term, page) {
+                      return {
+                          pageSize: pageSize,
+                          pageNum: page,
+                          searchTerm: term
+                      };
+                  },
+                  results: function (data, page) {
+
+                      //Used to determine whether or not there are more results available,
+                      //and if requests for more data should be sent in the infinite scrolling                    
+                      var more = (page * pageSize) < data.Total;
+                      return { results: data.Results, more: more };
+                  }
+              }
+          });
+
+      });
       $(function () {
 
           $("#LocationName").typeahead({
@@ -249,91 +296,191 @@
 
       //         }
       //})
+      $(function () {
 
+          function split(val) {
+              return val.split(/,\s*/);
+          }
+          function extractLast(term) {
+              return split(term).pop();
+          }
+
+          $("#locationnames")
+        // don't navigate away from the field on tab when selecting an item  
+        .on("keydown", function (event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+                $(this).autocomplete("instance").menu.active) {
+                event.preventDefault();
+            }
+        })
+          .autocomplete({
+              minLength: 0,
+              source: function (request, response) {
+                  @*$.getJSON('@Url.Action("LocationList", "Suscription")', {
+                      prefix: extractLast(request.term)
+                  }, response);*@
+                  $.ajax({
+                      url: '/Suscription/LocationList/',
+                      prefix: extractLast(request.term),
+                      dataType: "json",
+                      type: "POST",
+                      contentType: "application/json; charset=utf-8",
+                      success: function (data) {
+                          debugger;
+                          response(data);
+                      }
+
+                  });
+              },
+              focus: function () {
+                  debugger;
+                  // prevent value inserted on focus  
+                  return false;
+              },
+              select: function (event, ui) {
+                  debugger;
+                  var terms = split(this.va);
+                 
+                  // remove the current input  
+                  terms.pop();
+                  // add the selected item  
+                  terms.push(ui.item.LocationName);
+                  // add placeholder to get the comma-and-space at the end  
+                  terms.push("");
+                  this.value = terms.join(", ");
+                  var lidterms = split(this.Lid);
+
+                  // remove the current input  
+                  lidterms.pop();
+                  // add the selected item  
+                  lidterms.push(ui.item.Lid);
+                  // add placeholder to get the comma-and-space at the end  
+                  terms.push("");
+                  this.value = terms.join(", ");
+                  $('#EmployeeId').val(ui.item.Lid);
+                  return false;
+              }
+          });
+      })
       $(document).ready(function () {
           debugger
           select2Dropdown('make-hdn', 'make', 'Search for make(s)', 'SearchMake', 'GetMake', true);
-      });
+      //});
+      //$(document).ready(function(){
+          function select2Dropdown(hiddenID, valueID, ph, listAction, getAction, isMultiple) 
+          {
 
-      function select2Dropdown(hiddenID, valueID, ph, listAction, getAction, isMultiple) 
-      {
+              var sid = '#' + hiddenID;
+              $(sid).select2({
+                  placeholder: ph,
+                  minimumInputLength: 2,
+                  //allowClear: true,
+                  multiple: isMultiple,  
+                  tokenSeparators: ['/',',',';',' '] ,
 
-          var sid = '#' + hiddenID;
-          $(sid).select2({
-              placeholder: ph,
-              minimumInputLength: 2,
-              allowClear: true,
-              multiple: isMultiple,
-              ajax: {
+                  tags: true,
+                  ajax: {
                   
-                  url: "/api/MultiSelectLocation/" + listAction,
-                  dataType: 'json',
-                  //data: function (term, page) {
-                  data: function (term) {
-                      for (var key in term) {
-                          debugger;
-                          return {
-                              id: term[key] // search term
-                          };
-                      }
-                     
-                  },
-                  processResults: function (data) {
-
-                      return {
-                          results: $.map(data, function (obj) {
+                      url: "/api/MultiSelectLocation/" + listAction,
+                      dataType: 'json',
+                      //data: function (term, page) {
+                      data: function (term) {
+                          for (var key in term) {
+                              debugger;
                               return {
-                                  id: obj.id,
-                                  text: obj.text
+                                  id: term[key] // search term
                               };
-                          })
-                      };
-                  }
-              },
-              initSelection: function (element, callback) {
-                  // the input tag has a value attribute preloaded that points to a preselected make's id
-                  // this function resolves that id attribute to an object that select2 can render
-                  // using its formatResult renderer - that way the make text is shown preselected
-                  var id = $('#' + valueID).val();
-                  if (id !== null && id.length > 0) {
-                      $.ajax("/api/MultiSelectLocation/" + getAction + "/" + id, {
-                          dataType: "json"
-                      }).done(function (data) { callback(data); });
-                  }
-              },
-              formatResult: s2FormatResult,
-              formatSelection: s2FormatSelection
-          });
+                          }
+                     
+                      },
+                      processResults: function (data) {
 
-          $(document.body).on("change", sid, function (ev) {
-              var choice;
-              var values = ev.val;
-              // This is assuming the value will be an array of strings.
-              // Convert to a comma-delimited string to set the value.
-              if (values !== null && values.length > 0) {
-                  for (var i = 0; i < values.length; i++) {
-                      if (typeof choice !== 'undefined') {
-                          choice += ",";
-                          choice += values[i];
+                          return {
+                              results: $.map(data, function (obj) {
+                                  return {
+                                      id: obj.id,
+                                      text: obj.text
+                                  };
+                              })
+                          };
+                      },
+                      cache: true
+
+                  },
+                  initSelection: function (element, callback) {
+                      // the input tag has a value attribute preloaded that points to a preselected make's id
+                      // this function resolves that id attribute to an object that select2 can render
+                      // using its formatResult renderer - that way the make text is shown preselected
+                      var id = $('#' + valueID).val();
+                      if (id !== null && id.length > 0) {
+                          $.ajax("/api/MultiSelectLocation/" + getAction + "/" + id, {
+                              dataType: "json"
+                          }).done(function (data) { callback(data); });
                       }
-                      else {
-                          choice = values[i];
+                  },
+                  templateResult: s2FormatResult,
+                  templateSelection: function(obj) {
+              debugger;
+              var $container = jQuery("<span class='selectedCountry'>" + obj.text + "</span>");
+              return $container;
+          }
+                  //formatResult : function(response)
+                  //{debugger;
+                  //    data=response.data;
+                  //    console.log(data);
+                  //    this.description =
+                  //        '<div id="fmu_select2_ajax_result">' +
+                  //            "<div>Nom du produit : " + data.text + "</div>" +
+                     
+                  //        '</div>'
+                  //    ;
+                  //    return this.description;
+                  //},
+                  //formatSelection: function(response)
+                  //{
+                  //    data=response.data;
+                  //    return   data.text;
+                  //},
+                  //escapeMarkup: function (m) { return m; },
+                  //dropdownCssClass: "bigdrop"
+              });
+          
+
+
+              $(document.body).on("change", sid, function (ev) {
+                  debugger
+                  var choice;
+                  var values = $(ev.target).select2("val");
+                  // This is assuming the value will be an array of strings.
+                  // Convert to a comma-delimited string to set the value.
+                  if (values !== null && values.length > 0) {
+                      for (var i = 0; i < values.length; i++) {
+                          if (typeof choice !== 'undefined') {
+                              choice += ",";
+                              choice += values[i];
+                          }
+                          else {
+                              choice = values[i];
+                          }
                       }
                   }
-              }
 
-              // Set the value so that MVC will load the form values in the postback.
-              $('#' + valueID).val(choice);
-          });
-      }
+                  // Set the value so that MVC will load the form values in the postback.
+                  $('#' + valueID).val(choice);
+              });
+          }
 
-      function s2FormatResult(item) {
-          return item.text;
-      }
+          function s2FormatResult(obj) {
+              debugger;
+              return obj.text;
+          }
 
-      function s2FormatSelection(item) {
-          return item.text;
-      }
+          function s2FormatSelection(obj) {
+              debugger;
+              var $container = jQuery("<span class='selectedCountry'>" + obj.text + "</span>");
+              return $container;
+          }
+      });
       $(function () {
           $("#CollectorName").typeahead({
 
