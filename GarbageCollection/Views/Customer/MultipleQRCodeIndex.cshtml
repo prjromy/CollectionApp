@@ -70,9 +70,10 @@
 
 
                         </div>
-                        <div>
+                        <div id="p1" class="pagedemo" size="A4"></div>
+                        @*<div>
 
-                        </div>
+                        </div>*@
                         @*<div id="demo5"></div>*@
 
                     </div>
@@ -254,13 +255,13 @@
         ///
         e.stopImmediatePropagation();
         
-        var txt = $('#txtCustomerSearch').val();
-        var location = $('#txtAddress').val();
+        //var txt = $('#txtCustomerSearch').val();
+        //var location = $('#txtAddress').val();
 
-        if (!txt.trim() && !location.trim()) {
-            ErrorAlert("Please enter either location or customer name", 3000);
-            return false;
-        }
+        //if (!txt.trim() && !location.trim()) {
+        //    ErrorAlert("Please enter either location or customer name", 3000);
+        //    return false;
+        //}
         if ($('.checkall:checked').length == 0) {
             ErrorAlert("Please Select CheckBox", 3000);
             return false;
@@ -319,10 +320,10 @@
                                     success: function (data) {
                                         $.each(data, function (index, value) {
                                             debugger;
-                                            var curPage = 0;
-                                            for (i = 0; i < 1000; i++) {
-                                                if(( i/9 + 1 ) > curPage ) {
-                                                    //var numImgs = $('div#imgdiv img').length;//number of images in pdf
+                                            //var curPage = 0;
+                                            //for (i = 0; i < 1000; i++) {
+                                            //    if(( i/9 + 1 ) > curPage ) {
+                                                    var numImgs = $('div#imgdiv img').length;//number of images in pdf
                                                     //var i=numImgs
                                                     //numImgs = numImgs + data.length;
                                                     //var remaining=9-numImgs;
@@ -330,45 +331,41 @@
                                                     //    var i=numImgs;
                                                     //    divPage=divPage;
                                                     //}
-                                                    if(curPage!==0)
-                                                    {
+                                                    //if(curPage!==0)
+                                                    //{
                                                        // var pageNumber = 1;
-                                                           // var innercounter = 9;
-                                                            divPage = $('<div/>', { id: "p" + curPage }).addClass('pagedemo').attr('size', "A4").appendTo(pagesContainer);
+                                            // var innercounter = 9;
+                                                    var idvalue = $('#pagesContainer').children().last().attr('id');
+                                                    var ret = idvalue.split("p");
+                                                    var str1 = ret[0];
+                                                    pageNumber = parseInt(ret[1]);
+                                                    var splitnumberofimages = 0;
+                                                    if (splitnumberofimages <= imagesPerPage && numImgs >= imagesPerPage) {
+                                                        //pageNumber = tempNumber;
+                                                        var numinnerImgs = $('div#p' + pageNumber).find('img').length;//number of images in pdf
+                                                        //imagesInPage = 1;
+                                                        divPage = $('div #p' + pageNumber);
+                                              
+                                                splitnumberofimages = numinnerImgs + 1;
+                                                if (splitnumberofimages > imagesPerPage) {
+                                                    //var lastpagenumber = $(this).find('.pagedemo').last();
+                                                    //var ret = lastpagenumber.split(" ");
+                                                    //var str1 = ret[0];
+                                                    //var str2 = ret[1];
+                                                    pageNumber += 1;
+                                                    //var tempNumber = pageNumber;
+                                                    divPage = $('<div/>', { id: "p" + pageNumber }).addClass('pagedemo').attr('size', "A4").appendTo(pagesContainer);
 
-                                                    }
+                                                   
                                                 }
 
+                                            } else {
+                                                
+                                               imagesInPage = numImgs +1;
+                                                
+                                            }
 
-                                                //if (counter == 0) {
-                                                //    debugger;
-                                                //    var pageNumber = 1;
-                                                //    var innercounter = 9;
-                                                //    divPage = $('<div/>', { id: "p" + pageNumber }).addClass('pagedemo').attr('size', "A4").appendTo(pagesContainer);
-                                                //    innercounter = innercounter - data.length;
-                                                //    //var images= $("#p" + pageNumber + "img").length;
-                                                //    if (innercounter == 0) {
-                                                //        pageNumber += 1;
-                                                //    }
-                                                //}
-                                                //$("#demo5").paginate({
-                                                //    count: pageNumber,
-                                                //    start: 1,
-                                                //    display: Math.min(7, pageNumber),
-                                                //    border: true,
-                                                //    border_color: '#fff',
-                                                //    text_color: '#fff',
-                                                //    background_color: 'black',
-                                                //    border_hover_color: '#ccc',
-                                                //    text_hover_color: '#000',
-                                                //    background_hover_color: '#fff',
-                                                //    images: false,
-                                                //    mouse: 'press',
-                                                //    onChange: function (page) {
-                                                //        $('#paginationdemo ._current').removeClass('_current').hide();
-                                                //        $('#p' + page).addClass('_current').show();
-                                                //    }
-                                                //});
+                                               
                                                 var img = document.createElement("img");
                                                 var parentdiv = document.createElement("div");
                                                 var divs = document.createElement("div");
@@ -399,7 +396,7 @@
                                                 custp.appendChild(custname);
                                                 parentdiv.appendChild(x);
                                                 parentdiv.appendChild(custp);
-                                            }
+                                            
 
                                            
                                         });
@@ -426,6 +423,10 @@
 
         })
     
+    function storePageNumber(num) {
+        return num ;
+
+    }
 
 
     $('.qr-pdf-button').on("click", function (e) {

@@ -90,7 +90,7 @@ namespace GarbageCollection.WebApi.WebApiController
             {
                 PasswordHasher pass = new PasswordHasher();
                 //var hashedPassword = EncodePassword(context.Password, MembershipPasswordFormat.Hashed, "MAKV2SPBNI99212");
-                var user = db.Users.Where(x => x.UserName == context.UserName).FirstOrDefault();
+                var user = db.Users.Where(x => x.UserName == context.UserName.Trim()).FirstOrDefault();
                 // password is correct 
 
 
