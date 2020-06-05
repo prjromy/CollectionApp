@@ -155,11 +155,11 @@ namespace BussinessLogic.Service
              
                 if (address != "")
                 {
-                    query += " and LocationName like '%" + address.Trim() + "%'";
+                    query += " and LocationName like '%" + address.ToLower().Trim() + "%'";
                 }
                 if (name != "")
                 {
-                    query += " and CustomerName like '" + name.Trim() + "%'";
+                    query += " and CustomerName like '" + name.ToLower().Trim() + "%'";
                 }
 
                 query += @" ORDER BY  CustId 

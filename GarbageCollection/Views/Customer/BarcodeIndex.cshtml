@@ -201,7 +201,11 @@
 
         //var custNo = $(this).attr("data-attr");
         //var custName = $(this).attr("data-name");
-       
+        var imageCount = $('.A4 img').length;
+        if (imageCount <= 0) {
+            ErrorAlert("Please Generate QRCode First !", 3000);
+            return false;
+        }
         var form_data = new FormData();
         var files = new Array();
         $('div#imgdiv img').each(function () {

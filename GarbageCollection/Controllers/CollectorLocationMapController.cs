@@ -25,7 +25,16 @@ namespace GarbageCollection.Controllers
         [HttpPost]
         public ActionResult Index(CollectorLocationViewModel vm)
         {
-            return RedirectToAction("Save", new { @id = vm.locationNames,@collectorid=vm.CollectorId });
+            if (vm.Id != 0)
+            {
+                var message = cl.EditCollectionLocation(vm,Convert.ToInt32(vm.CollectorId));
+                return Json(message, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return RedirectToAction("Save", new { @id = vm.locationNames, @collectorid = vm.CollectorId });
+
+            }
         }
 
         /// <summary>

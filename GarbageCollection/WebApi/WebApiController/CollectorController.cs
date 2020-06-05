@@ -208,7 +208,7 @@ namespace GarbageCollection.WebApi.WebApiController
         }
         [HttpGet]
         [Route("defaultlocationsubscriptiondue")]
-        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollector([FromUri]  PagingParameterModel pagingparametermodel,int? locationid,int? collectorid)
+        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollector([FromUri]  PagingParameterModel pagingparametermodel,int? locationid,int? collectorid,string searchterm="")
         {
             ResponseMessage resMsg = new ResponseMessage();
             try
@@ -217,6 +217,11 @@ namespace GarbageCollection.WebApi.WebApiController
 
 
                 string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from  FgetNotificationlocationwise('" + locationid + "','" +collectorid+ "')");
+                
+                if (!string.IsNullOrEmpty(searchterm.Trim(new Char[] { '*', ' ', '\'' })))
+                {
+                    query += "where CustomerName Like '"+ searchterm.ToLower().Trim() + "%'";
+                }
 
                 List<SubscriptionDueModel> returnData = db.Database.SqlQuery<SubscriptionDueModel>(query).ToList();
                 //get's no of rows

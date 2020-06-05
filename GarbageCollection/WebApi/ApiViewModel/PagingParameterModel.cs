@@ -15,6 +15,7 @@ namespace GarbageCollection.WebApi.ApiViewModel
         const int maxPageSize= 10;
         public int pageNumber { get; set; } 
         public int _pageSize { get; set; } 
+
         public int pageSize
         {
             get { return _pageSize; }

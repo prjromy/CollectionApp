@@ -57,7 +57,7 @@ namespace GarbageCollection.WebApi.WebApiController
             return result;
         }
         [Route("tokensave")]
-        private async Task<ReturnValue> ExecuteDataSync(NotificationFirebase.NotificationToken token)
+        private async Task<ReturnValue> ExecuteDataSync(NotificationFirebase.NotificationTokenViewModel token)
         {
             using (TransactionScope scope = CollectorController.TransactionScopeUtils.CreateTransactionScope())
             {

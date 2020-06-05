@@ -105,16 +105,16 @@ namespace GarbageCollection.Controllers
                         Session[fName] = bytes1;
 
                 }
-             
-                    var singlecustomer = db.Customers.Where(x => x.Cid == custNo).SingleOrDefault();
-                    if (singlecustomer != null)
-                    {
-                        singlecustomer.QRCode = 1;
-                        db.Entry(singlecustomer).State = EntityState.Modified;
-                        db.SaveChanges();
-                    }
 
-                
+                var singlecustomer = db.Customers.Where(x => x.Cid == custNo).SingleOrDefault();
+                if (singlecustomer != null)
+                {
+                    singlecustomer.QRCode = 1;
+                    db.Entry(singlecustomer).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+
 
                 return Json(new { success = true, fName }, JsonRequestBehavior.AllowGet);
             }
@@ -142,13 +142,21 @@ namespace GarbageCollection.Controllers
                     {
                         PdfWriter writer = PdfWriter.GetInstance(pdfDoc, stream);
                         pdfDoc.Open();
-                        PdfPTable table = new PdfPTable(1);
+                        
+                        int tableColumns = 3;
+                        int col = 3;
 
-                        Paragraph p = new Paragraph();
-                        PdfPCell cell = new PdfPCell();
+                        PdfPTable table = new PdfPTable(3);
+
+
+                       
                         for (int i = 0; i < files.Length; i++)
                         {
-                            
+
+
+
+                            PdfPCell cell = new PdfPCell();
+                            Paragraph p = new Paragraph();
                             var file = files[i].Split(',')[1];
                             var bytes = Convert.FromBase64String(file);
                           
@@ -157,31 +165,43 @@ namespace GarbageCollection.Controllers
                             iTextSharp.text.Image img = iTextSharp.text.Image.GetInstance(bytes);
                             img.ScalePercent(28);
 
-                            //img.ScaleAbsolute(150f, 150f);
+                          
                             img.Border = iTextSharp.text.Rectangle.BOX;
                             img.BorderColor = BaseColor.BLACK;
                             img.BorderWidth = 2f;
-                            img.PaddingTop = 4f;
-                            p.Add(new Chunk(img, 0, 0, true));
-                          
+                            img.PaddingTop = 6f;
+                           
+                            cell.AddElement(img);
+                         
+                            
+                            BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+
+
+                            iTextSharp.text.Font times = new iTextSharp.text.Font(bfTimes, 9, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+
+
+                            p.Add(new Paragraph(Convert.ToString(custNo[i]), times));
+                            p.Add(new Paragraph(custName[i], times));
+                            p.Alignment = Element.ALIGN_CENTER;
                             p.Add(" ");
                             p.Add(" ");
-                            //BaseFont bfTimes = BaseFont.CreateFont(BaseFont.TIMES_ROMAN, BaseFont.CP1252, false);
+                            p.Add(" ");
+
+                           
+                            cell.AddElement(p);
+                           
+                           
+                            table.AddCell(cell);
 
 
-                            //iTextSharp.text.Font times = new iTextSharp.text.Font(bfTimes,9, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
-
-
-                            //p.Add(new Paragraph(Convert.ToString(custNo[i]), times));
-                            //p.Add(new Paragraph( custName[i], times));
                         }
-                        //cell.Padding = ToPoints(spacingBetweenCells / 2);
-
-                        cell.AddElement(p);
-                        
-                        table.AddCell(cell);
 
                         pdfDoc.Add(table);
+                     
+
+
+
+
                         pdfDoc.Close();
 
 
@@ -201,10 +221,10 @@ namespace GarbageCollection.Controllers
                         if (singlecustomer != null)
                         {
                             singlecustomer.QRCode = 1;
-                                db.Entry(singlecustomer).State = EntityState.Modified;
+                            db.Entry(singlecustomer).State = EntityState.Modified;
                             db.SaveChanges();
                         }
-                       
+
                     }
                 }
 

@@ -18,7 +18,7 @@ namespace GarbageCollection.WebApi.ApiViewModel
             public string title { get; set; }
             public string text { get; set; }
         }
-        public  class NotificationToken
+        public class NotificationTokenViewModel
         {
             public string RegistrationToken { get; set; }
             public int CustomerId { get; set; }

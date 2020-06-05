@@ -57,17 +57,18 @@ namespace BussinessLogic.Service
             }
         }
 
-        public ReturnBaseMessageModel saveCollectionLocation(List<CollectorLocationViewModel> collectorLocationViewModel, int collectorId)
+        public ReturnBaseMessageModel saveCollectionLocation( List<CollectorLocationViewModel> collectorLocationViewModel, int collectorId)
         {
            
            
-            foreach (var item in collectorLocationViewModel)
-            {
+            
                 
-                var singlecollectorLocations = uow.Repository<LocationVsCollector>().FindBy(x => x.Id == item.Id).SingleOrDefault();
-                if (singlecollectorLocations == null)
+               
+                foreach (var item in collectorLocationViewModel)
                 {
-                    LocationVsCollector loc = new LocationVsCollector();
+                //var singlecollectorLocations = uow.Repository<LocationVsCollector>().FindBy(x => x.Id == item.Id).SingleOrDefault();
+
+                LocationVsCollector loc = new LocationVsCollector();
                     loc.LocationId = item.LocationId;
                     loc.CollectorId = collectorId;
                     loc.Postedby = Global.UserId;
@@ -75,20 +76,10 @@ namespace BussinessLogic.Service
                     uow.Repository<LocationVsCollector>().Add(loc);
                     returnMessage.Msg = "Added Successfully";
                     returnMessage.Success = true;
-
                 }
-                else
-                {
-                    singlecollectorLocations.LocationId = collectorLocationViewModel.SingleOrDefault().LocationId;
-                    singlecollectorLocations.CollectorId = collectorId;
-                    singlecollectorLocations.Postedby = Global.UserId;
-                    singlecollectorLocations.PostedOn = DateTime.Now;
-                    uow.Repository<LocationVsCollector>().Edit(singlecollectorLocations);
-                    returnMessage.Msg = "Edited Successfully";
-                    returnMessage.Success = true;
-
-                }
-            }
+                
+              
+          
             
         
             uow.Commit();
@@ -99,7 +90,35 @@ namespace BussinessLogic.Service
 
             //}
         }
+        public ReturnBaseMessageModel EditCollectionLocation(CollectorLocationViewModel singleCollector, int collectorId)
+           
+        {
 
+
+
+
+            var singlecollectorLocations = uow.Repository<LocationVsCollector>().FindBy(x => x.Id == singleCollector.Id).SingleOrDefault();
+         
+                singlecollectorLocations.LocationId = singleCollector.LocationId;
+                singlecollectorLocations.CollectorId = collectorId;
+                singlecollectorLocations.Postedby = Global.UserId;
+                singlecollectorLocations.PostedOn = DateTime.Now;
+                uow.Repository<LocationVsCollector>().Edit(singlecollectorLocations);
+                returnMessage.Msg = "Edited Successfully";
+                returnMessage.Success = true;
+
+            
+
+
+
+            uow.Commit();
+            return returnMessage;
+
+            //if (collectorLocationViewModel.Id != 0)
+            //{
+
+            //}
+        }
         public CollectorLocationViewModel singleCollectorLocation(int? id)
         {
             var singleLocationCollector = uow.Repository<LocationVsCollector>().FindBy(x => x.Id == id);
