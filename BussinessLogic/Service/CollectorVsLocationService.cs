@@ -57,6 +57,67 @@ namespace BussinessLogic.Service
             }
         }
 
+        public ReturnBaseMessageModel EditCollectionLocationCheck(int? CollectorId, int? Id, int? LocationId, string locationNames = null, string locationname = null)
+        {
+            bool status = true;
+            var result = uow.Repository<LocationVsCollector>().FindBy(x => x.Id != Id && x.LocationId == LocationId&&x.CollectorId==CollectorId).Any();
+            var locationnames = uow.Repository<LocationVsCollector>().FindBy(x => x.CollectorId == CollectorId).Select(x => x.LocationId).ToList().ToArray();
+            //foreach (var item in locationnames)
+            //{
+
+            if (locationnames.Contains(LocationId)==true && result==true) {
+                var singleLocationName = uow.Repository<LocationMaster>().FindBy(x => x.Lid == LocationId).Select(x => x.LocationName).SingleOrDefault();
+
+                returnMessage.Success = false;
+                returnMessage.Value = singleLocationName;
+                }
+                else
+                {
+                returnMessage.Success = true;
+
+            }
+            //}
+            return returnMessage;
+        }
+
+        public ReturnBaseMessageModel AddCollectionLocationCheck(int? CollectorId, int? LocationId, string locationNames = null, string locationname = null)
+        {
+            var locationnames = uow.Repository<LocationVsCollector>().FindBy(x => x.CollectorId == CollectorId).Select(x=>x.LocationId).ToList().ToArray();
+            string[] intre = locationNames.Split(',');
+
+            List<int?> formList = new List<int?>();
+            foreach (var item in intre)
+            {
+                
+                formList.Add(Convert.ToInt32(item));
+
+            }
+           // var result = locationnames.Where(a => formList.Any(b => b.Contains(a)));
+            //bool status = true;
+            if (/*Array.Equals(locationnames, formList.ToList().ToArray())*/ locationnames.Intersect(formList).Any())
+
+            {
+                List<string> list = new List<string>();
+                var result = locationnames.Intersect(formList).ToList();
+                foreach (var item in result)
+                {
+                    var singleLocationName = uow.Repository<LocationMaster>().FindBy(x => x.Lid == item).Select(x=>x.LocationName).SingleOrDefault();
+                   
+                    list.Add(singleLocationName);
+                   
+                }
+                String[] str = list.ToArray();
+                returnMessage.Value = string.Join(",", str);
+                returnMessage.Success = false;
+            }
+            else
+            {
+                returnMessage.Success = true;
+            }
+            return returnMessage;
+        }
+        
+
         public ReturnBaseMessageModel saveCollectionLocation( List<CollectorLocationViewModel> collectorLocationViewModel, int collectorId)
         {
            

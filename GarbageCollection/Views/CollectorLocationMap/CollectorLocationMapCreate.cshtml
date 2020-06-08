@@ -1,6 +1,9 @@
 ﻿@model  BuisnessObject.ViewModel.CollectorLocationViewModel
 @using BussinessLogic.Service
+@{
+    Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_Layout.cshtml";
 
+}
 
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
 <div class="customer-create-main">
@@ -37,14 +40,16 @@
 
 
                                     @Html.HiddenFor(x => x.CollectorId)
+                                    @Html.ValidationMessageFor(model => model.CollectorId, "", new { @class = "text-danger" })
                                 }
                                 else
                                 {
                                     @Html.TextBox("CollectorName", null, new { @class = "form-control col-md-8", @id = "CollectorName", autocomplete = "off" })
                                     @Html.HiddenFor(x => x.CollectorId)
-                                }
-                                @Html.ValidationMessageFor(model => model.CollectorId, "", new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.CollectorId, "", new { @class = "text-danger" })
 
+                                }
+                            
                             </div>
                             <div>
                                 @Html.Label("Location Name", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -70,6 +75,7 @@
                                         <input type="text" class="hidden" id="make" name="locationNames" value="@Model.locationNames" />*@
                                         @Html.TextAreaFor(x=>x.locationNames, 10, 40, new { id="locationnames"})
                                         @Html.HiddenFor(x=>x.LocationId)
+                                        @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
                                     </div>
 
 
@@ -81,7 +87,7 @@
                             
                                
 
-                                @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+                              
                                 
 
 
@@ -214,7 +220,32 @@
           $('#createSubmitFormLoc').removeData("validator").removeData("unobtrusiveValidation");
           $.validator.unobtrusive.parse($('#createSubmitFormLoc'));
           if ($("#createSubmitFormLoc").valid()) {
-              NewCustomerCreate();
+              var formData = new FormData($('#createSubmitFormLoc')[0]);
+              formData.append("CollectorId", $('#CollectorId').val())
+              formData.append("locationNames", $('#locationNames').val())
+              formData.append("locationname", $('#locationname').val())
+              formData.append("LocationId", $('#LocationId').val())
+              formData.append("Id", $('#Id').val())
+              $.ajax({
+                  url: "/CollectorLocationMap/CheckLocationExist",
+                  type: 'post',
+                  data: formData,
+                  processData: false,
+                  contentType: false,
+                  async: false,
+                  success: function (message) {
+                      debugger
+                      if (message.Success == false) {
+                          ErrorAlert(message.Value + " Already Mapped", 6000);
+                          return false;
+                      }
+                      else {
+                          NewCustomerCreate();
+                      }
+                      
+                  }
+              })
+           
           }
 
 

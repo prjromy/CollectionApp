@@ -3,6 +3,7 @@ using BussinessLogic.CustomHelper;
 using BussinessLogic.Repository;
 using BussinessLogic.Service;
 using DataAccess.DatabaseModel;
+using Loader;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,8 @@ using System.Web.Mvc;
 
 namespace GarbageCollection.Controllers
 {
+    [MyAuthorize]
+
     public class CollectorLocationMapController : Controller
 
     {
@@ -36,7 +39,21 @@ namespace GarbageCollection.Controllers
 
             }
         }
+        [HttpPost]
+        public ActionResult CheckLocationExist(int?CollectorId ,int? Id, int? LocationId,string locationNames=null, string locationname=null)
 
+        {
+            if (Id != 0)
+            {
+                var message = cl.EditCollectionLocationCheck(CollectorId, Id, LocationId,locationNames, locationname);
+                return Json(message, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var message = cl.AddCollectionLocationCheck (CollectorId, LocationId,locationNames, locationname);
+                return Json(message, JsonRequestBehavior.AllowGet);
+            }
+        }
         /// <summary>
         /// Display the selected attendee id
         /// </summary>

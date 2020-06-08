@@ -1,6 +1,7 @@
 ﻿using BuisnessObject.ViewModel;
 using BussinessLogic.Service;
 using DataAccess.DatabaseModel;
+using Loader;
 using Loader.App_Start;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -14,6 +15,8 @@ using System.Web.Mvc;
 
 namespace GarbageCollection.Controllers
 {
+    [MyAuthorize]
+
     public class CustomerUserController : Controller
     {
         private CustomerUserService customerUserService = null;
