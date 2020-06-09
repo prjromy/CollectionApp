@@ -121,6 +121,18 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.JsonWebTokens, Version=6.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.JsonWebTokens.6.6.0\lib\net461\Microsoft.IdentityModel.JsonWebTokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=6.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.6.6.0\lib\net461\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=6.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.6.6.0\lib\net461\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Owin, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
@@ -148,6 +160,10 @@
     <Reference Include="System.Data.Entity" />
     <Reference Include="System.Data.Entity.Design" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=6.6.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.6.6.0\lib\net461\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.Primitives.4.0.1\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
@@ -331,14 +347,18 @@
     <Compile Include="WebApi\Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="WebApi\Providers\Logger.cs" />
     <Compile Include="WebApi\Providers\MyCorsPolicyAttribute.cs" />
+    <Compile Include="WebApi\Security\AuthenticationModule.cs" />
     <Compile Include="WebApi\Security\AuthenticationSecurity.cs" />
     <Compile Include="WebApi\Security\BasicAuthenticationAttribute.cs" />
+    <Compile Include="WebApi\Security\JWTAuthenticationFilter.cs" />
+    <Compile Include="WebApi\Security\JWTAuthenticationIdentity.cs" />
     <Compile Include="WebApi\WebApiController\BarcodeController.cs" />
     <Compile Include="WebApi\WebApiController\CollectorController.cs" />
     <Compile Include="WebApi\WebApiController\LocationController.cs" />
     <Compile Include="WebApi\WebApiController\LoginController.cs" />
     <Compile Include="WebApi\WebApiController\MultiSelectLocationController.cs" />
     <Compile Include="WebApi\WebApiController\NotificationFirebaseController.cs" />
+    <Compile Include="WebApi\WebApiController\ResponseDTO.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="admin-lte\dist\css\adminlte.css" />

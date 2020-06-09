@@ -17,5 +17,20 @@ namespace GarbageCollection.WebApi.ApiViewModel
         public string  Email { get; set; }
         public int UserDesignationId { get; set; }
         public int[] Location { get; set; }
+        public string token { get; set; }
+    }
+    public class customerUser
+    {
+        public int UserId { get; set; }
+        public int MTId { get; set; }
+        public Nullable<int> CustomerId { get; set; }
+        public Nullable<System.DateTime> EffDate { get; set; }
+        public Nullable<System.DateTime> TillDate { get; set; }
+        public bool IsUnlimited { get; set; }
+        public string UserName { get; set; }
+        public string Email { get; set; }
+        public int UserDesignationId { get; set; }
+        public int[] Location { get; set; }
+        public string token { get; set; }
     }
 }
