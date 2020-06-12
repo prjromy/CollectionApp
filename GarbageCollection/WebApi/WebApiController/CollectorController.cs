@@ -21,7 +21,8 @@ using System.Web.Script.Serialization;
 namespace GarbageCollection.WebApi.WebApiController
 {
 
-    [BasicAuthentication]
+    //[BasicAuthentication]
+     [JWTAuthenticationFilter]
     [RoutePrefix("api/collectors")]
     public class CollectorController : ApiController
     {
@@ -41,6 +42,7 @@ namespace GarbageCollection.WebApi.WebApiController
                 MainViewModel.CustomerViewModel returnData = db.Database.SqlQuery<MainViewModel.CustomerViewModel>(query).FirstOrDefault();
                 if (returnData == null)
                 {
+                    resMsg.message = "No data found";
                     var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null));
                     throw new HttpResponseException(response);
                 }
@@ -51,6 +53,7 @@ namespace GarbageCollection.WebApi.WebApiController
             }
             catch (Exception ex)
             {
+
                 resMsg.message = "Something went wrong. Please try again.";
                 var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null), Logger.JsonDataResult(ex));
                 throw new HttpResponseException(response);
@@ -106,6 +109,7 @@ namespace GarbageCollection.WebApi.WebApiController
                 if (returnData == null)
 
                 {
+                    resMsg.message = "No data found";
                     //resMsg.message = "No data found";
                     var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(id));
                     throw new HttpResponseException(response);
@@ -148,7 +152,7 @@ namespace GarbageCollection.WebApi.WebApiController
                // var collectorid=HttpContext.Current.Session["CustomerUserId"];
 
 
-                string query = String.Format("select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID,verifiedBy as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null and CollectorId=" + collectorid/*+ "and CollectionType="+"'Mobile'"*/);
+                string query = String.Format("select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID,verifiedBy as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null and CollectorId=" + collectorid + "and CollectionType=" + "'Mobile'");
 
                 List<MainViewModel.CollectionVerificationEntry> returnData = db.Database.SqlQuery<MainViewModel.CollectionVerificationEntry>(query).ToList();
                
@@ -163,7 +167,7 @@ namespace GarbageCollection.WebApi.WebApiController
                     {
                         item.Status = "Verified";
                     }
-                    returnData.Add(item);
+                    
                 }
                 //get's no of rows
                 int count = returnData.Count();
@@ -189,6 +193,7 @@ namespace GarbageCollection.WebApi.WebApiController
                     if (returnData == null)
 
                 {
+                    resMsg.message = "No data found";
                     //resMsg.message = "No data found";
                     var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null));
                     throw new HttpResponseException(response);
@@ -218,7 +223,7 @@ namespace GarbageCollection.WebApi.WebApiController
 
                 string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from  FgetNotificationlocationwise('" + locationid + "','" +collectorid+ "')");
                 
-                if (!string.IsNullOrEmpty(searchterm.Trim(new Char[] { '*', ' ', '\'' })))
+                if (!string.IsNullOrEmpty(searchterm.ToLower().Trim()))
                 {
                     query += "where CustomerName Like '"+ searchterm.ToLower().Trim() + "%'";
                 }
@@ -248,6 +253,7 @@ namespace GarbageCollection.WebApi.WebApiController
                 if (returnData == null)
 
                 {
+                    resMsg.message = "No data found";
                     //resMsg.message = "No data found";
                     var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null));
                     throw new HttpResponseException(response);

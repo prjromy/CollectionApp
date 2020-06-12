@@ -24,5 +24,13 @@ namespace GarbageCollection.WebApi.ApiViewModel
             public int CustomerId { get; set; }
             public int Id { get; set; }
         }
+
+        public class NotificationTopic
+        {
+            public string _topic { get; set; }
+            public string title { get; set; }
+            public string body { get; set; }
+        }
+
     }
 }

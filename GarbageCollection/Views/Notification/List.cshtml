@@ -1,0 +1,379 @@
+﻿@model BuisnessObject.ViewModel.NotificationViewModel
+@using BussinessLogic.Service
+
+<link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+
+<script src="~/Scripts/typeahead.min.js"></script>
+<div id='account-pop-up-div' class='modal fade verfier-list' role='dialog'>
+</div>
+<div class="box  customer-list-index">
+    <input type="button" value="New Customer" id="btn-create" class="btn btn-md btn-success btn-create" style="border:none;margin-bottom:5px;" />
+    <div class="customer-display">
+
+    </div>
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">Customer List</h3>
+            <hr>
+            @*<div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+
+                </div>*@<!-- /.box-tools -->
+
+            <div class="col-md-12">
+                <div class="box-tools col-md-3  form-group" id="customer-no">
+                    @Html.TextBox("CustomerNo", "", htmlAttributes: new { @class = "form-control", @type = "number", @id = "CustomerNo", @placeholder = "Customer No" })
+                    @*@Html.ValidationMessageFor(model => model.CustNo, "", new { @class = "text-danger" })*@
+                </div>
+                <div class="box-tools col-md-3  form-group" id="search-Employee-Name">
+                    @Html.TextBox("CustomerSearch", "", htmlAttributes: new { @class = "form-control", @id = "txtCustomerSearch", @placeholder = "Customer Name" })
+                </div>
+                <div class="box-tools col-md-3  form-group" id="search-Address">
+                    @Html.TextBox("Address", "", htmlAttributes: new { @class = "form-control", @id = "txtAddress", @placeholder = "Address" })
+                </div>
+             
+
+
+
+                <div class="input-group-btn form-group col-md-1 pull-left">
+                    <button type="button" id="searchCustomer" class="btn btn-searchCustomer btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="Customer-List">
+
+
+
+            @Html.Partial("_List", Model)
+
+
+
+        </div>
+    </div>
+</div>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/jquery-message-box.js"></script>
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/ch-dialog.js"></script>
+<style>
+    .image {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+</style>
+
+<script>
+    $('.qr-button').click(function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        debugger;
+        var txt = $(this).data("id");
+
+
+        var content = txt.toString();
+        $.ajax({
+            type: 'GET',
+            url: '/Customer/DisplayQRCode',
+            data: { cId: txt },
+
+            success: function (result) {
+                $.ajax({
+                    type: 'GET',
+                    url: '/api/qrcode',
+                    data: { content: content },
+                    dataType: 'json',
+                    success: function (data) {
+                        var img = document.createElement("img");
+                        img.width = "250";
+                        img.height = "250";
+                        img.className = "image";
+                        img.name = "file";
+                        img.src = "data:image/png;base64," + data;
+                        //var divs = document.createElement("div");
+                        //divs.append(img);
+                        //document.getElementById("imgdivs").appendChild(divs);
+                        var results = $(result);
+                        results.find('#imgdivs').append(img);
+                        debugger;
+                        $('#account-pop-up-div').html(results).modal({
+                            'show': true,
+                            'backdrop': 'static'
+                        });
+                        //$(".modal-body").find('#createSubmitForm').find('#CustomerName').text(custname);
+                        //$(".modal-body").find('#createSubmitForm').find('#CustId').val(customerid);
+
+                    },
+                    error: function () {
+
+                    }
+                });
+
+            }
+        })
+
+
+
+        })
+
+    $(function () {
+        $("#txtCustomerSearch").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Customer/CustomerList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+
+                            var name = item.CustomerName;
+                            map[name] = { name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-8");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+
+                return item;
+            }
+        });
+    })
+    $(function () {
+        $("#txtAddress").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Customer/AddressList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+
+                            var name = item.Address;
+                            map[name] = { name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-8");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+
+                return item;
+            }
+        });
+    })
+    $('.btn-create').on('click', function () {
+        debugger;
+
+        var thisVal = $(this).val();
+        if (thisVal == "Hide Section") {
+            $(this).val("New Customer")
+            $(".customer-display").hide();
+        }
+        else {
+            $(this).val("Hide Section")
+            $.ajax({
+                type: "GET",
+                url: "/Customer/Create",
+                success: function (data) {
+                    $(".customer-display").show();
+                    $('.customer-display').html(data).find('.focusdiv').focus()
+                }
+            })
+        }
+    });
+    $("div.cust-page-list").on('click', 'input.btnPaging', function (e) {
+        debugger;
+        e.stopImmediatePropagation();
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageNumberBtnAction(url, container, me)
+
+    });
+    $("div.cust-page-list").on('change', 'input#pageNo', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageNumberChangeData(url, container, me)
+    });
+    $("div.cust-page-list").on('change', 'input#pageSize', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        var container = parentContainer.find("div.cust-page-list")
+        var url = "?customerno="+customerno+"&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType;
+        getPageSizeChangeData(url, container, me)
+    });
+    $(".customer-list-index").on('click', '.btn-searchCustomer', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Customer/_List",
+            data: { customerno:customerno,name: name, address: address, contact: contact, cType: cType },
+            success: function (data) {
+                $(".customer-list-index").find("div.Customer-List").html("");
+                $(".customer-list-index").find("div.Customer-List").html(data);
+            }
+        })
+    });
+
+    function EditCustomerList(CID) {
+        debugger
+
+        $.ajax({
+            type: "get",
+            url: "/Customer/Create/",
+            contentType: "application/json; charset=utf-8",
+            data: { cId: CID },
+            dataType: "html",
+            success: function (html) {
+                debugger;
+                $('.btn-create').val("Hide Section")
+                $(".customer-display").show();
+                $('.customer-display').html(html).find('.focusdiv').focus()
+
+                window.scrollTo(0, 0);
+                debugger;
+                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
+    //$('.switch.IsSelected"]').change(function () {
+
+    //    // check if checkbox is being checked
+    //    // taken from /a/23007488 by Alexandru Chichinete
+    //    if ($("#IsSelected").is(":checked"))
+    //    {
+    //        // enable form submit
+    //        var CID = $(this).attr("data-val");
+    //    debugger
+    //    $.MessageBox({
+    //        buttonDone: "Yes",
+    //        buttonFail: "No",
+    //        message: " Are you sure?"
+    //    }).done(function () {
+    //        $.ajax({
+    //            type: "get",
+    //            url: "/Customer/UpdateStatus/",
+    //            contentType: "application/json; charset=utf-8",
+    //            data: { cId: CID },
+    //            dataType: "html",
+    //            success: function (result) {
+    //                debugger;
+    //                if (result) {
+    //                    debugger;
+    //                    $.ajax({
+    //                        url: "/Customer/List",
+    //                        type: 'post',
+    //                        async: false,
+    //                        success: function (data) {
+    //                            debugger
+    //                            $('section.content').html(data);
+    //                            SuccessAlert("Changed Status Successfully", 5000);
+    //                            document.getElementById('alert-success').scrollIntoView();
+    //                        }
+    //                    })
+    //                }
+    //                else {
+
+    //                    ErrorAlert(result.Msg, 5000);
+    //                    document.getElementById('alert-error').scrollIntoView();
+    //                }
+    //                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+    //            },
+    //            error: function () {
+    //                alert("error");
+    //            }
+    //        });
+    //    })
+    //    //var checkStatus = $(this).find('input:checkbox').is(':checked') ? 'ON' : 'OFF';
+    //        //.buttonFail(function () {
+    //    //    debbuger;
+
+
+    //    //})
+
+    //    }
+
+    //})
+
+
+
+</script>

@@ -229,7 +229,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="RegistrationToken" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="RegistrationToken" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="CustomerId" Type="int" Nullable="false" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
@@ -1703,7 +1703,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="RegistrationToken" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegistrationToken" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>

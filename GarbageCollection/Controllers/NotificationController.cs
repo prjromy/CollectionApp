@@ -1,6 +1,7 @@
 ﻿using BuisnessObject.ViewModel;
 using BussinessLogic.Service;
 using Loader;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,48 @@ namespace GarbageCollection.Controllers
 
                 throw ex;
             }
+        }
+        [HttpPost]
+        public ActionResult Pushpush()
+        {
+            FCMPushNotification fcmPush = new FCMPushNotification();
+            fcmPush.SendNotification("sbsbs", "Your body message", "Sinamangal");
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+            
+
+        public ActionResult List()
+        {
+            try
+            {
+                NotificationViewModel customerViewModel = new NotificationViewModel();
+                var customerList = notificationService.getCustomerList(null, 1, 10);
+                customerViewModel.notificationpagedList = new StaticPagedList<NotificationViewModel>(customerList, 1, 10, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
+
+               
+
+                return PartialView(customerViewModel);
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public ActionResult _List(int? locationid,  int pageNo = 1, int pageSize = 10)
+        {
+            NotificationViewModel customerViewModel = new NotificationViewModel();
+            var customerList = notificationService.getCustomerList(locationid, 1, 10);
+            customerViewModel.notificationpagedList = new StaticPagedList<NotificationViewModel>(customerList, pageNo, pageSize, (customerList.Count == 0) ? 0 : customerList.FirstOrDefault().TotalCount);
+
+       
+
+            return PartialView(customerViewModel);
         }
     }
 }

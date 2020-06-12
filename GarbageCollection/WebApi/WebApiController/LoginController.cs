@@ -10,6 +10,7 @@ using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
@@ -83,7 +84,7 @@ namespace GarbageCollection.WebApi.WebApiController
 
 
         [HttpPost]
-        [Route("api/login")]
+        [Route("api/basiclogin")]
         public async Task<IHttpActionResult> PostLogin([FromBody] OAuthGrantResourceOwnerCredentialsContext context)
         {
 
@@ -228,7 +229,7 @@ namespace GarbageCollection.WebApi.WebApiController
         /// <returns>token and user details</returns>
 
         [HttpPost]
-        [Route("api/jwtlogin")]
+        [Route("api/login")]
         public HttpResponseMessage LoginDemo([FromBody] ApiControlViewModel.LoginViewModel context)
         {
 
@@ -376,7 +377,7 @@ namespace GarbageCollection.WebApi.WebApiController
           
 
         }
-      
+        [JWTAuthenticationFilter]
         [HttpPost]
         [Route("api/savecustomertoken")]
         public async Task<ReturnValue> SaveToken([FromBody]NotificationToken context)
@@ -405,11 +406,22 @@ namespace GarbageCollection.WebApi.WebApiController
                 }
 
 
-                catch (Exception ex)
+                catch (DbEntityValidationException e)
                 {
-                    scope.Dispose();
-                    retVal.Status = false;
+                    foreach (var eve in e.EntityValidationErrors)
+                    {
+                        Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+                            eve.Entry.Entity.GetType().Name, eve.Entry.State);
+                        foreach (var ve in eve.ValidationErrors)
+                        {
+                            Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+                                ve.PropertyName, ve.ErrorMessage);
+                        }
+                    }
                     throw;
+                    //scope.Dispose();
+                    //retVal.Status = false;
+                    //throw;
                 }
                 return retVal;
             }
