@@ -28,6 +28,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <link href="~/UserDialog/jquery-ui.css" rel="stylesheet" />
     <link href="~/UserDialog/bootstrap-theme.min.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     @*<link href="~/DialogLoader/jquery-ui.css" rel="stylesheet" />
     <link href="~/DialogLoader/bootstrap-theme.min.css" rel="stylesheet" />
     <link href="~/DialogLoader/theme-jquery-ui.css" rel="stylesheet" />*@
@@ -55,6 +58,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="content-wrapper">
             <section class="content">
                 @RenderBody()
+                @*@RenderSection("Scripts", required: false)*@
                 </section>
 </div>
                        
@@ -80,37 +84,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <strong>Copyright &copy; 2020 <a href="https://adminlte.io">Channakya Software</a>.</strong> All rights reserved.
         </footer>
     </div>
-    <script>
-    $(document).ready(function () {
-        $(document).bind("ajaxSend", function () {
-            $('.loaderContainer').show().find('.loader').css({ "top": "50%", "left": "50%" });
-        }).bind("ajaxStop", function () {
-            $('.loaderContainer').hide();
-        });
-    });
-    </script>
-
-    @Scripts.Render("~/bundles/jquery")
+ 
+    
+    @*@Scripts.Render("~/bundles/jquery")
 
    
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryval")*@
   
 
    
-    @*<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
-    @*<script src="~/Scripts/jquery-1.11.1.ui.min.js"></script>*@
-    @*@Scripts.Render("~/admin-lte/js")*@
+  
+
     @Scripts.Render("~/bundles/bootstrap")
     @*<script src="~/UserDialog/jquery-1.11.1.ui.min.js"></script>*@
     <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    @*<script src="~/DialogLoader/jquery-1.11.1.ui.min.js"></script>*@
-    @*<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">*@
+   
     <script src="~/Scripts/jquery.form.min.js"></script>
    
     <script src="~/Scripts/an-datepicker-with-polyfill.min.js"></script>
     <script src="~/Scripts/app.min.js"></script>
+   @* <script src="~/Scripts/ch-treeview.js"></script>*@
 
     @*@RenderSection("scripts", required: false)*@
 
@@ -143,7 +137,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 </style>
 <script type="text/javascript">
-   
+
         $('.li-dropdown-notifications-logout').click(function () {
             debugger;
             document.getElementById('logoutForm').submit();
@@ -187,7 +181,210 @@ scratch. This page gets rid of all links and provides the needed markup only.
             });
 
         });
-   
+
+
+      
+ 
+        //$('.sidebar').find('.main-side-tree').find('.master').nextAll('li').slideToggle();
+        ////$(".sidebar-menu li").on("click", function () {
+        ////    if ($(this).hasClass("active")) {
+        ////        $(this).removeClass("active");
+        ////    } else {
+        ////        $(this).addClass("active");
+        ////    }
+        ////});
+
+        //$('.pull-right-container').click(function () {
+        //    debugger;
+        //    var parent = $(this).closest('li.active.treeview');
+        //    var id = $(this).attr('id');
+        //    var isMaster = parent.hasClass('master');
+        //    if (isMaster == true) {
+        //        $(parent).nextAll('li').slideToggle();
+        //    }
+        //    else {
+        //        $(parent).nextAll('li[pid=' + id + ']').slideToggle();
+        //    }
+        //    $(this).toggleClass('rotatefa')
+
+
+
+        //});
+        //$('.treeview-menu-item').click(function () {
+        //    debugger;
+        //    var controller = $(this).attr("controller");
+        //    var action = $(this).attr("acton");
+        //    var url = '/' + controller + '/' + action + '/';
+        //    //window.location = url;
+        //    $.ajax({
+        //        type: "get",
+        //        url: url,
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "html",
+        //        success: function (html) {
+        //            debugger;
+        //            $('section.content').html(html);
+        //        },
+        //        error: function () {
+        //            alert("error");
+        //        }
+        //    });
+
+        //});
+        //$('.nav-link').on('click', function () {
+        //    debugger;
+        //    var controller = $(this).attr("controller");
+        //    var action = $(this).attr("action");
+        //    var url = '/' + controller + '/' + action + '/';
+        //    //window.location = url;
+        //    $.ajax({
+        //        type: "get",
+        //        url: url,
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "html",
+        //        success: function (html) {
+        //            debugger;
+        //            $('.content-wrapper').html(html);
+        //        },
+        //        error: function () {
+        //            alert("error");
+        //        }
+        //    });
+
+        //});
+        //$('#treeview-menu-area').on('click', "button#search-btn", function (e) {
+        //    debugger;
+        //    var query = $(this).closest('.input-group').find("input.form-control").val();
+
+        //    if (query != null) {
+        //        var wrapperClass = $(this).closest('.section-treeview').find('.ch-treeview');
+
+        //        var div = $(wrapperClass).find('.treeview-area');
+
+        //        var TreeViewParam = {
+        //            WithCheckBox: "false",
+        //            AllowSelectGroup: "true",
+        //            WithImageIcon: "true",
+        //            WithOutMe: "false",
+        //            Title: "",
+        //            SelectedNodeId: "1",
+        //            Filter: query
+        //        }
+
+
+
+        //        var url = "/Menu/_GetLayoutSideBarTree"
+
+        //        $.ajax({
+        //            type: "POST",
+        //            url: url,
+        //            data: { param: TreeViewParam },
+        //            dataType: "html",
+        //            success: function (html) {
+        //                debugger;
+        //                $('.main-side-tree').html(html);
+        //            },
+        //            error: function () {
+        //                alert("error");
+        //            }
+        //        });
+        //        //$(".main-side-tree").load(url, { param: TreeViewParam });
+        //        //debugger;
+        //    }
+
+
+        //});
+        //$('#treeview-menu-area').on('keypress', ".search-box", function (e) {
+        //    debugger;
+        //    if (e.which == 13) {
+        //        var query = $(this).closest('.input-group').find("input.form-control").val();
+
+        //        if (query != null) {
+        //            var wrapperClass = $(this).closest('.section-treeview').find('.ch-treeview');
+
+        //            var div = $(wrapperClass).find('.treeview-area');
+
+        //            var TreeViewParam = {
+        //                WithCheckBox: "false",
+        //                AllowSelectGroup: "true",
+        //                WithImageIcon: "true",
+        //                WithOutMe: "false",
+        //                Title: "",
+        //                SelectedNodeId: "1",
+        //                Filter: query
+        //            }
+
+
+
+        //            var url = "/Menu/_GetLayoutSideBarTree"
+
+        //            $.ajax({
+        //                type: "POST",
+        //                url: url,
+        //                data: { param: TreeViewParam },
+        //                dataType: "html",
+        //                success: function (html) {
+        //                    debugger;
+        //                    $('.main-side-tree').html(html);
+        //                },
+        //                error: function () {
+        //                    alert("error");
+        //                }
+        //            });
+        //            //$(".main-side-tree").load(url, { param: TreeViewParam });
+        //            //debugger;
+        //        }
+
+        //    }
+        //});
+
+        
+     
+        $(document).ready(function () {
+            debugger;
+            $(document).bind("ajaxSend", function () {
+                debugger;
+            $('.loaderContainer').show().find('.loader').css({ "top": "50%", "left": "50%" });
+        }).bind("ajaxStop", function () {
+            $('.loaderContainer').hide();
+        });
+        });
 
 
 </script>
+
+<style>
+    .sidebar-menu:hover {
+        overflow: hidden;
+    }
+
+    .slimScrollDiv {
+        padding-left: -27px;
+        left: -50px;
+        margin-right: -56px;
+    }
+
+    .main-sidebar {
+        overflow: hidden auto;
+    }
+
+    .sidebar {
+        overflow: hidden;
+    }
+
+        .sidebar > ul {
+            margin-left: -3px;
+        }
+
+    div#treeview-menu-area {
+        margin-left: 34px;
+    }
+
+    .rotatefa {
+        transform: rotate(+86deg);
+    }
+
+    div#treeview-menu-area {
+        margin-left: -13px;
+    }
+</style>

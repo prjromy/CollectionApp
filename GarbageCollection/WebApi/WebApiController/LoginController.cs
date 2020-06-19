@@ -260,47 +260,47 @@ namespace GarbageCollection.WebApi.WebApiController
 
 
                         AuthenticationModule authentication = new AuthenticationModule();
-                        string token = authentication.GenerateTokenForUser(user.UserName, user.UserId);
-                        var sul = new LocationUser
-                        {
-                            EmployeeId = user.EmployeeId,
-                            Email = user.Email,
-                            UserId = user.UserId,
-                            UserName = user.UserName,
-                            EffDate = user.EffDate,
-                            TillDate = user.TillDate,
-                            MTId = user.MTId,
-                            IsUnlimited = user.IsUnlimited,
-                            UserDesignationId = user.UserDesignationId,
-                            Location = myintlist,
-                            token= token
-                        };
+                        string tokens = authentication.GenerateTokenForUser(user.UserName, user.UserId);
+                        //var sul = new LocationUser
+                        //{
+                        //EmployeeId = user.EmployeeId,
+                        //Email = user.Email,
+                        //UserId = user.UserId,
+                        //UserName = user.UserName,
+                        //EffDate = user.EffDate,
+                        //TillDate = user.TillDate,
+                        //MTId = user.MTId,
+                        //IsUnlimited = user.IsUnlimited,
+                        //UserDesignationId = user.UserDesignationId,
+                        //Location = myintlist,
+                        var token = tokens;
+                        //};
                        
-                       return Request.CreateResponse(HttpStatusCode.OK, sul, Configuration.Formatters.JsonFormatter);
+                       return Request.CreateResponse(HttpStatusCode.OK, token, Configuration.Formatters.JsonFormatter);
                         //return Ok(new { results = sul });
                       
                     }
                     else
                     {
                         AuthenticationModule authentication = new AuthenticationModule();
-                        string token = authentication.GenerateTokenForUser(user.UserName, user.UserId);
-                        var sul = new LocationUser
-                        {
-                            EmployeeId = user.EmployeeId,
-                            Email = user.Email,
-                            UserId = user.UserId,
-                            UserName = user.UserName,
-                            EffDate = user.EffDate,
-                            TillDate = user.TillDate,
-                            MTId = user.MTId,
-                            IsUnlimited = user.IsUnlimited,
-                            UserDesignationId = user.UserDesignationId,
-                            token= token
+                        string tokens = authentication.GenerateTokenForUser(user.UserName, user.UserId);
+                        //var sul = new LocationUser
+                        //{
+                        //EmployeeId = user.EmployeeId,
+                        //Email = user.Email,
+                        //UserId = user.UserId,
+                        //UserName = user.UserName,
+                        //EffDate = user.EffDate,
+                        //TillDate = user.TillDate,
+                        //MTId = user.MTId,
+                        //IsUnlimited = user.IsUnlimited,
+                        //UserDesignationId = user.UserDesignationId,
+                        var token = tokens;
 
-                        };
+                        //};
                         //return Ok(new { results = sul });
                        
-                        return Request.CreateResponse(HttpStatusCode.OK, sul, Configuration.Formatters.JsonFormatter);
+                        return Request.CreateResponse(HttpStatusCode.OK, token, Configuration.Formatters.JsonFormatter);
                     }
 
                 }
@@ -335,24 +335,24 @@ namespace GarbageCollection.WebApi.WebApiController
                 if (user != null && user.IsActive == true && pass.VerifyHashedPassword(user.PasswordHash, context.Password) != PasswordVerificationResult.Failed)
                 {
                     AuthenticationModule authentication = new AuthenticationModule();
-                    string token = authentication.GenerateTokenForUser(user.UserName, user.UserId);
+                    string tokens = authentication.GenerateTokenForUser(user.UserName, user.UserId);
 
-                    var sul = new customerUser
-                    {
-                        CustomerId = user.CustomerId,
-                        Email = user.Email,
-                        UserId = user.UserId,
-                        UserName = user.UserName,
-                        EffDate = user.EffDate,
-                        TillDate = user.TillDate,
-                        MTId = user.MTId,
-                        IsUnlimited = user.IsUnlimited,
-                        token=token
-                    };
+                    //var sul = new customerUser
+                    //{
+                    //CustomerId = user.CustomerId,
+                    //Email = user.Email,
+                    //UserId = user.UserId,
+                    //UserName = user.UserName,
+                    //EffDate = user.EffDate,
+                    //TillDate = user.TillDate,
+                    //MTId = user.MTId,
+                    //IsUnlimited = user.IsUnlimited,
+                    var token = tokens;
+                    //};
                     //Logger.writeLog(Request, Logger.JsonDataResult(sul), Logger.JsonDataResult(context));
                     //return Ok(new { results = sul });
                    
-                    return Request.CreateResponse(HttpStatusCode.OK, sul, Configuration.Formatters.JsonFormatter);
+                    return Request.CreateResponse(HttpStatusCode.OK, token, Configuration.Formatters.JsonFormatter);
 
 
                 }
@@ -375,6 +375,154 @@ namespace GarbageCollection.WebApi.WebApiController
                 return Request.CreateResponse(HttpStatusCode.NotFound, "User Not Found", Configuration.Formatters.JsonFormatter);
             }
           
+
+        }
+
+
+
+
+        [JWTAuthenticationFilter]
+
+        [HttpGet]
+        [Route("api/userdetails")]
+        public HttpResponseMessage UserDetails(int userId,string ClientId="")
+        {
+
+
+            //var isCustomer=  HttpContext.Current.Request.Params["IsCustomer"];
+            if (ClientId == "User")
+            {
+                //PasswordHasher pass = new PasswordHasher();
+                //var hashedPassword = EncodePassword(context.Password, MembershipPasswordFormat.Hashed, "MAKV2SPBNI99212");
+                var user = db.Users.Where(x => x.UserId == userId).FirstOrDefault();
+                // password is correct 
+
+
+                //var userManager = context.OwinContext.GetUserManager<Loader.UserManager>();
+                // var user = await userManager.FindAsync(context.UserName, context.Password);
+
+                //Loader.Models.ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+                if (user != null && user.IsActive == true )
+                {
+                    if (user.UserDesignationId == 11)
+                    {
+                        var locations = String.Format("select  locationid from  fgetlocationlistbycollector('" + user.UserId + "')");
+
+
+                        List<int> returnData = db.Database.SqlQuery<int>(locations).ToList();
+                        int[] myintlist = returnData.ToArray();
+
+
+
+                        var sul = new LocationUser
+                        {
+                            EmployeeId = user.EmployeeId,
+                            Email = user.Email,
+                            UserId = user.UserId,
+                            UserName = user.UserName,
+                            EffDate = user.EffDate,
+                            TillDate = user.TillDate,
+                            MTId = user.MTId,
+                            IsUnlimited = user.IsUnlimited,
+                            UserDesignationId = user.UserDesignationId,
+                            Location = myintlist,
+                            
+                    };
+
+                    return Request.CreateResponse(HttpStatusCode.OK, sul, Configuration.Formatters.JsonFormatter);
+                        //return Ok(new { results = sul });
+
+                    }
+                    else
+                    {
+                       
+                        var sul = new LocationUser
+                        {
+                            EmployeeId = user.EmployeeId,
+                            Email = user.Email,
+                            UserId = user.UserId,
+                            UserName = user.UserName,
+                            EffDate = user.EffDate,
+                            TillDate = user.TillDate,
+                            MTId = user.MTId,
+                            IsUnlimited = user.IsUnlimited,
+                            UserDesignationId = user.UserDesignationId
+
+                    };
+                    //return Ok(new { results = sul });
+
+                    return Request.CreateResponse(HttpStatusCode.OK, sul, Configuration.Formatters.JsonFormatter);
+                    }
+
+                }
+
+                //Logger.writeLog(Request, Logger.JsonDataResult(sul), Logger.JsonDataResult(context));
+
+
+
+                else if (user != null && user.IsActive == false)
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, "Invalid User", Configuration.Formatters.JsonFormatter);
+                }
+                else
+                {
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "User Not Found ", Configuration.Formatters.JsonFormatter);
+                }
+
+
+
+
+            }
+
+            else if (ClientId == "Customer")
+            {
+                //var hashedPassword = EncodePassword(context.Password, MembershipPasswordFormat.Hashed, "MAKV2SPBNI99212");
+                var user = db.CustomerUserTables.Where(x => x.UserId == userId).FirstOrDefault();
+
+                //CustomerUser user = db.CustomerUsers.Where(x => x.UserName == context.UserName).FirstOrDefault();
+
+                if (user != null && user.IsActive == true )
+                {
+
+
+                    var sul = new customerUser
+                    {
+                        CustomerId = user.CustomerId,
+                        Email = user.Email,
+                        UserId = user.UserId,
+                        UserName = user.UserName,
+                        EffDate = user.EffDate,
+                        TillDate = user.TillDate,
+                        MTId = user.MTId,
+                        IsUnlimited = user.IsUnlimited
+                };
+                //Logger.writeLog(Request, Logger.JsonDataResult(sul), Logger.JsonDataResult(context));
+                //return Ok(new { results = sul });
+
+                return Request.CreateResponse(HttpStatusCode.OK, sul, Configuration.Formatters.JsonFormatter);
+
+
+                }
+                else if (user != null && user.IsActive == false)
+                {
+
+                    //return BadRequest("Customer Not Active");
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized, "User Not Active", Configuration.Formatters.JsonFormatter);
+                }
+                else
+                {
+
+                    return Request.CreateResponse(HttpStatusCode.NotFound, "User Not Found", Configuration.Formatters.JsonFormatter);
+                }
+
+
+            }
+            else
+            {
+                return Request.CreateResponse(HttpStatusCode.NotFound, "User Not Found", Configuration.Formatters.JsonFormatter);
+            }
+
 
         }
         [JWTAuthenticationFilter]

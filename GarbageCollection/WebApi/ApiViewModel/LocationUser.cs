@@ -17,7 +17,6 @@ namespace GarbageCollection.WebApi.ApiViewModel
         public string  Email { get; set; }
         public int UserDesignationId { get; set; }
         public int[] Location { get; set; }
-        public string token { get; set; }
     }
     public class customerUser
     {
@@ -29,8 +28,7 @@ namespace GarbageCollection.WebApi.ApiViewModel
         public bool IsUnlimited { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
-        public int UserDesignationId { get; set; }
         public int[] Location { get; set; }
-        public string token { get; set; }
+       
     }
 }

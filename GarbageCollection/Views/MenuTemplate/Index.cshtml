@@ -6,11 +6,11 @@
     var test = Model;
 }
 
-@{
+@*@{
 
     var MenuTemplateTreeview = (Loader.ViewModel.TreeView)ViewBag.treeview;
     Loader.ViewModel.TreeViewParam param = (Loader.ViewModel.TreeViewParam)ViewData["param"];
-}
+}*@
 
 <div class="box box-success">
     <div class="box-header with-border">
@@ -43,9 +43,15 @@
 
 <div class="modal fade users-list " data-width="400" role="dialog" tabindex="-1">
 
-</div>  <script src="~/Scripts/ch-dpicker.js"></script>
+</div>  
+
+
+@*<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>*@
+@*<script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+<script src="~/Scripts/ch-dpicker.js"></script>
 <script src="~/Scripts/ch-dialog.js"></script>
-<script src="~/Scripts/ch-treeview.js"></script>
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script type="text/javascript">
@@ -118,29 +124,10 @@
             }
         });
     });
-    @*$('.MenuTemplate-treeview').on('nodeClick', function (e, data) {
-        debugger;
-        e.stopPropagation();
-        var container = $(this).closest('.MenuTemplate-explore').find('.panel-list');
-        var listType = $(this).closest('.MenuTemplate-explore').find('#viewType').val();
-        $.ajax({
-            type: "get",
-            url: '@Url.Action("_Details", "MenuTemplate")',
-            contentType: "application/json; charset=utf-8",
-            data: { parentId: data.nodeId, allowSelectGroup: data.allowSelectGroupNode, ViewType: listType },
-            dataType: "html",
-            success: function (html) {
-                $(container).html(html);
-            },
-            error: function () {
-                alert("error");
-            }
-        });
-    });*@
 
 
 
-    $.fn.GetLayoutMenu = function () {
+    function GetLayoutMenu() {
         debugger;
 
         $.ajax({
@@ -148,7 +135,10 @@
             url: "/Menu/GetLayoutMenu/",
             dataType: "html",
             success: function (data) {
+                //$('aside.main-sidebar').html(data);
+
                 $('aside.main-sidebar').html(data);
+
             }
         });
     };
@@ -163,8 +153,10 @@
         $(this).closest('.MenuTemplate-explore').find('.MenuTemplate-treeview').SelectNode(id);
     });
 
-
+    //$.validator.unobtrusive.parse('#createMenutemplate');
     $('.MenuTemplate-explore').on('click', '.MenuTemplateImage, .editList, .btn-create-Menutemplates', function (e) {
+        //$('#createMenutemplate').removeData("validator").removeData("unobtrusiveValidation");
+        //$.validator.unobtrusive.parse($('#createMenutemplate'));
         debugger;
         e.stopPropagation();
         var container = $(this).closest('.MenuTemplate-explore').find('.panel-create');
@@ -190,7 +182,7 @@
             $(container).html(html);
             $(container).removeData("validator");
             $(container).removeData("unobtrusiveValidation");
-            $.validator.unobtrusive.parse($(container));
+            $.validator.unobtrusive.parse(container);
 
 
             },
@@ -251,7 +243,7 @@
             success: function () {
                 SuccessAlert("MenuTemplate Sucessfully Deleted", 5000)
                 $('.panel-list').trigger('nodeClick', [{ nodeId: nodeId }]);
-                $.fn.GetLayoutMenu();
+                GetLayoutMenu()
             },
             error: function () {
                 alert("error");

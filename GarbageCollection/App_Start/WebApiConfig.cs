@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin.Security.OAuth;
+﻿using GarbageCollection.WebApi.Loggers;
+using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Http.ExceptionHandling;
 using System.Web.Http.WebHost;
 
 namespace GarbageCollection.App_Start
@@ -19,6 +21,8 @@ namespace GarbageCollection.App_Start
             var cors = new EnableCorsAttribute("*", "*", "*");
             config.EnableCors(cors);
             config.MapHttpAttributeRoutes();
+            config.Services.Replace(typeof(IExceptionLogger), new UnhandledExceptionLogger());
+            config.MessageHandlers.Add(new RequestResponseHandler());
 
             var httpControllerRouteHandler = typeof(HttpControllerRouteHandler).GetField("_instance",
         System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);

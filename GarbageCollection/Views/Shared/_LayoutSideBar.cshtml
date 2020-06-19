@@ -11,7 +11,7 @@
         <span class="brand-text font-weight-light" style="font-size:16px">Waste Management </span>
     </a>
     <!-- Sidebar -->
-    <div class="sidebar">
+    <section class="sidebar">
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
@@ -42,55 +42,15 @@
         <div class="main-side-tree" style="margin-left: -20px">
             @Html.EditorFor(x => x.LayoutTreedata)
         </div>
-        <!-- Sidebar Menu -->
-        @*<nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-
-
-
-                <li class="nav-item ">
-                   
-
-                    <a class="nav-link" controller="User" action="Create" style="cursor:pointer">
-                        <i class="nav-icon fas fa-user"></i>User
-                    </a>
-
-                </li>
-                <li class="nav-item has-treeview menu-open">
-                    <a href="#" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Customer
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a controller="Customer" action="Create" class="nav-link">
-                                <i class="far fa-long-arrow-right "></i>Customer Registration
-
-
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a controller="Customer" action="List" class="nav-link">
-                                <i class="far fa-long-arrow-right "></i>Customer List
-
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>*@
-        <!-- /.sidebar-menu -->
-    </div>
+       
+    </section>
     <!-- /.sidebar -->
     </div>
-    @Scripts.Render("~/bundles/jquery")
 
 
-    <script>
 
+<script type="text/javascript">
+    $(document).ready(function () {
         $('.sidebar').find('.main-side-tree').find('.master').nextAll('li').slideToggle();
         //$(".sidebar-menu li").on("click", function () {
         //    if ($(this).hasClass("active")) {
@@ -99,7 +59,6 @@
         //        $(this).addClass("active");
         //    }
         //});
-
         $('.pull-right-container').click(function () {
             debugger;
             var parent = $(this).closest('li.active.treeview');
@@ -137,27 +96,6 @@
             });
 
         });
-        $('.nav-link').on('click', function () {
-            debugger;
-            var controller = $(this).attr("controller");
-            var action = $(this).attr("action");
-            var url = '/' + controller + '/' + action + '/';
-            //window.location = url;
-            $.ajax({
-                type: "get",
-                url: url,
-                contentType: "application/json; charset=utf-8",
-                dataType: "html",
-                success: function (html) {
-                    debugger;
-                    $('.content-wrapper').html(html);
-                },
-                error: function () {
-                    alert("error");
-                }
-            });
-
-        });
         $('#treeview-menu-area').on('click', "button#search-btn", function (e) {
             debugger;
             var query = $(this).closest('.input-group').find("input.form-control").val();
@@ -184,7 +122,7 @@
                 $.ajax({
                     type: "POST",
                     url: url,
-                    data: { param: TreeViewParam },
+                    data:{param:TreeViewParam},
                     dataType: "html",
                     success: function (html) {
                         debugger;
@@ -200,48 +138,11 @@
 
 
         });
-        $('#treeview-menu-area').on('keypress', ".search-box", function (e) {
-            debugger;
-            if (e.which == 13) {
-                var query = $(this).closest('.input-group').find("input.form-control").val();
-
-                if (query != null) {
-                    var wrapperClass = $(this).closest('.section-treeview').find('.ch-treeview');
-
-                    var div = $(wrapperClass).find('.treeview-area');
-
-                    var TreeViewParam = {
-                        WithCheckBox: "false",
-                        AllowSelectGroup: "true",
-                        WithImageIcon: "true",
-                        WithOutMe: "false",
-                        Title: "",
-                        SelectedNodeId: "1",
-                        Filter: query
-                    }
 
 
 
-                    var url = "/Menu/_GetLayoutSideBarTree"
 
-                    $.ajax({
-                        type: "POST",
-                        url: url,
-                        data: { param: TreeViewParam },
-                        dataType: "html",
-                        success: function (html) {
-                            debugger;
-                            $('.main-side-tree').html(html);
-                        },
-                        error: function () {
-                            alert("error");
-                        }
-                    });
-                    //$(".main-side-tree").load(url, { param: TreeViewParam });
-                    //debugger;
-                }
+    });
 
-            }
-        });
 
-    </script>
+</script>

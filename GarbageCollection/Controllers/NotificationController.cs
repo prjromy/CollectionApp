@@ -42,11 +42,11 @@ namespace GarbageCollection.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Pushpush()
+        public ActionResult Pushpush(string _topic,int locationid)
         {
             FCMPushNotification fcmPush = new FCMPushNotification();
-            fcmPush.SendNotification("sbsbs", "Your body message", "Sinamangal");
-            return Json(true, JsonRequestBehavior.AllowGet);
+            var result=fcmPush.SendNotification( _topic, locationid);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
             
 

@@ -36,7 +36,8 @@ namespace GarbageCollection.WebApi.Security
                 {
                     Issuer = "self",
                     Audience = "http://www.wastemanagementone.com",
-                    Expires = now.AddMinutes(60),
+                    //Expires = now.AddMinutes(60),
+                    Expires = now.AddDays(1),
                     Subject = claimsIdentity,
                     SigningCredentials = signingCredentials
                     

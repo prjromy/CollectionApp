@@ -65,6 +65,8 @@ namespace GarbageCollection.WebApi.WebApiController
 
          
         [Route("sendnotification")]
+        
+
         [HttpPost]
         public async Task<bool> NotifyAsync([FromBody] NotificationFirebase.NotificationTopic topic)
         {

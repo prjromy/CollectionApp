@@ -179,20 +179,32 @@
     $('.notification-main').on('click', '.btn-send-notification', function () {
         debugger;
         var LocationName = $('.notification-main').find('#LocationName').val();
-        var title = "test";
-        var body="ks";
+        var locationid = $('.notification-main').find('#LocationId').val();
         $.ajax({
             url: "/Notification/Pushpush",
             type: 'post',
-           data: { _topic: LocationName, title: title, body: body },
+            data: { _topic: LocationName, locationid: locationid },
 
             dataType: 'json',
 
            // async: false,
-            success: function (data) {
+            success: function (result) {
                 debugger
+
+                if (result.Successful ==false) {
+                    ErrorAlert(result.Response, 5000);
+                    return false;
+                    //document.getElementById('alert-success').scrollIntoView();
+                }
+                else {
+                    SuccessAlert("Notification sent Successfully", 5000);
+                    document.getElementById('alert-success').scrollIntoView();
+                }
                // $('section.content').html(data);
-                SuccessAlert("Success", 5000);
+            
+            },
+            error: function (result) {
+                ErrorAlert(result.Response, 5000);
                 document.getElementById('alert-success').scrollIntoView();
             }
         })

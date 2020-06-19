@@ -193,7 +193,7 @@
                           response(items);
                           $(".dropdown-menu").css("height", "auto");
                           //$(".dropdown-menu").css("width", "");
-                          $(".dropdown-menu").addClass("col-md-6");
+                          $(".dropdown-menu").addClass("col-md-5");
                       },
                       error: function (response) {
                           alert(response.responseText);
@@ -217,6 +217,21 @@
       $.validator.unobtrusive.parse('#createSubmitFormLoc');
       $('.customer-create-main').on('click', '.btn-save-loc', function () {
           debugger;
+
+          //var collectorid = $('#CollectorId').val();
+          //var locationnames = $('#locationNames').val();
+          //var editlocationname = $('#locationname').val();
+
+
+          //if ((!collectorid || !locationnames) && (!collectorid || !editlocationname)) {
+          //    ErrorAlert("Please fill up form !", 3000);
+          //    return false;
+          //}
+          //if (!collectorid || !editlocationname) {
+          //    ErrorAlert("Please fill up form !", 3000);
+          //    return false;
+          //}
+          
           $('#createSubmitFormLoc').removeData("validator").removeData("unobtrusiveValidation");
           $.validator.unobtrusive.parse($('#createSubmitFormLoc'));
           if ($("#createSubmitFormLoc").valid()) {

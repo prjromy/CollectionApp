@@ -65,6 +65,8 @@
         <AssociationConnector Association="GarbageCollectionDBModel.AppCustomerRole" />
         <AssociationConnector Association="GarbageCollectionDBModel.UserRole" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.NotificationToken" Width="1.5" PointX="17.375" PointY="19.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.API_Error" Width="1.5" PointX="19.375" PointY="19.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.API_Log" Width="1.5" PointX="7.375" PointY="20.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

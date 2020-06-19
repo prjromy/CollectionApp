@@ -12,6 +12,8 @@ namespace DataAccess.DatabaseModel
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class GarbageCollectionDBEntities : DbContext
     {
@@ -75,5 +77,28 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<UserVSBranch> UserVSBranches { get; set; }
         public virtual DbSet<NDateD> NDateDs { get; set; }
         public virtual DbSet<NotificationToken> NotificationTokens { get; set; }
+        public virtual DbSet<API_Error> API_Error { get; set; }
+        public virtual DbSet<API_Log> API_Log { get; set; }
+    
+        public virtual int API_ErrorLogging(string message, string requestMethod, string requestUri, Nullable<System.DateTime> timeUtc)
+        {
+            var messageParameter = message != null ?
+                new ObjectParameter("Message", message) :
+                new ObjectParameter("Message", typeof(string));
+    
+            var requestMethodParameter = requestMethod != null ?
+                new ObjectParameter("RequestMethod", requestMethod) :
+                new ObjectParameter("RequestMethod", typeof(string));
+    
+            var requestUriParameter = requestUri != null ?
+                new ObjectParameter("RequestUri", requestUri) :
+                new ObjectParameter("RequestUri", typeof(string));
+    
+            var timeUtcParameter = timeUtc.HasValue ?
+                new ObjectParameter("TimeUtc", timeUtc) :
+                new ObjectParameter("TimeUtc", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("API_ErrorLogging", messageParameter, requestMethodParameter, requestUriParameter, timeUtcParameter);
+        }
     }
 }

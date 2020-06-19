@@ -61,11 +61,22 @@ namespace BussinessLogic.Service
         {
             bool status = true;
             var result = uow.Repository<LocationVsCollector>().FindBy(x => x.Id != Id && x.LocationId == LocationId&&x.CollectorId==CollectorId).Any();
+            var resultexistlocationonly = uow.Repository<LocationVsCollector>().FindBy(x => x.Id != Id && x.LocationId == LocationId ).Any();
+
             var locationnames = uow.Repository<LocationVsCollector>().FindBy(x => x.CollectorId == CollectorId).Select(x => x.LocationId).ToList().ToArray();
             //foreach (var item in locationnames)
             //{
+            var locationexist = uow.Repository<LocationVsCollector>().GetAll().Select(x => x.LocationId).ToList().ToArray();
+            if (locationexist.Contains(LocationId) == true && resultexistlocationonly == true)
+            {
+                var singleLocationName = uow.Repository<LocationMaster>().FindBy(x => x.Lid == LocationId).Select(x => x.LocationName).SingleOrDefault();
 
-            if (locationnames.Contains(LocationId)==true && result==true) {
+                returnMessage.Success = false;
+                returnMessage.Value = singleLocationName;
+                return returnMessage;
+
+            }
+            else if (locationnames.Contains(LocationId)==true && result==true) {
                 var singleLocationName = uow.Repository<LocationMaster>().FindBy(x => x.Lid == LocationId).Select(x => x.LocationName).SingleOrDefault();
 
                 returnMessage.Success = false;
@@ -82,7 +93,13 @@ namespace BussinessLogic.Service
 
         public ReturnBaseMessageModel AddCollectionLocationCheck(int? CollectorId, int? LocationId, string locationNames = null, string locationname = null)
         {
+
+
+
+           
             var locationnames = uow.Repository<LocationVsCollector>().FindBy(x => x.CollectorId == CollectorId).Select(x=>x.LocationId).ToList().ToArray();
+
+           //var locationnamesonly=uow.Repository<LocationVsCollector>().
             string[] intre = locationNames.Split(',');
 
             List<int?> formList = new List<int?>();
@@ -92,9 +109,29 @@ namespace BussinessLogic.Service
                 formList.Add(Convert.ToInt32(item));
 
             }
-           // var result = locationnames.Where(a => formList.Any(b => b.Contains(a)));
-            //bool status = true;
-            if (/*Array.Equals(locationnames, formList.ToList().ToArray())*/ locationnames.Intersect(formList).Any())
+
+            var locationexist = uow.Repository<LocationVsCollector>().GetAll().Select(x => x.LocationId).ToList().ToArray();
+
+            if (locationexist.Intersect(formList).Any())///location id already exists in database
+            {
+                List<string> list = new List<string>();
+                var result = locationexist.Intersect(formList).ToList();
+                foreach (var item in result)
+                {
+                    var singleLocationName = uow.Repository<LocationMaster>().FindBy(x => x.Lid == item).Select(x => x.LocationName).SingleOrDefault();
+
+                    list.Add(singleLocationName);
+
+                }
+                String[] str = list.ToArray();
+                returnMessage.Value = string.Join(",", str);
+                returnMessage.Success = false;
+                return returnMessage;
+            }
+          
+    
+           
+           else if (/*Array.Equals(locationnames, formList.ToList().ToArray())*/ locationnames.Intersect(formList).Any())//location id already assigned to same collector
 
             {
                 List<string> list = new List<string>();

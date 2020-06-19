@@ -12,26 +12,26 @@
         allowGrp = true;
     }
     var test = Model;
-    var Destreeobj = new Loader.ViewModel.TreeViewParam(false, allowGrp, true, 0, 0, ViewBag.ActiveText, "Select Designation", "");
-    Loader.ViewModel.TreeViewParam paramData = (Loader.ViewModel.TreeViewParam)ViewData["param"];
-    var title = "Create Menu Template";
-    if (Model.MTId != 0)
-    {
-        menutreeobj = new Loader.ViewModel.TreeViewParam(true, true, false, 0, 1, ViewBag.ActiveText, "Assign Menu", "");
-        Destreeobj = new Loader.ViewModel.TreeViewParam(false, allowGrp, true, 0, Convert.ToInt32(Model.DesignationId), ViewBag.ActiveText, "Select Designation", "");
-        title = "Edit Menu Template";
-    }
-    var valueSubmit = "Create";
-    if (Model.MTId != 0)
-    {
-        valueSubmit = "Save";
-    }
+    //var Destreeobj = new Loader.ViewModel.TreeViewParam(false, allowGrp, true, 0, 0, ViewBag.ActiveText, "Select Designation", "");
+    //Loader.ViewModel.TreeViewParam paramData = (Loader.ViewModel.TreeViewParam)ViewData["param"];
+    //var title = "Create Menu Template";
+    //if (Model.MTId != 0)
+    //{
+    //    menutreeobj = new Loader.ViewModel.TreeViewParam(true, true, false, 0, 1, ViewBag.ActiveText, "Assign Menu", "");
+    //    Destreeobj = new Loader.ViewModel.TreeViewParam(false, allowGrp, true, 0, Convert.ToInt32(Model.DesignationId), ViewBag.ActiveText, "Select Designation", "");
+    //    title = "Edit Menu Template";
+    //}
+    //var valueSubmit = "Create";
+    //if (Model.MTId != 0)
+    //{
+    //    valueSubmit = "Save";
+    //}
 }
 
 <div class="box box-warning Menutemplate-create">
     <div class="box-header with-border">
 
-        <h3 class="box-title">@title </h3>
+        <h3 class="box-title">Create </h3>
 
         <div class="box-tools pull-right">
             <button class="btn btn-box-tool" data-widget="collapse"> <i class="fa fa-minus"></i></button>
@@ -104,12 +104,16 @@
         <div class="box-footer">
 
             <div class="col-md-offset-11">
-                <input type="submit" id="btnSubmit" value="@valueSubmit" class="btn btn-default" />
+                <input type="submit" id="btnSubmit" value="Save"  class="btn btn-default" />
             </div>
 
         </div><!-- box-footer -->
 
     }
+
+
+    @*<script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
     @*<script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
     @*<script src="~/Scripts/ch-treeview.js"></script>*@
@@ -119,7 +123,9 @@
     }*@
 
 </div><!-- /.box -->
-<script src="~/Scripts/ch-treeview.js"></script>
+
+
+@*<script src="~/Scripts/ch-treeview.js"></script>*@
 <script src="~/Scripts/jquery-message-box.js"></script>
 <script src="~/Scripts/ch-dialog.js"></script>
 
@@ -202,9 +208,11 @@
                 });
             }
         });
-
+        $.validator.unobtrusive.parse('#createMenutemplate');
 
         $("#createMenutemplate").submit(function () {
+            $('#createMenutemplate').removeData("validator").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse($('#createMenutemplate'));
             debugger;
             var DGid = $(this).closest('.box-body').find('.section-treeview').find('input.internal-value').val();
             if(DGid==0)
@@ -218,8 +226,7 @@
                 InfoAlert("Please select Template Name", 1500);
                 return false;
             }
-           // var menuCheck = $(this).closest('.treeview-area').find('.section-treeview').find('li').val();
-            //var SelectTree = $(this).closest('.treeview-area').find('li.')
+          
 
             var form = $(this);
             form.validate();
@@ -232,6 +239,9 @@
             var container = $(this).closest('.panel-create');
             var formData = new FormData($(this)[0]);
             var nodeId = $(this).find('.section-treeview#PMenutemplateId').find('.internal-value').val();
+            if(!nodeId){
+                nodeId=0;
+            }
             $.MessageBox({
                 buttonDone: "Yes",
                 buttonFail: "No",
@@ -269,12 +279,14 @@
                             SuccessAlert("MenuTemplate Added Succesfully.",1500);
                         }
                         else
-                        {
+                        {   GetLayoutMenu()
                             debugger;
                             SuccessAlert("MenuTemplate Edited Succesfully.",1500);
                             }
 
-                            $.fn.GetLayoutMenu();
+                            //$.fn.GetLayoutMenu();
+
+                         
                         }
 
                         
@@ -298,7 +310,7 @@
 
             return false;
         });
-        $.fn.GetLayoutMenu = function () {
+        function GetLayoutMenu() {
             debugger;
             var url="/Menu/GetLayoutMenu/";
             $.ajax({
@@ -308,40 +320,27 @@
                 success: function (data) {
                     debugger;
                     $('aside.main-sidebar').html(data);
-                    $('section.sidebar').addClass('sidebarcss');
+                    
+                    //var container = $('#createMenutemplate').closest('.panel-create');
+                    //var container = $(this).closest('.MenuTemplate-explore').find('.panel-list');
+
+                    //$.ajax({
+
+
+                    //    url: "MenuTemplate/Index",
+                    //    type: 'GET',
+                    //    async: false,
+                    //    success: function (data) {
+                    //        debugger;
+                    //        $('section.content').html(data);
+                    //    }
+                    //})
+                  
                 }
             });
-            //var data = $('aside.main-sidebar').load(url);
-            //$('aside.main-sidebar').load(url);
+            
         };
-        @*$('form').submit(function () {
-            debugger;
-            var serializedForm = $(this).serialize();
-            var nodeId = $(this).find('.section-treeview#PMenutemplateId').find('.internal-value').val()
-            var data = { Menutemplate: serializedForm,form1 }
-            $.ajax({
-                url: '@Url.Action("Create", "Menutemplate")',
-                cache: false,
-                contentType: false,
-                processData: false,
-                type: "POST",
-                data:serializedForm,
-                success: function () {
-                    debugger;
-                    $.fn.updateTreeview('Menutemplate', '_UpdateMenutemplateTree', nodeId, -1)
-                    //function (controller, action, selectedNode, rootNode)
-                    //$('.Menutemplate-treeview').find('.treeview-area').load("/Menutemplate/_GetMenutemplateTree", { param: TreeViewParam })
-                    //debugger;
-                    //$('#explore-details').find('#list').load("/Menutemplate/_Details", { parentId: pid, allowSelectGroup: allowselect })
-                },
-                error: function (result) {
-                    alert("Failed");
-                }
-
-            });
-
-            return false;
-        });*@
+     
 
 
         $('.Menutemplate-create').on('change', '#IsGroup', function (e) {
@@ -420,68 +419,7 @@
 
     });
 
-        $('.Menutemplate-create').on('filterTree', '.section-treeview', function (e, data) {
-            debugger;
-            e.stopPropagation();
-            //data.fromPopUp = 'false';
-
-            //$dlg_dpicker.load("/MenuTemplate/_GetDesignationTreePopUp", { param: data.param })
-
-            if (data.fromPopUp == 'false') {
-
-                //$dlg_dpicker.load("/MenuTemplate/_GetMenuTemplateTreePopup", { param: data.param })
-                e.stopPropagation();
-                var TreeViewParam = {
-                    Controller: '',
-                    Action: '',
-                    WithCheckBox: data.param.withCheckBox,
-                    AllowSelectGroup: data.param.allowSelectGroupNode,
-                    WithImageIcon: data.param.withImageIcon,
-                    WithOutMe: 0,// data.withOutMe,
-                    Title: data.param.Title,
-                    SelectedNodeId: 0,
-                    Filter: data.param.Filter,
-                    SelectedNodeText: ''
-                }
-
-                var url = "/MenuTemplate/_GetDesignationTreePopUp"
-                var container = $(this).closest('.MenuTemplate-explore').find('.treeview-area');
-
-                $dlg_dpicker.load(url, { param: TreeViewParam });
-            }
-            else {
-                if(data.param.Title=="Select Designation")
-                {
-                    $dlg_dpicker.find('.treeview-area').load("/Menutemplate/_GetDesignationTree", { param: data.param })
-                }
-                else
-                {
-                    e.stopPropagation();
-                    var TreeViewParam = {
-                        Controller: '',
-                        Action: '',
-                        WithCheckBox: data.withCheckBox,
-                        AllowSelectGroup: data.allowSelectGroupNode,
-                        WithImageIcon: data.withImageIcon,
-                        WithOutMe: 0,// data.withOutMe,
-                        Title: '',
-                        SelectedNodeId: 0,
-                        Filter: data.param.Filter,
-                        SelectedNodeText: ''
-                    }
-
-                    var url = "/MenuTemplate/_GetMenuTemplateTree"
-                    var container = $(this).closest('.MenuTemplate-explore').find('.treeview-area');
-
-                    $(container).load(url, { param: TreeViewParam });
-                }
-
-
-            }
-
-
-        });
-
+      
     });
 
 

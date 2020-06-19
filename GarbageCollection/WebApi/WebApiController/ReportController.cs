@@ -133,6 +133,63 @@ namespace GarbageCollection.WebApi.WebApiController
             }
 
         }
+
+        [HttpGet]
+        [Route("subscriptionduelist")]
+        public IEnumerable<MainViewModel.SubscriberDueViewModel> GetSubscriptionDueList([FromUri]  PagingParameterModel pagingparametermodel, int? customerid)
+        {
+            ResponseMessage resMsg = new ResponseMessage();
+            try
+            {
+                // var collectorid=HttpContext.Current.Session["CustomerUserId"];
+
+                string query = String.Format("select COUNT(*) OVER() AS TotalCount, Subsno, CustomerName, CustomerType, LocationName, LedgerName, Debit, Credit, DueBalance, Status from[dbo].[fgetSubscriptionDueReport]('" + DateTime.Now + "') where custId= " + customerid);
+                //string query = String.Format("select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID,verifiedBy as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null and CollectorId=" + collectorid + "and CollectionType=" + "'Mobile'");
+
+                List<MainViewModel.SubscriberDueViewModel> returnData = db.Database.SqlQuery<MainViewModel.SubscriberDueViewModel>(query).ToList();
+
+
+                //get's no of rows
+                int count = returnData.Count();
+
+                //parameter is passed from query strng if it is null then then it default value will be pagenumber 1
+                int CurrentPage = pagingparametermodel.pageNumber;
+                int PageSize = pagingparametermodel.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = returnData.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var prevousPage = CurrentPage > 1 ? "Yes" : "No";
+                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+                var paginationMetaData = new
+                {
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    prevousPage,
+                    nextPage
+
+                };
+                if (returnData == null)
+
+                {
+                    resMsg.message = "No data found";
+                    var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null));
+                    throw new HttpResponseException(response);
+                }
+
+                Logger.writeLog(Request, Logger.JsonDataResult(returnData), Logger.JsonDataResult(null));
+                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetaData));
+                return items;
+            }
+            catch (Exception ex)
+            {
+                resMsg.message = "Something went wrong. Please try again.";
+                var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null), Logger.JsonDataResult(ex));
+                throw new HttpResponseException(response);
+            }
+
+        }
         public HttpResponseMessage getMessage(ResponseMessage resMsg, HttpStatusCode code, bool flag, string req = null, string ex = null)
         {
             var json = new JavaScriptSerializer().Serialize(resMsg);

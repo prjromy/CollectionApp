@@ -2,13 +2,9 @@
 @using Loader.Helper
 @{
     Layout = null;
-    var test = Model;
 
-    //var treeobj = new Loader.ViewModel.TreeViewParam(false, true, true, 0, 0, "", "Select Menu", ""); ;
-    //if (Model.MenuId != 0)
-    //{
-    var treeobj = new Loader.ViewModel.TreeViewParam(false, true, true, 0,Model.PMenuId, ViewBag.ActiveText, "Select Menu", "");
-    //}
+
+   
     Loader.ViewModel.TreeViewParam paramData = (Loader.ViewModel.TreeViewParam)ViewData["param"];
     var title = "Create Menu";
     if (Model.MenuId != 0)
@@ -21,9 +17,7 @@
         valueSubmit = "Save";
     }
 }
-@*<link href="~/UserDialog/jquery-ui.css" rel="stylesheet" />
-<link href="~/UserDialog/bootstrap-theme.min.css" rel="stylesheet" />
-<script src="~/UserDialog/jquery-1.11.1.ui.min.js"></script>*@
+
 <div class="box box-warning menu-create">
     <div class="box-header with-border">
 
@@ -50,9 +44,26 @@
                 <div class="form-group col-md-12">
                     @Html.LabelFor(model => model.PMenuId, htmlAttributes: new { @class = "control-label col-md-3" })
                     <div class="col-md-9">
-
-                        @Html.EditorForTree(model => model.PMenuId, treeobj)
+                         @if (Model.MenuId == 0)
+                          {
+                
+                        @Html.TextBox("PMenuId", null, new { id = "menus", @class = "col-md-7" })
+                           
                         @Html.ValidationMessageFor(model => model.PMenuId, "", new { @class = "text-danger" })
+                         }
+                         else
+                         {
+                             //var collectorname = CommonUtilityService.getCollectorName(Model.PMenuId);
+                            @Html.TextBox("Parentname", (String)ViewBag.ActiveText , new { @class = "form-control", @id = "MenuName", autocomplete = "off" } )
+                             @Html.HiddenFor(x=>x.PMenuId)
+
+                             // @Html.TextBox("PMenuId", (String)ViewBag.ActiveText, new { id = "menus", @class = "col-md-7" })
+
+                            @Html.ValidationMessageFor(model => model.PMenuId, "", new { @class = "text-danger" })
+
+
+                             //  @Html.EditorFor(model=>model.PMenuId,null, new { htmlAttributes = new { @class = "form-control", @id = "menus", autocomplete = "off" } })
+                         }
                     </div>
                 </div>
                 <div class="form-group col-md-12">
@@ -141,7 +152,11 @@
         </div><!-- box-footer -->
 
     }
- 
+
+
+    <link href="~/Select2 Css/select2.css" rel="stylesheet" />
+    <script src="~/Select2 js/select2.js"></script>
+    <script src="~/Scripts/typeahead.min.js"></script>
     <script src="~/Scripts/ch-treeview.js"></script>
     <script src="~/Scripts/jquery-message-box.js"></script>
     <script src="~/Scripts/ch-dialog.js"></script>
@@ -154,6 +169,90 @@
 </div><!-- /.box -->
 
 <script type="text/javascript">
+
+    $(function () {
+
+        $("#menus").typeahead({
+           
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Menu/GetMenus/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.id;
+                            var name = item.text;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+            },
+            updater: function (item) {
+                $('#id').val(map[item].id);
+                return item;
+            }
+        });
+
+    })
+    $(document).ready(function () {
+
+        //The url we will send our get request to
+        var attendeeUrl = '@Url.Action("GetAttendees", "Menu")';
+        var pageSize = 20;
+
+        $('#menus').select2(
+        {
+            placeholder: 'Enter name',
+            //Does the user have to enter any data before sending the ajax request
+            minimumInputLength: 0,
+            allowClear: true,
+            multiple: false,
+            ajax: {
+                //How long the user has to pause their typing before sending the next request
+                quietMillis: 150,
+                //The url of the json service
+                url: attendeeUrl,
+                dataType: 'jsonp',
+                //Our search term and what page we are on
+                data: function (term, page) {
+                    return {
+                        pageSize: pageSize,
+                        pageNum: page,
+                        searchTerm: term
+                    };
+                },
+                results: function (data, page) {
+                    debugger;
+                    //Used to determine whether or not there are more results available,
+                    //and if requests for more data should be sent in the infinite scrolling                    
+                    var more = (page * pageSize) < data.Total;
+                    return { results: data.Results, more: more };
+                }
+            }
+        });
+
+    });
+
     $(document).ready(function () {
         debugger;
         var form1 = new FormData();
@@ -193,12 +292,12 @@
 
         $("#createMenu").submit(function () {
             debugger;
-            var pid = $(this).closest('.box-body').find('.section-treeview').find('input.internal-value').val();
-            if(pid=="")
-            {
-                InfoAlert("The Required Feild is Empty",1500);
-                return false;
-            }
+            //var pid = $(this).closest('.box-body').find('.section-treeview').find('input.internal-value').val();
+            //if(pid=="")
+            //{
+            //    InfoAlert("The Required Feild is Empty",1500);
+            //    return false;
+            //}
             var form = $(this);
             form.validate();
             if (form.valid() == false) {
@@ -208,6 +307,9 @@
 
             var container = $(this).closest('.panel-create');
             var formData = new FormData($(this)[0]);
+            for(var pair of formData.entries()) {
+                console.log(pair[0]+ ', '+ pair[1]); 
+            }
             var nodeId = $(this).find('.section-treeview#PMenuId').find('.internal-value').val()
             $.MessageBox({
                 buttonDone: "Yes",
@@ -332,7 +434,54 @@
             }
         });
     };
+    $(function () {
+        $("#MenuName").typeahead({
 
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Menu/GetMenus/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        debugger;
+                        if (data === null) {
+                            ErrorAlert("No data Match", 3000);
+                            return false;
+                        }
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.id;
+                            var name = item.parentname;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-6");
+                    },
+                    error: function (response) {
+                        debugger;
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        debugger;
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#PMenuId').val(map[item].id);
+                return item;
+            }
+        });
+    })
 
 </script>
 

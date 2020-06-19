@@ -378,6 +378,11 @@
     <Compile Include="WebApi\ApiViewModel\ResponseMessage.cs" />
     <Compile Include="WebApi\ApiViewModel\ReturnValue.cs" />
     <Compile Include="WebApi\ApiViewModel\SubscriptionDueModel.cs" />
+    <Compile Include="WebApi\Loggers\ApiLogging.cs" />
+    <Compile Include="WebApi\Loggers\MessageLogging.cs" />
+    <Compile Include="WebApi\Loggers\RequestResponseHandler.cs" />
+    <Compile Include="WebApi\Loggers\SqlErrorLogging.cs" />
+    <Compile Include="WebApi\Loggers\UnhandledExceptionLogger.cs" />
     <Compile Include="WebApi\Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="WebApi\Providers\Logger.cs" />
     <Compile Include="WebApi\Providers\MyCorsPolicyAttribute.cs" />
@@ -1468,7 +1473,6 @@
     <Content Include="Scripts\ch-dialog.js" />
     <Content Include="Scripts\ch-dpicker.js" />
     <Content Include="Scripts\ch-treeview.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.10.4.custom.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />

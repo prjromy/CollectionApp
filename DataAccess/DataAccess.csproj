@@ -85,6 +85,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="DatabaseModel\API_Error.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\API_Log.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModel\AppCustomerClaim.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>

@@ -71,6 +71,32 @@
           <Property Name="Model" Type="varbinary(max)" Nullable="false" />
           <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
         </EntityType>
+        <EntityType Name="API_Error">
+          <Key>
+            <PropertyRef Name="APIErrorId" />
+          </Key>
+          <Property Name="APIErrorId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RequestMethod" Type="varchar" MaxLength="100" />
+          <Property Name="RequestUri" Type="varchar" MaxLength="100" />
+          <Property Name="TimeUtc" Type="datetime" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="API_Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Host" Type="nvarchar" MaxLength="100" />
+          <Property Name="Headers" Type="nvarchar" MaxLength="1000" />
+          <Property Name="StatusCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeUtc" Type="datetime" />
+          <Property Name="RequestBody" Type="nvarchar(max)" />
+          <Property Name="RequestedMethod" Type="nvarchar(max)" />
+          <Property Name="UserHostAddress" Type="nvarchar" MaxLength="100" />
+          <Property Name="Useragent" Type="nvarchar" MaxLength="100" />
+          <Property Name="AbsoluteUri" Type="nvarchar" MaxLength="100" />
+          <Property Name="RequestType" Type="nvarchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="BSADCal">
           <Key>
             <PropertyRef Name="NYear" />
@@ -772,6 +798,12 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="API_ErrorLogging" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Message" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="RequestMethod" Type="varchar" Mode="In" />
+          <Parameter Name="RequestUri" Type="varchar" Mode="In" />
+          <Parameter Name="TimeUtc" Type="datetime" Mode="In" />
+        </Function>
         <EntityContainer Name="GarbageCollectionDBModelStoreContainer">
           <EntitySet Name="AppCustomerClaim" EntityType="Self.AppCustomerClaim" Schema="cust" store:Type="Tables" />
           <EntitySet Name="AppCustomerRole" EntityType="Self.AppCustomerRole" Schema="cust" store:Type="Tables" />
@@ -779,6 +811,8 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="CustomerRole" EntityType="Self.CustomerRole" Schema="cust" store:Type="Tables" />
           <EntitySet Name="CustomerUserTable" EntityType="Self.CustomerUserTable" Schema="cust" store:Type="Tables" />
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="API_Error" EntityType="Self.API_Error" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="API_Log" EntityType="Self.API_Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BSADCal" EntityType="Self.BSADCal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionType" EntityType="Self.CollectionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CollectionVerifyLog" EntityType="Self.CollectionVerifyLog" Schema="dbo" store:Type="Tables" />
@@ -985,6 +1019,14 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
           <EntitySet Name="NotificationTokens" EntityType="GarbageCollectionDBModel.NotificationToken" />
+          <FunctionImport Name="API_ErrorLogging">
+            <Parameter Name="Message" Mode="In" Type="String" />
+            <Parameter Name="RequestMethod" Mode="In" Type="String" />
+            <Parameter Name="RequestUri" Mode="In" Type="String" />
+            <Parameter Name="TimeUtc" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="API_Error" EntityType="GarbageCollectionDBModel.API_Error" />
+          <EntitySet Name="API_Log" EntityType="GarbageCollectionDBModel.API_Log" />
         </EntityContainer>
         <EntityType Name="AppCustomerClaim">
           <Key>
@@ -1707,6 +1749,32 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="CustomerId" Type="Int32" Nullable="false" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
+        <EntityType Name="API_Error">
+          <Key>
+            <PropertyRef Name="APIErrorId" />
+          </Key>
+          <Property Name="APIErrorId" Type="Guid" Nullable="false" />
+          <Property Name="RequestMethod" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="RequestUri" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="TimeUtc" Type="DateTime" Precision="3" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="API_Log">
+          <Key>
+            <PropertyRef Name="LogID" />
+          </Key>
+          <Property Name="LogID" Type="Guid" Nullable="false" />
+          <Property Name="Host" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Headers" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="StatusCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeUtc" Type="DateTime" Precision="3" />
+          <Property Name="RequestBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RequestedMethod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserHostAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Useragent" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="AbsoluteUri" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="RequestType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2345,6 +2413,35 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CustomerId" ColumnName="CustomerId" />
                 <ScalarProperty Name="RegistrationToken" ColumnName="RegistrationToken" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="API_ErrorLogging" FunctionName="GarbageCollectionDBModel.Store.API_ErrorLogging" />
+          <EntitySetMapping Name="API_Error">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.API_Error">
+              <MappingFragment StoreEntitySet="API_Error">
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="TimeUtc" ColumnName="TimeUtc" />
+                <ScalarProperty Name="RequestUri" ColumnName="RequestUri" />
+                <ScalarProperty Name="RequestMethod" ColumnName="RequestMethod" />
+                <ScalarProperty Name="APIErrorId" ColumnName="APIErrorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="API_Log">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.API_Log">
+              <MappingFragment StoreEntitySet="API_Log">
+                <ScalarProperty Name="RequestType" ColumnName="RequestType" />
+                <ScalarProperty Name="AbsoluteUri" ColumnName="AbsoluteUri" />
+                <ScalarProperty Name="Useragent" ColumnName="Useragent" />
+                <ScalarProperty Name="UserHostAddress" ColumnName="UserHostAddress" />
+                <ScalarProperty Name="RequestedMethod" ColumnName="RequestedMethod" />
+                <ScalarProperty Name="RequestBody" ColumnName="RequestBody" />
+                <ScalarProperty Name="TimeUtc" ColumnName="TimeUtc" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="Headers" ColumnName="Headers" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="LogID" ColumnName="LogID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
