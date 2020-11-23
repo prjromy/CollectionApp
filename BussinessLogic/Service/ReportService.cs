@@ -22,16 +22,61 @@ namespace BussinessLogic.Service
 
                 string query = "";
               
-                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerType,LocationName,LedgerName,Debit,Credit,DueBalance,Status from [dbo].[fgetSubscriptionDueReport]('" + tillDate + "')";
+                    query = "select COUNT(*) OVER () AS TotalCount,CustNo,Subsno,CustomerName,CustomerType,LocationName,LedgerName,Debit,Credit,Advance,DueBalance,Status from [dbo].[fgetSubscriptionDueReport]('" + tillDate + "')";
 
+              
                  if(Location!=null && Location != "")
                     {
-                    query += "where LocationName like'%" + Location.Trim() + "%'";
+                 
+                    query += "where LocationName ='" + Location.Trim()+"'";
                 }
-             
-                query += @" ORDER BY  Subsno
+
+                if (pageSize == 0)
+                {
+                    query += @" ORDER BY  Subsno";
+                 
+                }
+                else
+                {
+                    query += @" ORDER BY  Subsno
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
+                }
+
+               
+                var suscriptionList = uow.Repository<MainViewModel.SubscriberDueViewModel>().SqlQuery(query).ToList();
+
+                return suscriptionList;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
+        public List<MainViewModel.SubscriberDueViewModel> getTotalSuscriberList(DateTime? tillDate,  string Location = "")
+        {
+            try
+            {
+
+                string query = "";
+
+                query = "select SUM(debit) as SumDebit,SUM(credit) as SumCredit,SUM(Advance) as SumAdvance,SUM(DueBalance)as SumDueBalance from [dbo].[fgetSubscriptionDueReport]('" + tillDate + "')";
+
+
+                if (Location != null && Location != "")
+                {
+                    query += "where LocationName ='" + Location.Trim() + "'";
+                }
+
+               
+                 
+
+                
+              
+
+
                 var suscriptionList = uow.Repository<MainViewModel.SubscriberDueViewModel>().SqlQuery(query).ToList();
 
                 return suscriptionList;
@@ -44,6 +89,34 @@ namespace BussinessLogic.Service
 
         }
 
+
+        public MainViewModel.SubscriberDueViewModel getSingleTotalSuscriberList(DateTime? tillDate, string Location = "")
+        {
+            try
+            {
+
+                string query = "";
+
+                query = "select SUM(debit) as SumDebit,SUM(credit) as SumCredit,SUM(Advance) as SumAdvance,SUM(DueBalance)as SumDueBalance from [dbo].[fgetSubscriptionDueReport]('" + tillDate + "')";
+
+
+                if (Location != null && Location != "")
+                {
+                    query += "where LocationName like'%" + Location.Trim() + "%'";
+                }
+
+
+                var suscriptionList = uow.Repository<MainViewModel.SubscriberDueViewModel>().SqlQuery(query).SingleOrDefault();
+
+                return suscriptionList;
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+
+        }
         public List<MainViewModel.CollectionReport> getCollectorReportList(DateTime? collectionDate, int pageNo, int pageSize, string customerName = "",string collector="",string Location="",int verified=1)
         {
             try
@@ -52,12 +125,12 @@ namespace BussinessLogic.Service
                 string query = "";
                 if (verified == 2)
                 {
-                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is  null";
+                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerNo,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is  null";
 
                 }
                 if(verified == 1)
                 {
-                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is not null";
+                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerNo,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is not null";
 
                 }
 
@@ -79,9 +152,18 @@ namespace BussinessLogic.Service
                 {
                     query += "  and CollectionDate <= '"+ collectionDate+"'";
                 }
-                query += @" ORDER BY  Subsno
+                if (pageSize == 0)// For Excel 
+                {
+                    query += @" ORDER BY  Subsno";
+                      
+                }
+                else
+                {
+                    query += @" ORDER BY  Subsno
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
+                }
+          
                 var collectorList = uow.Repository<MainViewModel.CollectionReport>().SqlQuery(query).ToList();
 
                 return collectorList;
@@ -101,13 +183,21 @@ namespace BussinessLogic.Service
 
                 string query = "";
                
-                    query = "select COUNT(*) OVER () AS TotalCount, SubsNo,Custname,PostedOnAd,PostedOnBs,Debit,Credit,Balance,Sources from [dbo].[fgetSubscriberStmnt] (" + subsid+",'"+FromDate+"','"+ToDate+"')";
+                    query = "select COUNT(*) OVER () AS TotalCount,CustNo, SubsNo,Custname,PostedOnAd,PostedOnBs,Debit,Credit,Balance,Sources from [dbo].[fgetSubscriberStmnt] (" + subsid+",'"+FromDate+"','"+ToDate+"')";
 
-              
 
-                query += @" ORDER BY  PostedOnAd asc
+                if (pageSize == 0)
+                {
+                    query += @" ORDER BY  PostedOnAd asc";
+                    
+                }
+                else
+                {
+                    query += @" ORDER BY  PostedOnAd asc
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
+                }
+              
                 var subscriptionreportList = uow.Repository<MainViewModel.SubscriptionReport>().SqlQuery(query).ToList();
 
                 return subscriptionreportList;
@@ -119,20 +209,31 @@ namespace BussinessLogic.Service
             }
 
         }
-        public List<MainViewModel.MonthlyDueViewModel> getMonthlyDueList(int? Month, int? Year, int pageNo, int pageSize)
+        public List<MainViewModel.MonthlyDueViewModel> getMonthlyDueList(int? Month, int? Year,string Location, int pageNo, int pageSize)
         {
             try
             {
 
                 string query = "";
 
-                query = " select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerType,LocationName,MonthlyDue,PostedOn from FgetMonthlyDuePosted("+ Year + ","+ Month + ")";
+                query = " select COUNT(*) OVER () AS TotalCount,Subsno,Custno,CustomerName,CustomerType,LocationName,MonthlyDue,PostedOn from FgetMonthlyDuePosted(" + Year + ","+ Month + ")";
 
-
-
-                query += @" ORDER BY  Subsno asc
+                if(Location != null && Location != "")
+                {
+                    query += "  where LocationName ='" + Location.Trim() + "'";
+                }
+                if (pageSize == 0)
+                {
+                    query += @" ORDER BY  Subsno asc";
+                      
+                }
+                else
+                {
+                    query += @" ORDER BY  Subsno asc
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
+                }
+              
                 var monthlyreportList = uow.Repository<MainViewModel.MonthlyDueViewModel>().SqlQuery(query).ToList();
 
                 return monthlyreportList;

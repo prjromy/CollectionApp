@@ -3,11 +3,15 @@
 @using BussinessLogic.CustomHelper
 
 @model BuisnessObject.ViewModel.MainViewModel.CustomerViewModel
+    @{ 
+        int serialcount = -1;
+    }
 
 <div class="table-responsive no-padding cust-page-list">
     <table class="table table-bordered table-striped table-hover">
 
         <tr>
+            <th> S.No.</th>
             <th> Customer No.</th>
             <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
             <th>@Html.DisplayNameFor(x => x.CustomerTypeId)</th>
@@ -15,107 +19,111 @@
             <th>@Html.DisplayNameFor(x => x.MobileNo)</th>
             <th>@Html.DisplayNameFor(x => x.Address)</th>
             <th>@Html.DisplayNameFor(x => x.Email)</th>
-             @*<th>Status</th>*@
+            @*<th>Status</th>*@
 
         </tr>
 
 
         @foreach (var item in Model.customerPagedList)
         {
-            <tr style="font-size:12px;">
-                <td>
-                    @item.CustNo
+    <tr style="font-size:12px;">
+        <td>
+        @{ serialcount++; }
+        @(serialcount + ((Model.customerPagedList.PageNumber - 1) * Model.customerPagedList.PageSize) + 1)
+        </td>
+        <td>
+            @item.CustNo
 
-                </td>
-                <td>
-                    @item.CustomerName
+        </td>
+        <td>
+            @item.CustomerName
 
-                </td>
-                <td>
-                    @item.Customertype
+        </td>
+        <td>
+            @item.Customertype
 
-                </td>
-                <td>
-                    @item.PhoneNo
+        </td>
+        <td>
+            @item.PhoneNo
 
-                </td>
-                <td>
-                    @item.MobileNo
+        </td>
+        <td>
+            @item.MobileNo
 
-                </td>
-                <td>
-                    @item.Address
+        </td>
+        <td>
+            @item.Address
 
-                </td>
-                <td>
-                    @item.Email
+        </td>
+        <td>
+            @item.Email
 
-                </td>
-           
-
-               
-
-
-
-            </tr>
-        }
-
-    </table>
-    @Html.Paging("_CustomerReportList", "Report", Model.customerPagedList.PageCount, Model.customerPagedList.PageNumber, Model.customerPagedList.PageSize)
-</div>
+        </td>
 
 
 
-<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
-<link href="~/Content/PagedList.css" rel="stylesheet" />
-<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
 
-<script>
-    $("div.cust-page-list").on('click', 'input.btnPaging', function (e) {
-        debugger;
-        e.stopImmediatePropagation();
-        var parentContainer = $(this).parents()
-        var me = $(this);
-        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
-        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
-        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
-        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
-        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
-        var status = parentContainer.find('#status').find("#statuslist").val();
-        var container = parentContainer.find("div.cust-page-list");
 
-        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
-        getPageNumberBtnAction(url, container, me)
 
-    });
-    $("div.cust-page-list").on('change', 'input#pageNo', function (e) {
-        e.stopImmediatePropagation();
-        debugger;
-        var parentContainer = $(this).parents()
-        var me = $(this);
-        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
-        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
-        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
-        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
-        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
-        var status = parentContainer.find('#status').find("#statuslist").val();
-        var container = parentContainer.find("div.cust-page-list")
-        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
-        getPageNumberChangeData(url, container, me)
-    });
-    $("div.cust-page-list").on('change', 'input#pageSize', function (e) {
-        e.stopImmediatePropagation();
-        debugger;
-        var parentContainer = $(this).parents()
-        var me = $(this);
-        var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
-        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
-        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
-        var contact = parentContainer.find("#search-contact").find("#txtContact").val();
-        var cType = parentContainer.find('#custtype').find("#ctypeid").val();
-        var container = parentContainer.find("div.cust-page-list")
-        var status = parentContainer.find('#status').find("#statuslist").val();
-        var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
-        getPageSizeChangeData(url, container, me)
-    });
-</script>
+    </tr>
+                }
+
+            </table>
+            @Html.Paging("_CustomerReportList", "Report", Model.customerPagedList.PageCount, Model.customerPagedList.PageNumber, Model.customerPagedList.PageSize)
+        </div>
+
+
+
+        <script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+        <link href="~/Content/PagedList.css" rel="stylesheet" />
+        <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+
+        <script>
+            $("div.cust-page-list").on('click', 'input.btnPaging', function (e) {
+                debugger;
+                e.stopImmediatePropagation();
+                var parentContainer = $(this).parents()
+                var me = $(this);
+                var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+                var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+                var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+                var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+                var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+                var status = parentContainer.find('#status').find("#statuslist").val();
+                var container = parentContainer.find("div.cust-page-list");
+
+                var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
+                getPageNumberBtnAction(url, container, me)
+
+            });
+            $("div.cust-page-list").on('change', 'input#pageNo', function (e) {
+                e.stopImmediatePropagation();
+                debugger;
+                var parentContainer = $(this).parents()
+                var me = $(this);
+                var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+                var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+                var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+                var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+                var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+                var status = parentContainer.find('#status').find("#statuslist").val();
+                var container = parentContainer.find("div.cust-page-list")
+                var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
+                getPageNumberChangeData(url, container, me)
+            });
+            $("div.cust-page-list").on('change', 'input#pageSize', function (e) {
+                e.stopImmediatePropagation();
+                debugger;
+                var parentContainer = $(this).parents()
+                var me = $(this);
+                var customerno = parentContainer.find("#customer-no").find("#CustomerNo").val();
+                var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+                var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+                var contact = parentContainer.find("#search-contact").find("#txtContact").val();
+                var cType = parentContainer.find('#custtype').find("#ctypeid").val();
+                var container = parentContainer.find("div.cust-page-list")
+                var status = parentContainer.find('#status').find("#statuslist").val();
+                var url = "?customerno=" + customerno + "&name=" + name + "&address=" + address + "&contact=" + contact + "&cType=" + cType + "&status=" + status;
+                getPageSizeChangeData(url, container, me)
+            });
+        </script>

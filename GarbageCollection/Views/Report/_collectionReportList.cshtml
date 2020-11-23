@@ -4,11 +4,17 @@
 @using BussinessLogic.CustomHelper
 
 @model BuisnessObject.ViewModel.MainViewModel.CollectionReport
+@{
+    int serialcount = -1;
+}
 
 <div class="table-responsive no-padding collector-page-list">
     <table class="table table-bordered table-striped table-hover">
 
         <tr>
+            <th> S.No.</th>
+
+            <th> Customer No.</th>
             <th> Subscription No.</th>
             <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
             <th>@Html.DisplayNameFor(x => x.CustomerType)</th>
@@ -25,46 +31,54 @@
 
         @foreach (var item in Model.collectorPagedList)
         {
-            <tr style="font-size:12px;">
-                <td>
-                    @item.Subsno
+    <tr style="font-size:12px;">
+        <td>
+            @{ serialcount++; }
+            @(serialcount + ((Model.collectorPagedList.PageNumber - 1) * Model.collectorPagedList.PageSize) + 1)
+        </td>
+        <td>
+            @item.CustomerNo
 
-                </td>
-                <td>
-                    @item.CustomerName
+        </td>
+        <td>
+            @item.Subsno
 
-                </td>
-                <td>
-                    @item.CustomerType
+        </td>
+        <td>
+            @item.CustomerName
 
-                </td>
-                <td>
-                    @item.LocationName
+        </td>
+        <td>
+            @item.CustomerType
 
-                </td>
-                <td>
-                    @item.CollectorName
+        </td>
+        <td>
+            @item.LocationName
 
-                </td>
-                <td>
-                    @item.CollectionDate
+        </td>
+        <td>
+            @item.CollectorName
 
-                </td>
-                <td>
-                    @Convert.ToDecimal(@item.CollectionAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
-                   
+        </td>
+        <td>
+            @item.CollectionDate
 
-                </td>
-
-                <td>
-                    @Convert.ToDecimal(@item.DiscountAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
-                   
-                </td>
-
-
+        </td>
+        <td>
+            @Convert.ToDecimal(@item.CollectionAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
 
-            </tr>
+        </td>
+
+        <td>
+            @Convert.ToDecimal(@item.DiscountAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+
+        </td>
+
+
+
+
+    </tr>
         }
 
     </table>

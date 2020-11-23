@@ -22,55 +22,60 @@
 <div class="main">
 
 
-<div class="container">
-    <center>
-        @if (!ViewData.ModelState.IsValid)
+    <div class="container">
+        <center>
+            @if (!ViewData.ModelState.IsValid)
             {
                 var message = Html.ValidationMessage("Error");
                 if (message.Equals(""))
                 {
-                <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
+                    <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
+                }
+                else
+                {
+                    <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
+                }
             }
-            else
-            {
-                <div class="alert alert-danger login"> @Html.ValidationMessage("Error")</div>
-            }
-        }
-        <div class="middle">
-            <div id="login">
-    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @id = "login-form" }))
-    {
-        <fieldset class="clearfix">
-            <p><span class="fa fa-user"></span>@Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Username or Email", @autocomplete = "off" })</p> <!-- JS because of IE support; better: placeholder="Username" -->
-            <p><span class="fa fa-lock"></span>@Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "Password", @type = "password", @autocomplete = "off" })   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="tooltip" title="Show/Hide Password"></span></p> <!-- JS because of IE support; better: placeholder="Password" -->
+            <div class="middle">
+                <div id="login">
+                    @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @id = "login-form" }))
+                    {
+                        <fieldset class="clearfix">
+                            <p><span class="fa fa-user"></span>@Html.TextBoxFor(x => x.Email, new { @class = "form-control", @placeholder = "Username or Email", @autocomplete = "off" })</p> <!-- JS because of IE support; better: placeholder="Username" -->
+                            <p><span class="fa fa-lock"></span>@Html.TextBoxFor(x => x.Password, new { @class = "form-control", @placeholder = "Password", @type = "password", @autocomplete = "off" })   <span toggle="#password-field" class="fa fa-fw fa-eye field-icon toggle-password" data-toggle="tooltip" title="Show/Hide Password"></span></p> <!-- JS because of IE support; better: placeholder="Password" -->
 
-            <div>
-                <span style="width:48%; text-align:left;  display: inline-block;">
-                    @*<a class="small-text" href="#">
-                        Forgot
-                        password?
-                    </a>*@
-                </span>
-                <span style="width:50%; text-align:right;  display: inline-block;"><input type="submit" value="Sign In"></span>
-            </div>
-        </fieldset>
-        <div class="clearfix"></div>
-    }
+                            <div>
+                                <span style="width:48%; text-align:left;  display: inline-block;">
+                                    @*<a class="small-text" href="#">
+                                        Forgot
+                                        password?
+                                    </a>*@
+                                </span>
+                                <span style="width:50%; text-align:right;  display: inline-block;"><input type="submit" value="Sign In"></span>
+                            </div>
+                        </fieldset>
+                        <div class="clearfix"></div>
+                    }
 
-        <div class="clearfix"></div>
+                    <div class="clearfix"></div>
 
-        </div> <!-- end login -->
-            <div class="logo">
-                <img src="~/Images/logowaste.png" alt="LOGO" style="float:left;height: 67px;" /> <p>Waste Management</p>
+                </div> <!-- end login -->
+                <div class="logo">
+                    <img src="~/Images/logowaste.png" alt="LOGO" style="float:left;height: 67px;" /> <p>Waste Management</p>
 
-                @*<div class="clearfix"></div>*@
-            </div>
-   
+                    @*<div class="clearfix"></div>*@
+                </div>
+
             </div>
 
+
+        </center>
+        <div class="privacy-policy" style="margin-top:200px ">
+            <center> @Html.ActionLink("Privacy Policy", "Index", "WasteManagement", new { @target = "_blank" },new {@style = "font-size:20px" })</center>
+        </div>
        
-    </center>
-</div>
+        
+    </div>
 </div>
 <link href="~/Content/Login.css" rel="stylesheet" />
 

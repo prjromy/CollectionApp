@@ -1,4 +1,5 @@
-﻿using OfficeOpenXml;
+﻿using BuisnessObject.ViewModel;
+using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
@@ -20,31 +21,52 @@ namespace BussinessLogic.CustomHelper
             { return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"; }
 
         }
-            public static DataTable ListToDataTable<T>(List<T> data, params string[] columnsToTake)
+        public static DataTable ListToDataTable<T>(List<T> data, params string[] columnsToTake)
+        {
+            PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
+            DataTable dataTable = new DataTable();
+
+            for (int i = 0; i < properties.Count; i++)
             {
-                PropertyDescriptorCollection properties = TypeDescriptor.GetProperties(typeof(T));
-                DataTable dataTable = new DataTable();
-
-                for (int i = 0; i < properties.Count; i++)
-                {
-                    PropertyDescriptor property = properties[i];
-                    dataTable.Columns.Add(property.Name, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
-                }
-
-                object[] values = new object[properties.Count];
-                foreach (T item in data)
-                {
-                    for (int i = 0; i < values.Length; i++)
-                    {
-                        values[i] = properties[i].GetValue(item);
-                    }
-
-                    dataTable.Rows.Add(values);
-                }
-                return dataTable;
+                PropertyDescriptor property = properties[i];
+                dataTable.Columns.Add(property.Name, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
             }
 
-        public static byte[] ExportExcel(DataTable dataTable, string[] parameterSearch, string heading = "")
+            object[] values = new object[properties.Count];
+            foreach (T item in data)
+            {
+                for (int i = 0; i < values.Length; i++)
+                {
+                    values[i] = properties[i].GetValue(item);
+                }
+
+                dataTable.Rows.Add(values);
+            }
+            return dataTable;
+        }
+        //    }
+        //public static DataTable FooterListToDataTable<T>(List<T> datas)
+        //{
+        //    DataTable dataTable = new DataTable();
+
+        //  var sus= datas.Select(x => new ExcelViewModel.TotalSubscriberDueExcelViewModel()
+        //  {
+        //      SumAdvance=datas.SingleOrDefault().
+        //  }
+        //                    object[] values = new object[0];
+
+        //    foreach (T item in datas)
+        //    {
+        //        for (int i = 0; i < 1; i++)
+        //        {
+        //            values[i] = item;
+        //        }
+
+        //        dataTable.Rows.Add(values);
+        //    }
+        //    return dataTable;
+        //}
+        public static byte[] ExportExcel  (DataTable dataTable, string[] parameterSearch, decimal[] footer, string heading = "" )
         {
 
             byte[] result = null;
@@ -107,8 +129,23 @@ namespace BussinessLogic.CustomHelper
 
 
                     columnIndex++;
-                }
+                    var rowCountForFooter = dataTable.Rows.Count + startRowFrom+1;
+                    if (footer != null)
+                    {
+                        workSheet.Cells["A" + rowCountForFooter].Value = "Total";
+                        workSheet.Cells["A" + rowCountForFooter].Style.Font.Bold = true;
+                        workSheet.Cells["G" + rowCountForFooter].Value = footer[0];
+                        workSheet.Cells["G" + rowCountForFooter].Style.Font.Bold = true;
+                        workSheet.Cells["H" + rowCountForFooter].Value = footer[1];
+                        workSheet.Cells["H" + rowCountForFooter].Style.Font.Bold = true;
+                        workSheet.Cells["I" + rowCountForFooter].Value = footer[2];
+                        workSheet.Cells["I" + rowCountForFooter].Style.Font.Bold = true;
+                        workSheet.Cells["J" + rowCountForFooter].Value = footer[3];
+                        workSheet.Cells["J" + rowCountForFooter].Style.Font.Bold = true;
 
+                    }
+                }
+        
 
                 // format cells - add borders  
                 using (ExcelRange r = workSheet.Cells[startRowFrom + 1, 1, startRowFrom + dataTable.Rows.Count, dataTable.Columns.Count])
@@ -184,9 +221,9 @@ namespace BussinessLogic.CustomHelper
             
         }
 
-            public static byte[] ExportExcel<T>(List<T> data, string[] parameterSearch, string Heading="", params string[] ColumnsToTake)
+            public static byte[] ExportExcel<T>(List<T> data, string[] parameterSearch, decimal[] footer, string Heading="",  params string[] ColumnsToTake)
             {
-            return ExportExcel(ListToDataTable<T>(data, ColumnsToTake), parameterSearch, Heading );
+            return ExportExcel(ListToDataTable<T>(data, ColumnsToTake), parameterSearch,footer, Heading );
         }
 
         }

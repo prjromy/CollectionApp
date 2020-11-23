@@ -3,10 +3,16 @@
 @using PagedList
 @using BussinessLogic.Service
 @using BussinessLogic.CustomHelper
+@{
+    int serialcount = -1;
+}
+
 <div class="table-responsive no-padding sus-page-list">
     <table class="table table-bordered table-striped table-hover sus-table-list" style="margin-top: 20px;">
 
         <tr>
+            <th> S.No.</th>
+            <th>Customer No.</th>
             <th> Suscription No.</th>
 
             <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
@@ -23,52 +29,60 @@
         @foreach (var item in Model.suscriberPagedList)
         {
             @Html.HiddenFor(x => x.CustId)
-            <tr style="font-size:12px;">
-                <td>
-                    @item.SubsNo
+    <tr style="font-size:12px;">
+        <td>
+            @{ serialcount++; }
+            @(serialcount + ((Model.suscriberPagedList.PageNumber - 1) * Model.suscriberPagedList.PageSize) + 1)
+        </td>
+        <td>
+            @item.CustNo
 
-                </td>
-                <td>
-                    @item.CustomerName
+        </td>
+        <td>
+            @item.SubsNo
 
-                </td>
-                <td>
-                    @item.EffectiveDate
+        </td>
+        <td>
+            @item.CustomerName
 
-                </td>
-                <td>
-                    @{
-                        var ledgerName = CommonUtilityService.LedgerName(@item.LedgerId);
-                    }
-                    @ledgerName
-                </td>
-                <td>
+        </td>
+        <td>
+            @item.EffectiveDate
 
-                    @Convert.ToDecimal(@item.MonthlyAmount).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+        </td>
+        <td>
+            @{
+                var ledgerName = CommonUtilityService.LedgerName(@item.LedgerId);
+            }
+            @ledgerName
+        </td>
+        <td>
 
-                </td>
-                <td>
-                    @{
-                        var locationName = CommonUtilityService.LocationName(@item.LocationID);
-                    }
-                    @locationName
+            @Convert.ToDecimal(@item.MonthlyAmount).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
-                </td>
+        </td>
+        <td>
+            @{
+                var locationName = CommonUtilityService.LocationName(@item.LocationID);
+            }
+            @locationName
+
+        </td>
 
 
-            </tr>
-                        }
+    </tr>
+        }
 
     </table>
     @Html.Paging("_SuscriptionReportList", "Report", Model.suscriberPagedList.PageCount, Model.suscriberPagedList.PageNumber, Model.suscriberPagedList.PageSize)
 
-    </div>
+</div>
 
 
 
-    <script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
-    <link href="~/Content/PagedList.css" rel="stylesheet" />
-    <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
+<script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+<script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
 
 
 

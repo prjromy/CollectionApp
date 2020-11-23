@@ -136,9 +136,17 @@ namespace BussinessLogic.Service
                 {
                     query += " and CustTypeId =" + cType;
                 }
-                query += @" ORDER BY  CustNo 
+                if (pageSize == 0)
+                {
+                    query += @" ORDER BY  CustNo ";
+                }
+                else
+                {
+                    query += @" ORDER BY  CustNo 
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
+                }
+               
                 var customerList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(query).ToList();
                
                 return customerList;
@@ -188,13 +196,40 @@ namespace BussinessLogic.Service
             return customerList;
         }
 
+        public List<MainViewModel.SubscriptionViewModel> SubscriberInfoList(string searchParameter, string searchOption, string mode, string type, int pageNo, int pageSize)
+        {
+            string query = "";
+            query = "select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where status=1 ";
+            if (searchParameter != "")
+            {
+              if (searchOption == "Customer Name")
+                {
+                    query += " and CustomerName like'%" + searchParameter + "%'";
+                }
+                else if (searchOption == "Subscription No")
+                {
+                    query += " and Subsno like'%" + searchParameter + "%'";
+                }
+                else if (searchOption == "Address")
+                {
+                                                                                                                                                         query += " and LocationName like'%" + searchParameter + "%'";
+                }
+               
+            }
 
+            query += @" ORDER BY  CustNo
+                       OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
+                       FETCH NEXT " + pageSize + " ROWS ONLY";
+            var subscriberList = uow.Repository<MainViewModel.SubscriptionViewModel>().SqlQuery(query).ToList();
+
+            return subscriberList;
+        }
 
         public MainViewModel.CustomerViewModel GetSelectedCustomer(int customerID, string custType)
         {
             MainViewModel.CustomerViewModel customerInfoList = new MainViewModel.CustomerViewModel();
            
-                customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT  CustNo ,CustomerName ,CustomerTypeId,MobileNo
+                customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT Cid, CustNo ,CustomerName ,CustomerTypeId,MobileNo
       ,Address,Email ,PanNo,PostedOn FROM Customer where Cid={0} ", customerID).SingleOrDefault();
            
 
@@ -214,7 +249,7 @@ namespace BussinessLogic.Service
             //    }
             //    customer += item;
             //}
-            var customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT 
+            var customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT Cid,
            CustNo ,CustomerName ,CustomerTypeId,MobileNo,Address ,Email,PanNo ,PostedOn
           FROM Customer where Cid ="+ listBox).SingleOrDefault();
             return customerInfoList;

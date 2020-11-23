@@ -3,7 +3,7 @@
 $(document).on("click", "#btn-customer-search", function (e) {
     debugger;
     e.stopImmediatePropagation();
-    debugger
+  
     var searchValue = $("#SearchParameter").val();
     var selectedOption = $("#SearchOption option:selected").val();
     var listBox = $(this).parents().find(".listBox").find(".multiselect").val();
@@ -148,7 +148,7 @@ $(document).on('click', '.table-click-customer table tr', function (e) {
                             $('.cust-id').val(result.Subsid);
 
                         }
-                        else { $('.cust-id').val(result.CustNo); }
+                        else { $('.cust-id').val(result.Cid); }
 
 
                         
@@ -247,7 +247,7 @@ $(document).on("click", ".addandClose", function (e) {
 
             }
             else {
-                $('.cust-id').val(result.CustNo);
+                $('.cust-id').val(result.Cid);
                 $('#CustomerName').trigger('keyup');
             }
 
@@ -262,7 +262,8 @@ $(document).on("click", ".addandClose", function (e) {
 
 });
 
-$(' #CustomerName').on('keyup', function () {
+$(' #CustomerName').on('keyup', function (e) {
+    e.stopImmediatePropagation();
     var mode = $("#btncustomersearch").attr("data-mode");
     
     var customerId = $('.cust-id').val();

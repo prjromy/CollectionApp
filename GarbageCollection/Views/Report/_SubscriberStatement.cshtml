@@ -4,10 +4,15 @@
 @using PagedList
 @using BussinessLogic.Service
 @using BussinessLogic.CustomHelper
+@{
+    int serialcount = -1;
+}
 <div class="table-responsive no-padding sus-report-page-list">
     <table class="table table-bordered table-striped table-hover sus-report-table-list" style="margin-top: 20px;">
 
         <tr>
+            <th> S.No.</th>
+            <th> Customer No.</th>
             <th> Suscription No.</th>
 
             <th>@Html.DisplayNameFor(x => x.Custname)</th>
@@ -25,40 +30,48 @@
 
         @foreach (var item in Model.subscriptionPagedList)
         {
-           
-            <tr style="font-size:12px;">
-                <td>
-                    @item.SubsNo
 
-                </td>
-                <td>
-                    @item.Custname
+    <tr style="font-size:12px;">
+        <td>
+            @{ serialcount++; }
+            @(serialcount + ((Model.subscriptionPagedList.PageNumber - 1) * Model.subscriptionPagedList.PageSize) + 1)
+        </td>
+        <td>
+            @item.CustNo
 
-                </td>
-                <td>
-                    @item.PostedOnAd
+        </td>
+        <td>
+            @item.SubsNo
 
-                </td>
-                <td>
-                    @item.PostedOnBs
-                </td>
-                <td>
+        </td>
+        <td>
+            @item.Custname
 
-                   @Convert.ToDecimal(@item.Debit).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture) 
+        </td>
+        <td>
+            @item.PostedOnAd
 
-                </td>
-                <td>
-                    @Convert.ToDecimal(@item.Credit).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture) 
+        </td>
+        <td>
+            @item.PostedOnBs
+        </td>
+        <td>
 
-                </td>
-                <td>
-                    @Convert.ToDecimal(@item.Balance).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+            @Convert.ToDecimal(@item.Debit).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
-                </td>
-                <td>@item.Sources</td>
+        </td>
+        <td>
+            @Convert.ToDecimal(@item.Credit).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
-            </tr>
-                        }
+        </td>
+        <td>
+            @Convert.ToDecimal(@item.Balance).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+
+        </td>
+        <td>@item.Sources</td>
+
+    </tr>
+        }
 
     </table>
     @Html.Paging("_SubscriberStatement", "Report", Model.subscriptionPagedList.PageCount, Model.subscriptionPagedList.PageNumber, Model.subscriptionPagedList.PageSize)

@@ -103,10 +103,10 @@ namespace BussinessLogic.CustomHelper
             htmlBuilder.AppendFormat(@"<div id='pop-up-div' class='modal fade' role='dialog'></div>");
             htmlBuilder.AppendFormat(@"<div class='box-tools'>");
             htmlBuilder.AppendFormat(@"<div class='input-group input-group-sm pull-right CommonSearchDiv'>");
-            htmlBuilder.AppendFormat(@"<input class='form-control col-md-12 ' type='text' id='" + cntrlName + "'  name='" + cntrlName + "' placeholder='Customer:'  style='height: 30px'>");
+            htmlBuilder.AppendFormat(@"<input class='form-control col-md-7 ' type='text' id='" + cntrlName + "'  name='" + cntrlName + "' placeholder='Customer:'  style='height: 30px' readonly='readonly'>");
             //htmlBuilder.AppendFormat(@"<input style='display:inline;' type='text' id='" + cntrlName + "' class='form-control customerName' name='" + cntrlName + "' placeholder='Search   />");
             htmlBuilder.AppendFormat(@" <div class='input-group-btn'>");
-            htmlBuilder.AppendFormat(@"<button type='button' name='btncustomersearch' id='btncustomersearch' class='btn btn-default btncustomersearch' style='margin-left: 0px;height: 29px !important;' data-mode='" + mode + "' customerType='" + customerType + "'><i class='fa fa-search'></i></button>");
+            htmlBuilder.AppendFormat(@"<button type='button' name='btncustomersearch' id='btncustomersearch' class='btn btn-default btncustomersearch' style='margin-left: -208px;height: 29px !important;' data-mode='" + mode + "' customerType='" + customerType + "'><i class='fa fa-search'></i></button>");
             htmlBuilder.AppendFormat(@"</div>");
             htmlBuilder.AppendFormat(@"</div>");
             htmlBuilder.AppendFormat(@"</div>");

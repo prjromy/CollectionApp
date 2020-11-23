@@ -352,7 +352,18 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 
 </script>
+<script>
+    //session end
+    debugger
+    var sessionTimeoutWarning = @Session.Timeout- 1;
 
+    var sTimeout = parseInt(sessionTimeoutWarning) * 60 * 1000;
+    setTimeout('SessionEnd()', sTimeout);
+
+    function SessionEnd() {
+        document.getElementById('logoutForm').submit();
+        }
+</script>
 <style>
     .sidebar-menu:hover {
         overflow: hidden;

@@ -1,0 +1,6 @@
+enable-migrations
+
+Enable-Migrations -ContextTypeName ApiDbContext -MigrationsDirectory Migrations\ApiDbContext
+
+Add-Migration -ConfigurationTypeName WasteCollectionAPI.Migrations.ApiDbContext.Configuration "InitialDatabaseCreation"
+Update-Database -ConfigurationTypeName WebApplication3.Migrations.AnotherDbContext.Configuration

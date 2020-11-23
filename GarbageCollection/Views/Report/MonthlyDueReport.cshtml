@@ -19,24 +19,26 @@
             </div><!-- /.box-tools -->
          
             <div class="col-md-12">
+                <div class="box-tools col-md-3  form-group" id="Location">
+                    @Html.TextBox("Location", "", htmlAttributes: new { @class = "form-control", @id = "LocationName", @placeholder = "Location" })
+                </div>
 
-
-                @Html.Label("Month", new { @class = "control-label col-md-1"})
-                <div class="col-md-4 form-group" id="Month" >
+                @Html.Label("Month", new { @class = "control-label col-md-1" })
+                <div class="col-md-3 form-group" id="Month">
 
                     @Html.DropDownList("Month", CommonUtilityService.MonthList(), "--Select Month--", new { @class = "form-control ", @id = "Month" })
 
                 </div>
                 @Html.Label("Year", new { @class = "control-label col-md-1" })
-                <div class="col-md-4 form-group" id="Year">
+                <div class="col-md-3 form-group" id="Year">
 
-                    @Html.DropDownList("Year", new SelectList(ViewBag.Year, "Year") , "--Select Year--", new { @class = "form-control ", @id = "Year" })
+                    @Html.DropDownList("Year", new SelectList(ViewBag.Year, "Year"), "--Select Year--", new { @class = "form-control ", @id = "Year" })
                 </div>
 
-                <div class="input-group-btn form-group col-md-1 pull-left" >
+                <div class="input-group-btn form-group col-md-1 pull-left">
                     <button type="button" id="searchMonthDueReport" class="btn btn-month-due-report btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
                 </div>
-               
+
 
             </div>
             <button type="button" class="btn btn-success month-export-to-excel pull-right" title="Export to Excel" data-toggle="tooltip" style="margin-top: 20px;">Export to Excel</button>
@@ -53,17 +55,59 @@
 <script src="~/Scripts/SuscrptionJs/CustomerSearch.js"></script>
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 <script src="~/Scripts/SuscrptionJs/SuscriptionPage.js"></script>
-
+<script src="~/Scripts/typeahead.min.js"></script>
 <script src="~/Scripts/ch-dialog.js"></script>
 <script>
+
+    $(function () {
+        $("#LocationName").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Suscription/LocationList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.Lid;
+                            var name = item.LocationName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-8");
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            updater: function (item) {
+                $('#LocationID').val(map[item].id);
+                return item;
+            }
+        });
+    })
     $('.month-export-to-excel').on('click', function () {
         debugger;
         var parentContainer = $(this).parents()
-
+        var Location = $('#Location').find('#LocationName').val();
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         var Monthtext=$('#Month').find('#Month option:selected').text();
-        window.open("/Report/MonthlyDueReportExportToExcel?Month=" + Month + "&Year=" + Year + "&Monthtext=" + Monthtext);
+        window.open("/Report/MonthlyDueReportExportToExcel?Month=" + Month + "&Year=" + Year + "&Monthtext=" + Monthtext + "&Location=" + Location);
 
     });
 
@@ -72,12 +116,12 @@
         e.stopImmediatePropagation();
         var parentContainer = $(this).parents()
         var me = $(this);
-
+        var Location = $('#Location').find('#LocationName').val();
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         var container = parentContainer.find("div.monthly-report-page-list");
 
-        var url = "?Month=" + Month + "&Year=" + Year;
+        var url = "?Month=" + Month + "&Year=" + Year + "&Location=" + Location;
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -86,11 +130,12 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
+        var Location = $('#Location').find('#LocationName').val();
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         var container = parentContainer.find("div.monthly-report-page-list");
 
-        var url = "?Month=" + Month + "&Year=" + Year;
+        var url = "?Month=" + Month + "&Year=" + Year + "&Location=" + Location;
         getPageNumberChangeData(url, container, me)
     });
     $("div.monthly-report-page-list").on('change', 'input#pageSize', function (e) {
@@ -98,12 +143,12 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-
+        var Location = $('#Location').find('#LocationName').val();
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         var container = parentContainer.find("div.monthly-report-page-list");
 
-        var url = "?Month=" + Month + "&Year=" + Year;
+        var url = "?Month=" + Month + "&Year=" + Year + "&Location=" + Location;
         getPageNumberBtnAction(url, container, me)
     });
     $(".Monthly-list-index").on('click', '.btn-month-due-report', function (e) {
@@ -115,12 +160,12 @@
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         
-
+        var Location = $('#Location').find('#LocationName').val();
         $.ajax({
             contentType: "html",
             type: "Get",
             url: "/Report/_MonthlyDueReport",
-            data: { Month: Month, Year: Year},
+            data: { Month: Month, Year: Year, Location: Location},
             success: function (data) {
                 $(".Month-Report-List").html("");
                 $(".Month-Report-List").html(data).show();

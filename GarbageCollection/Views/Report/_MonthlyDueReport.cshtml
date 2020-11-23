@@ -5,10 +5,15 @@
 @using PagedList
 @using BussinessLogic.Service
 @using BussinessLogic.CustomHelper
+@{
+    int serialcount = -1;
+}
 <div class="table-responsive no-padding monthly-report-page-list">
     <table class="table table-bordered table-striped table-hover monthly-report-table-list" style="margin-top: 20px;">
 
         <tr>
+            <th> S.No.</th>
+            <th>Custno</th>
             <th> Suscription No.</th>
 
             <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
@@ -26,34 +31,39 @@
         @foreach (var item in Model.monthlyDuePagedList)
         {
 
-            <tr style="font-size:12px;">
-                <td>
-                    @item.Subsno
+    <tr style="font-size:12px;">
+        <td>
+            @{ serialcount++; }
+            @(serialcount + ((Model.monthlyDuePagedList.PageNumber - 1) * Model.monthlyDuePagedList.PageSize) + 1)
+        </td>
+        <td>@item.Custno</td>
+        <td>
+            @item.Subsno
 
-                </td>
-                <td>
-                    @item.CustomerName
+        </td>
+        <td>
+            @item.CustomerName
 
-                </td>
-                <td>
-                    @item.CustomerType
+        </td>
+        <td>
+            @item.CustomerType
 
-                </td>
-                <td>
-                    @item.LocationName
-                </td>
-                <td>
+        </td>
+        <td>
+            @item.LocationName
+        </td>
+        <td>
 
-                    @item.MonthlyDue
+            @item.MonthlyDue
 
-                </td>
-                <td>
-                    @item.PostedOn
+        </td>
+        <td>
+            @item.PostedOn
 
-                </td>
-               
+        </td>
 
-            </tr>
+
+    </tr>
         }
 
     </table>
@@ -75,12 +85,12 @@
         e.stopImmediatePropagation();
         var parentContainer = $(this).parents()
         var me = $(this);
-
+        var Location = $('#Location').find('#LocationName').val();
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         var container = parentContainer.find("div.monthly-report-page-list");
 
-        var url = "?Month=" + Month + "&Year=" + Year ;
+        var url = "?Month=" + Month + "&Year=" + Year + "&Location=" + Location;
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -89,11 +99,12 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
+        var Location = $('#Location').find('#LocationName').val();
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         var container = parentContainer.find("div.monthly-report-page-list");
 
-        var url = "?Month=" + Month + "&Year=" + Year;
+        var url = "?Month=" + Month + "&Year=" + Year + "&Location=" + Location;
         getPageNumberChangeData(url, container, me)
     });
     $("div.monthly-report-page-list").on('change', 'input#pageSize', function (e) {
@@ -101,12 +112,12 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-
+        var Location = $('#Location').find('#LocationName').val();
         var Month = $('#Month').find('#Month').val();
         var Year = $('#Year').find('#Year').val();
         var container = parentContainer.find("div.monthly-report-page-list");
 
-        var url = "?Month=" + Month + "&Year=" + Year;
+        var url = "?Month=" + Month + "&Year=" + Year + "&Location=" + Location;
         getPageNumberBtnAction(url, container, me)
     });
 

@@ -37,7 +37,7 @@ namespace GarbageCollection.Controllers
         }
 
 
-        public FCMPushNotification SendNotification( string _topic,int locationid)
+        public FCMPushNotification SendNotification( string _topic,string Textarea,string collectorname)
         {
             FCMPushNotification result = new FCMPushNotification();
             try
@@ -52,28 +52,43 @@ namespace GarbageCollection.Controllers
                 webRequest.Headers.Add(string.Format("Authorization: key={0}", "AAAA1k1H848:APA91bFsW-DqHhhnQXTblzGyr9Gx-nT-VUud50ckUTvhCnkolzkFp81yUeHWI7A2ZUUiTgMWrhBDw1QLdFvnVx1Nwtl-JmyaZq0C4UzsAHfNyDuQ9OGeG5ZYHPioek8gQlD_gvzi1FOK"));
                 webRequest.Headers.Add(string.Format("Sender: id={0}", "920419562383"));
                 webRequest.ContentType = "application/json";
-               string query = String.Format("select collectorname from dbo.fgetcollectorinfo() as c inner join [dbo].[LocationVsCollector]  as l on c.CollectorID=l.CollectorId where locationid=" + locationid);
 
-                string collectorname = db.Database.SqlQuery<string>(query).SingleOrDefault();
-                if (collectorname == null)
+                //if (collectorname == null)
+                //{
+                //    result.Successful = false;
+                //    result.Response = "Please assign collector to location" + _topic+ "in Collection > Collector Location Map" ;
+                //    result.Error = null;
+                //    return result;
+
+                //}
+
+              
+                var dataformat = "";
+                if (Textarea == "")
                 {
-                    result.Successful = false;
-                    result.Response = "Please assign collector to location" + _topic+ "in Collection > Collector Location Map" ;
-                    result.Error = null;
-                    return result;
-
+                     dataformat = collectorname + " will be coming for the collection.";
+                }
+                else
+                {
+                     dataformat = Textarea;
                 }
                 var data = new
                 {
                     // to = YOUR_FCM_DEVICE_ID, // Uncoment this if you want to test for single device
                     to = "/topics/" + _topic, // this is for topic 
+
                     notification = new
                     {
                         title = "Waste Management Alert",
-                        body =collectorname+ " will be coming for the collection."
+                        body = dataformat
+
+
                         //icon="myicon"
                     }
                 };
+
+       
+
                 var serializer = new JavaScriptSerializer();
                 var json = serializer.Serialize(data);
 

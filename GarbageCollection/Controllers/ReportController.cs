@@ -114,7 +114,7 @@ namespace GarbageCollection.Controllers
         }
 
         [HttpGet]
-        public FileContentResult CustomerExportToExcel(int? customerno, string name, string address, string contact, int? cType,string cTypetext="", int status = 1,string statustext="", int pageNo = 1, int pageSize = 10)
+        public FileContentResult CustomerExportToExcel(int? customerno, string name, string address, string contact, int? cType,string cTypetext="", int status = 1,string statustext="", int pageNo = 1, int pageSize = 0)
         {
             MainViewModel.CustomerViewModel customerViewModel = new MainViewModel.CustomerViewModel();
             var customerList = customerService.getCustomerList(customerno, name, address, contact, cType, status, pageNo, pageSize);
@@ -137,20 +137,21 @@ namespace GarbageCollection.Controllers
             }
             string[] columns = { "Customer No.", "Customer Name", "Customer Type", "Phone No.", "Mobile No", "Address", "Email", "Status" };
             string[] parameterSearch = { "Customer No.:" + customerno , "Customer Name:" + name, "Address:" + address , "Mobile No:" + contact , "Customer Type:" + cTypetext , "Status:" + statustext };
-            byte[] fileContent = ExcelExportHelper.ExportExcel(customerExcelList, parameterSearch,"Customer Report" ,columns );
+            byte[] fileContent = ExcelExportHelper.ExportExcel(customerExcelList, parameterSearch,null,"Customer Report" ,columns );
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Customer Report.xlsx");
         }
 
 
 
         [HttpGet]
-        public FileContentResult SubscriptionExportToExcel(int? customerId, int? custtype, DateTime? effectivedate, string cTypetext = "", string statustext = "", string Location = "", int status = 1, int pageNo = 1, int pageSize = 10)
+        public FileContentResult SubscriptionExportToExcel(int? customerId, int? custtype, DateTime? effectivedate, string cTypetext = "", string statustext = "", string Location = "", int status = 1, int pageNo = 1, int pageSize = 0)
         {
             MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
             var suscriberList = suscription.getSuscriberList(customerId, custtype, effectivedate, pageNo, pageSize, Location, status);
             var subscriptionExcelList = suscriberList.Select(x => new ExcelViewModel.SubscriptionExcelViewModel()
             {
 
+              custno=x.CustNo,
                SubsNo=x.SubsNo,
                
                CustomerName=x.CustomerName,
@@ -166,9 +167,9 @@ namespace GarbageCollection.Controllers
             {
                 cTypetext = "";
             }
-            string[] columns = { "Subscription No.", "Customer Name", "LocationName", "Effective Date", "Ledger Name", "Monthly Amount", "Status" };
+            string[] columns = { "Customer No", "Subscription No.","Customer Name", "LocationName", "Effective Date", "Ledger Name", "Monthly Amount", "Status" };
             string[] parameterSearch = { "Location.:" + Location, "Effective Date:" + effectivedate,  "Customer Type:" + cTypetext, "Status:" + statustext };
-            byte[] fileContent = ExcelExportHelper.ExportExcel(subscriptionExcelList, parameterSearch, "Subscription Report", columns);
+            byte[] fileContent = ExcelExportHelper.ExportExcel(subscriptionExcelList, parameterSearch,null, "Subscription Report", columns);
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Subscription Report.xlsx");
         }
 
@@ -179,6 +180,11 @@ namespace GarbageCollection.Controllers
             {
                 MainViewModel.SubscriberDueViewModel subscriptionViewModel = new MainViewModel.SubscriberDueViewModel();
                 var suscriberList = reportService.getSuscriberList(DateTime.Now, 1, 10, "");
+                var totalsubscriberList = reportService.getSingleTotalSuscriberList(DateTime.Now, "");
+                ViewBag.DebitSum = totalsubscriberList.SumDebit;
+                ViewBag.CreditSum = totalsubscriberList.SumCredit;
+                ViewBag.AdvanceSum = totalsubscriberList.SumAdvance;
+                ViewBag.DueBalance = totalsubscriberList.SumDueBalance;
                 subscriptionViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriberDueViewModel>(suscriberList, 1, 10, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -205,6 +211,12 @@ namespace GarbageCollection.Controllers
             {
                 MainViewModel.SubscriberDueViewModel subscriptionViewModel = new MainViewModel.SubscriberDueViewModel();
                 var suscriberList = reportService.getSuscriberList(tillDate, pageNo, pageSize, Location);
+                var totalsubscriberList = reportService.getSingleTotalSuscriberList(tillDate, Location);
+                ViewBag.DebitSum = totalsubscriberList.SumDebit;
+                ViewBag.CreditSum = totalsubscriberList.SumCredit;
+                ViewBag.AdvanceSum = totalsubscriberList.SumAdvance;
+                ViewBag.DueBalance = totalsubscriberList.SumDueBalance;
+
                 subscriptionViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriberDueViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -225,13 +237,14 @@ namespace GarbageCollection.Controllers
         }
 
         [HttpGet]
-        public FileContentResult SubscriptionDueExportToExcel(DateTime? tillDate, int pageNo = 1, int pageSize = 10, string Location = "")
+        public FileContentResult SubscriptionDueExportToExcel(DateTime? tillDate, int pageNo = 1, int pageSize = 0, string Location = "")
         {
             MainViewModel.SubscriberDueViewModel subscriptionViewModel = new MainViewModel.SubscriberDueViewModel();
             var suscriberList = reportService.getSuscriberList(tillDate, pageNo, pageSize, Location);
+            var totalsubscriberList = reportService.getSingleTotalSuscriberList(tillDate, Location);
             var subscriptionDueExcelList = suscriberList.Select(x => new ExcelViewModel.SubscriberDueExcelViewModel()
             {
-
+                custNo=x.CustNo,
                Subsno=x.Subsno,
                CustomerName=x.CustomerName,
                CustomerType=x.CustomerType,
@@ -239,15 +252,31 @@ namespace GarbageCollection.Controllers
                LedgerName=x.LedgerName,
                Debit=x.Debit,
                Credit=x.Credit,
+               Advance=x.Advance,
                DueBalance=x.DueBalance,
                
                Status=x.Status
 
             }).ToList();
-          
-            string[] columns = { "Subscription No.", "Customer Name", "Customer Type","Location Name","Ledger Name", "Debit", "Credit", "DueBalance", "Status" };
+
+            //var totalsubscriptionDueExcelList = totalsubscriberList.Select(x => new ExcelViewModel.SubscriberDueExcelViewModel()
+            //{
+
+            //    SumCredit=x.SumCredit,
+            //    SumDebit=x.SumDebit,
+            //    SumAdvance=x.SumAdvance,
+            //    SumDueBalance=x.SumDueBalance
+
+            //}).();
+           //  var DebitSum = totalsubscriberList.SumDebit;
+           // var CreditSum = totalsubscriberList.SumCredit;
+           //var AdvanceSum = totalsubscriberList.SumAdvance;
+           // var DueBalance = totalsubscriberList.SumDueBalance;
+            decimal[] totals = { totalsubscriberList.SumDebit, totalsubscriberList.SumCredit, totalsubscriberList.SumAdvance, totalsubscriberList.SumDueBalance };
+
+            string[] columns = { "Customer No.","Subscription No.", "Customer Name", "Customer Type","Location Name","Ledger Name", "Debit", "Credit","Advance", "DueBalance", "Status" };
             string[] parameterSearch = { "Location.:  " + Location, "Effective Date:  " + tillDate };
-            byte[] fileContent = ExcelExportHelper.ExportExcel(subscriptionDueExcelList, parameterSearch, "Subscription Due Report", columns);
+            byte[] fileContent = ExcelExportHelper.ExportExcel(subscriptionDueExcelList, parameterSearch, totals, "Subscription Due Report", columns);
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Subscription Due  Report.xlsx");
         }
 
@@ -295,13 +324,13 @@ namespace GarbageCollection.Controllers
         }
 
         [HttpGet]
-        public FileContentResult CollectionExportToExcel(DateTime? collectionDate, int pageNo = 1, int pageSize = 10, string customerName = "", string collector = "", string Location = "", int verified = 1 ,string statustext="")
+        public FileContentResult CollectionExportToExcel(DateTime? collectionDate, int pageNo = 1, int pageSize = 0, string customerName = "", string collector = "", string Location = "", int verified = 1 ,string statustext="")
         {
             MainViewModel.CollectionReport collectorViewModel = new MainViewModel.CollectionReport();
             var collectorList = reportService.getCollectorReportList(collectionDate, pageNo, pageSize, customerName, collector, Location, verified);
             var collectorExcelList = collectorList.Select(x => new ExcelViewModel.CollectorExcelViewModel()
             {
-
+                CustomerNo=x.CustomerNo,
                 Subsno = x.Subsno,
                 CustomerName = x.CustomerName,
                 CustomerType = x.CustomerType,
@@ -313,9 +342,9 @@ namespace GarbageCollection.Controllers
 
             }).ToList();
 
-            string[] columns = { "Subscription No.", "Customer Name", "Customer Type", "Location Name", "Collector Name", "Collection Date", "Collection Amount", "Discount Amount" };
+            string[] columns = { "Customer No","Subscription No.", "Customer Name", "Customer Type", "Location Name", "Collector Name", "Collection Date", "Collection Amount", "Discount Amount" };
             string[] parameterSearch = { "Customer Name.:  " + customerName, "Collector.:  " + collector, "Collection Date:  " + collectionDate, "Location:  " + Location, "Status:  " + statustext };
-            byte[] fileContent = ExcelExportHelper.ExportExcel(collectorExcelList, parameterSearch, "Collector Report", columns);
+            byte[] fileContent = ExcelExportHelper.ExportExcel(collectorExcelList, parameterSearch,null, "Collector Report", columns);
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Collector  Report.xlsx");
         }
 
@@ -374,12 +403,12 @@ namespace GarbageCollection.Controllers
         public FileContentResult SubscriptionStatementExportToExcel( DateTime? FromDate, DateTime? ToDate, int? subsid,string substext="")
         {
             int pageNo = 1;
-            int pageSize = 10;
+            int pageSize =0;
             MainViewModel.SubscriptionReport subscriptionViewModel = new MainViewModel.SubscriptionReport();
             var suscriberList = reportService.getSubscriberStatementList(subsid, FromDate, ToDate, pageNo, pageSize);
             var subscriptionExcelList = suscriberList.Select(x => new ExcelViewModel.SubscriptionReportExcel()
             {
-
+               custNo=x.CustNo,
                SubsNo=x.SubsNo,
                Custname=x.Custname,
                Debit=x.Debit,
@@ -392,9 +421,9 @@ namespace GarbageCollection.Controllers
 
             }).ToList();
 
-            string[] columns = { "Subscription No.", "Customer Name", "Debit", "Credit", "Balance", "Posted On Ad", "Posted On Bst", "Sources" };
+            string[] columns = { "Customer No","Subscription No.", "Customer Name", "Debit", "Credit", "Balance", "Posted On Ad", "Posted On Bst", "Sources" };
             string[] parameterSearch = { "From Date.:  " + FromDate, "To Date.:  " + ToDate, "Customer Name:  " + substext };
-            byte[] fileContent = ExcelExportHelper.ExportExcel(subscriptionExcelList, parameterSearch, "Subscription Report", columns);
+            byte[] fileContent = ExcelExportHelper.ExportExcel(subscriptionExcelList, parameterSearch,null, "Subscription Report", columns);
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Subscription  Report.xlsx");
         }
 
@@ -416,12 +445,12 @@ namespace GarbageCollection.Controllers
         }
 
 
-        public ActionResult _MonthlyDueReport(int? Month, int? Year,int pageNo=1,int pageSize=10)
+        public ActionResult _MonthlyDueReport(int? Month, int? Year, string Location, int pageNo=1,int pageSize=10)
         {
             try
             {
                 MainViewModel.MonthlyDueViewModel MonthlyModel = new MainViewModel.MonthlyDueViewModel();
-                var monthlyList = reportService.getMonthlyDueList(Month, Year, pageNo, pageSize);
+                var monthlyList = reportService.getMonthlyDueList(Month, Year, Location, pageNo, pageSize);
                 MonthlyModel.monthlyDuePagedList = new StaticPagedList<MainViewModel.MonthlyDueViewModel>(monthlyList, pageNo, pageSize, (monthlyList.Count == 0) ? 0 : monthlyList.FirstOrDefault().TotalCount);
 
             
@@ -439,13 +468,13 @@ namespace GarbageCollection.Controllers
         }
 
         [HttpGet]
-        public FileContentResult MonthlyDueReportExportToExcel(int? Month, int? Year, int pageNo = 1, int pageSize = 10,string Monthtext = "")
+        public FileContentResult MonthlyDueReportExportToExcel(int? Month, int? Year, string Location, int pageNo = 1, int pageSize = 0,string Monthtext = "")
         {
             MainViewModel.MonthlyDueViewModel subscriptionViewModel = new MainViewModel.MonthlyDueViewModel();
-            var monthlyList = reportService.getMonthlyDueList(Month, Year, pageNo, pageSize);
+            var monthlyList = reportService.getMonthlyDueList(Month, Year, Location, pageNo, pageSize);
             var monthlyExcelList = monthlyList.Select(x => new ExcelViewModel.MonthlyDueExcelViewModel()
             {
-
+              custNo=x.Custno,
               Subsno=x.Subsno,
               CustomerName=x.CustomerName,
               CustomerType=x.CustomerType,
@@ -455,9 +484,9 @@ namespace GarbageCollection.Controllers
 
             }).ToList();
 
-            string[] columns = { "Subscription No.", "Customer Name", "Customer Type", "Location Name", "Monthly Due", "PostedOn"};
-            string[] parameterSearch = { "Year.:  " + Year, "MonthText.:  " + Monthtext };
-            byte[] fileContent = ExcelExportHelper.ExportExcel(monthlyExcelList, parameterSearch, "Monthly Due Report", columns);
+            string[] columns = { "Customer No","Subscription No.", "Customer Name", "Customer Type", "Location Name", "Monthly Due", "PostedOn"};
+            string[] parameterSearch = { "Year.:  " + Year, "MonthText.:  " + Monthtext,"Location.:  "+ Location };
+            byte[] fileContent = ExcelExportHelper.ExportExcel(monthlyExcelList, parameterSearch,null, "Monthly Due Report", columns);
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Monthly Due  Report.xlsx");
         }
     }

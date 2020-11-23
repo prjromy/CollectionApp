@@ -66,5 +66,22 @@ namespace BussinessLogic.Service
             }
 
         }
+
+        public  string getCollectorsLocationName(int? locationid)
+        {
+
+
+
+            string collectorname = uow.Repository<string>().SqlQuery("select collectorname from dbo.fgetcollectorinfo() as c inner join[dbo].[LocationVsCollector] as l on c.CollectorID = l.CollectorId where locationid = " + locationid).SingleOrDefault();
+            if (collectorname == null)
+            {
+                return "";
+            }
+            else
+            {
+                return collectorname;
+            }
+          
+        }
     }
 }

@@ -42,13 +42,14 @@ namespace GarbageCollection.Controllers
             }
         }
         [HttpPost]
-        public ActionResult Pushpush(string _topic,int locationid)
+        public ActionResult Pushpush(string _topic,string Textarea, string collectorname)
         {
             FCMPushNotification fcmPush = new FCMPushNotification();
-            var result=fcmPush.SendNotification( _topic, locationid);
+            var result=fcmPush.SendNotification( _topic,  Textarea,  collectorname);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-            
+
+      
 
         public ActionResult List()
         {
@@ -72,7 +73,11 @@ namespace GarbageCollection.Controllers
 
         }
 
+        public JsonResult getCollectorsLocationNames(int? locationid)
+        {
+            return Json( notificationService.getCollectorsLocationName(locationid),JsonRequestBehavior.AllowGet);
 
+        }
         public ActionResult _List(int? locationid,  int pageNo = 1, int pageSize = 10)
         {
             NotificationViewModel customerViewModel = new NotificationViewModel();

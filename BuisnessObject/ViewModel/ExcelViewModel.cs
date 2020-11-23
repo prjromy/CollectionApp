@@ -27,6 +27,7 @@ namespace BuisnessObject.ViewModel
 
         public class SubscriptionExcelViewModel
         {
+            public string custno { get; set; }
                 [DisplayName("Subscription No.")]
                 public Nullable<int> SubsNo { get; set; }
                 [DisplayName("Customer Name")]
@@ -49,6 +50,7 @@ namespace BuisnessObject.ViewModel
             }
         public class SubscriberDueExcelViewModel
         {
+            public string custNo { get; set; }
             [DisplayName("Subscription No")]
             public int Subsno { get; set; }
             [DisplayName("Customer Name")]
@@ -62,19 +64,33 @@ namespace BuisnessObject.ViewModel
             public string LocationName { get; set; }
             public decimal Debit { get; set; }
             public decimal Credit { get; set; }
+            public decimal Advance { get; set; }
             public decimal DueBalance { get; set; }
             public string Status { get; set; }
             [DisplayName("Ledger Name")]
 
             public string LedgerName { get; set; }
-           
+
             //public Nullable<System.DateTime> CollectionDate { get; set; }
-     
+
+           
+        }
+
+        public class TotalSubscriberDueExcelViewModel
+        {
+
+            public decimal SumDebit { get; set; }
+            public decimal SumCredit { get; set; }
+            public decimal SumAdvance { get; set; }
+            public decimal SumDueBalance { get; set; }
+
+
+
 
         }
         public class CollectorExcelViewModel
         {
-
+            public string CustomerNo { get; set; }
             [DisplayName("Subscription No")]
             public int Subsno { get; set; }
             [DisplayName("Customer Name")]
@@ -100,7 +116,7 @@ namespace BuisnessObject.ViewModel
 
         public class SubscriptionReportExcel
         {
-
+            public string custNo { get; set; }
             public int SubsNo { get; set; }
             public DateTime PostedOnAd { get; set; }
             public string PostedOnBs { get; set; }
@@ -118,7 +134,7 @@ namespace BuisnessObject.ViewModel
         public class MonthlyDueExcelViewModel
         {
 
-
+            public string custNo { get; set; }
             public int Subsno { get; set; }
             public string CustomerName { get; set; }
             public string CustomerType { get; set; }

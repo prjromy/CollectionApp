@@ -158,7 +158,7 @@ namespace GarbageCollection.Controllers
             if (mode == "SubscriptionReport")
             {
                 MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
-                var suscriberList = suscription.getSuscriberList(null, null, null, 1, 10, "", 1);
+                var suscriberList = customerService.SubscriberInfoList("", "", "","", 1, 10);
                 customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, 1, 10, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)
@@ -187,16 +187,16 @@ namespace GarbageCollection.Controllers
             if (mode == "SubscriptionReport")
             {
                 MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
-                var suscriberList = suscription.getSuscriberList(null, null, null, pageNo, pageSize, "", 1);
-                if (searchOption != null && searchOption == "Customer Name")
-                {
-                    suscriberList = suscriberList.Where(x => x.CustomerName.ToLower().Contains(searchParam.ToLower())).ToList();
-                }
-                if (searchOption != null && searchOption == "Subscription No")
-                {
-                    suscriberList = suscriberList.Where(x => x.SubsNo == Convert.ToInt32(searchParam)).ToList();
+                var suscriberList = customerService.SubscriberInfoList(searchParam, searchOption, mode, custType, pageNo, pageSize);
+                //if (searchOption != null && searchOption == "Customer Name")
+                //{
+                //    suscriberList = suscriberList.Where(x => x.CustomerName.ToLower().Contains(searchParam.ToLower())).ToList();
+                //}
+                //if (searchOption != null && searchOption == "Subscription No")
+                //{
+                //    suscriberList = suscriberList.Where(x => x.SubsNo == Convert.ToInt32(searchParam)).ToList();
 
-                }
+                //}
                 customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
 
                 //foreach (var item in customerList)

@@ -201,6 +201,7 @@ namespace BuisnessObject.ViewModel
 
         public class SubscriberDueViewModel
         {
+            public string CustNo { get; set; }
             [DisplayName("Subscription No")]
             public int Subsno { get; set; }
             [DisplayName("Customer Name")]
@@ -214,7 +215,13 @@ namespace BuisnessObject.ViewModel
             public string LocationName { get; set; }
             public decimal Debit { get; set; }
             public decimal Credit { get; set; }
+            public decimal Advance { get; set; }
             public decimal DueBalance { get; set; }
+
+            public decimal SumDebit { get; set; }
+            public decimal SumCredit { get; set; }
+            public decimal SumAdvance { get; set; }
+            public decimal SumDueBalance { get; set; }
             public string Status { get; set; }
             [DisplayName("Ledger Name")]
 
@@ -229,6 +236,7 @@ namespace BuisnessObject.ViewModel
         public class CollectionReport
         {
     
+            public string CustomerNo { get; set; }
             [DisplayName("Subscription No")]
             public int Subsno { get; set; }
             [DisplayName("Customer Name")]
@@ -257,7 +265,7 @@ namespace BuisnessObject.ViewModel
      
               public class SubscriptionReport
         {
-
+            public string CustNo { get; set; }
            public int SubsNo { get; set; }
             public DateTime PostedOnAd { get; set; }
             public string PostedOnBs { get; set; }
@@ -276,7 +284,7 @@ namespace BuisnessObject.ViewModel
         public class MonthlyDueViewModel
         {
            
-
+            public string Custno { get; set; }
             public int Subsno { get; set; }
             [DisplayName("Customer Name")]
             public string CustomerName { get; set; }

@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -360,6 +361,7 @@
     <Compile Include="Controllers\PrintController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\SuscriptionController.cs" />
+    <Compile Include="Controllers\WasteManagementController.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1580,6 +1582,7 @@
     <Content Include="Select2 js\select2.js" />
     <Content Include="Select2 js\select2.min.js" />
     <Content Include="UserDialog\jquery-ui.css" />
+    <Content Include="Views\Home\Waste Management Privacy Policy.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1729,6 +1732,7 @@
     <Folder Include="Views\Login\" />
     <Folder Include="Views\Logs\" />
     <Folder Include="Views\Print\" />
+    <Folder Include="Views\WasteManagement\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

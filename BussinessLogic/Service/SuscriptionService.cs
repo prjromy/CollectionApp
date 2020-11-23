@@ -123,10 +123,18 @@ namespace BussinessLogic.Service
                 {
                     query += " and LocationName like'%" + Location.Trim() + "%'";
                 }
-       
-                query += @" ORDER BY  SubsNo 
+
+                if (pageSize == 0)
+                {
+                    query += @" ORDER BY  SubsNo ";
+                }
+                else
+                {
+                    query += @" ORDER BY  SubsNo 
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";
+                }
+                
                 var suscriptionList = uow.Repository<MainViewModel.SubscriptionViewModel>().SqlQuery(query).ToList();
 
                 return suscriptionList;
