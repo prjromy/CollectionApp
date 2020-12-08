@@ -238,8 +238,19 @@ namespace GarbageCollection.WebApi.WebApiController
             if (context.ClientId == "User")
             {
                 PasswordHasher pass = new PasswordHasher();
+              
                 //var hashedPassword = EncodePassword(context.Password, MembershipPasswordFormat.Hashed, "MAKV2SPBNI99212");
-                var user = db.Users.Where(x => x.UserName == context.UserName.Trim()).FirstOrDefault();
+                User user = new User();
+                if (context.Email != null)
+                {
+                    
+                    user = db.Users.Where(x => x.Email == context.Email).FirstOrDefault();
+                }
+                if (context.UserName != null)
+                {
+                    user = db.Users.Where(x => x.UserName == context.UserName.Trim()).FirstOrDefault();
+                }
+               
                 // password is correct 
 
 
@@ -280,27 +291,31 @@ namespace GarbageCollection.WebApi.WebApiController
                         //return Ok(new { results = sul });
                       
                     }
+                    //else
+                    //{
+                    //    AuthenticationModule authentication = new AuthenticationModule();
+                    //    string tokens = authentication.GenerateTokenForUser(user.UserName, user.UserId);
+                    //    //var sul = new LocationUser
+                    //    //{
+                    //    //EmployeeId = user.EmployeeId,
+                    //    //Email = user.Email,
+                    //    //UserId = user.UserId,
+                    //    //UserName = user.UserName,
+                    //    //EffDate = user.EffDate,
+                    //    //TillDate = user.TillDate,
+                    //    //MTId = user.MTId,
+                    //    //IsUnlimited = user.IsUnlimited,
+                    //    //UserDesignationId = user.UserDesignationId,
+                    //    var token = tokens;
+
+                    //    //};
+                    //    //return Ok(new { results = sul });
+
+                    //    return Request.CreateResponse(HttpStatusCode.OK, token, Configuration.Formatters.JsonFormatter);
+                    //}
                     else
                     {
-                        AuthenticationModule authentication = new AuthenticationModule();
-                        string tokens = authentication.GenerateTokenForUser(user.UserName, user.UserId);
-                        //var sul = new LocationUser
-                        //{
-                        //EmployeeId = user.EmployeeId,
-                        //Email = user.Email,
-                        //UserId = user.UserId,
-                        //UserName = user.UserName,
-                        //EffDate = user.EffDate,
-                        //TillDate = user.TillDate,
-                        //MTId = user.MTId,
-                        //IsUnlimited = user.IsUnlimited,
-                        //UserDesignationId = user.UserDesignationId,
-                        var token = tokens;
-
-                        //};
-                        //return Ok(new { results = sul });
-                       
-                        return Request.CreateResponse(HttpStatusCode.OK, token, Configuration.Formatters.JsonFormatter);
+                        return Request.CreateResponse(HttpStatusCode.NotFound, "User is not collector ", Configuration.Formatters.JsonFormatter);
                     }
 
                 }
@@ -327,8 +342,17 @@ namespace GarbageCollection.WebApi.WebApiController
             else if (context.ClientId == "Customer")
             {
                 PasswordHasher pass = new PasswordHasher();
+                CustomerUserTable user = new CustomerUserTable();
+                if (context.UserName != null)
+                {
+                     user = db.CustomerUserTables.Where(x => x.UserName == context.UserName).FirstOrDefault();
+                }
+                if(context.Email!=null)
+                {
+                    user = db.CustomerUserTables.Where(x => x.Email == context.Email).FirstOrDefault();
+                }
                 //var hashedPassword = EncodePassword(context.Password, MembershipPasswordFormat.Hashed, "MAKV2SPBNI99212");
-                var user = db.CustomerUserTables.Where(x => x.UserName == context.UserName).FirstOrDefault();
+               // var user = db.CustomerUserTables.Where(x => x.UserName == context.UserName).FirstOrDefault();
 
                 //CustomerUser user = db.CustomerUsers.Where(x => x.UserName == context.UserName).FirstOrDefault();
 

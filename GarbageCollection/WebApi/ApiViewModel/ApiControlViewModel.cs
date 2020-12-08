@@ -11,14 +11,10 @@ namespace GarbageCollection.WebApi.ApiViewModel
 
         public class LoginViewModel
         {
-            //public int EmployeeId { get; set; }
-            //public int UserId { get; set; }
-            //public int IsCustomer { get; set; }
+            
             public string Password { get; set; }
             public string UserName { get; set; }
-            //public int CustomerId { get; set; }
-            //public CustomerUser Album { get; set; }
-            //public User User { get; set; }
+            public string Email { get; set; }
             public string ClientId { get; set; }
         }
         public class PostResponse

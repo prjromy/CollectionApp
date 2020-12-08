@@ -22,7 +22,7 @@ namespace GarbageCollection.WebApi.WebApiController
 {
 
     //[BasicAuthentication]
-  ///[JWTAuthenticationFilter]
+     [JWTAuthenticationFilter]
     [RoutePrefix("api/collectors")]
     public class CollectorController : ApiController
     {
@@ -213,7 +213,7 @@ namespace GarbageCollection.WebApi.WebApiController
         }
         [HttpGet]
         [Route("defaultlocationsubscriptiondue")]
-        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollector([FromUri]  PagingParameterModel pagingparametermodel,int? locationid,int? collectorid,string searchterm)
+        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollector([FromUri]  PagingParameterModel pagingparametermodel,int? locationid,int? collectorid,string searchterm="")
         {
             ResponseMessage resMsg = new ResponseMessage();
             try
@@ -223,9 +223,9 @@ namespace GarbageCollection.WebApi.WebApiController
 
                 string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from  FgetNotificationlocationwise('" + locationid + "','" +collectorid+ "')");
 
-                if (searchterm!=null)
+                if (searchterm!="")
                 {
-                    query += "where LocationName like'%" + searchterm.Trim() + "%'";
+                    query += "where locationName like'%" + searchterm.Trim() + "%'";
                 }
                 //if (!string.IsNullOrEmpty(searchterm.ToLower().Trim()))
                 //{
