@@ -37,9 +37,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Workspace202091\ChannakyaBase\Channakya Base\Channakya Base\bin\ChannakyaCustomeDatePicker.dll</HintPath>
     </Reference>
-    <Reference Include="DataAccess">
-      <HintPath>..\DataAccess\bin\Debug\DataAccess.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -117,6 +114,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\PagedList.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <Project>{5e446888-583b-40a4-acfa-6fb566a57ea9}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

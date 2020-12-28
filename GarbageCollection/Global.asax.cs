@@ -13,6 +13,8 @@ namespace GarbageCollection
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+
+     
         protected void Application_Start()
         {
 
@@ -22,7 +24,9 @@ namespace GarbageCollection
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            
+            SqlServerTypes.Utilities.LoadNativeAssemblies(Server.MapPath("~/bin"));
+     
+
         }
     }
 }

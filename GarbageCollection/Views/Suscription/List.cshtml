@@ -14,7 +14,7 @@
 
                 <tr>
                     <th> Suscription No.</th>
-                  
+                  <th>Customer No</th>
                     <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
                     <th>@Html.DisplayNameFor(x => x.EffectiveDate)</th>
                     <th>@Html.DisplayNameFor(x => x.LedgerId)</th>
@@ -37,63 +37,67 @@
                 @foreach (var item in Model.suscriberPagedList)
                 {
                       @Html.HiddenFor(x => x.CustId)
-                    <tr style="font-size:12px;">
-                        <td>
-                            @item.SubsNo
+            <tr style="font-size:12px;">
+                <td>
+                    @item.SubsNo
 
-                        </td>
-                        <td>
-                            @item.CustomerName
+                </td>
+                <td>
+                    @item.CustNo
 
-                        </td>
-                        <td>
-                            @item.EffectiveDate
+                </td>
+                <td>
+                    @item.CustomerName
 
-                        </td>
-                        <td>
-                            @{
-                                var ledgerName = CommonUtilityService.LedgerName(@item.LedgerId);
-                            }
-                            @ledgerName
-                        </td>
-                        <td>
+                </td>
+                <td>
+                    @item.EffectiveDate
 
-                            @item.MonthlyAmount
+                </td>
+                <td>
+                    @{
+                        var ledgerName = CommonUtilityService.LedgerName(@item.LedgerId);
+                    }
+                    @ledgerName
+                </td>
+                <td>
 
-                        </td>
-                        <td>
-                            @{
-                                var locationName = CommonUtilityService.LocationName(@item.LocationID);
-                            }
-                            @locationName
+                    @item.MonthlyAmount
 
-                        </td>
+                </td>
+                <td>
+                    @{
+                        var locationName = CommonUtilityService.LocationName(@item.LocationID);
+                    }
+                    @locationName
 
-                        @if (CommonUtilityService.AllowEdit(29))
-                        {
-                            <td>
-                                <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subsid" onclick="EditSubscriptionList(@item.Subsid)" data-toggle="tooltip" title="Edit"></button>
-                            </td>
-                        }
+                </td>
+
+                @if (CommonUtilityService.AllowEdit(29))
+                {
+                    <td>
+                        <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subsid" onclick="EditSubscriptionList(@item.Subsid)" data-toggle="tooltip" title="Edit"></button>
+                    </td>
+                }
 
 
-                        @if (CommonUtilityService.AllowStatusChange(31))
-                        {
-                            <td>
-                                @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
-                                @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected' onchange="CustomerChangeStatus(@item.Cid)" data-toggle="toggle" >*@
+                @if (CommonUtilityService.AllowStatusChange(31))
+                {
+                    <td>
+                        @*<button type="button" class="btn btn-info btn-sm btn-details glyphicon glyphicon-list" data-id="@item.Cid" onclick="CustomerChangeStatus(@item.Cid)" Route="CustomerList"></button>*@
+                        @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected' onchange="CustomerChangeStatus(@item.Cid)" data-toggle="toggle" >*@
 
-                                @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected'data-val="@item.Cid"  />*@
-                                <label class="switch">
-                                    <input type="checkbox" name="IsSelected" data-val="@item.Subsid" class="IsSelected" />
-                                    <div class="slider round">
-                                    </div>
-                                </label>
+                        @*<input type="checkbox" name="IsSelected" checked='@Model.IsSelected'data-val="@item.Cid"  />*@
+                        <label class="switch">
+                            <input type="checkbox" name="IsSelected" data-val="@item.Subsid" class="IsSelected" />
+                            <div class="slider round">
+                            </div>
+                        </label>
 
-                            </td>
-                        }
+                    </td>
+                }
 
-                    </tr>
+            </tr>
                                 }
 
             </table>

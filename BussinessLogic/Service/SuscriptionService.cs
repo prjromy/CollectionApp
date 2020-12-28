@@ -31,16 +31,20 @@ namespace BussinessLogic.Service
             {
                 var subsid = suscription.Subsid.GetType();
                 var CustId = suscription.CustId.GetType();
-                uow.ExecWithStoreProcedure("[dbo].[PcreateSubscription] @Subsid,@CustId,@EffectiveDate,@LedgerId,@MonthlyAmount,@LocationId,@Remarks,@PostedBy",
+                uow.ExecWithStoreProcedure("[dbo].[PcreateSubscription] @Subsid,@CustId,@EffectiveDate,@LedgerId,@MonthlyAmount,@LocationId,@Remarks,@PostedBy,@DharautiAmt,@RegistrationFee",
                                                 new SqlParameter("@Subsid", suscription.Subsid),
                                                 new SqlParameter("@CustId", suscription.CustId),
                                                  new SqlParameter("@EffectiveDate", suscription.EffectiveDate),
                                                 new SqlParameter("@LedgerId", suscription.LedgerId),
                                                 new SqlParameter("@MonthlyAmount", suscription.MonthlyAmount),
                                                 new SqlParameter("@LocationId", suscription.LocationID),
-                                                new SqlParameter("@Remarks",suscription.Remarks),
-                                                 new SqlParameter("@PostedBy", Global.UserId)
-                                                
+                                                  new SqlParameter("@Remarks", suscription.Remarks),
+                                            
+                                                 new SqlParameter("@PostedBy", Global.UserId),
+                                                 new SqlParameter("@DharautiAmt", suscription.DharautiAmt),
+                                                new SqlParameter("@RegistrationFee", suscription.RegistrationFee)
+
+
                                                 );
                 if (suscription.Subsid == 0)
                 {
@@ -78,7 +82,8 @@ namespace BussinessLogic.Service
                LedgerId=x.LedgerId,
                MonthlyAmount=x.MonthlyAmount,
                LocationID=x.LocationID,
-               
+               DharautiAmt=x.DharautiAmt,
+               RegistrationFee=x.RegistrationFee,
                EffectiveDate=x.EffectiveDate,
                Remarks=x.Remarks
                
@@ -147,7 +152,7 @@ namespace BussinessLogic.Service
 
         }
 
-        public List<MainViewModel.SubscriptionViewModel> getSuscriberListForQRCode(string name,string address,int pageNo, int pageSize)
+        public List<MainViewModel.SubscriptionViewModel> getSuscriberListForQRCode(string name,string address,string printed,int pageNo, int pageSize)
 
         {
             try
@@ -161,15 +166,22 @@ namespace BussinessLogic.Service
                 //where  CustomerName like'%" + Name.Trim() + "%'";
 
              
-                if (address != "")
+                if (address != "" && address != null)
                 {
                     query += " and LocationName like '%" + address.ToLower().Trim() + "%'";
                 }
-                if (name != "")
+                if (name != "" && name != null)
                 {
                     query += " and CustomerName like '" + name.ToLower().Trim() + "%'";
                 }
-
+                if (printed == "New" )
+                {
+                    query += " and QRStatus =''";
+                }
+                if (printed == "Printed")
+                {
+                    query += " and QRStatus='" + printed.Trim() + "'";
+                }
                 query += @" ORDER BY  CustId 
                        OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
                        FETCH NEXT " + pageSize + " ROWS ONLY";

@@ -46,7 +46,7 @@
                                     @Html.ChqLabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
 
-                                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control" ,@readonly="readonly"} })
+                                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                                         @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
 
                                         @Html.HiddenFor(model => model.CustId)
@@ -75,14 +75,14 @@
                                         @if (Model.Subsid != 0)
                                         {
                                             var locationName = CommonUtilityService.LocationName(Model.LocationID);
-                                        @Html.EditorFor(model => locationName, new { htmlAttributes = new { @class = "form-control" ,@id = "LocationName", autocomplete = "off" } })
-                                        @Html.HiddenFor(x => x.LocationID)
+                                            @Html.EditorFor(model => locationName, new { htmlAttributes = new { @class = "form-control", @id = "LocationName", autocomplete = "off" } })
+                                            @Html.HiddenFor(x => x.LocationID)
                                         }
                                         else
                                         {
 
-                                        @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control", @id = "LocationName", autocomplete = "off" } })
-                                        @Html.HiddenFor(x => x.LocationID)
+                                            @Html.EditorFor(model => model.LocationName, new { htmlAttributes = new { @class = "form-control", @id = "LocationName", autocomplete = "off" } })
+                                            @Html.HiddenFor(x => x.LocationID)
 
                                         }
 
@@ -98,17 +98,36 @@
                                         @if (Model.Subsid != 0)
                                         {
                                             var EffectiveDate = ViewBag.EffectiveDate;
-                                        <an-date-picker is-input date-ad=@EffectiveDate></an-date-picker>
+                                            <an-date-picker is-input date-ad=@EffectiveDate></an-date-picker>
                                         }
                                         else
                                         {
-                                        <an-date-picker is-input></an-date-picker>
+                                            <an-date-picker is-input></an-date-picker>
 
                                         }
                                         @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    @Html.ChqLabelFor(model => model.DharautiAmt, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
 
+                                        @Html.EditorFor(model => model.DharautiAmt, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.DharautiAmt, "", new { @class = "text-danger" })
+
+                                        @Html.HiddenFor(model => model.DharautiAmt)
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.ChqLabelFor(model => model.RegistrationFee, htmlAttributes: new { @class = "control-label col-md-2" })
+                                    <div class="col-md-10">
+
+                                        @Html.EditorFor(model => model.RegistrationFee, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.RegistrationFee, "", new { @class = "text-danger" })
+
+                                        @Html.HiddenFor(model => model.RegistrationFee)
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     @Html.ChqLabelFor(model => model.Remarks, htmlAttributes: new { @class = "control-label col-md-2" })
                                     <div class="col-md-10">
@@ -122,12 +141,12 @@
                                     <div class="col-md-offset-2 col-md-10">
                                         @if (Model.Subsid != 0)
                                         {
-                                        <input type="button" value="Edit" class="btn btn-success btn-save" />
+                                            <input type="button" value="Edit" class="btn btn-success btn-save" />
                                         }
                                         else
                                         {
-                                        <input type="button" value="Create" class="btn btn-success btn-save" />
-                                        
+                                            <input type="button" value="Create" class="btn btn-success btn-save" />
+
                                         }
 
                                     </div>

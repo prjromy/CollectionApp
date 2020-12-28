@@ -251,7 +251,7 @@ namespace BussinessLogic.Service
             //}
             var customerInfoList = uow.Repository<MainViewModel.CustomerViewModel>().SqlQuery(@"SELECT Cid,
            CustNo ,CustomerName ,CustomerTypeId,MobileNo,Address ,Email,PanNo ,PostedOn
-          FROM Customer where Cid ="+ listBox).SingleOrDefault();
+          FROM Customer where Cid =" + listBox).SingleOrDefault();
             return customerInfoList;
         }
         public List<MainViewModel.CustomerViewModel> getCustomer(string prefix)

@@ -306,12 +306,12 @@ namespace GarbageCollection.Controllers
         }
 
 
-        public ActionResult _collectionReportList(DateTime? collectionDate, int pageNo=1, int pageSize=10, string customerName = "", string collector = "", string Location = "", int verified = 1)
+        public ActionResult _collectionReportList(DateTime? collectionDate, int pageNo=1, int pageSize=10, string customerName = "", string collector = "", string Location = "", int verified = 1, string EntryTypeList="")
         {
             try
             {
                 MainViewModel.CollectionReport collectorViewModel = new MainViewModel.CollectionReport();
-                var collectorList = reportService.getCollectorReportList(collectionDate, pageNo, pageSize, customerName,collector, Location, verified);
+                var collectorList = reportService.getCollectorReportList(collectionDate, pageNo, pageSize, customerName,collector, Location, verified, EntryTypeList);
                 collectorViewModel.collectorPagedList = new StaticPagedList<MainViewModel.CollectionReport>(collectorList, pageNo, pageSize, (collectorList.Count == 0) ? 0 : collectorList.FirstOrDefault().TotalCount);
                 return PartialView(collectorViewModel);
 
@@ -324,10 +324,10 @@ namespace GarbageCollection.Controllers
         }
 
         [HttpGet]
-        public FileContentResult CollectionExportToExcel(DateTime? collectionDate, int pageNo = 1, int pageSize = 0, string customerName = "", string collector = "", string Location = "", int verified = 1 ,string statustext="")
+        public FileContentResult CollectionExportToExcel(DateTime? collectionDate, int pageNo = 1, int pageSize = 0, string customerName = "", string collector = "", string Location = "", int verified = 1 ,string statustext="", string EntryTypeList = "")
         {
             MainViewModel.CollectionReport collectorViewModel = new MainViewModel.CollectionReport();
-            var collectorList = reportService.getCollectorReportList(collectionDate, pageNo, pageSize, customerName, collector, Location, verified);
+            var collectorList = reportService.getCollectorReportList(collectionDate, pageNo, pageSize, customerName, collector, Location, verified,  EntryTypeList );
             var collectorExcelList = collectorList.Select(x => new ExcelViewModel.CollectorExcelViewModel()
             {
                 CustomerNo=x.CustomerNo,
@@ -338,12 +338,13 @@ namespace GarbageCollection.Controllers
                 CollectionAmt=x.CollectionAmt,
                 CollectionDate=x.CollectionDate,
                 CollectorName=x.CollectorName,
-                DiscountAmt=x.DiscountAmt
-
+                DiscountAmt=x.DiscountAmt,
+                CollectionTYpe=x.CollectionType
+                
             }).ToList();
 
-            string[] columns = { "Customer No","Subscription No.", "Customer Name", "Customer Type", "Location Name", "Collector Name", "Collection Date", "Collection Amount", "Discount Amount" };
-            string[] parameterSearch = { "Customer Name.:  " + customerName, "Collector.:  " + collector, "Collection Date:  " + collectionDate, "Location:  " + Location, "Status:  " + statustext };
+            string[] columns = { "Customer No","Subscription No.", "Customer Name", "Customer Type", "Location Name", "Collector Name", "Collection Date", "Collection Amount", "Discount Amount",  "CollectionType" };
+            string[] parameterSearch = { "Customer Name.:  " + customerName, "Collector.:  " + collector, "Collection Date:  " + collectionDate, "Location:  " + Location, "Status:  " + statustext,"CollectionType :"+ EntryTypeList };
             byte[] fileContent = ExcelExportHelper.ExportExcel(collectorExcelList, parameterSearch,null, "Collector Report", columns);
             return File(fileContent, ExcelExportHelper.ExcelContentType, "Collector  Report.xlsx");
         }

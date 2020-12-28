@@ -108,6 +108,15 @@ namespace BussinessLogic.Service
             return new SelectList(objCustomerSrchOption, "Value", "Text");
         }
 
+        public static SelectList Printed()
+        {
+            List<SelectListItem> printed = new List<SelectListItem>();
+      
+            printed.Add(new SelectListItem { Text = "New", Value = "New" });
+            printed.Add(new SelectListItem { Text = "Printed", Value = "Printed" });
+            //objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Type", Value = "Customer Type" });
+            return new SelectList(printed, "Value", "Text");
+        }
         public static string CustomerType(int? cid)
         {
             var customer = uow.Repository<CustomerType>().FindBy(x=>x.Id==cid).Select(x=>x.RFUniDesc).SingleOrDefault();

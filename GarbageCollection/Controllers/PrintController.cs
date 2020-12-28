@@ -127,7 +127,7 @@ namespace GarbageCollection.Controllers
         }
 
         [HttpPost]
-        public ActionResult MultiplePDF(string[] files, int[] custNo, string[] custName)
+        public ActionResult MultiplePDF(string[] files, string[] custNo, string[] custName)
         {
             try
             {
@@ -215,9 +215,13 @@ namespace GarbageCollection.Controllers
                     var bytes1 = stream.ToArray();
                     Session[fName] = bytes1;
 
-                    foreach (var item in custNo)
+                    for(var i=0;i< custNo.Length;i++ )
                     {
-                        var singlecustomer = db.Customers.Where(x => x.Cid == item).SingleOrDefault();
+                       
+                       var cid =custNo[i].Split('-');
+                        int intcid = Convert.ToInt32(cid[0].Trim());
+
+                        var singlecustomer = db.Customers.Where(x => x.Cid == intcid).SingleOrDefault();
                         if (singlecustomer != null)
                         {
                             singlecustomer.QRCode = 1;

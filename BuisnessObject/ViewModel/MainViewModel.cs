@@ -84,6 +84,7 @@ namespace BuisnessObject.ViewModel
             
             public Nullable<int> LocationID { get; set; }
             public string LedgerName { get; set; }
+            public string CompanyName { get; set; }
             [Required(ErrorMessage = "Location Name is required ")]
             public string LocationName { get; set; }
             public Nullable<int> Status { get; set; }
@@ -98,6 +99,8 @@ namespace BuisnessObject.ViewModel
             public string SearchParameter { get; set; }
             public string QRStatus { get; set; }
             public bool IsChecked { get; set; }
+            public Nullable<decimal> DharautiAmt { get; set; }
+            public Nullable<decimal> RegistrationFee { get; set; }
             public List<SubscriptionViewModel> suscriberViewModelList { get; set; }
             public IPagedList<SubscriptionViewModel> suscriberPagedList { get; set; }
             public string ModelFrom { get; set; }
@@ -159,7 +162,9 @@ namespace BuisnessObject.ViewModel
 
         public class CollectionVerificationEntry
         {
+            [DisplayName("Customer No.")]
             public int CustId { get; set; }
+            public string CustomerNo { get; set; }
             public int subsid { get; set; }
             public int Subscollid { get; set; }
             public string Collectorname { get; set; }
@@ -242,6 +247,9 @@ namespace BuisnessObject.ViewModel
             [DisplayName("Customer Name")]
 
             public string CustomerName { get; set; }
+         
+
+            public string CollectionType { get; set; }
             [DisplayName("Customer Type")]
 
             public string CustomerType { get; set; }
@@ -257,6 +265,7 @@ namespace BuisnessObject.ViewModel
             public Nullable<decimal> CollectionAmt { get; set; }
             [DisplayName("Discount Amount")]
             public Nullable<decimal> DiscountAmt { get; set; }
+      
             public int TotalCount { get; set; }
             public IPagedList<CollectionReport> collectorPagedList { get; set; }
 

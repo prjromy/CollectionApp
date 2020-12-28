@@ -19,6 +19,7 @@ using System.Web.Routing;
 using System.Web.SessionState;
 using System.Web.Http.Results;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace WasteManagementApi.Controllers
 {
@@ -101,7 +102,7 @@ namespace WasteManagementApi.Controllers
         [Route("~/api/multipleqrcode")]
         [HttpPost]
 
-        public ReturnBaseMessageModel MultipleGetQRCode(List<MainQRCodeModel.MultipleQRCodeModel> content)
+        public async Task< ReturnBaseMessageModel> MultipleGetQRCode(List<MainQRCodeModel.MultipleQRCodeModel> content)
         {
 
             try
@@ -127,35 +128,39 @@ namespace WasteManagementApi.Controllers
             Bitmap overlay = new Bitmap(filename);
                 //List<string> list = new List<string>();
                 List<MainQRCodeModel.MultipleQRCodeModel> list = new List<MainQRCodeModel.MultipleQRCodeModel>();
-              
+
 
                 //list.multipleQRCodeModel = new List<MainQRCodeModel.MultipleQRCodeModel>();
-                foreach (var item in content)
-                {
-                    MainQRCodeModel.MultipleQRCodeModel singlelist = new MainQRCodeModel.MultipleQRCodeModel();
-                    using (var q = qrWriter.Write(item.custid.Trim()))
-                {
-                    //Bitmap overlay=new Bitmap()
-                    using (var ms = new MemoryStream())
-                    {
-                        int deltaHeigth = q.Height - overlay.Height;
-                        int deltaWidth = q.Width - overlay.Width;
-                        Graphics g = Graphics.FromImage(q);
-                        g.DrawImage(overlay, new Point(deltaWidth / 2, deltaHeigth / 2));
+                HttpContext.Current.Server.ScriptTimeout = 300;
 
-                        q.Save(ms, ImageFormat.Png);
-                        var qrcode = Convert.ToBase64String(ms.ToArray());
-                            //list.Add(qrcode);
-                            singlelist.generatedQRCode = qrcode;
-                            singlelist.custid = item.custid.Trim();
-                            singlelist.custname = item.custname.Trim();
-                           
+                await Task.Run(() =>
+                {
+                    foreach (var item in content)
+                    {
+                        MainQRCodeModel.MultipleQRCodeModel singlelist = new MainQRCodeModel.MultipleQRCodeModel();
+                        using (var q = qrWriter.Write(item.id.Trim()))
+                        {
+                            //Bitmap overlay=new Bitmap()
+                            using (var ms = new MemoryStream())
+                            {
+                                int deltaHeigth = q.Height - overlay.Height;
+                                int deltaWidth = q.Width - overlay.Width;
+                                Graphics g = Graphics.FromImage(q);
+                                g.DrawImage(overlay, new Point(deltaWidth / 2, deltaHeigth / 2));
+
+                                q.Save(ms, ImageFormat.Png);
+                                var qrcode = Convert.ToBase64String(ms.ToArray());
+                                //list.Add(qrcode);
+                                singlelist.generatedQRCode = qrcode;
+                                singlelist.custid = item.custid.Trim();
+                                singlelist.custname = item.custname.Trim();
+
+                            }
+                            list.Add(singlelist);
                         }
-                        list.Add(singlelist);
+
                     }
-                   
-                }
-               
+                });
                 //string result = "";
                 // return( list.ToArray());
                 var fName = HttpContext.Current.Session;
@@ -163,7 +168,9 @@ namespace WasteManagementApi.Controllers
                 //var qrResult = list.ToArray();
                 var qrResult = list;
                 fName["fName"]= qrResult;
-                returnMessage.Value = string.Format(DateTime.Now.ToString() + ".jpg");
+                var Datewithtime = DateTime.Now;
+                var date = Datewithtime.Date;
+                returnMessage.Value = string.Format(date.ToString() + ".jpg");
             returnMessage.Success = true;
 
               

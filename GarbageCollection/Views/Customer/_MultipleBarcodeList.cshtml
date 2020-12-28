@@ -5,16 +5,21 @@
 
 @model BuisnessObject.ViewModel.MainViewModel.SubscriptionViewModel
 
+@{ 
+    ViewBag.Number = Model.suscriberPagedList.Count;
+
+}
+
 <div class="table-responsive no-padding qrcode-page-list">
     <table class="table table-bordered table-striped table-hover">
         <thead>
             <tr>
-                <th>Auto&nbsp;<input type="checkbox" id="Main"></th>
-
+                @*<th>Auto&nbsp;<input type="checkbox" id="Main"></th>*@
+                <th>Main</th>
                 <th> Customer No.</th>
                 <th>Subscription No</th>
                 <th>@Html.DisplayNameFor(x => x.CustomerName)</th>            
-                <th>@Html.DisplayNameFor(x => x.LedgerName)</th>
+                <th>@Html.DisplayNameFor(x => x.CompanyName)</th>
                
                 <th>@Html.DisplayNameFor(x => x.LocationName)</th>
                 <th>Status</th>
@@ -44,7 +49,7 @@
 
                     </td>
                     <td>
-                        @item.LedgerName
+                        @item.CompanyName
 
                     </td>
                     <td>
@@ -79,24 +84,21 @@
 <link href="~/Content/ToggleButton.css" rel="stylesheet" />
 
 <script>
-    $('#Main').on('click', function () {
-        debugger;
-        if ($('#Main').is(":checked")) {
-            $('.checkall').prop("checked", true)
-        } else {
-            $('.checkall').prop("checked", false)
-        }
 
-
-
-
-    })
+    //$(document).ready(function () {
+    //    debugger;
+    //    if ($('.qrcode-page-list#Main').is(":checked")) {
+    //        $('.checkall').prop("checked", true)
+    //    } else {
+    //        $('.checkall').prop("checked", false)
+    //    }
+    //})
         $('.qr-button').click(function (e) {
         debugger;
         e.stopImmediatePropagation();
         debugger;
         var txt = $(this).data("id");
-
+          
 
         var content = txt.toString();
         $.ajax({
@@ -146,11 +148,46 @@
         debugger;
         e.stopImmediatePropagation();
         var parentContainer = $(this).parents()
-        var me = $(this);
+            var me = $(this);
+            
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
-        var container = parentContainer.find("div.qrcode-page-list")
-        var url = "?name=" + name + "&address=" + address;
+            var printed = parentContainer.find("#printed").find("#prints").val()
+
+            var container = parentContainer.find("div.qrcode-page-list")
+            var url = "?name=" + name + "&address=" + address + "&printed=" + printed;
+
+
+            ///for checkbox deactive
+            $button = $(".button-checkbox").find('button'),
+                $checkbox = $(".button-checkbox").find('input:checkbox'),
+                color = $button.data('color'),
+                settings = {
+                    on: {
+                        icon: 'glyphicon glyphicon-check'
+                    },
+                    off: {
+                        icon: 'glyphicon glyphicon-unchecked'
+                    }
+                };
+
+            var isChecked = $checkbox.is(':checked');
+            // Set the button's state
+            $button.data('state', (isChecked) ? "off" : "on");
+
+            // Set the button's icon
+            $button.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+            $button
+                .removeClass('btn-' + color + ' active')
+                .addClass('btn-default');
+
+
+            //for checkbox close
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -158,22 +195,88 @@
         e.stopImmediatePropagation();
         debugger;
         var parentContainer = $(this).parents()
-        var me = $(this);
+            var me = $(this);
+          
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
-        var container = parentContainer.find("div.qrcode-page-list")
-        var url = "?name=" + name + "&address=" + address;
+            var printed = parentContainer.find("#printed").find("#prints").val()
+
+            var container = parentContainer.find("div.qrcode-page-list")
+            var url = "?name=" + name + "&address=" + address + "&printed=" + printed;
+            ///for checkbox deactive
+            $button = $(".button-checkbox").find('button'),
+                $checkbox = $(".button-checkbox").find('input:checkbox'),
+                color = $button.data('color'),
+                settings = {
+                    on: {
+                        icon: 'glyphicon glyphicon-check'
+                    },
+                    off: {
+                        icon: 'glyphicon glyphicon-unchecked'
+                    }
+                };
+
+            var isChecked = $checkbox.is(':checked');
+            // Set the button's state
+            $button.data('state', (isChecked) ? "off" : "on");
+
+            // Set the button's icon
+            $button.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+            $button
+                .removeClass('btn-' + color + ' active')
+                .addClass('btn-default');
+
+
+            //for checkbox close
         getPageNumberChangeData(url, container, me)
     });
         $("div.qrcode-page-list").on('change', 'input#pageSize', function (e) {
         e.stopImmediatePropagation();
         debugger;
         var parentContainer = $(this).parents()
-        var me = $(this);
+            var me = $(this);
+       
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
-        var container = parentContainer.find("div.qrcode-page-list")
-        var url = "?name=" + name + "&address=" + address;
+            var printed = parentContainer.find("#printed").find("#prints").val()
+
+            var container = parentContainer.find("div.qrcode-page-list")
+            var url = "?name=" + name + "&address=" + address + "&printed=" + printed;
+            ///for checkbox deactive
+            $button = $(".button-checkbox").find('button'),
+                $checkbox = $(".button-checkbox").find('input:checkbox'),
+                color = $button.data('color'),
+                settings = {
+                    on: {
+                        icon: 'glyphicon glyphicon-check'
+                    },
+                    off: {
+                        icon: 'glyphicon glyphicon-unchecked'
+                    }
+                };
+
+            var isChecked = $checkbox.is(':checked');
+            // Set the button's state
+            $button.data('state', (isChecked) ? "off" : "on");
+
+            // Set the button's icon
+            $button.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+            $button
+                .removeClass('btn-' + color + ' active')
+                .addClass('btn-default');
+
+
+            //for checkbox close
         getPageSizeChangeData(url, container, me)
     });
 

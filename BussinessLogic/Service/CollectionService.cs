@@ -195,7 +195,7 @@ namespace BussinessLogic.Service
             {
 
                 string query = "";
-                query = "select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null";
+                query = "select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,CustomerNo,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null";
 
                 if (CollectorName != "" )
                 {

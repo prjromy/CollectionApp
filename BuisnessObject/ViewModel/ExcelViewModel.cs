@@ -111,6 +111,7 @@ namespace BuisnessObject.ViewModel
             public Nullable<decimal> CollectionAmt { get; set; }
             [DisplayName("Discount Amount")]
             public Nullable<decimal> DiscountAmt { get; set; }
+            public string CollectionTYpe { get; set; }
 
         }
 

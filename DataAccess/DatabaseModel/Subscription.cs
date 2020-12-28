@@ -28,5 +28,7 @@ namespace DataAccess.DatabaseModel
         public Nullable<int> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedOn { get; set; }
         public Nullable<decimal> Balance { get; set; }
+        public Nullable<decimal> DharautiAmt { get; set; }
+        public Nullable<decimal> RegistrationFee { get; set; }
     }
 }

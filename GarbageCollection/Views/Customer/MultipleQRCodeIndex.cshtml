@@ -30,42 +30,48 @@
                         <div class="form-group">
                             <div class="col-md-12">
                                 <div class="box-tools col-md-3  form-group" id="search-Employee-Name">
-                                    @Html.TextBox("CustomerSearch", "", htmlAttributes: new { @class = "form-control", @id = "txtCustomerSearch", @placeholder = "Customer Name" ,autocomplete="off"})
+                                    @Html.TextBox("CustomerSearch", "", htmlAttributes: new { @class = "form-control", @id = "txtCustomerSearch", @placeholder = "Customer Name", autocomplete = "off" })
                                 </div>
                                 @*</div>
-            <div class="form-group">*@
+        <div class="form-group">*@
                                 <div class="box-tools col-md-3  form-group" id="search-Address" style="margin-left:16px;">
                                     @Html.TextBox("Address", "", htmlAttributes: new { @class = "form-control", @id = "txtAddress", @placeholder = "Location", autocomplete = "off" })
-                                    @Html.HiddenFor(x=>x.LocationID)
+                                    @Html.HiddenFor(x => x.LocationID)
                                 </div>
-                           
-                          
 
-                       
-                            <div class="col-md-offset-2 col-md-10 ">
+                                <div class="col-md-3  form-group" id="printed">
+
+                                    @Html.DropDownListFor(x=>x.QRStatus, CommonUtilityService.Printed(), "--Select Event--", new { @class = "form-control ", @id = "prints" })
+                                </div>
+
+                                <div class="col-md-offset-2 col-md-10 ">
 
 
 
-                                <input type="button" value="Generate QR Code" class="btn btn-success btn-generate-qr " />
-                                @*<div class="col-md-offset-2 col-md-10">*@
-                                    <input type="button" value="Generate PDF" class="btn btn-default qr-pdf-button pull-right"  />
-                                @*</div>*@
+                                    <input type="button" value="Generate QR Code" class="btn btn-success btn-generate-qr " />
+                                    @*<div class="col-md-offset-2 col-md-10">*@
+                                    <input type="button" value="Generate PDF" class="btn btn-default qr-pdf-button pull-right" />
+                                    @*</div>*@
+                                </div>
                             </div>
-                                 </div>
                         </div>
-                        </div>
+                    </div>
                 </form>
-                <div class="subscription-qr-list">
+                <span class="button-checkbox">
+                    <button type="button" class="btn" data-color="default">Bulk Action</button>
+                    <input type="checkbox" class="hidden" id="Main">
+                </span>
+                <div class="subscription-qr-list" style="margin-top:12px;">
 
 
 
-                    @*@Html.Partial("_List", Model)*@
+                    @Html.Partial("_MultipleBarcodeList", Model)
 
 
 
                 </div>
                 <div class="form-group demo" id="paginationdemo">
-                    <div class="A4" id="pagesContainer" >
+                    <div class="A4" id="pagesContainer">
                         @*@Html.LabelFor(model => model.QRCodeImagePath, new { @class = "control-label col-md-2" })*@
                         <div id="imgdiv" class="pagedemo" size="A4">
 
@@ -75,7 +81,7 @@
                         <div id="p1" class="pagedemo" size="A4"></div>
                         @*<div>
 
-                        </div>*@
+                </div>*@
                         @*<div id="demo5"></div>*@
 
                     </div>
@@ -92,6 +98,7 @@
 <link href="~/Content/messagebox.css" rel="stylesheet" />
 <link href="~/Content/ch-dialog.css" rel="stylesheet" />
 <script src="~/Scripts/ch-dialog.js"></script>
+<script src="~/Scripts/CheckBox.js"></script>
 <style>
     .A4 {
         background: rgb(204,204,204);
@@ -106,7 +113,7 @@
     }
 
     div[size="A4"] {
-        width: 21cm;
+        width: 26cm;
         height: 29.7cm;
     }
 </style>
@@ -119,15 +126,59 @@
 
 <script src="~/Scripts/ch-dialog.js"></script>
 <script>
+    $('.qrcode-page-list #Main').on("click", function () {
+        if ($('.qrcode-page-list #Main').is(":checked")) {
+            $('.checkall').prop("checked", true)
+        } else {
+            $('.checkall').prop("checked", false)
+        }
+    })
+   
+   
     $("div.qrcode-page-list").on('click', 'input.btnPaging', function (e) {
         debugger;
+       
         e.stopImmediatePropagation();
         var parentContainer = $(this).parents()
         var me = $(this);
+
+
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var printed = parentContainer.find("#printed").find("#prints").val()
+
         var container = parentContainer.find("div.qrcode-page-list")
-        var url = "?name=" + name + "&address=" + address;
+        var url = "?name=" + name + "&address=" + address + "&printed=" + printed;
+        ///for checkbox deactive
+        $button = $(".button-checkbox").find('button'),
+            $checkbox = $(".button-checkbox").find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        var isChecked = $checkbox.is(':checked');
+        // Set the button's state
+        $button.data('state', (isChecked) ? "off" : "on");
+
+        // Set the button's icon
+        $button.find('.state-icon')
+            .removeClass()
+            .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+        $button
+            .removeClass('btn-' + color + ' active')
+            .addClass('btn-default');
+
+
+            //for checkbox close
         getPageNumberBtnAction(url, container, me)
 
     });
@@ -136,10 +187,46 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
+     
+
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
         var container = parentContainer.find("div.qrcode-page-list")
-        var url = "?name=" + name + "&address=" + address;
+        var printed = parentContainer.find("#printed").find("#prints").val()
+
+        var container = parentContainer.find("div.qrcode-page-list")
+        var url = "?name=" + name + "&address=" + address + "&printed=" + printed;
+
+        ///for checkbox deactive
+        $button = $(".button-checkbox").find('button'),
+            $checkbox = $(".button-checkbox").find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        var isChecked = $checkbox.is(':checked');
+        // Set the button's state
+        $button.data('state', (isChecked) ? "off" : "on");
+
+        // Set the button's icon
+        $button.find('.state-icon')
+            .removeClass()
+            .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+        $button
+            .removeClass('btn-' + color + ' active')
+            .addClass('btn-default');
+
+
+            //for checkbox close
         getPageNumberChangeData(url, container, me)
     });
     $("div.qrcode-page-list").on('change', 'input#pageSize', function (e) {
@@ -147,10 +234,44 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
+       
+
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var printed = parentContainer.find("#printed").find("#prints").val()
+
         var container = parentContainer.find("div.qrcode-page-list")
-        var url = "?name=" + name + "&address=" + address;
+        var url = "?name=" + name + "&address=" + address + "&printed=" + printed;
+        ///for checkbox deactive
+        $button = $(".button-checkbox").find('button'),
+            $checkbox = $(".button-checkbox").find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        var isChecked = $checkbox.is(':checked');
+        // Set the button's state
+        $button.data('state', (isChecked) ? "off" : "on");
+
+        // Set the button's icon
+        $button.find('.state-icon')
+            .removeClass()
+            .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+        $button
+            .removeClass('btn-' + color + ' active')
+            .addClass('btn-default');
+
+
+            //for checkbox close
         getPageSizeChangeData(url, container, me)
     });
  
@@ -161,12 +282,45 @@
         debugger;
         var parentContainer = $(this).parents()
         var me = $(this);
-        
+      
+
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         if (Object.prototype.toString.call(name) != '[object String]') {
             ErrorAlert("Please enter alphabets", 3000);
         }
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var printed = parentContainer.find("#printed").find("#prints").val()
+
+        ///for checkbox deactive
+        $button = $(".button-checkbox").find('button'),
+            $checkbox = $(".button-checkbox").find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        var isChecked = $checkbox.is(':checked');
+        // Set the button's state
+        $button.data('state', (isChecked) ? "off" : "on");
+
+        // Set the button's icon
+        $button.find('.state-icon')
+            .removeClass()
+            .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+        $button
+            .removeClass('btn-' + color + ' active')
+            .addClass('btn-default');
+
+
+            //for checkbox close
 
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
 
@@ -174,7 +328,7 @@
             contentType: "html",
             type: "Get",
             url: "/Customer/_MultipleBarcodeList",
-            data: { name: name, address: address },
+            data: { name: name, address: address, printed: printed},
             success: function (data) {
                 $(".barcode-create-main").find("div.subscription-qr-list").html("");
                 $(".barcode-create-main").find("div.subscription-qr-list").html(data);
@@ -183,6 +337,64 @@
     });
 
 
+    $(".barcode-create-main").on('change', '#prints', function (e) {
+        e.stopImmediatePropagation();
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+
+
+        var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
+        if (Object.prototype.toString.call(name) != '[object String]') {
+            ErrorAlert("Please enter alphabets", 3000);
+        }
+        var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var printed = parentContainer.find("#printed").find("#prints").val()
+
+        ///for checkbox deactive
+        $button = $(".button-checkbox").find('button'),
+            $checkbox = $(".button-checkbox").find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        var isChecked = $checkbox.is(':checked');
+        // Set the button's state
+        $button.data('state', (isChecked) ? "off" : "on");
+
+        // Set the button's icon
+        $button.find('.state-icon')
+            .removeClass()
+            .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+        $button
+            .removeClass('btn-' + color + ' active')
+            .addClass('btn-default');
+
+
+        //for checkbox close
+
+        //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Customer/_MultipleBarcodeList",
+            data: { name: name, address: address, printed: printed },
+            success: function (data) {
+                $(".barcode-create-main").find("div.subscription-qr-list").html("");
+                $(".barcode-create-main").find("div.subscription-qr-list").html(data);
+            }
+        })
+    });
     $(".barcode-create-main").on('keyup', '#txtAddress', function (e) {
         e.stopImmediatePropagation();
         debugger;
@@ -191,14 +403,45 @@
 
         var name = parentContainer.find("#search-Employee-Name").find("#txtCustomerSearch").val();
         var address = parentContainer.find("#search-Address").find("#txtAddress").val()
+        var printed = parentContainer.find("#printed").find("#prints").val()
 
         //var accNumber=parentContainer.find('#search-accountNumber').find('#txtaccountNumber').val();
+        ///for checkbox deactive
+        $button = $(".button-checkbox").find('button'),
+            $checkbox = $(".button-checkbox").find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        var isChecked = $checkbox.is(':checked');
+        // Set the button's state
+        $button.data('state', (isChecked) ? "off" : "on");
+
+        // Set the button's icon
+        $button.find('.state-icon')
+            .removeClass()
+            .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+
+
+        $button
+            .removeClass('btn-' + color + ' active')
+            .addClass('btn-default');
+
+
+            //for checkbox close
 
         $.ajax({
             contentType: "html",
             type: "Get",
             url: "/Customer/_MultipleBarcodeList",
-            data: { name: name, address: address },
+            data: { name: name, address: address,printed:printed },
             success: function (data) {
                 $(".barcode-create-main").find("div.subscription-qr-list").html("");
                 $(".barcode-create-main").find("div.subscription-qr-list").html(data);
@@ -206,24 +449,24 @@
         })
     });
     $('.btn-generate-qr ').click(function (e) {
-        
+        debugger;
         
         //for page break
         var imagesPerPage = 9;
         var pagesContainer = $('#pagesContainer'),
        imagesInPage = 0,
        divPage = $("#imgdiv");
-
+      
         ///
         e.stopImmediatePropagation();
         
-        var txt = $('#txtCustomerSearch').val();
-        var location = $('#txtAddress').val();
+        //var txt = $('#txtCustomerSearch').val();
+        //var location = $('#txtAddress').val();
 
-        if (!txt.trim() && !location.trim()) {
-            ErrorAlert("Please enter either location or customer name", 3000);
-            return false;
-        }
+        //if (!txt.trim() && !location.trim()) {
+        //    ErrorAlert("Please enter either location or customer name", 3000);
+        //    return false;
+        //}
         if ($('.checkall:checked').length == 0) {
             ErrorAlert("Please Select CheckBox", 3000);
             return false;
@@ -245,8 +488,11 @@
 
                   
                     //collection.custid = $('#custid').val();
-                    collection.custid =row.find('td').eq(1).text()
-                    collection.custname = row.find('td').eq(3).text();
+                    collection.id = row.find('td').eq(1).text();
+
+                    collection.custid = $.trim(row.find('td').eq(1).text()) + "-" + $.trim(row.find('td').eq(3).text());
+
+                    collection.custname = $.trim(row.find('td').eq(4).text()) + "(" + $.trim(row.find('td').eq(5).text())+")";
 
                     collections.push(collection);
                 }
@@ -383,10 +629,10 @@
         var txt = $('#txtCustomerSearch').val();
         var location = $('#txtAddress').val();
 
-        if (!txt.trim() && !location.trim()) {
-            ErrorAlert("Please enter either location or customer name", 3000);
-            return false;
-        }
+        //if (!txt.trim() && !location.trim()) {
+        //    ErrorAlert("Please enter either location or customer name", 3000);
+        //    return false;
+        //}
         if ($('.checkall:checked').length == 0) {
             ErrorAlert("Please Select CheckBox", 3000);
             return false;
@@ -407,13 +653,13 @@
         })
         var custNo = new Array();
         $('#pagesContainer figcaption').each(function () {
-           
-            custNo.push($(this).text());
+           // alert(custNo.push($.trim($(this).text().replace("\n", "<br />", "g"))));
+            custNo.push($.trim($(this).text().replace("\n", "<br />", "g")));
         })
         var custName = new Array();
         $('#pagesContainer p').each(function () {
-          
-            custName.push($(this).text());
+          //  alert(custName.push($.trim($(this).text().replace("\n", "<br />", "g"))));
+            custName.push($.trim($(this).text().replace("\n", "<br />", "g")));
         })
        
         debugger;

@@ -15,7 +15,7 @@ using System.Web.Script.Serialization;
 
 namespace GarbageCollection.WebApi.WebApiController
 {
-    [JWTAuthenticationFilter]
+   [JWTAuthenticationFilter]
     [RoutePrefix("api/report")]
     public class ReportController : ApiController
     {
@@ -79,19 +79,33 @@ namespace GarbageCollection.WebApi.WebApiController
 
         [HttpGet]
         [Route("subscriptionlist")]
-        public IEnumerable<MainViewModel.SubscriptionViewModel> GetSubscriptionList([FromUri]  PagingParameterModel pagingparametermodel, int? customerid)
+        public IEnumerable<MainViewModel.SubscriptionViewModel> GetSubscriptionList([FromUri]  PagingParameterModel pagingparametermodel, int? customerid,string customerName="")
         {
             ResponseMessage resMsg = new ResponseMessage();
             try
             {
+                string query = "";
                 // var collectorid=HttpContext.Current.Session["CustomerUserId"];
+                if (customerid != null)
+                {
+                    query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where CustId= " + customerid);
+                }
 
-                string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where CustId= "+ customerid);
+                if (customerName != "")
+                {
+                    query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from[dbo].[fgetSubscriptionList]() where CustomerName= '" + customerName.Trim() + "'");
+                }
                 //string query = String.Format("select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID,verifiedBy as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null and CollectorId=" + collectorid + "and CollectionType=" + "'Mobile'");
 
                 List<MainViewModel.SubscriptionViewModel> returnData = db.Database.SqlQuery<MainViewModel.SubscriptionViewModel>(query).ToList();
 
+                if (returnData == null)
 
+                {
+                    resMsg.message = "No data found";
+                    var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null));
+                    throw new HttpResponseException(response);
+                }
                 //get's no of rows
                 int count = returnData.Count();
 
@@ -113,13 +127,7 @@ namespace GarbageCollection.WebApi.WebApiController
                     nextPage
 
                 };
-                if (returnData == null)
-
-                {
-                    resMsg.message = "No data found";
-                    var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null));
-                    throw new HttpResponseException(response);
-                }
+               
 
                 Logger.writeLog(Request, Logger.JsonDataResult(returnData), Logger.JsonDataResult(null));
                 HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetaData));

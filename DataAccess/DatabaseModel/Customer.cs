@@ -23,9 +23,6 @@ namespace DataAccess.DatabaseModel
         public string Address { get; set; }
         public string Email { get; set; }
         public string PanNo { get; set; }
-        public System.Data.Entity.Spatial.DbGeometry Geom { get; set; }
-        public string Longitude { get; set; }
-        public string Latitude { get; set; }
         public Nullable<int> PostedBy { get; set; }
         public Nullable<System.DateTime> PostedOn { get; set; }
         public Nullable<byte> Status { get; set; }

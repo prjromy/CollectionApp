@@ -16,5 +16,6 @@ namespace DataAccess.DatabaseModel
     {
         public int Lid { get; set; }
         public string LocationName { get; set; }
+        public Nullable<int> CompanyId { get; set; }
     }
 }

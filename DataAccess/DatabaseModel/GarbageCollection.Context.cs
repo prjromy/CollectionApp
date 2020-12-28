@@ -35,7 +35,6 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<BSADCal> BSADCals { get; set; }
         public virtual DbSet<CollectionType> CollectionTypes { get; set; }
         public virtual DbSet<CollectionVerifyLog> CollectionVerifyLogs { get; set; }
-        public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerRole1> CustomerRole1 { get; set; }
         public virtual DbSet<CustomerType> CustomerTypes { get; set; }
         public virtual DbSet<FiscalYear> FiscalYears { get; set; }
@@ -45,7 +44,6 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<NotificationQueue> NotificationQueues { get; set; }
         public virtual DbSet<NotificationSuccess> NotificationSuccesses { get; set; }
         public virtual DbSet<Status> Status { get; set; }
-        public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<SubscriptionCollection> SubscriptionCollections { get; set; }
         public virtual DbSet<SubscriptionDue> SubscriptionDues { get; set; }
         public virtual DbSet<LicenseBranch> LicenseBranches { get; set; }
@@ -79,6 +77,8 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<NotificationToken> NotificationTokens { get; set; }
         public virtual DbSet<API_Error> API_Error { get; set; }
         public virtual DbSet<API_Log> API_Log { get; set; }
+        public virtual DbSet<Subscription> Subscriptions { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
     
         public virtual int API_ErrorLogging(string message, string requestMethod, string requestUri, Nullable<System.DateTime> timeUtc)
         {

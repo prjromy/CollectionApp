@@ -9,15 +9,16 @@
         <thead><tr>
 
     <th>@Html.DisplayNameFor(x => x.subsno)</th>
+    <th>@Html.DisplayNameFor(x => x.CustomerNo)</th>
     <th>@Html.DisplayNameFor(x => x.CustomerName)</th>
-                   <th>@Html.DisplayNameFor(x => x.Collectorname)</th>
+    <th>@Html.DisplayNameFor(x => x.Collectorname)</th>
     <th>@Html.DisplayNameFor(x => x.LocationName)</th>
     <th>@Html.DisplayNameFor(x => x.CollectionDate)</th>
     <th>@Html.DisplayNameFor(x => x.CollectionAmt)</th>
 
     <th>@Html.DisplayNameFor(x => x.DiscountAmt)</th>
-                   <th>@Html.DisplayNameFor(x => x.PostedBy)</th>
-                   <th>@Html.DisplayNameFor(x => x.CollectionType)</th>
+    <th>@Html.DisplayNameFor(x => x.PostedBy)</th>
+    <th>@Html.DisplayNameFor(x => x.CollectionType)</th>
     <th>Edit</th>
     <th>Verify</th>
 
@@ -31,55 +32,59 @@
 
                
 
-                <tr style="font-size:12px;">
-                    @Html.HiddenFor(x => item.Subscollid,new{@id= "Subscollid" })
-                    <td>
-                        @item.subsno
+            <tr style="font-size:12px;">
+                @Html.HiddenFor(x => item.Subscollid, new { @id = "Subscollid" })
+                <td>
+                    @item.subsno
 
-                    </td>
-                    <td>
-                        @item.CustomerName
+                </td>
+                <td>
+                    @item.CustomerNo
 
-                    </td>
-                    <td>
-                        @item.Collectorname
+                </td>
+                <td>
+                    @item.CustomerName
 
-                    </td>
-                    <td>
-                        @item.LocationName
+                </td>
+                <td>
+                    @item.Collectorname
 
-                    </td>
-                    <td>
-                        @item.CollectionDate
+                </td>
+                <td>
+                    @item.LocationName
 
-                    </td>
-                    <td>
-                        @Convert.ToDecimal(item.CollectionAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @item.CollectionDate
 
-                    </td>
-                    <td>
-                        @Convert.ToDecimal(item.DiscountAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
+                </td>
+                <td>
+                    @Convert.ToDecimal(item.CollectionAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
-                    </td>
-                    <td>
-                        @item.PostedBy
+                </td>
+                <td>
+                    @Convert.ToDecimal(item.DiscountAmt).ToString("0,0.00", System.Globalization.CultureInfo.InvariantCulture)
 
-                    </td>
-                    <td>@item.CollectionType  </td>
-                   
-                    <td>
-                        <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subscollid" onclick="EditCollection(@item.Subscollid)" data-toggle="tooltip" title="Edit"></button>
+                </td>
+                <td>
+                    @item.PostedBy
 
-                    </td>
-                    <td>
+                </td>
+                <td>@item.CollectionType  </td>
 
-                        <input type="checkbox" id="squaredOne" class="verify" name="check" />
+                <td>
+                    <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.Subscollid" onclick="EditCollection(@item.Subscollid)" data-toggle="tooltip" title="Edit"></button>
 
-                    </td>
+                </td>
+                <td>
 
-                </tr>
+                    <input type="checkbox" id="squaredOne" class="verify" name="check" />
+
+                </td>
+
+            </tr>
             }
-            <tr><td colspan="5"><b style="font-size: 14px;">Total</b></td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</b></output></td><td></td><td></td><td></td><td></td><td></td></tr>
+            <tr><td colspan="5"><b style="font-size: 14px;">Total</b></td><td><td><output id="amounttotal"><b style="font-size: 14px;">0.00</b></output></td><td></td><td></td><td></td><td></td><td></td></tr>
         </tbody>
     </table>
     <div class="form-group">
@@ -147,7 +152,7 @@
         if($(this).is(':checked')){
             var totalsum = parseFloat($('#amounttotal').val());
             //$('.Amount').each(function () {
-            var totalVal = parseFloat($(this).closest("tr").find("td").eq("5").text().replace(/,/g, ''));
+            var totalVal = parseFloat($(this).closest("tr").find("td").eq("6").text().replace(/,/g, ''));
             if ($.isNumeric(totalVal)) {
 
                 totalsum += parseFloat(totalVal);
@@ -160,7 +165,7 @@
         else {
             var totalsum = parseFloat($('#amounttotal').val());
             //$('.Amount').each(function () {
-            var totalVal = parseFloat($(this).closest("tr").find("td").eq("5").text().replace(/,/g, ''));
+            var totalVal = parseFloat($(this).closest("tr").find("td").eq("6").text().replace(/,/g, ''));
             if ($.isNumeric(totalVal)) {
 
                 totalsum -= parseFloat(totalVal);

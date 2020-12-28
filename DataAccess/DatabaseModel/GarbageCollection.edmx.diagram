@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="GarbageCollectionDBModel.BSADCal" Width="1.5" PointX="9.75" PointY="10.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.CollectionType" Width="1.5" PointX="11.75" PointY="4.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.CollectionVerifyLog" Width="1.5" PointX="11.75" PointY="10.75" />
-        <EntityTypeShape EntityType="GarbageCollectionDBModel.Customer" Width="1.5" PointX="13.75" PointY="3.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.CustomerRole1" Width="1.5" PointX="5.75" PointY="13.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.CustomerType" Width="1.5" PointX="7.75" PointY="13.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.FiscalYear" Width="1.5" PointX="13.75" PointY="8.75" />
@@ -23,7 +22,6 @@
         <EntityTypeShape EntityType="GarbageCollectionDBModel.NotificationQueue" Width="1.5" PointX="0.75" PointY="14.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.NotificationSuccess" Width="1.5" PointX="2.75" PointY="14.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Status" Width="1.5" PointX="11.75" PointY="14.75" />
-        <EntityTypeShape EntityType="GarbageCollectionDBModel.Subscription" Width="1.5" PointX="13.75" PointY="14.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.SubscriptionCollection" Width="1.5" PointX="15.75" PointY="3.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.SubscriptionDue" Width="1.5" PointX="15.75" PointY="8.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.LicenseBranch" Width="1.5" PointX="15.75" PointY="12.75" />
@@ -67,6 +65,8 @@
         <EntityTypeShape EntityType="GarbageCollectionDBModel.NotificationToken" Width="1.5" PointX="17.375" PointY="19.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.API_Error" Width="1.5" PointX="19.375" PointY="19.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.API_Log" Width="1.5" PointX="7.375" PointY="20.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Subscription" Width="1.5" PointX="9.375" PointY="20.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.Customer" Width="1.5" PointX="3.375" PointY="21.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

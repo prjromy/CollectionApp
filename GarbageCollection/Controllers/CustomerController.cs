@@ -300,17 +300,19 @@ namespace GarbageCollection.Controllers
 
             return View(barcode);
         }
-        public ActionResult MultipleQRCodeIndex()
+        public ActionResult MultipleQRCodeIndex(string name, string address,string printed, int pageNo = 1, int pageSize = 200)
         {
             MainViewModel.SubscriptionViewModel barcode = new MainViewModel.SubscriptionViewModel();
-
+            var suscriberList = suscription.getSuscriberListForQRCode(name, address, printed, pageNo, pageSize);
+            barcode.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
+           
             return View(barcode);
         }
-        public ActionResult _MultipleBarcodeList( string name, string address, int pageNo = 1, int pageSize = 10)
+        public ActionResult _MultipleBarcodeList( string name, string address, string printed, int pageNo = 1, int pageSize = 200)
         {
           
             MainViewModel.SubscriptionViewModel customerViewModel = new MainViewModel.SubscriptionViewModel();
-            var suscriberList = suscription.getSuscriberListForQRCode(name, address, pageNo, pageSize);
+            var suscriberList = suscription.getSuscriberListForQRCode(name, address, printed, pageNo, pageSize);
             customerViewModel.suscriberPagedList = new StaticPagedList<MainViewModel.SubscriptionViewModel>(suscriberList, pageNo, pageSize, (suscriberList.Count == 0) ? 0 : suscriberList.FirstOrDefault().TotalCount);
             return PartialView(customerViewModel);
         }

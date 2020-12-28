@@ -117,7 +117,7 @@ namespace BussinessLogic.Service
             }
 
         }
-        public List<MainViewModel.CollectionReport> getCollectorReportList(DateTime? collectionDate, int pageNo, int pageSize, string customerName = "",string collector="",string Location="",int verified=1)
+        public List<MainViewModel.CollectionReport> getCollectorReportList(DateTime? collectionDate, int pageNo, int pageSize, string customerName = "",string collector="",string Location="",int verified=1, string EntryTypeList = "")
         {
             try
             {
@@ -125,12 +125,12 @@ namespace BussinessLogic.Service
                 string query = "";
                 if (verified == 2)
                 {
-                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerNo,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is  null";
+                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CollectionType,CustomerNo,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is  null";
 
                 }
                 if(verified == 1)
                 {
-                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CustomerNo,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is not null";
+                    query = "select COUNT(*) OVER () AS TotalCount,Subsno,CustomerName,CollectionType,CustomerNo,CustomerType,LocationName,CollectorName,CollectionDate,CollectionAmt,DiscountAmt from [dbo].[fgetCollectionlist]() where verifiedBy is not null";
 
                 }
 
@@ -143,11 +143,14 @@ namespace BussinessLogic.Service
                     query += "  and CustomerName like'%" + customerName.Trim() + "%'";
                 }
       
+                if (EntryTypeList != null && EntryTypeList != "")
+                {
+                    query += "  and CollectionType like'%" + EntryTypeList.Trim() + "%'";
+                }
                 if (collector != null && collector != "")
                 {
                     query += "  and collector like'%" + collector.Trim() + "%'";
                 }
-      
                 if (collectionDate != null)
                 {
                     query += "  and CollectionDate <= '"+ collectionDate+"'";

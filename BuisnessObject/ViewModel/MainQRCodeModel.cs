@@ -24,6 +24,7 @@ namespace BuisnessObject.ViewModel
             [Display(Name = "QRCode Image")]
             public string QRCodeImagePath { get; set; }
             public int LocationId { get; set; }
+            public string id { get; set; }
             public string custid { get; set; }
             public string custname { get; set; }
             public string generatedQRCode { get; set; }

@@ -121,6 +121,13 @@
           <Property Name="VerifiedAMount" Type="money" />
           <Property Name="VerifiedBy" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'GarbageCollectionDB.dbo.Company' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="Company">
+          <Property Name="CompanyId" Type="int" />
+          <Property Name="CompanyName" Type="varchar" MaxLength="100" />
+          <Property Name="ContactNo" Type="varchar" MaxLength="200" />
+        </EntityType>-->
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Cid" />
@@ -134,9 +141,6 @@
           <Property Name="Address" Type="varchar" MaxLength="500" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="PanNo" Type="varchar" MaxLength="100" />
-          <Property Name="Geom" Type="geometry" />
-          <Property Name="Longitude" Type="varchar" MaxLength="50" />
-          <Property Name="Latitude" Type="varchar" MaxLength="50" />
           <Property Name="PostedBy" Type="int" />
           <Property Name="PostedOn" Type="smalldatetime" />
           <Property Name="Status" Type="tinyint" />
@@ -173,6 +177,7 @@
           </Key>
           <Property Name="Lid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LocationName" Type="varchar" MaxLength="200" />
+          <Property Name="CompanyId" Type="int" />
         </EntityType>
         <EntityType Name="LocationVsCollector">
           <Key>
@@ -285,6 +290,8 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="ModifiedBy" Type="int" />
           <Property Name="ModifiedOn" Type="smalldatetime" />
           <Property Name="Balance" Type="money" />
+          <Property Name="DharautiAmt" Type="money" />
+          <Property Name="RegistrationFee" Type="money" />
         </EntityType>
         <EntityType Name="SubscriptionCollection">
           <Key>
@@ -354,7 +361,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="BGId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BGName" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="Company">
+        <EntityType Name="Company1">
           <Key>
             <PropertyRef Name="CompanyId" />
           </Key>
@@ -832,7 +839,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="SubscriptionDue" EntityType="Self.SubscriptionDue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseBranch" EntityType="Self.LicenseBranch" Schema="fin" store:Type="Tables" />
           <EntitySet Name="BloodGroup" EntityType="Self.BloodGroup" Schema="LG" store:Type="Tables" />
-          <EntitySet Name="Company" EntityType="Self.Company" Schema="LG" store:Type="Tables" />
+          <EntitySet Name="Company1" EntityType="Self.Company1" Schema="LG" Table="Company" store:Type="Tables" />
           <EntitySet Name="CustomerUser" EntityType="Self.CustomerUser" Schema="LG" store:Type="Tables" />
           <EntitySet Name="DataType" EntityType="Self.DataType" Schema="LG" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="LG" store:Type="Tables" />
@@ -937,7 +944,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="BSADCals" EntityType="GarbageCollectionDBModel.BSADCal" />
           <EntitySet Name="CollectionTypes" EntityType="GarbageCollectionDBModel.CollectionType" />
           <EntitySet Name="CollectionVerifyLogs" EntityType="GarbageCollectionDBModel.CollectionVerifyLog" />
-          <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
           <EntitySet Name="CustomerRole1" EntityType="GarbageCollectionDBModel.CustomerRole1" />
           <EntitySet Name="CustomerTypes" EntityType="GarbageCollectionDBModel.CustomerType" />
           <EntitySet Name="FiscalYears" EntityType="GarbageCollectionDBModel.FiscalYear" />
@@ -947,7 +953,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="NotificationQueues" EntityType="GarbageCollectionDBModel.NotificationQueue" />
           <EntitySet Name="NotificationSuccesses" EntityType="GarbageCollectionDBModel.NotificationSuccess" />
           <EntitySet Name="Status" EntityType="GarbageCollectionDBModel.Status" />
-          <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
           <EntitySet Name="SubscriptionCollections" EntityType="GarbageCollectionDBModel.SubscriptionCollection" />
           <EntitySet Name="SubscriptionDues" EntityType="GarbageCollectionDBModel.SubscriptionDue" />
           <EntitySet Name="LicenseBranches" EntityType="GarbageCollectionDBModel.LicenseBranch" />
@@ -1027,6 +1032,8 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           </FunctionImport>
           <EntitySet Name="API_Error" EntityType="GarbageCollectionDBModel.API_Error" />
           <EntitySet Name="API_Log" EntityType="GarbageCollectionDBModel.API_Log" />
+          <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
+          <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
         </EntityContainer>
         <EntityType Name="AppCustomerClaim">
           <Key>
@@ -1116,27 +1123,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="VerifiedAMount" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="VerifiedBy" Type="Int32" />
         </EntityType>
-        <EntityType Name="Customer">
-          <Key>
-            <PropertyRef Name="Cid" />
-          </Key>
-          <Property Name="Cid" Type="Int32" Nullable="false" />
-          <Property Name="CustNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="CustomerTypeId" Type="Int32" />
-          <Property Name="PhoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="MobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
-          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="PanNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="Geom" Type="Geometry" />
-          <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="PostedBy" Type="Int32" />
-          <Property Name="PostedOn" Type="DateTime" Precision="0" />
-          <Property Name="Status" Type="Byte" />
-          <Property Name="QRCode" Type="Byte" />
-        </EntityType>
         <EntityType Name="CustomerRole1">
           <Key>
             <PropertyRef Name="Id" />
@@ -1168,6 +1154,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           </Key>
           <Property Name="Lid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LocationName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyId" Type="Int32" />
         </EntityType>
         <EntityType Name="LocationVsCollector">
           <Key>
@@ -1221,25 +1208,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="StatusId" Type="Int32" Nullable="false" />
           <Property Name="Status1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="StatusColor" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-        </EntityType>
-        <EntityType Name="Subscription">
-          <Key>
-            <PropertyRef Name="Subsid" />
-          </Key>
-          <Property Name="Subsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SubsNo" Type="Int32" />
-          <Property Name="CustId" Type="Int32" Nullable="false" />
-          <Property Name="EffectiveDate" Type="DateTime" Precision="0" />
-          <Property Name="LedgerId" Type="Int32" />
-          <Property Name="MonthlyAmount" Type="Decimal" Precision="19" Scale="4" />
-          <Property Name="LocationID" Type="Int32" />
-          <Property Name="Status" Type="Int32" />
-          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="PostedBy" Type="Int32" />
-          <Property Name="PostedOn" Type="DateTime" Precision="0" />
-          <Property Name="ModifiedBy" Type="Int32" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
-          <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
         </EntityType>
         <EntityType Name="SubscriptionCollection">
           <Key>
@@ -1775,6 +1743,45 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="AbsoluteUri" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="RequestType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="Subsid" />
+          </Key>
+          <Property Name="Subsid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubsNo" Type="Int32" />
+          <Property Name="CustId" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Precision="0" />
+          <Property Name="LedgerId" Type="Int32" />
+          <Property Name="MonthlyAmount" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="LocationID" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="ModifiedBy" Type="Int32" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="0" />
+          <Property Name="Balance" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DharautiAmt" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="RegistrationFee" Type="Decimal" Precision="19" Scale="4" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Cid" />
+          </Key>
+          <Property Name="Cid" Type="Int32" Nullable="false" />
+          <Property Name="CustNo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerTypeId" Type="Int32" />
+          <Property Name="PhoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PanNo" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PostedBy" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="Status" Type="Byte" />
+          <Property Name="QRCode" Type="Byte" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1868,28 +1875,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Customers">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Customer">
-              <MappingFragment StoreEntitySet="Customer">
-                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
-                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Geom" ColumnName="Geom" />
-                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Address" ColumnName="Address" />
-                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
-                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
-                <ScalarProperty Name="CustomerTypeId" ColumnName="CustomerTypeId" />
-                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
-                <ScalarProperty Name="CustNo" ColumnName="CustNo" />
-                <ScalarProperty Name="Cid" ColumnName="Cid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CustomerRole1">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.CustomerRole1">
               <MappingFragment StoreEntitySet="CustomerRole1">
@@ -1921,6 +1906,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySetMapping Name="LocationMasters">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.LocationMaster">
               <MappingFragment StoreEntitySet="LocationMaster">
+                <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
                 <ScalarProperty Name="Lid" ColumnName="Lid" />
               </MappingFragment>
@@ -1981,26 +1967,6 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="StatusColor" ColumnName="StatusColor" />
                 <ScalarProperty Name="Status1" ColumnName="Status" />
                 <ScalarProperty Name="StatusId" ColumnName="StatusId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Subscriptions">
-            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
-              <MappingFragment StoreEntitySet="Subscription">
-                <ScalarProperty Name="Balance" ColumnName="Balance" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
-                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
-                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="MonthlyAmount" ColumnName="MonthlyAmount" />
-                <ScalarProperty Name="LedgerId" ColumnName="LedgerId" />
-                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
-                <ScalarProperty Name="CustId" ColumnName="CustId" />
-                <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
-                <ScalarProperty Name="Subsid" ColumnName="Subsid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -2078,7 +2044,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           </EntitySetMapping>
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.Company">
-              <MappingFragment StoreEntitySet="Company">
+              <MappingFragment StoreEntitySet="Company1">
                 <ScalarProperty Name="TDate" ColumnName="TDate" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
                 <ScalarProperty Name="AdditionalUser" ColumnName="AdditionalUser" />
@@ -2442,6 +2408,47 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="Headers" ColumnName="Headers" />
                 <ScalarProperty Name="Host" ColumnName="Host" />
                 <ScalarProperty Name="LogID" ColumnName="LogID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscription">
+                <ScalarProperty Name="RegistrationFee" ColumnName="RegistrationFee" />
+                <ScalarProperty Name="DharautiAmt" ColumnName="DharautiAmt" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="MonthlyAmount" ColumnName="MonthlyAmount" />
+                <ScalarProperty Name="LedgerId" ColumnName="LedgerId" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="SubsNo" ColumnName="SubsNo" />
+                <ScalarProperty Name="Subsid" ColumnName="Subsid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="QRCode" ColumnName="QRCode" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="PostedBy" ColumnName="PostedBy" />
+                <ScalarProperty Name="PanNo" ColumnName="PanNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="MobileNo" ColumnName="MobileNo" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="CustomerTypeId" ColumnName="CustomerTypeId" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="CustNo" ColumnName="CustNo" />
+                <ScalarProperty Name="Cid" ColumnName="Cid" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
