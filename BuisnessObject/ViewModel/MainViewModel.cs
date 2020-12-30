@@ -103,6 +103,9 @@ namespace BuisnessObject.ViewModel
             public Nullable<decimal> RegistrationFee { get; set; }
             public List<SubscriptionViewModel> suscriberViewModelList { get; set; }
             public IPagedList<SubscriptionViewModel> suscriberPagedList { get; set; }
+
+
+            public TotalDueModel totalDueData { get; set; }
             public string ModelFrom { get; set; }
         }
         public class CollectionViewModel
@@ -310,6 +313,15 @@ namespace BuisnessObject.ViewModel
             public int Year { get; set; }
             public IPagedList<MonthlyDueViewModel> monthlyDuePagedList { get; set; }
 
+        }
+
+
+        public class TotalDueModel
+        {
+            public string Status { get; set; }
+            public int CustNo { get; set; }
+
+            public decimal Balance { get; set; } 
         }
     }
 }

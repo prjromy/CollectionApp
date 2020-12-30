@@ -25,4 +25,18 @@ namespace GarbageCollection.WebApi.ApiViewModel
         public string Status { get; set; }
         public int TotalCount { get; set; }
     }
+
+
+
+    public class HistoryModel
+    {
+
+        public int CustNo { get; set; }
+        public string PostedOnBS { get; set; }
+        public string CustomerName { get; set; }
+        public decimal Due { get; set; }
+        public decimal Balance { get; set; }
+        public decimal Paid { get; set; }
+       
+    }
 }
