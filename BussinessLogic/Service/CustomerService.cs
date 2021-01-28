@@ -212,9 +212,19 @@ namespace BussinessLogic.Service
                 }
                 else if (searchOption == "Address")
                 {
-                                                                                                                                                         query += " and LocationName like'%" + searchParameter + "%'";
+                   query += " and Address like'%" + searchParameter + "%'";
                 }
-               
+                else if (searchOption == "Customer No")
+                {
+                    query += " and CustNo like'%" + searchParameter + "%'";
+                }
+              
+                else if (searchOption == "Mobile No")
+                {
+                    query += " and MobileNo like'%" + searchParameter + "%'";
+                }
+                
+
             }
 
             query += @" ORDER BY  CustNo

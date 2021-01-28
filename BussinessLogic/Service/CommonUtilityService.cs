@@ -102,7 +102,9 @@ namespace BussinessLogic.Service
         {
             List<SelectListItem> objCustomerSrchOption = new List<SelectListItem>();
             objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Name", Value = "Customer Name" });
+            objCustomerSrchOption.Add(new SelectListItem { Text = "Customer No", Value = "Customer No" });
             objCustomerSrchOption.Add(new SelectListItem { Text = "Subscription No", Value = "Subscription No" });
+            objCustomerSrchOption.Add(new SelectListItem { Text = "Mobile Number", Value = "Mobile No" });
             objCustomerSrchOption.Add(new SelectListItem { Text = "Address", Value = "Address" });
             //objCustomerSrchOption.Add(new SelectListItem { Text = "Customer Type", Value = "Customer Type" });
             return new SelectList(objCustomerSrchOption, "Value", "Text");

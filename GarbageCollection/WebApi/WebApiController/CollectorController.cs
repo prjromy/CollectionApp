@@ -276,6 +276,71 @@ namespace GarbageCollection.WebApi.WebApiController
 
         }
 
+        [HttpGet]
+        [Route("defaultlocationsubscriptionduev2")]
+        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollectorV2([FromUri] PagingParameterModel pagingparametermodel, string searchterm = "")
+        {
+            ResponseMessage resMsg = new ResponseMessage();
+            try
+            {
+                //var collectorid = HttpContext.Current.Session["CustomerUserId"];
+
+
+                string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from  FgetNotificationlocationwisev2() ");
+
+                if (searchterm != "")
+                {
+                    query += "where CustomerName like'%" + searchterm.Trim() + "%' or CustNo='"+ searchterm.Trim()+ "'";
+                }
+                //if (!string.IsNullOrEmpty(searchterm.ToLower().Trim()))
+                //{
+
+                //}
+
+                List<SubscriptionDueModel> returnData = db.Database.SqlQuery<SubscriptionDueModel>(query).ToList();
+                //get's no of rows
+                int count = returnData.Count();
+
+                //parameter is passed from query strng if it is null then then it default value will be pagenumber 1
+                int CurrentPage = pagingparametermodel.pageNumber;
+                int PageSize = pagingparametermodel.pageSize;
+                int TotalCount = count;
+                int TotalPages = (int)Math.Ceiling(count / (double)PageSize);
+                var items = returnData.Skip((CurrentPage - 1) * PageSize).Take(PageSize).ToList();
+                var prevousPage = CurrentPage > 1 ? "Yes" : "No";
+                var nextPage = CurrentPage < TotalPages ? "Yes" : "No";
+                var paginationMetaData = new
+                {
+                    totalCount = TotalCount,
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    prevousPage,
+                    nextPage
+
+                };
+                if (returnData == null)
+
+                {
+                    resMsg.message = "No data found";
+                    //resMsg.message = "No data found";
+                    var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null));
+                    throw new HttpResponseException(response);
+                }
+
+                Logger.writeLog(Request, Logger.JsonDataResult(returnData), Logger.JsonDataResult(null));
+                HttpContext.Current.Response.Headers.Add("Paging-Headers", JsonConvert.SerializeObject(paginationMetaData));
+                return items;
+            }
+            catch (Exception ex)
+            {
+                resMsg.message = "Something went wrong. Please try again.";
+                var response = this.getMessage(resMsg, HttpStatusCode.PreconditionFailed, false, Logger.JsonDataResult(null), Logger.JsonDataResult(ex));
+                throw new HttpResponseException(response);
+            }
+
+        }
+
         [HttpPost]
         [Route("collectionentry")]
        
