@@ -196,6 +196,9 @@
     <Compile Include="DatabaseModel\Month.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="DatabaseModel\MonthAD.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseModel\Nationality.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
@@ -254,6 +257,18 @@
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="DatabaseModel\UserVSBranch.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\WasteCollDaySetupCustAuto.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\WasteColldaysetupCustMannual.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\WeekDayList.cs">
+      <DependentUpon>GarbageCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DatabaseModel\YearListofAD.cs">
       <DependentUpon>GarbageCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

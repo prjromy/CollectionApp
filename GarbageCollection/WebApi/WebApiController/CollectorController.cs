@@ -22,7 +22,7 @@ namespace GarbageCollection.WebApi.WebApiController
 {
 
     //[BasicAuthentication]
-     [JWTAuthenticationFilter]
+    [JWTAuthenticationFilter]
     [RoutePrefix("api/collectors")]
     public class CollectorController : ApiController
     {
@@ -31,7 +31,7 @@ namespace GarbageCollection.WebApi.WebApiController
         //[HttpGet]
         public MainViewModel.CustomerViewModel GetCustomer()
         {
-          
+
             ResponseMessage resMsg = new ResponseMessage();
             try
             {
@@ -144,18 +144,18 @@ namespace GarbageCollection.WebApi.WebApiController
 
         [HttpGet]
         [Route("collectionentrylist")]
-        public IEnumerable<MainViewModel.CollectionVerificationEntry> GetCollectionVerify([FromUri]  PagingParameterModel pagingparametermodel,int? collectorid)
+        public IEnumerable<MainViewModel.CollectionVerificationEntry> GetCollectionVerify([FromUri] PagingParameterModel pagingparametermodel, int? collectorid)
         {
             ResponseMessage resMsg = new ResponseMessage();
             try
             {
-               // var collectorid=HttpContext.Current.Session["CustomerUserId"];
+                // var collectorid=HttpContext.Current.Session["CustomerUserId"];
 
 
                 string query = String.Format("select COUNT(*) OVER () AS TotalCount,SubsId,CollectorId,LocationID,Collectorname,CustId,Subscollid,subsno,LocationID,verifiedBy as SubsNo,CustomerName,LocationName,CollectionDate,CollectionAmt ,DiscountAmt,CollectionType,PostedBy   from fgetCollectionlist()  where verifiedby is null and CollectorId=" + collectorid + "and CollectionType=" + "'Mobile'");
 
                 List<MainViewModel.CollectionVerificationEntry> returnData = db.Database.SqlQuery<MainViewModel.CollectionVerificationEntry>(query).ToList();
-               
+
                 foreach (var item in returnData)
                 {
                     if (item.verifiedBy == null)
@@ -167,7 +167,7 @@ namespace GarbageCollection.WebApi.WebApiController
                     {
                         item.Status = "Verified";
                     }
-                    
+
                 }
                 //get's no of rows
                 int count = returnData.Count();
@@ -183,14 +183,14 @@ namespace GarbageCollection.WebApi.WebApiController
                 var paginationMetaData = new
                 {
                     totalCount = TotalCount,
-                pageSize = PageSize,
-                currentPage=CurrentPage,
-                totalPages=TotalPages,
-                prevousPage,
-                nextPage
-                
+                    pageSize = PageSize,
+                    currentPage = CurrentPage,
+                    totalPages = TotalPages,
+                    prevousPage,
+                    nextPage
+
                 };
-                    if (returnData == null)
+                if (returnData == null)
 
                 {
                     resMsg.message = "No data found";
@@ -213,7 +213,7 @@ namespace GarbageCollection.WebApi.WebApiController
         }
         [HttpGet]
         [Route("defaultlocationsubscriptiondue")]
-        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollector([FromUri]  PagingParameterModel pagingparametermodel,int? locationid,int? collectorid,string searchterm="")
+        public IEnumerable<SubscriptionDueModel> DefaultMonthlyDueForCollector([FromUri] PagingParameterModel pagingparametermodel, int? locationid, int? collectorid, string searchterm = "")
         {
             ResponseMessage resMsg = new ResponseMessage();
             try
@@ -221,15 +221,15 @@ namespace GarbageCollection.WebApi.WebApiController
                 //var collectorid = HttpContext.Current.Session["CustomerUserId"];
 
 
-                string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from  FgetNotificationlocationwise('" + locationid + "','" +collectorid+ "')");
+                string query = String.Format("select  COUNT(*) OVER () AS TotalCount,* from  FgetNotificationlocationwise('" + locationid + "','" + collectorid + "')");
 
-                if (searchterm!="")
+                if (searchterm != "")
                 {
                     query += "where locationName like'%" + searchterm.Trim() + "%'";
                 }
                 //if (!string.IsNullOrEmpty(searchterm.ToLower().Trim()))
                 //{
-                   
+
                 //}
 
                 List<SubscriptionDueModel> returnData = db.Database.SqlQuery<SubscriptionDueModel>(query).ToList();
@@ -290,7 +290,7 @@ namespace GarbageCollection.WebApi.WebApiController
 
                 if (searchterm != "")
                 {
-                    query += "where CustomerName like'%" + searchterm.Trim() + "%' or CustNo='"+ searchterm.Trim()+ "'";
+                    query += "where CustomerName like'%" + searchterm.Trim() + "%' or CustNo='" + searchterm.Trim() + "'";
                 }
                 //if (!string.IsNullOrEmpty(searchterm.ToLower().Trim()))
                 //{
@@ -343,7 +343,7 @@ namespace GarbageCollection.WebApi.WebApiController
 
         [HttpPost]
         [Route("collectionentry")]
-       
+
         public async Task<ReturnValue> ExecuteDataSync([FromBody] List<CollectorViewModel> collListObj)
         {
             using (TransactionScope scope = TransactionScopeUtils.CreateTransactionScope())
@@ -351,18 +351,18 @@ namespace GarbageCollection.WebApi.WebApiController
                 ReturnValue retVal = new ReturnValue();
                 try
                 {
-                   collListObj.ToList().ForEach(collObj =>
+                    collListObj.ToList().ForEach(collObj =>
 
                     {
                         if (collObj.Discount == null)
                         {
                             collObj.Discount = 0;
                         }
-                    db.Database.ExecuteSqlCommand(String.Format(@"exec[dbo].[PsetCollectionDueMobile]  @custId={0},@Subsid={1},@CollectorId={2}, @CollectionAmt={3},@CollDiscount={4},@CollectionDate='{5}',@PostedBy={6}",
-                      collObj.custid, collObj.SubsId, collObj.CollectorId, collObj.ReceivedAmount, collObj.Discount, collObj.CollectionDate, collObj.UserId));
-                      
-                    
-                    
+                        db.Database.ExecuteSqlCommand(String.Format(@"exec[dbo].[PsetCollectionDueMobile]  @custId={0},@Subsid={1},@CollectorId={2}, @CollectionAmt={3},@CollDiscount={4},@CollectionDate='{5}',@PostedBy={6}",
+                          collObj.custid, collObj.SubsId, collObj.CollectorId, collObj.ReceivedAmount, collObj.Discount, collObj.CollectionDate, collObj.UserId));
+
+
+
                     });
                     //var data = String.Format("select COUNT(*) OVER() AS TotalCount, subsid, Subsno as SubsNo, CustomerName, LocationName, DueBalance as MonthlyAmount, Debit, Status from fgetSubscriptionDueReport('" + DateTime.Now + "') where custid = " + collListObj.SingleOrDefault().custid);
                     //List<MainViewModel.CollectionEntry> returnData = db.Database.SqlQuery<MainViewModel.CollectionEntry>(data).ToList();
@@ -393,7 +393,7 @@ namespace GarbageCollection.WebApi.WebApiController
                     collListObj.ToList().ForEach(collObj =>
 
                     {
-                         
+
                         db.Database.ExecuteSqlCommand(String.Format(@"exec[dbo].[PsetCollectionDue]  @SubsCollId={0},@custId={1},@Subsid={2},@CollectorId={3}, @CollectionAmt={4},@CollDiscount={5},@CollectionDate='{6}',@PostedBy={7}",
                          collObj.Subscollid, collObj.CustId, collObj.subsid, collObj.CollectorId, collObj.CollectionAmt, collObj.DiscountAmt, collObj.CollectionDate, Global.UserId));
 
@@ -418,7 +418,7 @@ namespace GarbageCollection.WebApi.WebApiController
             }
 
         }
-        
+
 
         public class TransactionScopeUtils
         {

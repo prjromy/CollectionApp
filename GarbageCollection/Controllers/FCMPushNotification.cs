@@ -1,6 +1,10 @@
-﻿using DataAccess.DatabaseModel;
+﻿using BussinessLogic.Repository;
+using DataAccess.DatabaseModel;
+using Loader.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -12,11 +16,12 @@ namespace GarbageCollection.Controllers
 {
     public class FCMPushNotification
     {
-        GarbageCollectionDBEntities db = new GarbageCollectionDBEntities();
-
+        public GenericUnitOfWork uow = null;
         public FCMPushNotification()
         {
             // TODO: Add constructor logic here
+            uow = new GenericUnitOfWork();
+
         }
 
         public bool Successful
@@ -37,12 +42,27 @@ namespace GarbageCollection.Controllers
         }
 
 
-        public FCMPushNotification SendNotification( string _topic,string Textarea,string collectorname)
+        public FCMPushNotification SendNotification(DateTime? oldDate, DateTime? Date, string _topic, string Textarea,int? collectorid, string collectorname, int locationId, int notificationType)
         {
             FCMPushNotification result = new FCMPushNotification();
             try
             {
-                result.Successful = true;
+               
+                ///To insert data in Tables
+
+                if (notificationType == 4)
+                {
+                    WasteColldaysetupCustMannual(locationId, oldDate, Date, Textarea);
+                        
+                }
+                if (notificationType == 2 || notificationType == 1)
+                {
+                    WasteColldaysetupCustAutoSave(oldDate, Date, _topic, Textarea, collectorid, collectorname, locationId, notificationType);
+                }
+
+                    ///to send Notification
+
+                    result.Successful = true;
                 result.Error = null;
                 // var value = message;
                 var requestUri = "https://fcm.googleapis.com/fcm/send";
@@ -62,11 +82,14 @@ namespace GarbageCollection.Controllers
 
                 //}
 
-              
+               
+
                 var dataformat = "";
                 if (Textarea == "")
                 {
-                     dataformat = collectorname + " will be coming for the collection.";
+                    //DateTime dt = DateTime.ParseExact(Date.ToString(), "MM/dd/yyyy hh:mm:ss tt", CultureInfo.InvariantCulture);
+                    //string date = dt.ToString("dd/M/yyyy", CultureInfo.InvariantCulture);
+                    dataformat = collectorname + " will be coming for the collection on date"+ Date;
                 }
                 else
                 {
@@ -121,5 +144,55 @@ namespace GarbageCollection.Controllers
             }
             return result;
         }
+   
+      public void WasteColldaysetupCustMannual(int locationId,DateTime? oldDate,DateTime? Date,string Textarea)
+        {
+            WasteColldaysetupCustMannual wasteColldaysetupCustMannual = new WasteColldaysetupCustMannual();
+            wasteColldaysetupCustMannual.LocationId = locationId;
+            wasteColldaysetupCustMannual.WasteFixedDay = oldDate;
+            wasteColldaysetupCustMannual.WasteScheduleCollDay = Date;
+            wasteColldaysetupCustMannual.Remarks = Textarea;
+            uow.Repository<WasteColldaysetupCustMannual>().Add(wasteColldaysetupCustMannual);
+            uow.Commit();
+        }
+
+
+        public void WasteColldaysetupCustAutoSave(DateTime? oldDate, DateTime? Date, string _topic, string Textarea, int? collectorid, string collectorname, int locationId, int notificationType)
+        {
+
+            if (notificationType == 2) //Collection Amount
+            {
+                uow.ExecWithStoreProcedure("[dbo].[PCreateCollSetup] @LocationId,@CollweekDay,@CollectionNotificationTypeId,@Message,@PostedBy,@CollectorArriveDate,@CollectorId",
+
+                                             new SqlParameter("@LocationId", locationId),
+                                             new SqlParameter("@CollweekDay", DBNull.Value),
+                                             new SqlParameter("@CollectionNotificationTypeId", notificationType ),
+                                                   new SqlParameter("@Message", Textarea),
+                                                   new SqlParameter("@PostedBy", Global.UserId),
+                                             new SqlParameter("@CollectorArriveDate", Date),
+                                             new SqlParameter("@CollectorId", collectorid)
+
+
+                                             );
+
+            }
+            if (notificationType == 1) //General Message
+            {
+                uow.ExecWithStoreProcedure("[dbo].[PCreateCollSetup] @LocationId,@CollweekDay,@CollectionNotificationTypeId,@Message,@PostedBy,@CollectorArriveDate,@CollectorId",
+
+                                             new SqlParameter("@LocationId", locationId),
+                                             new SqlParameter("@CollweekDay", DBNull.Value),
+                                             new SqlParameter("@CollectionNotificationTypeId", notificationType ),
+                                                   new SqlParameter("@Message", Textarea),
+                                                   new SqlParameter("@PostedBy", Global.UserId),
+                                             new SqlParameter("@CollectorArriveDate", DBNull.Value),
+                                             new SqlParameter("@CollectorId", DBNull.Value)
+
+
+                                             );
+            }
+          
+        }
+
     }
 }

@@ -1,92 +1,40 @@
 ﻿
-@model  BuisnessObject.ViewModel.NotificationViewModel
+
 @using BussinessLogic.Service
 
 
 <link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
-<div class="notification-main">
-    <div class="box box-success">
-        <div class="box-header with-border">
+<div class="box box-success notification-box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Notification</h3>
+        <div class="box-tools pull-right">
+            <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div><!-- /.box-tools -->
+    </div>
+    <div class="container" style="margin-top:10px;">
+        <div class="col-md-12">
+            <div class="row">
 
-
-            <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-            @*@using (Html.BeginForm("CollectorLocationMapCreateSave", "CollectorLocationMap", FormMethod.Post, new { id = "createNotification" }))
-                {*@
-            @Html.AntiForgeryToken()
-
-            <div class="form-horizontal">
-                <h4>Notification Setup</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-
-
-
-
-            <div class="col-md-12">
-                <div class="form-group">
-                    @*@Html.Label("Collector Name", htmlAttributes: new { @class = "control-label col-md-2" })*@
-
-
-                    @Html.Label("Location Name", htmlAttributes: new { @class = "control-label col-md-2" })
-
-                    <div class="col-md-5">
-
-                        @Html.TextBox("LocationName", null, new { @class = "form-control", @id = "LocationName", autocomplete = "off" })
-                        @Html.HiddenFor(x => x.LocationId,new { @id="Lids"})
-
-                    </div>
-
-
-
-
-
+                <div class="col-md-4">
+                    <label class="container">Collection Amount @Html.RadioButton("Notification", "CollectionAmount", true, new { @onclick = "loadPartial('/Notification/CollectionAmount')" })<span class="checkmark"></span></label>
                 </div>
-                <div class="form-group" id="infos">
-
-                    @Html.Label("Collector", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-5">
-                        <select id="info" class="form-control">Select Collector</select>
-                        </div>
-                    </div>
-
-                    <div class="form-group" id="words">
-                        @*@Html.Label("Collector Name", htmlAttributes: new { @class = "control-label col-md-2" })*@
-
-
-                        @Html.Label("Message", htmlAttributes: new { @class = "control-label col-md-2" })
-
-                        <div class="col-md-5">
-
-                            @Html.TextArea("Words", null, new { rows = 10, columns = 40, @class = "form-control", @id = "Textarea", autocomplete = "off" })
-                          
-
-                        </div>
-
-
-
-
-
-                    </div>
+                <div class="col-md-4">
+                    <label class="container">  Collection Waste Edit @Html.RadioButton("Notification", "CollectionWasteEdit", new { @onclick = "loadPartial('/Notification/CollectionWasteEdit')" })<span class="checkmark"></span></label>
                 </div>
-
-
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-
-
-
-                        <input type="button" value="Send" class="btn btn-success btn-send-notification" />
-
-                    </div>
+                <div class="col-md-4">
+                    <label class="container">
+                        General Message  @Html.RadioButton("Notification", "GeneralMessgae", new { @onclick = "loadPartial('/Notification/GeneralMessage')" }) <span class="checkmark"></span>
+                    </label>
                 </div>
-
 
             </div>
         </div>
+    </div>
+
+    <div class="import-notification">
+
+        @{Html.RenderAction("CollectionAmount", "Notification");}
+
     </div>
 </div>
 <link href="~/Content/select2.css" rel="stylesheet" />
@@ -119,168 +67,74 @@
         width: 220px;
     }
 </style>
+
 <script>
-   
-    $('.notification-main').on('click', '.btn-send-notification', function () {
-        debugger;
-        var LocationName = $('.notification-main').find('#LocationName').val();
-     
-        var collectorname = $('#info').find('option:selected').text();
-        var Textarea = $('#Textarea').val()
-        $.ajax({
-            url: "/Notification/Pushpush",
-            type: 'post',
-            data: { _topic: LocationName,  Textarea: Textarea, collectorname: collectorname},
 
-            dataType: 'json',
 
-           // async: false,
-            success: function (result) {
-                debugger
+    function loadPartial(url) {
 
-                if (result.Successful ==false) {
-                    ErrorAlert(result.Response, 5000);
-                    return false;
-                    //document.getElementById('alert-success').scrollIntoView();
-                }
-                else {
-                    SuccessAlert("Notification sent Successfully", 5000);
-                    document.getElementById('alert-success').scrollIntoView();
-                }
-               // $('section.content').html(data);
-            
-            },
-            error: function (result) {
-                ErrorAlert(result.Response, 5000);
-                document.getElementById('alert-success').scrollIntoView();
-            }
-        })
+        var container = $(".notification-box").find('.import-notification');
+
+        $.get(url, function (response) {
 
 
 
-    })
+            //Dropzone.autoDiscover = false;
+            //$("div#dropzone-form").dropzone({ url:url });
 
-
-
-    $('Textarea').keyup(function (e) {
-        debugger;
-        if (this.value.length!='') {
-            $("#infos").hide();
-        } else {
-            $("#infos").show();
-        }
-            var max = 255;
-            if (e.which < 0x20) {
-                // e.which < 0x20, then it's not a printable character
-                // e.which === 0 - Not a character
-                return;     // Do nothing
-            }
-        if (this.value.length == max) {
-            debugger;
-            ErrorAlert("Message must not exceed 255 character ", 5000);
-                e.preventDefault();
-            } else if (this.value.length > max) {
-                // Maximum exceeded
-                //this.value = this.value.substring(0, max);
-                debugger
-                ErrorAlert("Message exceeds 255 character ", 5000);
-            }
+            $(container).html(response);
         });
 
-   
-
-    $(function () {
-
-        $("#LocationName").typeahead({
-          
-            hint: true,
-            highlight: true,
-            minLength: 1,
-            source: function (request, response) {
-                $.ajax({
-                    url: '/Suscription/LocationList/',
-                    data: "{ 'prefix': '" + request + "'}",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        items = [];
-                        map = {};
-                        $.each(data, function (i, item) {
-                            var id = item.Lid;
-                            var name = item.LocationName;
-                            map[name] = { id: id, name: name };
-                            items.push(name);
-                            debugger
-
-                            $("#Lids").val(id);
-                            
-                        });
-                        response(items);
-                        $(".dropdown-menu").css("height", "auto");
-                        //$(".dropdown-menu").css("width", "");
-                        $(".dropdown-menu").addClass("col-md-8");
-                        $('#info').trigger('keyup');
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-                
-           
-            },
-            updater: function (item) {
-                $('#LocationId').val(map[item].id);
-                return item;
-            }
-              
-        });
-    
-       
-
-    })
-
-    $('#info').on('keyup', function (e) {
-        e.stopImmediatePropagation();
-        var locationid = parseInt($('#Lids').val());
 
 
-        $.ajax({
-            type: 'GET',
-            url: '/Notification/getCollectorsLocationNames',
-            data: {
-                locationid: locationid
-            },
+    }
 
-            success: function (result) {
-                debugger;
-                $("#info").empty();
-                //$.each(result, function () {
-                var newOption = "<option value='" + "1" + "'>Select Value</option>";
-                $("#info").append(newOption);
-                $("#info").append($("<option/>").text(result));
-                //})
 
-            },
-        });
-    })
+    //    $('.notification-main').on('click', '.btn-send-notification', function () {
+    //        debugger;
 
-    $(document).ready(function () {
-        $('#info').change(function () {
-            debugger;
-            var selectedvalue = $(this).find("option:selected").val();
-            if (selectedvalue == "1") {
-                $("#words").show();
-            }
-            else {
-                $("#words").hide();
-            }
-            
-        })
-    })
+    //        //var check = $('#IsChecked').find('input[type=checkbox]:checked').length;
+    //        //alert(check);
+
+    //    var LocationName = $('.notification-main').find('#LocationName').val();
+
+    //    var collectorname = $('#info').find('option:selected').text();
+    //    var Textarea = $('#Textarea').val()
+    //    $.ajax({
+    //        url: "/Notification/Pushpush",
+    //        type: 'post',
+    //        data: {_topic: LocationName,  Textarea: Textarea, collectorname: collectorname},
+
+    //        dataType: 'json',
+
+    //       // async: false,
+    //        success: function (result) {
+    //            debugger
+
+    //            if (result.Successful ==false) {
+    //        ErrorAlert(result.Response, 5000);
+    //                return false;
+    //                //document.getElementById('alert-success').scrollIntoView();
+    //            }
+    //            else {
+    //        SuccessAlert("Notification sent Successfully", 5000);
+    //                document.getElementById('alert-success').scrollIntoView();
+    //            }
+    //           // $('section.content').html(data);
+
+    //        },
+    //        error: function (result) {
+    //        ErrorAlert(result.Response, 5000);
+    //            document.getElementById('alert-success').scrollIntoView();
+    //        }
+    //    })
+
+
+
+    //})
+
+
+
 
 
 

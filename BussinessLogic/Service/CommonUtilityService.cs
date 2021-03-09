@@ -81,7 +81,18 @@ namespace BussinessLogic.Service
                 return false;
             }
         }
-
+        public static bool AllowPasswordChange(int menuId)
+        {
+            var AllowDeposit = commonService.GetUserAssignMenu(menuId, Global.UserId);
+            if (AllowDeposit != null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public static SelectList LedgerList()
         {
             var ledgerList = uow.Repository<BuisnessObject.ViewModel.MainViewModel.LedgerViewModel>().SqlQuery("select * from [dbo].[fgetledger]()").ToList();
@@ -158,6 +169,18 @@ namespace BussinessLogic.Service
             var userName = uow.Repository<DataAccess.DatabaseModel.Employee>().FindBy(x => x.EmployeeId == collectorid).Select(x => x.EmployeeName).SingleOrDefault();
             return userName;
         }
-  
+
+        public static SelectList Year()
+        {
+            var yearList = uow.Repository<YearListofAD>().GetAll().ToList();
+            return new SelectList(yearList,"Id",  "Yr");
+        }
+
+        public static SelectList Month()
+        {
+            var monthList = uow.Repository<MonthAD>().GetAll().ToList();
+            return new SelectList(monthList, "Id", "Month");
+        }
+
     }
 }

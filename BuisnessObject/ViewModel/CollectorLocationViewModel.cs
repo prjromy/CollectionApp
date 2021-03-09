@@ -24,5 +24,8 @@ namespace BuisnessObject.ViewModel
         public Nullable<System.DateTime> PostedOn { get; set; }
         public int TotalCount { get; set; }
         public IPagedList<CollectorLocationViewModel> collectorLocatonList { get; set; }
+        public string CollectorName { get; set; }
+        public string LocationName { get; set; }
+
     }
 }

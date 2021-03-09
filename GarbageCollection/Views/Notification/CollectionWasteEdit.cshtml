@@ -1,0 +1,228 @@
+﻿
+
+
+@model  BuisnessObject.ViewModel.MainCalenderNotificationViewModel
+@using BussinessLogic.Service
+
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
+
+<div class=" collection-waste-edit-main">
+
+
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="col-md-12">
+
+            <div class="form-group col-md-5">
+
+                @Html.Label("Location Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.TextBox("LocationName", null, new { @class = "form-control", @id = "LocationName", autocomplete = "off" })
+                @Html.HiddenFor(x => x.LocationId, new { @id = "LocationId" })
+
+            </div>
+
+
+            <div class="form-group col-md-3">
+                @Html.Label("Year", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.DropDownListFor(model => model.Year, CommonUtilityService.Year(), "Please Select...", htmlAttributes: new { @class = "form-control col-md-7 Year" })
+                @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
+
+
+            </div>
+            <div class="form-group col-md-4">
+                @Html.Label("Month", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                @Html.DropDownListFor(model => model.Month, CommonUtilityService.Month(), "Please Select...", htmlAttributes: new { @class = "form-control col-md-7 Month" })
+                @*@Html.DropDownList("Please Select", CommonUtilityService.CustomerTypeList(), new { htmlAttributes = new { @class = "form-control " } })*@
+
+
+            </div>
+
+            <div class="input-group-btn form-group col-md-1 ">
+                <button type="button" id="searchCollectionWasteEdit" class="btn btn-collection-waste-edit btn-success" data-toggle="tooltip" title="Search"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+
+                <div class="col-md-10 weekday-show">
+
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-10">
+
+
+
+                <input type="button" value="Send" class="btn btn-success btn-send-notification-edit " style="visibility:hidden" />
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+<link href="~/Content/select2.css" rel="stylesheet" />
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-message-box.js"></script>
+<script src="~/Scripts/typeahead.min.js"></script>
+<script src="~/Scripts/select2.js"></script>
+
+
+<script src="~/Scripts/ch-dialog.js"></script>
+
+<script>
+    $(function () {
+
+        $("#LocationName").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Suscription/LocationList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.Lid;
+                            var name = item.LocationName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                            debugger
+
+                            $("#Lids").val(id);
+
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-8");
+                       // $('.weekday-show').trigger('keyup');
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+
+            },
+            updater: function (item) {
+                $('#LocationId').val(map[item].id);
+                return item;
+            }
+
+        });
+
+    })
+
+
+    $(".collection-waste-edit-main").on('click', '.btn-collection-waste-edit', function (e) {
+        e.stopImmediatePropagation();
+        $(".collection-waste-edit-main").find("div.weekday-show").hide();
+
+        debugger;
+        var parentContainer = $(this).parents()
+        var me = $(this);
+        var year = parseInt(parentContainer.find("#Year").find("option:selected").text());
+        var month = parentContainer.find(".Month").val();
+        var location = parentContainer.find("#LocationId").val();
+        $.ajax({
+            contentType: "html",
+            type: "Get",
+            url: "/Notification/CollectionWasteEditList",
+            data: { year: year, month:month,location: location },
+            success: function (data) {
+                $(".collection-waste-edit-main").find("div.weekday-show").html("");
+                $(".collection-waste-edit-main").find("div.weekday-show").html(data).show();
+                $(".collection-waste-edit-main").find(".btn-send-notification-edit").css("visibility", "visible");
+               
+            }
+        })
+    });
+
+   
+    $('.collection-waste-edit-main').on('click', '.btn-send-notification-edit', function () {
+        debugger;
+        var check = $('input:checkbox:checked').length;
+        if (check > 1) 
+            {
+                ErrorAlert("Check only one checkbox", 5000);
+                document.getElementById('alert-error').scrollIntoView();
+            }
+        var LocationName = $('.collection-waste-edit-main').find('#LocationName').val();
+        var collectorname = "";
+        var Textarea = $('#Textarea').val();
+        var notificationType = 4;
+        var collectorid = 0;
+        var locationId = $('#LocationId').val();
+        var oldDate = "";
+        var Date=$('.new-date').find('an-date-picker').get()[0].dateADWithTime
+        $('.col-waste-edit-list tbody tr').each(function () {
+            debugger;
+
+            var row = $(this);
+
+            if ($(this).find('#IsChecked').attr('type') == "checkbox") {
+                if ($(this).find('#IsChecked').is(":checked")) {
+                    oldDate = row.find('td').eq(2).text();
+
+   
+                }
+
+            }
+
+        })
+        $.ajax({
+            url: "/Notification/Pushpush",
+            type: 'post',
+            data: { oldDate: oldDate, Date: Date, _topic: LocationName, Textarea: Textarea, collectorid: collectorid, collectorname: collectorname, locationId: locationId, notificationType: notificationType},
+
+            dataType: 'json',
+
+            // async: false,
+            success: function (result) {
+                debugger
+
+                if (result.Successful == false) {
+                    ErrorAlert(result.Response, 5000);
+                    return false;
+                    //document.getElementById('alert-success').scrollIntoView();
+                }
+                else {
+                    $(".collection-waste-edit-main").html("");
+                    SuccessAlert("Notification sent Successfully", 5000);
+                    document.getElementById('alert-success').scrollIntoView();
+                }
+                // $('section.content').html(data);
+
+            },
+            error: function (result) {
+                ErrorAlert(result.Response, 5000);
+            }
+        })
+
+
+
+    })
+</script>

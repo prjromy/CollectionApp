@@ -1,0 +1,263 @@
+﻿
+
+@model  BuisnessObject.ViewModel.MainCalenderNotificationViewModel
+@using BussinessLogic.Service
+
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
+<div class="collection-amount-main">
+ 
+         
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    @*@Html.Label("Collector Name", htmlAttributes: new { @class = "control-label col-md-2" })*@
+
+
+                    @Html.Label("Location Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    <div class="col-md-5">
+
+                        @Html.TextBox("LocationName", null, new { @class = "form-control", @id = "LocationName", autocomplete = "off" })
+                        @Html.HiddenFor(x => x.LocationId, new { @id = "Lids" })
+
+                    </div>
+
+                </div>
+
+            
+                <div class="form-group">
+                    @Html.Label("Collection Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-3 Date">
+                        <an-date-picker is-input></an-date-picker>
+
+
+                    </div>
+                </div>
+                <div class="form-group" id="infos">
+
+                    @Html.Label("Collector", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-5">
+                        <select id="info" class="form-control">Select Collector</select>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-3 col-md-10">
+
+
+
+                        <input type="button" value="Send" class="btn btn-success btn-send-collectionamount-notification " />
+
+                    </div>
+                </div>
+
+
+            </div>
+    
+</div>
+<link href="~/Content/select2.css" rel="stylesheet" />
+<link href="~/Content/ch-dialog.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-message-box.js"></script>
+<script src="~/Scripts/typeahead.min.js"></script>
+<script src="~/Scripts/select2.js"></script>
+
+
+<script src="~/Scripts/ch-dialog.js"></script>
+<script>
+
+    $('Textarea').keyup(function (e) {
+        debugger;
+        if (this.value.length != '') {
+            $("#infos").hide();
+        } else {
+            $("#infos").show();
+        }
+        var max = 255;
+        if (e.which < 0x20) {
+            // e.which < 0x20, then it's not a printable character
+            // e.which === 0 - Not a character
+            return;     // Do nothing
+        }
+        if (this.value.length == max) {
+            debugger;
+            ErrorAlert("Message must not exceed 255 character ", 5000);
+            e.preventDefault();
+        } else if (this.value.length > max) {
+            // Maximum exceeded
+            //this.value = this.value.substring(0, max);
+            debugger
+            ErrorAlert("Message exceeds 255 character ", 5000);
+        }
+    });
+
+
+    $(function () {
+
+        $(".collection-amount-main #LocationName").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Suscription/LocationList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.Lid;
+                            var name = item.LocationName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                            debugger
+
+                            $(".collection-amount-main #Lids").val(id);
+
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-8");
+                        // $('.weekday-show').trigger('keyup');
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+
+            },
+            updater: function (item) {
+                $('#Lids').val(map[item].id);
+                return item;
+            }
+
+        });
+
+    })
+
+    $('#LocationName').on('change', function (e) {
+        debugger
+       
+        e.stopImmediatePropagation();
+        var locationid = $('#Lids').val();
+       
+
+        $.ajax({
+            type: 'GET',
+            url: '/Notification/getCollectorsLocationNames',
+            data: {
+                locationid: locationid
+            },
+
+            success: function (result) {
+                debugger;
+                if (result == null) {
+                    $("#info").html("")
+                    //var newOption = "<option value='" + "1" + "'>Select Value</option>";
+                    //$("#info").append(newOption);
+                }
+                else {
+                    debugger;
+                    $("#info").empty();
+                    //$.each(result, function () {
+                    var newOption = "<option value='" + "1" + "'>Select Value</option>";
+                    $("#info").append(newOption);
+                    // $("#info").append($("<option />").text(result.collectorname));
+                    // $("#info").append($("<option />").val(result.CollectorId));
+                    $("#info").append($('<option />', { value: result.CollectorId, text: result.collectorname }));
+                }
+             
+
+                //})
+
+            },
+        });
+    })
+
+    $(document).ready(function () {
+        $('#info').change(function () {
+            debugger;
+            var selectedvalue = $(this).find("option:selected").val();
+            if (selectedvalue == "1") {
+                $("#words").show();
+            }
+            else {
+                $("#words").hide();
+            }
+
+        })
+    })
+
+
+
+    $('.collection-amount-main').on('click', '.btn-send-collectionamount-notification', function () {
+        debugger;
+       
+        var LocationName = $('.collection-amount-main').find('#LocationName').val();
+        var collectorname = $('#info').find('option:selected').text();
+        var Textarea = "";
+        var notificationType = 2;
+        var collectorid = parseInt($('#info').find('option:selected').val());
+        var locationId = $('#Lids').val();
+        var oldDate = "";
+        var Date = $(".Date").find('an-date-picker').get()[0].dateADWithTime;
+        
+        $.ajax({
+            url: "/Notification/Pushpush",
+            type: 'post',
+            data: { oldDate: oldDate, Date: Date, _topic: LocationName, Textarea: Textarea, collectorid: collectorid, collectorname: collectorname, locationId: locationId, notificationType: notificationType },
+
+            dataType: 'json',
+
+            // async: false,
+            success: function (result) {
+                debugger
+
+                if (result.Successful == false) {
+                    ErrorAlert(result.Response, 5000);
+                    return false;
+                    //document.getElementById('alert-success').scrollIntoView();
+                }
+                else {
+                    $(".collection-amount-main").html("");
+
+                    SuccessAlert("Notification sent Successfully", 5000);
+                    document.getElementById('alert-success').scrollIntoView();
+                }
+                // $('section.content').html(data);
+
+            },
+            error: function (result) {
+                ErrorAlert(result.Response, 5000);
+
+            }
+        })
+
+
+
+    })
+    
+</script>

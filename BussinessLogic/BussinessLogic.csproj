@@ -98,6 +98,7 @@
     <Compile Include="Repository\GenericUnitOfWork.cs" />
     <Compile Include="Repository\IGenericRepository.cs" />
     <Compile Include="Repository\IGenericUnitOfWork.cs" />
+    <Compile Include="Repository\WeekDayRepository.cs" />
     <Compile Include="Service\CollectionService.cs" />
     <Compile Include="Service\CollectorVsLocationService.cs" />
     <Compile Include="Service\CommonService.cs" />

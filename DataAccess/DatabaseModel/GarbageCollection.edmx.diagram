@@ -67,6 +67,11 @@
         <EntityTypeShape EntityType="GarbageCollectionDBModel.API_Log" Width="1.5" PointX="7.375" PointY="20.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Subscription" Width="1.5" PointX="9.375" PointY="20.75" />
         <EntityTypeShape EntityType="GarbageCollectionDBModel.Customer" Width="1.5" PointX="3.375" PointY="21.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.WeekDayList" Width="1.5" PointX="21.375" PointY="0.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.MonthAD" Width="1.5" PointX="0.75" PointY="22.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.YearListofAD" Width="1.5" PointX="22.375" PointY="3.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.WasteCollDaySetupCustAuto" Width="1.5" PointX="21.375" PointY="18.75" />
+        <EntityTypeShape EntityType="GarbageCollectionDBModel.WasteColldaysetupCustMannual" Width="1.5" PointX="20.375" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

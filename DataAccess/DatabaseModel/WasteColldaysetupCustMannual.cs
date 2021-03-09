@@ -12,16 +12,12 @@ namespace DataAccess.DatabaseModel
     using System;
     using System.Collections.Generic;
     
-    public partial class SubscriptionDue
+    public partial class WasteColldaysetupCustMannual
     {
-        public int DueId { get; set; }
-        public Nullable<int> SubsId { get; set; }
-        public Nullable<int> Fyid { get; set; }
-        public Nullable<int> BillNo { get; set; }
-        public Nullable<int> Year { get; set; }
-        public Nullable<int> Month { get; set; }
-        public Nullable<decimal> MonthlyDueAmt { get; set; }
-        public Nullable<System.DateTime> PostedOn { get; set; }
+        public int Id { get; set; }
+        public Nullable<int> LocationId { get; set; }
+        public Nullable<System.DateTime> WasteFixedDay { get; set; }
+        public Nullable<System.DateTime> WasteScheduleCollDay { get; set; }
         public string Remarks { get; set; }
     }
 }

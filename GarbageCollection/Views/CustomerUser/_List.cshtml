@@ -8,55 +8,62 @@
     <table class="table table-bordered table-striped table-hover">
 
         <tr>
-            
+
             <th>@Html.DisplayNameFor(x => x.CustomerId)</th>
-            <th>@Html.DisplayNameFor(x => x.UserName)</th>        
+            <th>@Html.DisplayNameFor(x => x.UserName)</th>
             <th>@Html.DisplayNameFor(x => x.Email)</th>
             <th>@Html.DisplayNameFor(x => x.IsActive)</th>
-            <th >@Html.DisplayNameFor(x => x.IsUnlimited)</th>
+            <th>@Html.DisplayNameFor(x => x.IsUnlimited)</th>
             <th>Action</th>
-           
-           
+            @if (CommonUtilityService.AllowEdit(57))
+            {
 
-        </tr>
+                <th>Change Password</th>
+            }
+
+            </tr>
 
 
         @foreach (var item in Model.customeruserPagedList)
         {
-            <tr style="font-size:12px;">
-                <td>
-                    @{ 
-                       var customerName= @CommonUtilityService.getCustomerName(@item.CustomerId);
-                    }
-                 @customerName
+    <tr style="font-size:12px;">
+        <td>
+            @{
+                var customerName = @CommonUtilityService.getCustomerName(@item.CustomerId);
+            }
+            @customerName
 
-                </td>
-                <td>
-                    @item.UserName
+        </td>
+        <td>
+            @item.UserName
 
-                </td>
-                <td>
-                    @item.Email
+        </td>
+        <td>
+            @item.Email
 
-                </td>
-                <td>
-                    @item.IsActive
+        </td>
+        <td>
+            @item.IsActive
 
-                </td>
-                <td>
-                    @item.IsUnlimited
+        </td>
+        <td>
+            @item.IsUnlimited
 
-                </td>
-              
-              
-                <td>
-                    <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.UserId" onclick="EditUserCustomerList(@item.UserId)" data-toggle="tooltip" title="Edit"></button>
-                </td>
-                
-               
-               
-                  
-            </tr>
+        </td>
+
+
+        <td>
+            <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-edit" data-id="@item.UserId" onclick="EditUserCustomerList(@item.UserId)" data-toggle="tooltip" title="Edit"></button>
+        </td>
+        @if (CommonUtilityService.AllowEdit(57))
+        {
+            <td>
+                <button type="button" class="btn btn-info btn-sm btn-edit glyphicon glyphicon-lock" data-id="@item.UserId" onclick="ChangeCustomerPassword(@item.UserId)" data-toggle="tooltip" title="Change Password"></button>
+            </td>
+
+        }
+
+        </tr>
         }
        
     </table>

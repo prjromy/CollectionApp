@@ -79,6 +79,11 @@ namespace DataAccess.DatabaseModel
         public virtual DbSet<API_Log> API_Log { get; set; }
         public virtual DbSet<Subscription> Subscriptions { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<WeekDayList> WeekDayLists { get; set; }
+        public virtual DbSet<MonthAD> MonthADs { get; set; }
+        public virtual DbSet<YearListofAD> YearListofADs { get; set; }
+        public virtual DbSet<WasteCollDaySetupCustAuto> WasteCollDaySetupCustAutoes { get; set; }
+        public virtual DbSet<WasteColldaysetupCustMannual> WasteColldaysetupCustMannuals { get; set; }
     
         public virtual int API_ErrorLogging(string message, string requestMethod, string requestUri, Nullable<System.DateTime> timeUtc)
         {

@@ -113,6 +113,35 @@ namespace GarbageCollection.Controllers
             }
 
         }
+
+
+
+
+        public ActionResult ChangePassword(int? userid)
+        {
+
+            CustomerUserViewModel user = new CustomerUserViewModel();
+
+            user = customerUserService.getSingleCustomerList(userid);
+            return PartialView(user);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(CustomerUserViewModel customerUserViewModel)
+        {
+            PasswordHasher pass = new PasswordHasher();
+            customerUserViewModel.NewPassword = pass.HashPassword(customerUserViewModel.NewPassword);
+
+
+            var message = customerUserService.ChangePassword(customerUserViewModel);
+            return Json(message, JsonRequestBehavior.AllowGet);
+
+
+        }
+
+
+
+
         //public async Task<ActionResult> CustomerUserSave(CustomerUserViewModel customerUserViewModel)
         //{
         //    try

@@ -1,11 +1,14 @@
 ﻿using BuisnessObject.ViewModel;
 using BussinessLogic.Repository;
 using DataAccess.DatabaseModel;
+using Loader.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static BuisnessObject.ViewModel.MainViewModel;
 
 namespace BussinessLogic.Service
 {
@@ -67,21 +70,119 @@ namespace BussinessLogic.Service
 
         }
 
-        public  string getCollectorsLocationName(int? locationid)
+        public CollectorViewModel getCollectorsLocationName(int? locationid)
+        {
+
+
+            CollectorViewModel collectorViewModel = new CollectorViewModel();
+            collectorViewModel = uow.Repository<CollectorViewModel>().SqlQuery("select collectorname,l.CollectorId from dbo.fgetcollectorinfo() as c inner join[dbo].[LocationVsCollector] as l on c.CollectorID = l.CollectorId where locationid = " + locationid).SingleOrDefault();
+            //if (collectorname == null)
+            //{
+            //    return "";
+            //}
+            //else
+            //{
+                return collectorViewModel;
+            //}
+          
+        }
+
+
+
+
+
+        public ReturnBaseMessageModel saveNotification(List<MainCalenderNotificationViewModel> mainCalenderNotificationViewModel, int locationId)
         {
 
 
 
-            string collectorname = uow.Repository<string>().SqlQuery("select collectorname from dbo.fgetcollectorinfo() as c inner join[dbo].[LocationVsCollector] as l on c.CollectorID = l.CollectorId where locationid = " + locationid).SingleOrDefault();
-            if (collectorname == null)
+
+
+            foreach (var item in mainCalenderNotificationViewModel)
             {
-                return "";
+
+                //WasteCollDaySetupCustAuto wcs = new WasteCollDaySetupCustAuto();
+                //wcs.LocationId = item.CollwkDay;
+                //wcs.CollwkDay = locationId;
+                //wcs.postedby = Global.UserId;
+                //wcs.PostedOn = DateTime.Now;
+                //wcs.CollectionNotificationTypeId = 3;
+                //uow.Repository<WasteCollDaySetupCustAuto>().Add(wcs);
+                uow.ExecWithStoreProcedure("[dbo].[PCreateCollSetup] @LocationId,@CollweekDay,@CollectionNotificationTypeId,@Message,@PostedBy,@CollectorArriveDate,@CollectorId",
+
+                                              new SqlParameter("@LocationId", locationId),
+                                              new SqlParameter("@CollweekDay", item.CollwkDay),
+                                              new SqlParameter("@CollectionNotificationTypeId", 3),
+                                                    new SqlParameter("@Message", DBNull.Value),
+                                                    new SqlParameter("@PostedBy", Global.UserId),
+                                              new SqlParameter("@CollectorArriveDate", DBNull.Value),
+                                              new SqlParameter("@CollectorId", DBNull.Value)
+
+
+                                              );
+              
             }
-            else
+
+
+
+            returnMessage.Msg = "Added Successfully";
+            returnMessage.Success = true;
+
+            return returnMessage;
+
+    
+        }
+        public List<MainCalenderNotificationViewModel> getCalenderNotificationList(string location, string weekDay, int pageNo, int pageSize)
+        {
+            try
             {
-                return collectorname;
+              
+
+                string query = "";
+                query = @"select COUNT(*) OVER () AS TotalCount,a.Id,CollwkDay,w.Day ,lc.LocationName as LocationName,
+                        LocationId,postedby,PostedOn from WasteCollDaySetupCustAuto as a
+                        inner join WeekDayList as w on a.CollwkDay = w.Id
+
+                        inner join LocationMaster as lc on a.LocationId = lc.Lid
+
+                        where CollectionNotificationTypeId = 3 ";
+
+                if (location != "" && location != null)
+                {
+                    query += "  and LocationName like'%" + location.Trim() + "%'";
+                }
+                if (weekDay != "" && weekDay != null)
+                {
+                    query += " and Day like '%" + weekDay.Trim() + "%'";
+                }
+
+                query += @" ORDER BY  Id
+                       OFFSET ((" + pageNo + @" - 1) * " + pageSize + @") ROWS
+                       FETCH NEXT " + pageSize + " ROWS ONLY";
+                var collectionList = uow.Repository<MainCalenderNotificationViewModel>().SqlQuery(query).ToList();
+
+                return collectionList;
             }
-          
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+        }
+
+        public List<WeekDayList> getWeekDayList(string prefix)
+        {
+            return uow.Repository<WeekDayList>().FindBy(x => x.Day.ToLower().StartsWith(prefix.ToLower())).ToList();
+        }
+
+        public List<MainViewModel.CalenderMainViewModel> getWasteCollectionCalenderList(int year, int month, int location)
+        {
+            string query = "select DatesAd,AssignedLocationName from FgetAssignLocationfoCalander('"+year+"','"+ month + "','"+ location + "') where locationid=" + location+" and convert(DATE,Datesad)>CONVERT(DATE,GETDATE())";
+
+            
+            var calenderList = uow.Repository<MainViewModel.CalenderMainViewModel>().SqlQuery(query).ToList();
+
+            return calenderList;
         }
     }
 }

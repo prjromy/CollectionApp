@@ -1,0 +1,85 @@
+﻿
+@using PagedList
+@using BussinessLogic.Service
+@using BussinessLogic.CustomHelper
+
+@model BuisnessObject.ViewModel.MainViewModel.CalenderMainViewModel
+
+@if (Model.calenderMainViewModel.Count == 0)
+{
+    <h3 style="text-align:center">No Data Found</h3>
+}
+else
+{
+    <div class="table-responsive no-padding col-waste-edit-list">
+        <table class="table table-bordered table-striped table-hover">
+
+            <tr>
+                <th>  No.</th>
+                <th>Auto</th>
+
+                <th>@Html.DisplayNameFor(x => x.DatesAd)</th>
+                <th>@Html.DisplayNameFor(x => x.AssignedLocationname)</th>
+
+
+            </tr>
+
+
+            @foreach (var item in Model.calenderMainViewModel.Select((x, i) => new { Data = x, index = i + 1 }))
+            {
+                <tr style="font-size:12px;">
+                    <td>
+                        @item.index
+
+                    </td>
+
+
+                    <td> @Html.CheckBoxFor(x => x.IsChecked, new { @class = "checkall" })</td>
+                    <td>
+                        @item.Data.DatesAd
+
+                    </td>
+                    <td>
+                        @item.Data.AssignedLocationname
+
+                    </td>
+
+
+
+
+
+
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <div class="form-group">
+        @Html.Label("New Date", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-3 new-date">
+            <an-date-picker is-input></an-date-picker>
+
+
+        </div>
+    </div>
+
+
+    <div class="form-group" id="words">
+        @*@Html.Label("Collector Name", htmlAttributes: new { @class = "control-label col-md-2" })*@
+
+
+        @Html.Label("Remarks", htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <div class="col-md-5">
+
+            @Html.TextArea("Words", null, new { rows = 10, columns = 40, @class = "form-control", @id = "Textarea", autocomplete = "off" })
+
+
+        </div>
+
+    </div>
+ 
+}
+
+

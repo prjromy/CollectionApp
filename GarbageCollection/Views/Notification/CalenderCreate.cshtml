@@ -1,0 +1,270 @@
+﻿
+@model  BuisnessObject.ViewModel.MainCalenderNotificationViewModel
+@using BussinessLogic.Service
+
+
+<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css" />
+<div class="calender-main">
+    <div class="box box-success">
+        <div class="box-header with-border">
+
+
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+            </div>
+            @using (Html.BeginForm("Index", "Notification", FormMethod.Post, new { id = "createCalender" }))
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <h4>Calender Setup</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @*@Html.Label("Collector Name", htmlAttributes: new { @class = "control-label col-md-2" })*@
+
+
+                        @Html.Label("Location Name", htmlAttributes: new { @class = "control-label col-md-2" })
+
+                        <div class="col-md-5">
+
+                            @Html.TextBox("LocationName", null, new { @class = "form-control", @id = "LocationName", autocomplete = "off" })
+                            @Html.HiddenFor(x => x.LocationId, new { @id = "Lids" })
+                            @Html.ValidationMessageFor(model => model.LocationId, "", new { @class = "text-danger" })
+
+                        </div>
+
+
+
+
+
+                    </div>
+                    <div class="form-group">
+
+
+
+                        @Html.Label("Week Days", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-sm-4">
+
+
+                            @Html.TextAreaFor(x => x.weekDays, 10, 40, new { id = "weekdays" })
+                            @Html.HiddenFor(x => x.weekDays)
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+
+
+
+                            <input type="button" value="Save" class="btn btn-success btn-send-calender-setup" />
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    </div>
+    <link href="~/Select2 Css/select2.css" rel="stylesheet" />
+    <script src="~/Select2 js/select2.js"></script>
+
+
+    <link href="~/Content/ch-dialog.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-message-box.js"></script>
+    <script src="~/Scripts/typeahead.min.js"></script>
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/ch-dialog.js"></script>
+    <style>
+        .ui-autocomplete-category {
+            font-weight: bold;
+            padding: .2em .4em;
+            margin: .8em 0 .2em;
+            line-height: 1.5;
+        }
+
+        .ui-menu .ui-menu-item {
+            padding: 0em 1.5em;
+            width: 220px;
+            clear: both;
+        }
+
+        .Products {
+            width: 220px;
+        }
+
+        .People {
+            width: 220px;
+        }
+
+        .select2-container {
+            width: 200px;
+        }
+    </style>
+
+
+
+
+    <script>
+
+
+
+
+    $(function () {
+
+        $("#LocationName").typeahead({
+
+            hint: true,
+            highlight: true,
+            minLength: 1,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Suscription/LocationList/',
+                    data: "{ 'prefix': '" + request + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        items = [];
+                        map = {};
+                        $.each(data, function (i, item) {
+                            var id = item.Lid;
+                            var name = item.LocationName;
+                            map[name] = { id: id, name: name };
+                            items.push(name);
+                            debugger
+
+                            $("#Lids").val(id);
+
+                        });
+                        response(items);
+                        $(".dropdown-menu").css("height", "auto");
+                        //$(".dropdown-menu").css("width", "");
+                        $(".dropdown-menu").addClass("col-md-8");
+                        $('#info').trigger('keyup');
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+
+
+            },
+            updater: function (item) {
+                $('#LocationId').val(map[item].id);
+                return item;
+            }
+
+        });
+
+
+
+    })
+
+          $(document).ready(function () {
+              debugger;
+          //The url we will send our get request to
+          var attendeeUrl = '@Url.Action("GetWeekDays", "Notification")';
+          var pageSize = 20;
+
+              $('#weekdays').select2(
+          {
+              placeholder: 'Enter name',
+              //Does the user have to enter any data before sending the ajax request
+              minimumInputLength: 0,
+              allowClear: true,
+              multiple: true,
+              ajax: {
+                  //How long the user has to pause their typing before sending the next request
+                  quietMillis: 150,
+                  //The url of the json service
+                  url: attendeeUrl,
+                  dataType: 'jsonp',
+                  //Our search term and what page we are on
+                  data: function (term, page) {
+                      return {
+                          pageSize: pageSize,
+                          pageNum: page,
+                          searchTerm: term
+                      };
+                  },
+                  results: function (data, page) {
+
+                      //Used to determine whether or not there are more results available,
+                      //and if requests for more data should be sent in the infinite scrolling
+                      var more = (page * pageSize) < data.Total;
+                      return { results: data.Results, more: more };
+                  }
+              }
+          });
+
+      });
+
+        $.validator.unobtrusive.parse('#createCalender');
+        $('.calender-main').on('click', '.btn-send-calender-setup', function () {
+            debugger;
+            $('#createCalender').removeData("validator").removeData("unobtrusiveValidation");
+            $.validator.unobtrusive.parse($('#createCalender'));
+            if ($("#createCalender").valid()) {
+
+                NewCustomerCreate();
+            }
+            })
+
+       
+        function NewCustomerCreate(e) {
+            $.MessageBox({
+                buttonDone: "Yes",
+                buttonFail: "No",
+                message: " Are you sure?"
+            }).done(function () {
+                //$(".checkboxCert:checked").removeAttr('disabled');
+                $('#createCalender').ajaxSubmit({
+                    success: function (result) {
+                        //var url;
+                        debugger;
+                        if (result.Success) {
+                            $.ajax({
+                                url: "/Notification/CalenderList",
+                                type: 'post',
+                                async: false,
+                                success: function (data) {
+                                    debugger
+                                    $('section.content').html(data);
+                                    SuccessAlert(result.Msg, 5000);
+                                    document.getElementById('alert-success').scrollIntoView();
+                                }
+                            })
+                        } else {
+                            ErrorAlert(result.Msg, 5000);
+                            document.getElementById('alert-error').scrollIntoView();
+                        }
+                    },
+                    error: function (data) {
+                        ErrorAlert(data.responseText, 15000)
+                    }
+                });
+            }).fail(function () {
+            });
+        }
+
+
+
+
+    </script>

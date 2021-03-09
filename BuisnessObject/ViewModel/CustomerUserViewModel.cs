@@ -30,14 +30,24 @@ namespace BuisnessObject.ViewModel
         public string Email { get; set; }
           [DisplayName("Password")]
         public string PasswordHash { get; set; }
-        [Compare("PasswordHash", ErrorMessage = "Password and Confirmation Password must match.")]
         [DisplayName("Confirm Password")]
+        [Compare("PasswordHash", ErrorMessage = "Confirm password doesn't match, Type again !")]
+
         public string ReEnterPassword { get; set; }
-        [DisplayName("User Name")]
-        [Remote("CheckUsernameAvailable", "CustomerUser", AdditionalFields = "UserId", ErrorMessage = "Duplicate Username entry!!!")]
+    
+
+
+     
+        public string NewPassword { get; set; }
+        [DisplayName("New Confirm Password")]
+        [Compare("NewPassword", ErrorMessage = "Confirm password doesn't match, Type again !")]
+
+        public string NewReEnterPassword { get; set; }
 
         [Required(ErrorMessage = "UserName is required")]
 
+        [DisplayName("User Name")]
+        [Remote("CheckUsernameAvailable", "CustomerUser", AdditionalFields = "UserId", ErrorMessage = "Duplicate Username entry!!!")]
         public string UserName { get; set; }
         public int TotalCount { get; set; }
         public IPagedList<CustomerUserViewModel> customeruserPagedList { get; set; }

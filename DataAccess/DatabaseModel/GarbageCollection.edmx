@@ -121,13 +121,6 @@
           <Property Name="VerifiedAMount" Type="money" />
           <Property Name="VerifiedBy" Type="int" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'GarbageCollectionDB.dbo.Company' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
-        <EntityType Name="Company">
-          <Property Name="CompanyId" Type="int" />
-          <Property Name="CompanyName" Type="varchar" MaxLength="100" />
-          <Property Name="ContactNo" Type="varchar" MaxLength="200" />
-        </EntityType>-->
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="Cid" />
@@ -141,6 +134,9 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.Company' does not have a p
           <Property Name="Address" Type="varchar" MaxLength="500" />
           <Property Name="Email" Type="varchar" MaxLength="100" />
           <Property Name="PanNo" Type="varchar" MaxLength="100" />
+          <Property Name="Geom" Type="geometry" />
+          <Property Name="Longitude" Type="varchar" MaxLength="50" />
+          <Property Name="Latitude" Type="varchar" MaxLength="50" />
           <Property Name="PostedBy" Type="int" />
           <Property Name="PostedOn" Type="smalldatetime" />
           <Property Name="Status" Type="tinyint" />
@@ -196,8 +192,15 @@ warning 6013: The table/view 'GarbageCollectionDB.dbo.Company' does not have a p
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="MonthAD">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Month" Type="varchar" MaxLength="50" />
+        </EntityType>
         <!--Errors Found During Generation:
-warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+warning 6002: The table/view 'WasteManagement.dbo.NDateD' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="NDateD">
           <Key>
             <PropertyRef Name="M1" />
@@ -325,6 +328,50 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="Month" Type="int" />
           <Property Name="MonthlyDueAmt" Type="money" />
           <Property Name="PostedOn" Type="smalldatetime" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="WasteCollDaySetupCustAuto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="CollwkDay" Type="int" />
+          <Property Name="CollectionNotificationTypeId" Type="int" />
+          <Property Name="Message" Type="varchar(max)" />
+          <Property Name="CollectorArriveDate" Type="smalldatetime" />
+          <Property Name="CollectorId" Type="int" />
+          <Property Name="postedby" Type="int" />
+          <Property Name="PostedOn" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="WasteColldaysetupCustMannual">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationId" Type="int" />
+          <Property Name="WasteFixedDay" Type="smalldatetime" />
+          <Property Name="WasteScheduleCollDay" Type="smalldatetime" />
+          <Property Name="Remarks" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'WasteManagement.dbo.WeekDayList' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="WeekDayList">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Day" />
+            <PropertyRef Name="Ord" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Day" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Ord" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="YearListofAD">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Yr" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="LicenseBranch">
           <Key>
@@ -361,7 +408,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="BGId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="BGName" Type="nvarchar(max)" />
         </EntityType>
-        <EntityType Name="Company1">
+        <EntityType Name="Company">
           <Key>
             <PropertyRef Name="CompanyId" />
           </Key>
@@ -830,6 +877,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="LocationMaster" EntityType="Self.LocationMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationVsCollector" EntityType="Self.LocationVsCollector" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Month" EntityType="Self.Month" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MonthAD" EntityType="Self.MonthAD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationQueue" EntityType="Self.NotificationQueue" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationSuccess" EntityType="Self.NotificationSuccess" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationToken" EntityType="Self.NotificationToken" Schema="dbo" store:Type="Tables" />
@@ -837,9 +885,12 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="Subscription" EntityType="Self.Subscription" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionCollection" EntityType="Self.SubscriptionCollection" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubscriptionDue" EntityType="Self.SubscriptionDue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WasteCollDaySetupCustAuto" EntityType="Self.WasteCollDaySetupCustAuto" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="WasteColldaysetupCustMannual" EntityType="Self.WasteColldaysetupCustMannual" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="YearListofAD" EntityType="Self.YearListofAD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LicenseBranch" EntityType="Self.LicenseBranch" Schema="fin" store:Type="Tables" />
           <EntitySet Name="BloodGroup" EntityType="Self.BloodGroup" Schema="LG" store:Type="Tables" />
-          <EntitySet Name="Company1" EntityType="Self.Company1" Schema="LG" Table="Company" store:Type="Tables" />
+          <EntitySet Name="Company" EntityType="Self.Company" Schema="LG" store:Type="Tables" />
           <EntitySet Name="CustomerUser" EntityType="Self.CustomerUser" Schema="LG" store:Type="Tables" />
           <EntitySet Name="DataType" EntityType="Self.DataType" Schema="LG" store:Type="Tables" />
           <EntitySet Name="Department" EntityType="Self.Department" Schema="LG" store:Type="Tables" />
@@ -881,6 +932,13 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
     [NDateD].[M12] AS [M12], 
     [NDateD].[NYear] AS [NYear]
     FROM [dbo].[NDateD] AS [NDateD]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="WeekDayList" EntityType="Self.WeekDayList" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [WeekDayList].[Id] AS [Id], 
+    [WeekDayList].[Day] AS [Day], 
+    [WeekDayList].[Ord] AS [Ord]
+    FROM [dbo].[WeekDayList] AS [WeekDayList]</DefiningQuery>
           </EntitySet>
           <AssociationSet Name="FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId" Association="Self.FK_LG_AppCustomerClaim_LG_CustomerUserTable_UserId">
             <End Role="CustomerUserTable" EntitySet="CustomerUserTable" />
@@ -1034,6 +1092,11 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySet Name="API_Log" EntityType="GarbageCollectionDBModel.API_Log" />
           <EntitySet Name="Subscriptions" EntityType="GarbageCollectionDBModel.Subscription" />
           <EntitySet Name="Customers" EntityType="GarbageCollectionDBModel.Customer" />
+          <EntitySet Name="WeekDayLists" EntityType="GarbageCollectionDBModel.WeekDayList" />
+          <EntitySet Name="MonthADs" EntityType="GarbageCollectionDBModel.MonthAD" />
+          <EntitySet Name="YearListofADs" EntityType="GarbageCollectionDBModel.YearListofAD" />
+          <EntitySet Name="WasteCollDaySetupCustAutoes" EntityType="GarbageCollectionDBModel.WasteCollDaySetupCustAuto" />
+          <EntitySet Name="WasteColldaysetupCustMannuals" EntityType="GarbageCollectionDBModel.WasteColldaysetupCustMannual" />
         </EntityContainer>
         <EntityType Name="AppCustomerClaim">
           <Key>
@@ -1241,6 +1304,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="Month" Type="Int32" />
           <Property Name="MonthlyDueAmt" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="PostedOn" Type="DateTime" Precision="0" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="LicenseBranch">
           <Key>
@@ -1781,6 +1845,57 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <Property Name="PostedOn" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="Byte" />
           <Property Name="QRCode" Type="Byte" />
+          <Property Name="Geom" Type="Geometry" />
+          <Property Name="Longitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Latitude" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="WeekDayList">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Day" />
+            <PropertyRef Name="Ord" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Day" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Ord" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MonthAD">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Month" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="YearListofAD">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Yr" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WasteCollDaySetupCustAuto">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="CollwkDay" Type="Int32" />
+          <Property Name="CollectionNotificationTypeId" Type="Int32" />
+          <Property Name="Message" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CollectorArriveDate" Type="DateTime" Precision="0" />
+          <Property Name="CollectorId" Type="Int32" />
+          <Property Name="postedby" Type="Int32" />
+          <Property Name="PostedOn" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="WasteColldaysetupCustMannual">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationId" Type="Int32" />
+          <Property Name="WasteFixedDay" Type="DateTime" Precision="0" />
+          <Property Name="WasteScheduleCollDay" Type="DateTime" Precision="0" />
+          <Property Name="Remarks" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
         </EntityType>
         </Schema>
     </edmx:ConceptualModels>
@@ -1994,6 +2109,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySetMapping Name="SubscriptionDues">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.SubscriptionDue">
               <MappingFragment StoreEntitySet="SubscriptionDue">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
                 <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
                 <ScalarProperty Name="MonthlyDueAmt" ColumnName="MonthlyDueAmt" />
                 <ScalarProperty Name="Month" ColumnName="Month" />
@@ -2044,7 +2160,7 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           </EntitySetMapping>
           <EntitySetMapping Name="Companies">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.Company">
-              <MappingFragment StoreEntitySet="Company1">
+              <MappingFragment StoreEntitySet="Company">
                 <ScalarProperty Name="TDate" ColumnName="TDate" />
                 <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
                 <ScalarProperty Name="AdditionalUser" ColumnName="AdditionalUser" />
@@ -2436,6 +2552,9 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="GarbageCollectionDBModel.Customer">
               <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Geom" ColumnName="Geom" />
                 <ScalarProperty Name="QRCode" ColumnName="QRCode" />
                 <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
@@ -2449,6 +2568,57 @@ warning 6002: The table/view 'GarbageCollectionDB.dbo.NDateD' does not have a pr
                 <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
                 <ScalarProperty Name="CustNo" ColumnName="CustNo" />
                 <ScalarProperty Name="Cid" ColumnName="Cid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WeekDayLists">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.WeekDayList">
+              <MappingFragment StoreEntitySet="WeekDayList">
+                <ScalarProperty Name="Ord" ColumnName="Ord" />
+                <ScalarProperty Name="Day" ColumnName="Day" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MonthADs">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.MonthAD">
+              <MappingFragment StoreEntitySet="MonthAD">
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="YearListofADs">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.YearListofAD">
+              <MappingFragment StoreEntitySet="YearListofAD">
+                <ScalarProperty Name="Yr" ColumnName="Yr" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WasteCollDaySetupCustAutoes">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.WasteCollDaySetupCustAuto">
+              <MappingFragment StoreEntitySet="WasteCollDaySetupCustAuto">
+                <ScalarProperty Name="PostedOn" ColumnName="PostedOn" />
+                <ScalarProperty Name="postedby" ColumnName="postedby" />
+                <ScalarProperty Name="CollectorId" ColumnName="CollectorId" />
+                <ScalarProperty Name="CollectorArriveDate" ColumnName="CollectorArriveDate" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="CollectionNotificationTypeId" ColumnName="CollectionNotificationTypeId" />
+                <ScalarProperty Name="CollwkDay" ColumnName="CollwkDay" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WasteColldaysetupCustMannuals">
+            <EntityTypeMapping TypeName="GarbageCollectionDBModel.WasteColldaysetupCustMannual">
+              <MappingFragment StoreEntitySet="WasteColldaysetupCustMannual">
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="WasteScheduleCollDay" ColumnName="WasteScheduleCollDay" />
+                <ScalarProperty Name="WasteFixedDay" ColumnName="WasteFixedDay" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

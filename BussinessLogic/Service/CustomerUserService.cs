@@ -115,9 +115,18 @@ namespace BussinessLogic.Service
             
             }
 
+        public ReturnBaseMessageModel ChangePassword(CustomerUserViewModel customerUserViewModel)
+        {
+            var singleUser = uow.Repository<CustomerUserTable>().FindBy(x => x.UserId == customerUserViewModel.UserId).SingleOrDefault();
 
+            singleUser.PasswordHash = customerUserViewModel.NewPassword;
+            uow.Repository<CustomerUserTable>().Edit(singleUser);
+            uow.Commit();
+            returnBaseMessageModel.Msg = "Password Edited Sucessfully";
+            returnBaseMessageModel.Success = true;
+            return returnBaseMessageModel;
 
-
+        }
 
         public string getCustomerName(int? customerId)
         {

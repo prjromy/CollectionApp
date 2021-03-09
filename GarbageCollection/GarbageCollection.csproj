@@ -398,6 +398,7 @@
     <Compile Include="WebApi\Security\JWTAuthenticationFilter.cs" />
     <Compile Include="WebApi\Security\JWTAuthenticationIdentity.cs" />
     <Compile Include="WebApi\WebApiController\BarcodeController.cs" />
+    <Compile Include="WebApi\WebApiController\CalenderController.cs" />
     <Compile Include="WebApi\WebApiController\CollectorController.cs" />
     <Compile Include="WebApi\WebApiController\LocationController.cs" />
     <Compile Include="WebApi\WebApiController\LoginController.cs" />
@@ -1740,13 +1741,20 @@
     <Content Include="Views\Notification\NotificationIndex.cshtml" />
     <Content Include="Views\Customer\MultipleQRCodeIndex.cshtml" />
     <Content Include="Views\Customer\_MultipleBarcodeList.cshtml" />
-    <Content Include="Views\Notification\List.cshtml" />
-    <Content Include="Views\Notification\_List.cshtml" />
+    <Content Include="Views\Notification\CalenderCreate.cshtml" />
+    <Content Include="Views\Notification\CalenderList.cshtml" />
+    <Content Include="Views\Notification\_CalenderList.cshtml" />
+    <Content Include="Views\Notification\GeneralMessage.cshtml" />
+    <Content Include="Views\Notification\CollectionAmount.cshtml" />
+    <Content Include="Views\Notification\CollectionWasteEdit.cshtml" />
+    <Content Include="Views\Notification\CollectionWasteEditList.cshtml" />
+    <Content Include="Views\CustomerUser\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="BarCodeImage\" />
     <Folder Include="DialogLoader\images\" />
+    <Folder Include="Views\Calender\" />
     <Folder Include="Views\Login\" />
     <Folder Include="Views\Logs\" />
     <Folder Include="Views\Print\" />

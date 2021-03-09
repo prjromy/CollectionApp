@@ -143,6 +143,32 @@
     }
 
 
+    function ChangeCustomerPassword(CID) {
+        debugger
+
+        $.ajax({
+            type: "get",
+            url: "/CustomerUser/ChangePassword/",
+            contentType: "application/json; charset=utf-8",
+            data: { userid: CID },
+            dataType: "html",
+            success: function (html) {
+                debugger;
+                $('.btn-create').val("Hide Section")
+                $(".customer-display").show();
+                $('.customer-display').html(html).find('.focusdiv').focus()
+
+                window.scrollTo(0, 0);
+                debugger;
+                //$('section.content').find('div:first').animate({ scrollTop: 0 }, 'slow');
+
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+    }
+
 
     $(".customer-user-list-index").on('click', '.btn-searchUserCustomer', function (e) {
         e.stopImmediatePropagation();

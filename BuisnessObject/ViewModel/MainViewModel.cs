@@ -148,7 +148,11 @@ namespace BuisnessObject.ViewModel
             public int LedgerId{ get; set; }
             public string LedgerName { get; set; }
         }
+        public class Year
+        {
 
+            public int Yr { get; set; }
+        }
         public class CollectionEntry
         {
             public int subsid { get; set; }
@@ -323,5 +327,33 @@ namespace BuisnessObject.ViewModel
 
             public decimal Balance { get; set; } 
         }
+
+
+        public class CalenderMainViewModel
+        {
+           
+            public Int64 Id { get; set; }
+            public DateTime DatesAd { get; set; }
+
+            public string DateBS { get; set; }
+            public int WkDayId { get; set; }
+            public string DAY { get; set; }
+            public Nullable<int> LocationId { get; set; }
+            public string AssignedLocationname { get; set; }
+            public string Status { get; set; }
+            public Nullable<DateTime> CollectorArriveDate { get; set; }
+            public string CollectorName { get; set; }
+            public bool IsChecked { get; set; }
+
+            public List<CalenderMainViewModel> calenderMainViewModel { get; set; }
+
+        }
+
+        public class CollectorViewModel
+        {
+            public int CollectorId { get; set; }
+            public string collectorname { get; set; }
+        }
+
+        }
     }
-}
